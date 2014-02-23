@@ -7,11 +7,13 @@
 //
 
 #import "XTAppDelegate.h"
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation XTAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [GMSServices provideAPIKey:@"AIzaSyBTotBqCH0bt2CpMDDfkmAt2JPbVTszj7M"];
     // Override point for customization after application launch.
     return YES;
 }
