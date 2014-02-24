@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XTCameraViewController : UIViewController
+@interface XTCameraViewController : UICollectionViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
+{
+    UIImagePickerController *ImagePicker;
+}
+
+@property(nonatomic,retain) NSMutableArray *ImageArray;
 
 @end
