@@ -14,5 +14,8 @@
 }
 
 @property(nonatomic,retain) NSMutableArray *ImageArray;
+@property(strong,nonatomic,retain) UIButton *CameraIcon;
+
+- (void) LoadCamera:(id)sender;
 
 @end

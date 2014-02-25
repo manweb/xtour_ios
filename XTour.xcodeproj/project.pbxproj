@@ -50,6 +50,7 @@
 		64251D46188FBA76004F1675 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251D45188FBA76004F1675 /* Reachability.m */; };
 		64251D4C188FC1C8004F1675 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64251D4B188FC1C8004F1675 /* libxml2.dylib */; };
 		64251D50188FC3EA004F1675 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251D4F188FC3EA004F1675 /* GDataXMLNode.m */; };
+		646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646183FB18BC30AF00C50FBB /* camera_icon.png */; };
 		64746CBC189F18270070B8D9 /* XTour_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64746CBB189F18270070B8D9 /* XTour_button.png */; };
 		6480121B18A6FD80000A387E /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121A18A6FD80000A387E /* button_green.png */; };
 		6480121D18A6FD8A000A387E /* button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121C18A6FD8A000A387E /* button_blue.png */; };
@@ -154,6 +155,7 @@
 		64251D4B188FC1C8004F1675 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		64251D4E188FC3EA004F1675 /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
 		64251D4F188FC3EA004F1675 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
+		646183FB18BC30AF00C50FBB /* camera_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon.png; path = images/camera_icon.png; sourceTree = SOURCE_ROOT; };
 		64746CBB189F18270070B8D9 /* XTour_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = XTour_button.png; path = ../images/XTour_button.png; sourceTree = "<group>"; };
 		6480121A18A6FD80000A387E /* button_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_green.png; path = ../images/button_green.png; sourceTree = "<group>"; };
 		6480121C18A6FD8A000A387E /* button_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_blue.png; path = ../images/button_blue.png; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */,
 				64C2B97C18B87AF300D4FDE4 /* globe@2x.png */,
 				64A4A00918B952F0007B4E54 /* warning_icon@2x.png */,
+				646183FB18BC30AF00C50FBB /* camera_icon.png */,
 			);
 			path = XTour;
 			sourceTree = "<group>";
@@ -486,6 +489,7 @@
 				640BBE741887B1A30029327F /* InfoPlist.strings in Resources */,
 				64C2B97B18B87ADE00D4FDE4 /* cog_01@2x.png in Resources */,
 				64C2B97D18B87AF300D4FDE4 /* globe@2x.png in Resources */,
+				646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */,
 				6480121D18A6FD8A000A387E /* button_blue.png in Resources */,
 				6480121B18A6FD80000A387E /* button_green.png in Resources */,
 				64E3EB9F18B0200500514CFE /* xtour_header.png in Resources */,
