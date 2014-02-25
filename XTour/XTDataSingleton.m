@@ -16,6 +16,8 @@
 @synthesize totalAltitude;
 @synthesize startTime;
 @synthesize endTime;
+@synthesize loggedIn;
+@synthesize userID;
 
 +(XTDataSingleton *)singleObj{
     
@@ -42,6 +44,8 @@
     startTime = 0;
     endTime = 0;
     timer = 0;
+    loggedIn = false;
+    userID = nil;
 }
 
 - (void) AddCoordinate:(CLLocation *)p
@@ -143,6 +147,19 @@
     }
     
     [xml SaveXML:@"testXML.xml"];
+}
+
+- (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *FilePath = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+    if (check) {
+        if (![[NSFileManager defaultManager] fileExistsAtPath:FilePath]) {return nil;}
+    }
+    
+    return FilePath;
 }
 
 @end

@@ -18,6 +18,8 @@
 @property(nonatomic) double totalAltitude;
 @property(nonatomic,retain) NSDate *startTime;
 @property(nonatomic,retain) NSDate *endTime;
+@property(nonatomic) bool loggedIn;
+@property(nonatomic,retain) NSString *userID;
 
 + (XTDataSingleton *) singleObj;
 
@@ -31,5 +33,6 @@
 - (void) SetEndTime:(NSDate *)time;
 - (NSMutableArray *) GetMinMaxCoordinates;
 - (void) Finalize;
+- (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check;
 
 @end

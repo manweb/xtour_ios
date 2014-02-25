@@ -18,6 +18,7 @@
 @synthesize locationManager;
 @synthesize runStatus;
 @synthesize PauseButton;
+@synthesize loginButton;
 
 int timer = 0;
 bool running = false;
@@ -46,6 +47,13 @@ bool running = false;
     locationManager.distanceFilter = 2;
     
     runStatus = 0;
+    
+    NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:userFile]) {
+        data.loggedIn = true;
+        data.userID = [[NSString alloc] initWithContentsOfFile:userFile encoding:NSUTF8StringEncoding error:nil];
+    }
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -64,6 +72,7 @@ bool running = false;
     [_altitudeLabel release];
     [_altitudeRateLabel release];
     [_elevationLabel release];
+    [loginButton release];
     [super dealloc];
     [pollingTimer invalidate];
     pollingTimer = nil;
@@ -73,6 +82,18 @@ bool running = false;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (data.loggedIn) {
+        NSString *tempPath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
+        [loginButton setImage:img forState:UIControlStateNormal];
+    }
+    else {
+        [loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)stopTimer:(id)sender {
@@ -128,20 +149,9 @@ bool running = false;
     }
 }
 
-- (IBAction)getPHP:(id)sender {
-    /*NSURL *url = [NSURL URLWithString:@"http://www.cheisacher.ch/testRequest.php"];
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request setPostValue:@"It works!" forKey:@"text"];
-    [request startSynchronous];
-    NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
-        self.phpLabel.text = response;
-    }
-    else {self.phpLabel.text = @"Error";}*/
-    
-    XTXMLParser *xml = [[XTXMLParser alloc] init];
-    [xml TestXML];
+- (IBAction)LoadLogin:(id)sender {
+    XTLoginViewController *login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
+    [self presentViewController:login animated:YES completion:nil];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {

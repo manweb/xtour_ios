@@ -12,6 +12,7 @@
 #include "ASIFormDataRequest.h"
 #include <CoreLocation/CoreLocation.h>
 #include "XTXMLParser.h"
+#import "XTLoginViewController.h"
 
 @interface XTHomeViewController : UIViewController <CLLocationManagerDelegate>
 {
@@ -22,7 +23,6 @@
 }
 
 @property (strong, nonatomic, retain) IBOutlet UILabel *timerLabel;
-@property (strong, nonatomic) IBOutlet UILabel *phpLabel;
 @property (retain, nonatomic) IBOutlet UILabel *longLabel;
 @property (retain, nonatomic) IBOutlet UILabel *latLabel;
 @property (retain, nonatomic) IBOutlet UILabel *distanceLabel;
@@ -32,10 +32,11 @@
 @property (retain, nonatomic) IBOutlet UILabel *elevationLabel;
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (retain, nonatomic) IBOutlet UIButton *PauseButton;
+@property (retain, nonatomic) IBOutlet UIButton *loginButton;
 @property (nonatomic) NSInteger runStatus;
 - (IBAction)startTimer:(id)sender;
 - (IBAction)stopTimer:(id)sender;
 - (IBAction)resetTimer:(id)sender;
-- (IBAction)getPHP:(id)sender;
+- (IBAction)LoadLogin:(id)sender;
 
 @end

@@ -16,6 +16,7 @@
 
 @synthesize ImageArray;
 @synthesize CameraIcon;
+@synthesize loginButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,20 +48,35 @@
     UIImageView *CameraHeader = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)];
     CameraHeader.image = [UIImage imageNamed:@"xtour_header.png"];
     
-    UIButton *ProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 25, 40, 40)];
-    [ProfileButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    loginButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 25, 40, 40)];
+    [loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    [loginButton addTarget:self action:@selector(LoadLogin:) forControlEvents:UIControlEventTouchDown];
     
-    CameraIcon = [[UIButton alloc] initWithFrame:CGRectMake(25, 25, 25, 20)];
+    CameraIcon = [[UIButton alloc] initWithFrame:CGRectMake(25, 30, 38, 30)];
     [CameraIcon setImage:[UIImage imageNamed:@"camera_icon.png"] forState:UIControlStateNormal];
     [CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
     
     [self.view addSubview:CameraHeader];
-    [self.view addSubview:ProfileButton];
+    [self.view addSubview:loginButton];
     [self.view addSubview:CameraIcon];
     
-    [ProfileButton release];
+    [loginButton release];
     [CameraIcon release];
     [CameraHeader release];
+    
+    data = [XTDataSingleton singleObj];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (data.loggedIn) {
+        NSString *tempPath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
+        [loginButton setImage:img forState:UIControlStateNormal];
+    }
+    else {
+        [loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    }
 }
 
 - (void) LoadCamera:(id)sender
@@ -80,6 +96,12 @@
     }
     
     [ImagePicker release];
+}
+
+- (void) LoadLogin:(id)sender
+{
+    XTLoginViewController *login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
+    [self presentViewController:login animated:YES completion:nil];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -116,10 +138,8 @@
     UIImage *pickedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     NSData *ImageData = UIImageJPEGRepresentation(pickedImage, 0.9);
     
-    NSString *FileName=[NSString stringWithFormat:@"test1.jpeg"];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *tempPath = [documentsDirectory stringByAppendingPathComponent:FileName];
+    NSString *tempPath = [data GetDocumentFilePathForFile:@"/test1.jpeg" CheckIfExist:NO];
+    
     [ImageData writeToFile:tempPath atomically:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }

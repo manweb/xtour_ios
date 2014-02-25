@@ -50,6 +50,8 @@
 		64251D46188FBA76004F1675 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251D45188FBA76004F1675 /* Reachability.m */; };
 		64251D4C188FC1C8004F1675 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64251D4B188FC1C8004F1675 /* libxml2.dylib */; };
 		64251D50188FC3EA004F1675 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251D4F188FC3EA004F1675 /* GDataXMLNode.m */; };
+		645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */; };
+		645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */; };
 		646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646183FB18BC30AF00C50FBB /* camera_icon.png */; };
 		64746CBC189F18270070B8D9 /* XTour_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64746CBB189F18270070B8D9 /* XTour_button.png */; };
 		6480121B18A6FD80000A387E /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121A18A6FD80000A387E /* button_green.png */; };
@@ -155,6 +157,9 @@
 		64251D4B188FC1C8004F1675 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		64251D4E188FC3EA004F1675 /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
 		64251D4F188FC3EA004F1675 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
+		645FEF1918BC67CA009619E9 /* XTLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTLoginViewController.h; sourceTree = "<group>"; };
+		645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTLoginViewController.m; sourceTree = "<group>"; };
+		645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XTLoginViewController.xib; sourceTree = "<group>"; };
 		646183FB18BC30AF00C50FBB /* camera_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon.png; path = images/camera_icon.png; sourceTree = SOURCE_ROOT; };
 		64746CBB189F18270070B8D9 /* XTour_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = XTour_button.png; path = ../images/XTour_button.png; sourceTree = "<group>"; };
 		6480121A18A6FD80000A387E /* button_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_green.png; path = ../images/button_green.png; sourceTree = "<group>"; };
@@ -294,6 +299,9 @@
 				648E87F918B7D6D300BE1AB3 /* XTSettingsViewController.m */,
 				64A4A00B18B953D2007B4E54 /* XTWarnigsViewController.h */,
 				64A4A00C18B953D2007B4E54 /* XTWarnigsViewController.m */,
+				645FEF1918BC67CA009619E9 /* XTLoginViewController.h */,
+				645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */,
+				645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */,
 				640BBEBD1887BBDB0029327F /* XTDataSingleton.h */,
 				640BBEBE1887BBDB0029327F /* XTDataSingleton.m */,
 				648E87FB18B7DBE600BE1AB3 /* XTXMLParser.h */,
@@ -475,6 +483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64A7B47618B1F508004E4B2F /* skier_down_button.png in Resources */,
+				645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */,
 				640BBEBA1887B2690029327F /* GoogleMaps.bundle in Resources */,
 				64D8C0E218B55BF4001A825E /* altitude_icon.png in Resources */,
 				64D8C0DE18B5598D001A825E /* item_background_60.png in Resources */,
@@ -538,6 +547,7 @@
 				648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */,
 				64251D1E188FB45B004F1675 /* ASINetworkQueue.m in Sources */,
 				640BBE831887B1A30029327F /* XTMapViewController.m in Sources */,
+				645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */,
 				640BBE801887B1A30029327F /* XTHomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

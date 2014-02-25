@@ -85,23 +85,6 @@
                                     <action selector="resetTimer:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="Acb-bb-oY8"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PHP Request" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MuT-g4-UeC">
-                                <rect key="frame" x="184" y="319" width="114" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rq-ap-p9S">
-                                <rect key="frame" x="235" y="389" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Get">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="getPHP:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="lwa-Di-dla"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOB-FV-cCL">
                                 <rect key="frame" x="80" y="370" width="80" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -133,6 +116,9 @@
                                 <state key="normal" title="Button" image="profile_icon.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="LoadLogin:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="axH-Xp-zUY"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Azq-tO-POZ">
                                 <rect key="frame" x="20" y="90" width="60" height="60"/>
@@ -261,8 +247,8 @@
                         <outlet property="distanceRateLabel" destination="xMk-0b-RBY" id="SA7-nL-RED"/>
                         <outlet property="elevationLabel" destination="Msm-Z7-IPz" id="OLX-ud-Lpr"/>
                         <outlet property="latLabel" destination="aOB-FV-cCL" id="eW6-Yc-e20"/>
+                        <outlet property="loginButton" destination="3FF-r7-QAL" id="rz6-GW-flW"/>
                         <outlet property="longLabel" destination="0VA-mb-POY" id="dVT-CB-oh4"/>
-                        <outlet property="phpLabel" destination="MuT-g4-UeC" id="UAo-If-KTH"/>
                         <outlet property="timerLabel" destination="gVj-m7-6dl" id="XiL-hT-GRv"/>
                     </connections>
                 </viewController>
