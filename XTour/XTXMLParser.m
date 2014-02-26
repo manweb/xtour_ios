@@ -51,7 +51,7 @@
     if (!Metadata) {Metadata = [GDataXMLElement elementWithName:@"Metadata"];}
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-LL-dTHH:m:sZ"];
+    [formatter setDateFormat:@"yyyy-LL-dd HH:m:ss"];
     
     GDataXMLElement *UserID = [GDataXMLElement elementWithName:@"userid" stringValue:uid];
     GDataXMLElement *TourID = [GDataXMLElement elementWithName:@"tourid" stringValue:tid];
@@ -85,7 +85,7 @@
     NSString *elevation = [[NSString alloc] initWithFormat:@"%f", ele];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-LL-dTHH:m:sZ"];
+    [formatter setDateFormat:@"yyyy-LL-dd HH:m:ss"];
     NSString *timestamp = [formatter stringFromDate:time];
     
     GDataXMLElement *TrackPoint = [GDataXMLElement elementWithName:@"trkpt"];

@@ -18,6 +18,7 @@
 @synthesize endTime;
 @synthesize loggedIn;
 @synthesize userID;
+@synthesize tourID;
 
 +(XTDataSingleton *)singleObj{
     
@@ -53,6 +54,12 @@
     [locationData addObject:p];
 }
 
+- (void) AddDistance:(double)dist andHeight:(double)height
+{
+    totalDistance += dist;
+    totalAltitude += height;
+}
+
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2
 {
     CLLocationDegrees longitude1 = M_PI / 180.0 * p1.coordinate.longitude;
@@ -83,6 +90,20 @@
     return [self CalculateHaversineForPoint:p1 andPoint:p2];
 }
 
+- (double) CalculateAltitudeDiffForCurrentCoordinate
+{
+    if ([locationData count] < 2) {NSLog(@"Not enough coordinates to calculate haversine distance."); return 0;}
+    
+    NSUInteger nCoordinates = [locationData count];
+    CLLocation *p1 = [self GetCoordinatesAtIndex:(nCoordinates - 1)];
+    CLLocation *p2 = [self GetCoordinatesAtIndex:(nCoordinates - 2)];
+    
+    double alt1 = p1.altitude;
+    double alt2 = p2.altitude;
+    
+    return alt1 - alt2;
+}
+
 - (NSUInteger) GetNumCoordinates
 {
     return [locationData count];
@@ -103,6 +124,14 @@
 - (void) SetEndTime:(NSDate *)time
 {
     endTime = time;
+}
+
+- (void) SetTourID:(NSString *)ID
+{
+    tourID = ID;
+    
+    NSString *tourImagePath = [self GetDocumentFilePathForFile:[NSString stringWithFormat:@"/tours/%s/images", [ID UTF8String]] CheckIfExist:NO];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:tourImagePath]) {[[NSFileManager defaultManager] createDirectoryAtPath:tourImagePath withIntermediateDirectories:YES attributes:nil error:nil];}
 }
 
 - (NSMutableArray *) GetMinMaxCoordinates
@@ -140,13 +169,15 @@
     CLLocation *lastEntry = [locationData objectAtIndex:([self GetNumCoordinates] - 1)];
     NSDate *endDate = lastEntry.timestamp;
     
-    [xml SetMetadataForUserID:@"1000" TourID:@"201303211320571000" StartTime:startDate EndTime:endDate Bounds:bounds];
+    [xml SetMetadataForUserID:userID TourID:tourID StartTime:startDate EndTime:endDate Bounds:bounds];
     
     for (int i = 0; i < [locationData count]; i++) {
         [xml AddTrackpoint:[locationData objectAtIndex:i]];
     }
     
-    [xml SaveXML:@"testXML.xml"];
+    NSString *FileName = [NSString stringWithFormat:@"/tours/%@/%@_up1.xml", tourID, tourID];
+    
+    [xml SaveXML:FileName];
 }
 
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check

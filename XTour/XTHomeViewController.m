@@ -54,6 +54,9 @@ bool running = false;
         data.loggedIn = true;
         data.userID = [[NSString alloc] initWithContentsOfFile:userFile encoding:NSUTF8StringEncoding error:nil];
     }
+    
+    NSString *tourImagePath = [data GetDocumentFilePathForFile:@"/tours" CheckIfExist:NO];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:tourImagePath]) {[[NSFileManager defaultManager] createDirectoryAtPath:tourImagePath withIntermediateDirectories:YES attributes:nil error:nil];}
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -123,6 +126,17 @@ bool running = false;
     switch (runStatus) {
         case 0: {
             [data SetStartTime:[NSDate date]];
+            
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyyLLddHHmmss"];
+            
+            NSString *userID;
+            if (data.loggedIn && data.userID) {userID = data.userID;}
+            else {userID = @"0000";}
+            
+            NSString *tourID = [[NSString alloc] initWithFormat:@"%@%s", [formatter stringFromDate:[NSDate date]], [userID UTF8String]];
+            
+            [data SetTourID:tourID];
         }
         case 1: {
             
@@ -185,6 +199,17 @@ bool running = false;
     
     [data AddCoordinate:newLocation];
     double d = [data CalculateHaversineForCurrentCoordinate];
+    double altitudeDiff = [data CalculateAltitudeDiffForCurrentCoordinate];
+    if (altitudeDiff < 0) {altitudeDiff = 0;}
+    [data AddDistance:d andHeight:altitudeDiff];
+    
+    NSString *distTotal;
+    if (data.totalDistance < 0.1) {distTotal = [[NSString alloc] initWithFormat:@"%.0f m", (data.totalDistance)*1000];}
+    else {distTotal = [[NSString alloc] initWithFormat:@"%.1f km", data.totalDistance];}
+    NSString *altTotal = [[NSString alloc] initWithFormat:@"%.0f m", data.totalAltitude];
+    
+    self.distanceLabel.text = distTotal;
+    self.altitudeLabel.text = altTotal;
     
     NSLog(@"Haversine distance: %f", d);
 }

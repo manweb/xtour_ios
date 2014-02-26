@@ -38,7 +38,7 @@
     
     ImageArray = [[NSMutableArray alloc] init];
     for (int i = 0; i < 16; i++) {
-        NSString *imgName = [[NSString alloc] initWithFormat:@"/image%i.jpg", i+1];
+        NSString *imgName = [[NSString alloc] initWithFormat:@"/tours/images/image%i.jpg", i+1];
         NSString *ImagePath = [documentsDirectory stringByAppendingString:imgName];
         if ([[NSFileManager defaultManager] fileExistsAtPath:ImagePath]) {
             [ImageArray addObject:ImagePath];

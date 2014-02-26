@@ -68,6 +68,7 @@
 		64A7B47418B1F501004E4B2F /* skier_up_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7B47318B1F501004E4B2F /* skier_up_button.png */; };
 		64A7B47618B1F508004E4B2F /* skier_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7B47518B1F508004E4B2F /* skier_down_button.png */; };
 		64A7B47C18B1F98E004E4B2F /* pause_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7B47B18B1F98E004E4B2F /* pause_button.png */; };
+		64B18CF918BD73DA002A5417 /* XTFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B18CF818BD73DA002A5417 /* XTFileUploader.m */; };
 		64C09A8B18B68E16004A230E /* item_background_40_half.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C09A8A18B68E16004A230E /* item_background_40_half.png */; };
 		64C2B97918B87AD100D4FDE4 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97818B87AD000D4FDE4 /* camera@2x.png */; };
 		64C2B97B18B87ADE00D4FDE4 /* cog_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */; };
@@ -180,6 +181,8 @@
 		64A7B47318B1F501004E4B2F /* skier_up_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = skier_up_button.png; path = ../images/skier_up_button.png; sourceTree = "<group>"; };
 		64A7B47518B1F508004E4B2F /* skier_down_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = skier_down_button.png; path = ../images/skier_down_button.png; sourceTree = "<group>"; };
 		64A7B47B18B1F98E004E4B2F /* pause_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pause_button.png; path = ../images/pause_button.png; sourceTree = "<group>"; };
+		64B18CF718BD73DA002A5417 /* XTFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTFileUploader.h; sourceTree = "<group>"; };
+		64B18CF818BD73DA002A5417 /* XTFileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTFileUploader.m; sourceTree = "<group>"; };
 		64C09A8A18B68E16004A230E /* item_background_40_half.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = item_background_40_half.png; path = images/item_background_40_half.png; sourceTree = SOURCE_ROOT; };
 		64C2B97818B87AD000D4FDE4 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@2x.png"; path = "../../app-bits_free_tabbar_icons/retina/camera@2x.png"; sourceTree = "<group>"; };
 		64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cog_01@2x.png"; path = "../../app-bits_free_tabbar_icons/retina/cog_01@2x.png"; sourceTree = "<group>"; };
@@ -306,6 +309,8 @@
 				640BBEBE1887BBDB0029327F /* XTDataSingleton.m */,
 				648E87FB18B7DBE600BE1AB3 /* XTXMLParser.h */,
 				648E87FC18B7DBE600BE1AB3 /* XTXMLParser.m */,
+				64B18CF718BD73DA002A5417 /* XTFileUploader.h */,
+				64B18CF818BD73DA002A5417 /* XTFileUploader.m */,
 				640BBE841887B1A30029327F /* Images.xcassets */,
 				640BBE701887B1A30029327F /* Supporting Files */,
 				64746CBB189F18270070B8D9 /* XTour_button.png */,
@@ -537,6 +542,7 @@
 				640BBE761887B1A30029327F /* main.m in Sources */,
 				640BBEBF1887BBDB0029327F /* XTDataSingleton.m in Sources */,
 				64251D1C188FB45B004F1675 /* ASIHTTPRequest.m in Sources */,
+				64B18CF918BD73DA002A5417 /* XTFileUploader.m in Sources */,
 				648E87F718B7D54700BE1AB3 /* XTCameraViewController.m in Sources */,
 				64251D1B188FB45B004F1675 /* ASIFormDataRequest.m in Sources */,
 				64251D1A188FB45B004F1675 /* ASIDownloadCache.m in Sources */,

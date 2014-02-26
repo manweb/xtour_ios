@@ -20,17 +20,21 @@
 @property(nonatomic,retain) NSDate *endTime;
 @property(nonatomic) bool loggedIn;
 @property(nonatomic,retain) NSString *userID;
+@property(nonatomic,retain) NSString *tourID;
 
 + (XTDataSingleton *) singleObj;
 
 - (void) ClearData;
 - (void) AddCoordinate:(CLLocation *)p;
+- (void) AddDistance:(double)dist andHeight:(double)height;
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2;
 - (double) CalculateHaversineForCurrentCoordinate;
+- (double) CalculateAltitudeDiffForCurrentCoordinate;
 - (NSUInteger) GetNumCoordinates;
 - (CLLocation *) GetCoordinatesAtIndex:(NSUInteger)index;
 - (void) SetStartTime:(NSDate *)time;
 - (void) SetEndTime:(NSDate *)time;
+- (void) SetTourID:(NSString *)ID;
 - (NSMutableArray *) GetMinMaxCoordinates;
 - (void) Finalize;
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check;
