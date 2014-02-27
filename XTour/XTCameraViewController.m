@@ -14,10 +14,6 @@
 
 @implementation XTCameraViewController
 
-@synthesize ImageArray;
-@synthesize CameraIcon;
-@synthesize loginButton;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -36,32 +32,30 @@
     
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
-    ImageArray = [[NSMutableArray alloc] init];
+    _ImageArray = [[NSMutableArray alloc] init];
     for (int i = 0; i < 16; i++) {
         NSString *imgName = [[NSString alloc] initWithFormat:@"/tours/images/image%i.jpg", i+1];
         NSString *ImagePath = [documentsDirectory stringByAppendingString:imgName];
         if ([[NSFileManager defaultManager] fileExistsAtPath:ImagePath]) {
-            [ImageArray addObject:ImagePath];
+            [_ImageArray addObject:ImagePath];
         }
     }
     
     UIImageView *CameraHeader = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)];
     CameraHeader.image = [UIImage imageNamed:@"xtour_header.png"];
     
-    loginButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 25, 40, 40)];
-    [loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
-    [loginButton addTarget:self action:@selector(LoadLogin:) forControlEvents:UIControlEventTouchDown];
+    _loginButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 25, 40, 40)];
+    [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    [_loginButton addTarget:self action:@selector(LoadLogin:) forControlEvents:UIControlEventTouchDown];
     
-    CameraIcon = [[UIButton alloc] initWithFrame:CGRectMake(25, 30, 38, 30)];
-    [CameraIcon setImage:[UIImage imageNamed:@"camera_icon.png"] forState:UIControlStateNormal];
-    [CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
+    _CameraIcon = [[UIButton alloc] initWithFrame:CGRectMake(25, 30, 38, 30)];
+    [_CameraIcon setImage:[UIImage imageNamed:@"camera_icon.png"] forState:UIControlStateNormal];
+    [_CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
     
     [self.view addSubview:CameraHeader];
-    [self.view addSubview:loginButton];
-    [self.view addSubview:CameraIcon];
+    [self.view addSubview:_loginButton];
+    [self.view addSubview:_CameraIcon];
     
-    [loginButton release];
-    [CameraIcon release];
     [CameraHeader release];
     
     data = [XTDataSingleton singleObj];
@@ -72,21 +66,21 @@
     if (data.loggedIn) {
         NSString *tempPath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
         UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
-        [loginButton setImage:img forState:UIControlStateNormal];
+        [_loginButton setImage:img forState:UIControlStateNormal];
     }
     else {
-        [loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+        [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     }
 }
 
 - (void) LoadCamera:(id)sender
 {
-    ImagePicker = [[UIImagePickerController alloc] init];
-    ImagePicker.delegate = self;
+    if (!_ImagePicker) {_ImagePicker = [[UIImagePickerController alloc] init];}
+    _ImagePicker.delegate = self;
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [ImagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-        [self presentViewController:ImagePicker animated: YES completion:nil];
+        [_ImagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [self presentViewController:_ImagePicker animated: YES completion:nil];
     }
     else
     {
@@ -94,19 +88,17 @@
         [alert show];
         
     }
-    
-    [ImagePicker release];
 }
 
 - (void) LoadLogin:(id)sender
 {
-    XTLoginViewController *login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
+    if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
     [self presentViewController:login animated:YES completion:nil];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [ImageArray count];
+    return [_ImageArray count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -114,22 +106,22 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     
     UIImageView *cellImageView = (UIImageView *)[cell viewWithTag:100];
-    cellImageView.image = [[UIImage alloc] initWithContentsOfFile:[ImageArray objectAtIndex:indexPath.row]];
+    cellImageView.image = [[UIImage alloc] initWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
+    
+    [cellImageView release];
     
     return cell;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    ImagePicker = [[UIImagePickerController alloc] init];
-    ImagePicker.delegate = self;
+    if (!_ImagePicker) {_ImagePicker = [[UIImagePickerController alloc] init];}
+    _ImagePicker.delegate = self;
     
     if (buttonIndex == 1) {
-        [ImagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-        [self presentViewController:ImagePicker animated: YES completion:nil];
+        [_ImagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [self presentViewController:_ImagePicker animated: YES completion:nil];
     }
-    
-    [ImagePicker release];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -153,6 +145,16 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [_ImageArray release];
+    [_CameraIcon release];
+    [_loginButton release];
+    [_ImagePicker release];
+    [login release];
+    [super dealloc];
 }
 
 @end

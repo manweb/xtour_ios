@@ -12,11 +12,14 @@
 
 @interface XTMapViewController : UIViewController
 {
-    GMSMapView *mapView;
-    XTDataSingleton *singleTimer;
-    NSTimer *pollingTimer;
+    XTDataSingleton *data;
 }
 
-@property (strong, nonatomic) IBOutlet UILabel *timerLabel;
+@property (retain, nonatomic) IBOutlet UILabel *timerLabel;
+@property (retain, nonatomic) NSTimer *pollingTimer;
+@property (retain, nonatomic) GMSMapView *mapView;
+@property (retain, nonatomic) GMSMutablePath *path;
+@property (retain, nonatomic) GMSPolyline *polyline;
+@property (retain, nonatomic) GMSCameraUpdate *cameraUpdate;
 
 @end

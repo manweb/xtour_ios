@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64059E6218BDD3C800FDA369 /* XTSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */; };
+		64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */; };
 		640BBE6A1887B1A30029327F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE691887B1A30029327F /* Foundation.framework */; };
 		640BBE6C1887B1A30029327F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE6B1887B1A30029327F /* CoreGraphics.framework */; };
 		640BBE6E1887B1A30029327F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE6D1887B1A30029327F /* UIKit.framework */; };
@@ -94,6 +96,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		64059E5F18BDD3C800FDA369 /* XTSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSummaryViewController.h; sourceTree = "<group>"; };
+		64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSummaryViewController.m; sourceTree = "<group>"; };
+		64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XTSummaryViewController.xib; sourceTree = "<group>"; };
 		640BBE661887B1A30029327F /* XTour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XTour.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		640BBE691887B1A30029327F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		640BBE6B1887B1A30029327F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -305,6 +310,9 @@
 				645FEF1918BC67CA009619E9 /* XTLoginViewController.h */,
 				645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */,
 				645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */,
+				64059E5F18BDD3C800FDA369 /* XTSummaryViewController.h */,
+				64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */,
+				64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */,
 				640BBEBD1887BBDB0029327F /* XTDataSingleton.h */,
 				640BBEBE1887BBDB0029327F /* XTDataSingleton.m */,
 				648E87FB18B7DBE600BE1AB3 /* XTXMLParser.h */,
@@ -510,6 +518,7 @@
 				64D8C0E018B55BD1001A825E /* item_background_40.png in Resources */,
 				640BBE7D1887B1A30029327F /* Main.storyboard in Resources */,
 				64746CBC189F18270070B8D9 /* XTour_button.png in Resources */,
+				64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */,
 				64D8C0E418B55C0E001A825E /* skier_up_icon.png in Resources */,
 				64A7B47418B1F501004E4B2F /* skier_up_button.png in Resources */,
 				64E3EBA118B020E400514CFE /* profile_icon.png in Resources */,
@@ -543,6 +552,7 @@
 				640BBEBF1887BBDB0029327F /* XTDataSingleton.m in Sources */,
 				64251D1C188FB45B004F1675 /* ASIHTTPRequest.m in Sources */,
 				64B18CF918BD73DA002A5417 /* XTFileUploader.m in Sources */,
+				64059E6218BDD3C800FDA369 /* XTSummaryViewController.m in Sources */,
 				648E87F718B7D54700BE1AB3 /* XTCameraViewController.m in Sources */,
 				64251D1B188FB45B004F1675 /* ASIFormDataRequest.m in Sources */,
 				64251D1A188FB45B004F1675 /* ASIDownloadCache.m in Sources */,

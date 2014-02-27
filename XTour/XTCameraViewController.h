@@ -12,13 +12,14 @@
 
 @interface XTCameraViewController : UICollectionViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 {
-    UIImagePickerController *ImagePicker;
     XTDataSingleton *data;
+    XTLoginViewController *login;
 }
 
-@property(nonatomic,retain) NSMutableArray *ImageArray;
-@property(strong,nonatomic,retain) UIButton *CameraIcon;
-@property(strong,nonatomic,retain) UIButton *loginButton;
+@property(retain, nonatomic) NSMutableArray *ImageArray;
+@property(retain, nonatomic) UIButton *CameraIcon;
+@property(retain, nonatomic) UIButton *loginButton;
+@property(retain, nonatomic) UIImagePickerController *ImagePicker;
 
 - (void) LoadCamera:(id)sender;
 - (void) LoadLogin:(id)sender;

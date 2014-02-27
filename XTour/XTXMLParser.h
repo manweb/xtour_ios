@@ -16,9 +16,15 @@
 
 @property(nonatomic,retain) GDataXMLElement *Metadata;
 @property(nonatomic,retain) GDataXMLElement *TrackSegment;
+@property(nonatomic,retain) NSDateFormatter *formatter;
 
-- (void) TestXML;
-- (void) SetMetadataForUserID:(NSString *)uid TourID:(NSString *)tid StartTime:(NSDate *)time_start EndTime:(NSDate *)time_end Bounds:(NSArray *)bounds;
+- (void) SetMetadataUserID:(NSString *)uid;
+- (void) SetMetadataTourID:(NSString *)tid;
+- (void) SetMetadataStartDate:(NSDate *)time_start;
+- (void) SetMetadataEndDate:(NSDate *)time_end;
+- (void) SetMetadataBounds:(NSArray *)bounds;
+- (void) SetMetadataTotalDistance:(double)distance;
+- (void) SetMetadataTotalAltitude:(double)altitude;
 - (void) AddTrackpoint:(CLLocation *)coordinate;
 - (void) SaveXML:(NSString *)filename;
 

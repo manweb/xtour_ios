@@ -10,16 +10,6 @@
 
 @implementation XTDataSingleton
 
-@synthesize timer;
-@synthesize locationData;
-@synthesize totalDistance;
-@synthesize totalAltitude;
-@synthesize startTime;
-@synthesize endTime;
-@synthesize loggedIn;
-@synthesize userID;
-@synthesize tourID;
-
 +(XTDataSingleton *)singleObj{
     
     static XTDataSingleton * single=nil;
@@ -38,26 +28,52 @@
 
 - (void) ClearData
 {
-    if (!locationData) {locationData = [[NSMutableArray alloc] init];}
-    [locationData removeAllObjects];
-    totalDistance = 0.0;
-    totalAltitude = 0.0;
-    startTime = 0;
-    endTime = 0;
-    timer = 0;
-    loggedIn = false;
-    userID = nil;
+    if (!_locationData) {_locationData = [[NSMutableArray alloc] init];}
+    [_locationData removeAllObjects];
+    _totalDistance = 0.0;
+    _totalAltitude = 0.0;
+    _startTime = 0;
+    _endTime = 0;
+    _timer = 0;
+    _loggedIn = false;
+    _userID = nil;
+    _tourID = nil;
+    _upCount = 0;
+    _downCount = 0;
+}
+
+- (void) ResetDataForNewRun
+{
+    [_locationData removeAllObjects];
+    _totalDistance = 0.0;
+    _totalAltitude = 0.0;
+    _startTime = 0;
+    _endTime = 0;
+    _timer = 0;
+}
+
+- (void) ResetAll
+{
+    [_locationData removeAllObjects];
+    _totalDistance = 0.0;
+    _totalAltitude = 0.0;
+    _startTime = 0;
+    _endTime = 0;
+    _timer = 0;
+    _tourID = nil;
+    _upCount = 0;
+    _downCount = 0;
 }
 
 - (void) AddCoordinate:(CLLocation *)p
 {
-    [locationData addObject:p];
+    [_locationData addObject:p];
 }
 
 - (void) AddDistance:(double)dist andHeight:(double)height
 {
-    totalDistance += dist;
-    totalAltitude += height;
+    _totalDistance += dist;
+    _totalAltitude += height;
 }
 
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2
@@ -81,9 +97,9 @@
 
 - (double) CalculateHaversineForCurrentCoordinate
 {
-    if ([locationData count] < 2) {NSLog(@"Not enough coordinates to calculate haversine distance."); return 0;}
+    if ([_locationData count] < 2) {NSLog(@"Not enough coordinates to calculate haversine distance."); return 0;}
     
-    NSUInteger nCoordinates = [locationData count];
+    NSUInteger nCoordinates = [_locationData count];
     CLLocation *p1 = [self GetCoordinatesAtIndex:(nCoordinates - 1)];
     CLLocation *p2 = [self GetCoordinatesAtIndex:(nCoordinates - 2)];
     
@@ -92,9 +108,9 @@
 
 - (double) CalculateAltitudeDiffForCurrentCoordinate
 {
-    if ([locationData count] < 2) {NSLog(@"Not enough coordinates to calculate haversine distance."); return 0;}
+    if ([_locationData count] < 2) {NSLog(@"Not enough coordinates to calculate haversine distance."); return 0;}
     
-    NSUInteger nCoordinates = [locationData count];
+    NSUInteger nCoordinates = [_locationData count];
     CLLocation *p1 = [self GetCoordinatesAtIndex:(nCoordinates - 1)];
     CLLocation *p2 = [self GetCoordinatesAtIndex:(nCoordinates - 2)];
     
@@ -106,31 +122,28 @@
 
 - (NSUInteger) GetNumCoordinates
 {
-    return [locationData count];
+    return [_locationData count];
 }
 
 - (CLLocation *) GetCoordinatesAtIndex:(NSUInteger)index
 {
-    if (index > [locationData count] - 1) {NSLog(@"Array index exceeds boundary."); return 0;}
+    if (index > [_locationData count] - 1) {NSLog(@"Array index exceeds boundary."); return 0;}
     
-    return [locationData objectAtIndex:index];
+    return [_locationData objectAtIndex:index];
 }
 
-- (void) SetStartTime:(NSDate *)time
+- (CLLocation *) GetLastCoordinates
 {
-    startTime = time;
-}
-
-- (void) SetEndTime:(NSDate *)time
-{
-    endTime = time;
-}
-
-- (void) SetTourID:(NSString *)ID
-{
-    tourID = ID;
+    if ([_locationData count] == 0) {NSLog(@"No data in the location array."); return 0;}
     
-    NSString *tourImagePath = [self GetDocumentFilePathForFile:[NSString stringWithFormat:@"/tours/%s/images", [ID UTF8String]] CheckIfExist:NO];
+    return [_locationData objectAtIndex:([self GetNumCoordinates] - 1)];
+}
+
+- (void) CreateTourDirectory
+{
+    if (!_tourID) {return;}
+    
+    NSString *tourImagePath = [self GetDocumentFilePathForFile:[NSString stringWithFormat:@"/tours/%@/images", _tourID] CheckIfExist:NO];
     if (![[NSFileManager defaultManager] fileExistsAtPath:tourImagePath]) {[[NSFileManager defaultManager] createDirectoryAtPath:tourImagePath withIntermediateDirectories:YES attributes:nil error:nil];}
 }
 
@@ -141,8 +154,8 @@
     double maxLat = -1e6;
     double maxLon = -1e6;
     
-    for (int i = 0; i < [locationData count]; i++) {
-        CLLocation *tmp = [locationData objectAtIndex:i];
+    for (int i = 0; i < [_locationData count]; i++) {
+        CLLocation *tmp = [_locationData objectAtIndex:i];
         if (tmp.coordinate.latitude < minLat) {minLat = tmp.coordinate.latitude;}
         if (tmp.coordinate.longitude < minLon) {minLon = tmp.coordinate.longitude;}
         if (tmp.coordinate.latitude > maxLat) {maxLat = tmp.coordinate.latitude;}
@@ -158,24 +171,56 @@
     return arrayMinMax;
 }
 
-- (void) Finalize
+- (NSMutableArray *) GetCoordinateBounds
+{
+    double minLat = 1e6;
+    double minLon = 1e6;
+    double maxLat = -1e6;
+    double maxLon = -1e6;
+    
+    for (int i = 0; i < [_locationData count]; i++) {
+        CLLocation *tmp = [_locationData objectAtIndex:i];
+        if (tmp.coordinate.latitude < minLat) {minLat = tmp.coordinate.latitude;}
+        if (tmp.coordinate.longitude < minLon) {minLon = tmp.coordinate.longitude;}
+        if (tmp.coordinate.latitude > maxLat) {maxLat = tmp.coordinate.latitude;}
+        if (tmp.coordinate.longitude > maxLon) {maxLon = tmp.coordinate.longitude;}
+    }
+    
+    NSMutableArray *arrayBounds = [[NSMutableArray alloc] init];
+    [arrayBounds addObject:[[CLLocation alloc] initWithLatitude:maxLat longitude:minLon]];
+    [arrayBounds addObject:[[CLLocation alloc] initWithLatitude:minLat longitude:maxLon]];
+    
+    return arrayBounds;
+}
+
+- (void) CreateXMLForCategory:(NSString *)category
 {
     XTXMLParser *xml = [[XTXMLParser alloc] init];
     
     NSMutableArray *bounds = [self GetMinMaxCoordinates];
-    CLLocation *firstEntry = [locationData objectAtIndex:0];
+    CLLocation *firstEntry = [_locationData objectAtIndex:0];
     NSDate *startDate = firstEntry.timestamp;
     
-    CLLocation *lastEntry = [locationData objectAtIndex:([self GetNumCoordinates] - 1)];
+    CLLocation *lastEntry = [_locationData objectAtIndex:([self GetNumCoordinates] - 1)];
     NSDate *endDate = lastEntry.timestamp;
     
-    [xml SetMetadataForUserID:userID TourID:tourID StartTime:startDate EndTime:endDate Bounds:bounds];
+    [xml SetMetadataUserID:_userID];
+    [xml SetMetadataTourID:_tourID];
+    [xml SetMetadataStartDate:startDate];
+    [xml SetMetadataEndDate:endDate];
+    [xml SetMetadataBounds:bounds];
+    [xml SetMetadataTotalDistance:_totalDistance];
+    [xml SetMetadataTotalAltitude:_totalAltitude];
     
-    for (int i = 0; i < [locationData count]; i++) {
-        [xml AddTrackpoint:[locationData objectAtIndex:i]];
+    for (int i = 0; i < [_locationData count]; i++) {
+        [xml AddTrackpoint:[_locationData objectAtIndex:i]];
     }
     
-    NSString *FileName = [NSString stringWithFormat:@"/tours/%@/%@_up1.xml", tourID, tourID];
+    NSInteger count;
+    if ([category isEqualToString:@"up"]) {count = _upCount;}
+    if ([category isEqualToString:@"down"]) {count = _downCount;}
+    
+    NSString *FileName = [NSString stringWithFormat:@"/tours/%@/%@_%@%i.xml", _tourID, _tourID, category, (int)count];
     
     [xml SaveXML:FileName];
 }
@@ -191,6 +236,16 @@
     }
     
     return FilePath;
+}
+
+- (void)dealloc
+{
+    [super dealloc];
+    [_locationData release];
+    [_startTime release];
+    [_endTime release];
+    [_userID release];
+    [_tourID release];
 }
 
 @end

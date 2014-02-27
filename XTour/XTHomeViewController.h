@@ -13,16 +13,16 @@
 #include <CoreLocation/CoreLocation.h>
 #include "XTXMLParser.h"
 #import "XTLoginViewController.h"
+#import "XTSummaryViewController.h"
 
 @interface XTHomeViewController : UIViewController <CLLocationManagerDelegate>
 {
-    UILabel *timerLabel;
-    NSTimer *pollingTimer;
     XTDataSingleton *data;
-    CLLocationManager *locationManager;
+    XTLoginViewController *login;
+    XTSummaryViewController *summary;
 }
 
-@property (strong, nonatomic, retain) IBOutlet UILabel *timerLabel;
+@property (retain, nonatomic) IBOutlet UILabel *timerLabel;
 @property (retain, nonatomic) IBOutlet UILabel *longLabel;
 @property (retain, nonatomic) IBOutlet UILabel *latLabel;
 @property (retain, nonatomic) IBOutlet UILabel *distanceLabel;
@@ -30,9 +30,10 @@
 @property (retain, nonatomic) IBOutlet UILabel *altitudeLabel;
 @property (retain, nonatomic) IBOutlet UILabel *altitudeRateLabel;
 @property (retain, nonatomic) IBOutlet UILabel *elevationLabel;
-@property (nonatomic, retain) CLLocationManager *locationManager;
+@property (retain, nonatomic) CLLocationManager *locationManager;
 @property (retain, nonatomic) IBOutlet UIButton *PauseButton;
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;
+@property (retain, nonatomic) NSTimer *pollingTimer;
 @property (nonatomic) NSInteger runStatus;
 - (IBAction)startTimer:(id)sender;
 - (IBAction)stopTimer:(id)sender;

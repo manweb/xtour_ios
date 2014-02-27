@@ -21,10 +21,14 @@
 @property(nonatomic) bool loggedIn;
 @property(nonatomic,retain) NSString *userID;
 @property(nonatomic,retain) NSString *tourID;
+@property(nonatomic) NSInteger upCount;
+@property(nonatomic) NSInteger downCount;
 
 + (XTDataSingleton *) singleObj;
 
 - (void) ClearData;
+- (void) ResetDataForNewRun;
+- (void) ResetAll;
 - (void) AddCoordinate:(CLLocation *)p;
 - (void) AddDistance:(double)dist andHeight:(double)height;
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2;
@@ -32,11 +36,11 @@
 - (double) CalculateAltitudeDiffForCurrentCoordinate;
 - (NSUInteger) GetNumCoordinates;
 - (CLLocation *) GetCoordinatesAtIndex:(NSUInteger)index;
-- (void) SetStartTime:(NSDate *)time;
-- (void) SetEndTime:(NSDate *)time;
-- (void) SetTourID:(NSString *)ID;
+- (CLLocation *) GetLastCoordinates;
+- (void) CreateTourDirectory;
 - (NSMutableArray *) GetMinMaxCoordinates;
-- (void) Finalize;
+- (NSMutableArray *) GetCoordinateBounds;
+- (void) CreateXMLForCategory:(NSString *)category;
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check;
 
 @end

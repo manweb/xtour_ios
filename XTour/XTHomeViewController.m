@@ -14,15 +14,6 @@
 
 @implementation XTHomeViewController
 
-@synthesize timerLabel;
-@synthesize locationManager;
-@synthesize runStatus;
-@synthesize PauseButton;
-@synthesize loginButton;
-
-int timer = 0;
-bool running = false;
-
 - (void) pollTime
 {
     data.timer++;
@@ -31,7 +22,7 @@ bool running = false;
                                    lround(floor(tm / 3600.)) % 100,
                                    lround(floor(tm / 60.)) % 60,
                                    lround(floor(tm)) % 60];
-    self.timerLabel.text = currentTimeString;
+    _timerLabel.text = currentTimeString;
 }
 
 - (void)viewDidLoad
@@ -41,12 +32,12 @@ bool running = false;
     data.timer = 0;
     
     //Create location manager
-    self.locationManager = [[[CLLocationManager alloc] init] autorelease];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager.distanceFilter = 2;
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    _locationManager.distanceFilter = 2;
     
-    runStatus = 0;
+    _runStatus = 0;
     
     NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
     
@@ -62,7 +53,6 @@ bool running = false;
 
 - (void)viewDidUnload
 {
-    [self setTimerLabel:nil];
     [super viewDidUnload];
 }
 
@@ -75,10 +65,13 @@ bool running = false;
     [_altitudeLabel release];
     [_altitudeRateLabel release];
     [_elevationLabel release];
-    [loginButton release];
+    [_PauseButton release];
+    [_loginButton release];
+    [_pollingTimer release];
+    [_locationManager release];
+    [login release];
+    [summary release];
     [super dealloc];
-    [pollingTimer invalidate];
-    pollingTimer = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,79 +85,172 @@ bool running = false;
     if (data.loggedIn) {
         NSString *tempPath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
         UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
-        [loginButton setImage:img forState:UIControlStateNormal];
+        [_loginButton setImage:img forState:UIControlStateNormal];
     }
     else {
-        [loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+        [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     }
 }
 
 - (IBAction)stopTimer:(id)sender {
-    [pollingTimer invalidate];
-    pollingTimer = nil;
-    running = false;
+    [_pollingTimer invalidate];
+    _pollingTimer = nil;
     
-    if (runStatus == 2) {
-        [data SetEndTime:[NSDate date]];
-        [data Finalize];
-        runStatus = 0;
+    [_locationManager stopUpdatingLocation];
+    
+    if (_runStatus == 0) {
+    
     }
-    else if (runStatus == 1) {
+    else if (_runStatus == 1) {
         UIImage *img = [UIImage imageNamed:@"stop_button.png"];
-        [PauseButton setImage:img forState:UIControlStateNormal];
+        [_PauseButton setImage:img forState:UIControlStateNormal];
         [img release];
-        runStatus = 2;
+        _runStatus = 2;
+    }
+    else if (_runStatus == 2) {
+        data.endTime = [NSDate date];
+        [data CreateXMLForCategory:@"up"];
+        
+        if (!summary) {summary = [[XTSummaryViewController alloc] initWithNibName:nil bundle:nil];}
+        [self presentViewController:summary animated:YES completion:nil];
+        
+        _runStatus = 0;
+        [data ResetAll];
+    }
+    else if (_runStatus == 3) {
+        UIImage *img = [UIImage imageNamed:@"stop_button.png"];
+        [_PauseButton setImage:img forState:UIControlStateNormal];
+        [img release];
+        _runStatus = 4;
+    }
+    else if (_runStatus == 4) {
+        data.endTime = [NSDate date];
+        [data CreateXMLForCategory:@"down"];
+        
+        if (!summary) {summary = [[XTSummaryViewController alloc] initWithNibName:nil bundle:nil];}
+        [self presentViewController:summary animated:YES completion:nil];
+        
+        _runStatus = 0;
+        [data ResetAll];
     }
 }
 
 - (IBAction)startTimer:(id)sender {
-    [pollingTimer invalidate];
-    pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];
-    [locationManager startUpdatingLocation];
-    running = true;
+    if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     
-    switch (runStatus) {
-        case 0: {
-            [data SetStartTime:[NSDate date]];
-            
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"yyyyLLddHHmmss"];
-            
-            NSString *userID;
-            if (data.loggedIn && data.userID) {userID = data.userID;}
-            else {userID = @"0000";}
-            
-            NSString *tourID = [[NSString alloc] initWithFormat:@"%@%s", [formatter stringFromDate:[NSDate date]], [userID UTF8String]];
-            
-            [data SetTourID:tourID];
-        }
-        case 1: {
-            
-        }
-        case 2: {
-            UIImage *img = [UIImage imageNamed:@"pause_button.png"];
-            [PauseButton setImage:img forState:UIControlStateNormal];
-            [img release];
-        }
+    [_locationManager startUpdatingLocation];
+    
+    if (_runStatus == 0) {
+        data.startTime = [NSDate date];
+    
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyyLLddHHmmss"];
+    
+        NSString *userID;
+        if (data.loggedIn && data.userID) {userID = data.userID;}
+        else {userID = @"0000";}
+        
+        NSString *tourID = [[NSString alloc] initWithFormat:@"%@%s", [formatter stringFromDate:[NSDate date]], [userID UTF8String]];
+        
+        data.tourID = tourID;
+        [data CreateTourDirectory];
+        data.upCount++;
+        
+        [formatter release];
+        [userID release];
+        [tourID release];
+    }
+    else if (_runStatus == 1) {
+    
+    }
+    else if (_runStatus == 2) {
+        UIImage *img = [UIImage imageNamed:@"pause_button.png"];
+        [_PauseButton setImage:img forState:UIControlStateNormal];
+        [img release];
+    }
+    else if (_runStatus == 3) {
+        data.endTime = [NSDate date];
+        [data CreateXMLForCategory:@"down"];
+        data.startTime = [NSDate date];
+        
+        data.upCount++;
+        [data ResetDataForNewRun];
+    }
+    else if (_runStatus == 4) {
+        UIImage *img = [UIImage imageNamed:@"pause_button.png"];
+        [_PauseButton setImage:img forState:UIControlStateNormal];
+        [img release];
+        
+        data.endTime = [NSDate date];
+        [data CreateXMLForCategory:@"down"];
+        data.startTime = [NSDate date];
+        
+        data.upCount++;
+        [data ResetDataForNewRun];
     }
     
-    runStatus = 1;
+    _runStatus = 1;
 }
 
 - (IBAction)resetTimer:(id)sender {
-    [pollingTimer invalidate];
+    if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     
-    data.timer = 0;
-    if (running) {
-        pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];
+    [_locationManager startUpdatingLocation];
+    
+    if (_runStatus == 0) {
+        data.startTime = [NSDate date];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyyLLddHHmmss"];
+        
+        NSString *userID;
+        if (data.loggedIn && data.userID) {userID = data.userID;}
+        else {userID = @"0000";}
+        
+        NSString *tourID = [[NSString alloc] initWithFormat:@"%@%s", [formatter stringFromDate:[NSDate date]], [userID UTF8String]];
+        
+        data.tourID = tourID;
+        [data CreateTourDirectory];
+        data.downCount++;
+        
+        [formatter release];
+        [userID release];
+        [tourID release];
     }
-    else {
-        self.timerLabel.text = @"00h 00m 00s";
+    else if (_runStatus == 1) {
+        data.endTime = [NSDate date];
+        [data CreateXMLForCategory:@"up"];
+        data.startTime = [NSDate date];
+        
+        data.downCount++;
+        [data ResetDataForNewRun];
     }
+    else if (_runStatus == 2) {
+        UIImage *img = [UIImage imageNamed:@"pause_button.png"];
+        [_PauseButton setImage:img forState:UIControlStateNormal];
+        [img release];
+        
+        data.endTime = [NSDate date];
+        [data CreateXMLForCategory:@"up"];
+        data.startTime = [NSDate date];
+        
+        data.downCount++;
+        [data ResetDataForNewRun];
+    }
+    else if (_runStatus == 3) {
+    
+    }
+    else if (_runStatus == 4) {
+        UIImage *img = [UIImage imageNamed:@"pause_button.png"];
+        [_PauseButton setImage:img forState:UIControlStateNormal];
+        [img release];
+    }
+    
+    _runStatus = 3;
 }
 
 - (IBAction)LoadLogin:(id)sender {
-    XTLoginViewController *login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
+    if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
     [self presentViewController:login animated:YES completion:nil];
 }
 
@@ -193,9 +279,9 @@ bool running = false;
                            ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];
     NSString *altString = [[NSString alloc] initWithFormat:@"%.0f müm", alt];
     
-    self.longLabel.text = lonString;
-    self.latLabel.text = latString;
-    self.elevationLabel.text = altString;
+    _longLabel.text = lonString;
+    _latLabel.text = latString;
+    _elevationLabel.text = altString;
     
     [data AddCoordinate:newLocation];
     double d = [data CalculateHaversineForCurrentCoordinate];
@@ -208,10 +294,18 @@ bool running = false;
     else {distTotal = [[NSString alloc] initWithFormat:@"%.1f km", data.totalDistance];}
     NSString *altTotal = [[NSString alloc] initWithFormat:@"%.0f m", data.totalAltitude];
     
-    self.distanceLabel.text = distTotal;
-    self.altitudeLabel.text = altTotal;
+    _distanceLabel.text = distTotal;
+    _altitudeLabel.text = altTotal;
     
     NSLog(@"Haversine distance: %f", d);
+    
+    [lonEW release];
+    [latNS release];
+    [lonString release];
+    [latString release];
+    [altString release];
+    [distTotal release];
+    [altTotal release];
 }
 
 @end
