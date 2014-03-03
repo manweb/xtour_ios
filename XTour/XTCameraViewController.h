@@ -20,8 +20,11 @@
 @property(retain, nonatomic) UIButton *CameraIcon;
 @property(retain, nonatomic) UIButton *loginButton;
 @property(retain, nonatomic) UIImagePickerController *ImagePicker;
+@property(retain, nonatomic) UIImageView *selectedImageView;
+@property(nonatomic) CGRect cellRect;
 
 - (void) LoadCamera:(id)sender;
 - (void) LoadLogin:(id)sender;
+- (void) CloseImageView:(id)sender;
 
 @end

@@ -114,6 +114,9 @@
         if (!summary) {summary = [[XTSummaryViewController alloc] initWithNibName:nil bundle:nil];}
         [self presentViewController:summary animated:YES completion:nil];
         
+        [summary release];
+        summary = nil;
+        
         _runStatus = 0;
         [data ResetAll];
     }
@@ -129,6 +132,9 @@
         
         if (!summary) {summary = [[XTSummaryViewController alloc] initWithNibName:nil bundle:nil];}
         [self presentViewController:summary animated:YES completion:nil];
+        
+        [summary release];
+        summary = nil;
         
         _runStatus = 0;
         [data ResetAll];
@@ -252,6 +258,9 @@
 - (IBAction)LoadLogin:(id)sender {
     if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
     [self presentViewController:login animated:YES completion:nil];
+    
+    [login release];
+    login = nil;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {

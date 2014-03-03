@@ -88,12 +88,18 @@
         [alert show];
         
     }
+    
+    [_ImagePicker release];
+    _ImagePicker = nil;
 }
 
 - (void) LoadLogin:(id)sender
 {
     if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
     [self presentViewController:login animated:YES completion:nil];
+    
+    [login release];
+    login = nil;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -108,9 +114,36 @@
     UIImageView *cellImageView = (UIImageView *)[cell viewWithTag:100];
     cellImageView.image = [[UIImage alloc] initWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
     
-    [cellImageView release];
-    
     return cell;
+}
+
+- (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"Selected photo %i", indexPath.row);
+    
+    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:indexPath];
+    _cellRect = attributes.frame;
+    
+    if (!_selectedImageView) {_selectedImageView = [[UIImageView alloc] initWithFrame:_cellRect];}
+    UIImage *selectedImage = [[UIImage alloc] initWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
+    _selectedImageView.image = selectedImage;
+    
+    [self.view addSubview:_selectedImageView];
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_selectedImageView.frame = CGRectMake(0, 70, 320, 480);} completion:NULL];
+    
+    [_CameraIcon removeTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
+    [_CameraIcon addTarget:self action:@selector(CloseImageView:) forControlEvents:UIControlEventTouchDown];
+    [_CameraIcon setImage:[UIImage imageNamed:@"arrow_back.png"] forState:UIControlStateNormal];
+}
+
+- (void) CloseImageView:(id)sender
+{
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_selectedImageView.frame = _cellRect;} completion:^(BOOL finished) {[_selectedImageView removeFromSuperview]; [_selectedImageView release]; _selectedImageView = nil;}];
+    
+    [_CameraIcon removeTarget:self action:@selector(CloseImageView:) forControlEvents:UIControlEventTouchDown];
+    [_CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
+    [_CameraIcon setImage:[UIImage imageNamed:@"camera_icon.png"] forState:UIControlStateNormal];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -122,6 +155,9 @@
         [_ImagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
         [self presentViewController:_ImagePicker animated: YES completion:nil];
     }
+    
+    [_ImagePicker release];
+    _ImagePicker = nil;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
