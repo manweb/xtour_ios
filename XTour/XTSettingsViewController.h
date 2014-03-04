@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XTFileUploader.h"
 
 @interface XTSettingsViewController : UIViewController
+
+- (IBAction)GetFileList:(id)sender;
 
 @end

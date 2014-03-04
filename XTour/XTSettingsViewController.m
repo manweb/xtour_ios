@@ -35,4 +35,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)GetFileList:(id)sender {
+    XTFileUploader *uploader = [[XTFileUploader alloc] init];
+    
+    [uploader UploadGPXFiles];
+}
+
 @end

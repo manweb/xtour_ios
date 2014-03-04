@@ -7,7 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ASIHTTPRequest.h"
+#import "ASIFormDataRequest.h"
+#import "XTDataSingleton.h"
 
 @interface XTFileUploader : NSObject
+{
+    XTDataSingleton *data;
+}
+
+- (NSArray *) GetTourDirList;
+- (NSArray *) GetFileList;
+- (NSArray *) GetImageList;
+- (void) UploadGPXFiles;
 
 @end
