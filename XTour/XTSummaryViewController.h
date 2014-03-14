@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XTDataSingleton.h"
+#import "XTFileUploader.h"
 
 @interface XTSummaryViewController : UIViewController
+{
+    XTDataSingleton *data;
+}
 
 - (IBAction)Close;
 

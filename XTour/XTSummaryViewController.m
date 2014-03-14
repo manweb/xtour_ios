@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    data = [XTDataSingleton singleObj];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -36,6 +37,13 @@
 }
 
 - (IBAction)Close {
+    [data ResetDataForNewRun];
+    [data CreateXMLForCategory:@"sum"];
+    [data ResetAll];
+    
+    XTFileUploader *uploader = [[XTFileUploader alloc] init];
+    [uploader UploadGPXFiles];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

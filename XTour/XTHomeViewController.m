@@ -17,6 +17,7 @@
 - (void) pollTime
 {
     data.timer++;
+    data.totalTime++;
     int tm = (int)data.timer;
     NSString *currentTimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
                                    lround(floor(tm / 3600.)) % 100,
@@ -35,7 +36,7 @@
     _locationManager = [[CLLocationManager alloc] init];
     _locationManager.delegate = self;
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    _locationManager.distanceFilter = 2;
+    _locationManager.distanceFilter = 10;
     
     _runStatus = 0;
     
@@ -109,6 +110,7 @@
     }
     else if (_runStatus == 2) {
         data.endTime = [NSDate date];
+        data.TotalEndTime = [NSDate date];
         [data CreateXMLForCategory:@"up"];
         
         if (!summary) {summary = [[XTSummaryViewController alloc] initWithNibName:nil bundle:nil];}
@@ -118,7 +120,6 @@
         summary = nil;
         
         _runStatus = 0;
-        [data ResetAll];
     }
     else if (_runStatus == 3) {
         UIImage *img = [UIImage imageNamed:@"stop_button.png"];
@@ -128,6 +129,7 @@
     }
     else if (_runStatus == 4) {
         data.endTime = [NSDate date];
+        data.TotalEndTime = [NSDate date];
         [data CreateXMLForCategory:@"down"];
         
         if (!summary) {summary = [[XTSummaryViewController alloc] initWithNibName:nil bundle:nil];}
@@ -137,7 +139,6 @@
         summary = nil;
         
         _runStatus = 0;
-        [data ResetAll];
     }
 }
 
@@ -148,6 +149,7 @@
     
     if (_runStatus == 0) {
         data.startTime = [NSDate date];
+        data.TotalStartTime = [NSDate date];
     
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyyLLddHHmmss"];
@@ -177,10 +179,10 @@
     else if (_runStatus == 3) {
         data.endTime = [NSDate date];
         [data CreateXMLForCategory:@"down"];
-        data.startTime = [NSDate date];
         
         data.upCount++;
         [data ResetDataForNewRun];
+        data.startTime = [NSDate date];
     }
     else if (_runStatus == 4) {
         UIImage *img = [UIImage imageNamed:@"pause_button.png"];
@@ -189,10 +191,10 @@
         
         data.endTime = [NSDate date];
         [data CreateXMLForCategory:@"down"];
-        data.startTime = [NSDate date];
         
         data.upCount++;
         [data ResetDataForNewRun];
+        data.startTime = [NSDate date];
     }
     
     _runStatus = 1;
@@ -205,6 +207,7 @@
     
     if (_runStatus == 0) {
         data.startTime = [NSDate date];
+        data.TotalStartTime = [NSDate date];
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyyLLddHHmmss"];
@@ -226,10 +229,10 @@
     else if (_runStatus == 1) {
         data.endTime = [NSDate date];
         [data CreateXMLForCategory:@"up"];
-        data.startTime = [NSDate date];
         
         data.downCount++;
         [data ResetDataForNewRun];
+        data.startTime = [NSDate date];
     }
     else if (_runStatus == 2) {
         UIImage *img = [UIImage imageNamed:@"pause_button.png"];
@@ -238,10 +241,10 @@
         
         data.endTime = [NSDate date];
         [data CreateXMLForCategory:@"up"];
-        data.startTime = [NSDate date];
         
         data.downCount++;
         [data ResetDataForNewRun];
+        data.startTime = [NSDate date];
     }
     else if (_runStatus == 3) {
     
@@ -267,6 +270,8 @@
     CLLocationDegrees lon = newLocation.coordinate.longitude;
     CLLocationDegrees lat = newLocation.coordinate.latitude;
     CLLocationDistance alt = newLocation.altitude;
+    
+    if (data.StartLocation == 0) {data.StartLocation = newLocation;}
     
     double longitude = (double)lon;
     NSString *lonEW;

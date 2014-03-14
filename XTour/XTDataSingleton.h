@@ -14,10 +14,16 @@
 
 @property(nonatomic) NSInteger timer;
 @property(nonatomic,retain) NSMutableArray *locationData;
+@property(nonatomic,retain) CLLocation *StartLocation;
+@property(nonatomic) int totalTime;
 @property(nonatomic) double totalDistance;
 @property(nonatomic) double totalAltitude;
+@property(nonatomic) double sumDistance;
+@property(nonatomic) double sumAltitude;
 @property(nonatomic,retain) NSDate *startTime;
 @property(nonatomic,retain) NSDate *endTime;
+@property(nonatomic,retain) NSDate *TotalStartTime;
+@property(nonatomic,retain) NSDate *TotalEndTime;
 @property(nonatomic) bool loggedIn;
 @property(nonatomic,retain) NSString *userID;
 @property(nonatomic,retain) NSString *tourID;

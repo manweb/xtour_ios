@@ -77,6 +77,15 @@
     [Metadata addChild:Bounds];
 }
 
+- (void) SetMetadataTotalTime:(int)time
+{
+    if (!Metadata) {return;}
+    
+    GDataXMLElement *TotalTime = [GDataXMLElement elementWithName:@"TotalTime" stringValue:[NSString stringWithFormat:@"%i", time]];
+    
+    [Metadata addChild:TotalTime];
+}
+
 - (void) SetMetadataTotalDistance:(double)distance
 {
     if (!Metadata) {return;}

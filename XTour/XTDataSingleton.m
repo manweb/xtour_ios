@@ -30,10 +30,16 @@
 {
     if (!_locationData) {_locationData = [[NSMutableArray alloc] init];}
     [_locationData removeAllObjects];
+    _StartLocation = 0;
+    _totalTime = 0;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
+    _sumDistance = 0.0;
+    _sumAltitude = 0.0;
     _startTime = 0;
     _endTime = 0;
+    _TotalStartTime = 0;
+    _TotalEndTime = 0;
     _timer = 0;
     _loggedIn = false;
     _userID = nil;
@@ -55,9 +61,15 @@
 - (void) ResetAll
 {
     [_locationData removeAllObjects];
+    _StartLocation = 0;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
+    _sumDistance = 0.0;
+    _sumAltitude = 0.0;
+    _totalTime = 0;
     _startTime = 0;
+    _TotalStartTime = 0;
+    _TotalEndTime = 0;
     _endTime = 0;
     _timer = 0;
     _tourID = nil;
@@ -74,6 +86,8 @@
 {
     _totalDistance += dist;
     _totalAltitude += height;
+    _sumDistance += dist;
+    _sumAltitude += height;
 }
 
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2
@@ -163,6 +177,12 @@
     }
     
     NSMutableArray *arrayMinMax = [[NSMutableArray alloc] init];
+    if ([_locationData count] == 0) {
+        minLat = 0;
+        minLon = 0;
+        maxLat = 0;
+        maxLon = 0;
+    }
     [arrayMinMax addObject:[[NSString alloc] initWithFormat:@"%f",minLat]];
     [arrayMinMax addObject:[[NSString alloc] initWithFormat:@"%f",minLon]];
     [arrayMinMax addObject:[[NSString alloc] initWithFormat:@"%f",maxLat]];
@@ -198,17 +218,25 @@
     XTXMLParser *xml = [[XTXMLParser alloc] init];
     
     NSMutableArray *bounds = [self GetMinMaxCoordinates];
-    CLLocation *firstEntry = [_locationData objectAtIndex:0];
-    NSDate *startDate = firstEntry.timestamp;
+    //CLLocation *firstEntry = [_locationData objectAtIndex:0];
+    //NSDate *startDate = firstEntry.timestamp;
     
-    CLLocation *lastEntry = [_locationData objectAtIndex:([self GetNumCoordinates] - 1)];
-    NSDate *endDate = lastEntry.timestamp;
+    //CLLocation *lastEntry = [_locationData objectAtIndex:([self GetNumCoordinates] - 1)];
+    //NSDate *endDate = lastEntry.timestamp;
+    
+    if ([category isEqualToString:@"sum"]) {
+        _startTime = _TotalStartTime;
+        _endTime = _TotalEndTime;
+        _totalDistance = _sumDistance;
+        _totalAltitude = _sumAltitude;
+    }
     
     [xml SetMetadataUserID:_userID];
     [xml SetMetadataTourID:_tourID];
-    [xml SetMetadataStartDate:startDate];
-    [xml SetMetadataEndDate:endDate];
+    [xml SetMetadataStartDate:_startTime];
+    [xml SetMetadataEndDate:_endTime];
     [xml SetMetadataBounds:bounds];
+    [xml SetMetadataTotalTime:_totalTime];
     [xml SetMetadataTotalDistance:_totalDistance];
     [xml SetMetadataTotalAltitude:_totalAltitude];
     
@@ -216,11 +244,16 @@
         [xml AddTrackpoint:[_locationData objectAtIndex:i]];
     }
     
+    if ([category isEqualToString:@"sum"]) {
+        [xml AddTrackpoint:_StartLocation];
+    }
+    
     NSInteger count;
     if ([category isEqualToString:@"up"]) {count = _upCount;}
     if ([category isEqualToString:@"down"]) {count = _downCount;}
+    if ([category isEqualToString:@"sum"]) {count = 0;}
     
-    NSString *FileName = [NSString stringWithFormat:@"/tours/%@/%@_%@%i.xml", _tourID, _tourID, category, (int)count];
+    NSString *FileName = [NSString stringWithFormat:@"/tours/%@/%@_%@%i.gpx", _tourID, _tourID, category, (int)count];
     
     [xml SaveXML:FileName];
 }

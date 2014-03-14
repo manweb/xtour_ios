@@ -11,7 +11,7 @@
 #import "ASIFormDataRequest.h"
 #import "XTDataSingleton.h"
 
-@interface XTFileUploader : NSObject
+@interface XTFileUploader : NSObject <ASIHTTPRequestDelegate>
 {
     XTDataSingleton *data;
 }
@@ -20,5 +20,6 @@
 - (NSArray *) GetFileList;
 - (NSArray *) GetImageList;
 - (void) UploadGPXFiles;
+- (void) UploadFile:(NSString *) filename;
 
 @end

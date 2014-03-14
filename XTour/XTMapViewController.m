@@ -16,11 +16,14 @@
 
 - (void)pollTime {
     int tm = (int)data.timer;
-    NSString *currentTimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis      0km",
+    NSString *currentTimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
                                    lround(floor(tm / 3600.)) % 100,
                                    lround(floor(tm / 60.)) % 60,
                                    lround(floor(tm)) % 60];
+    
+    NSString *currentDistanceString = [NSString stringWithFormat:@"%.1f km", data.totalDistance];
     _timerLabel.text = currentTimeString;
+    _distanceLabel.text = currentDistanceString;
 }
 
 - (void)viewDidLoad
@@ -41,6 +44,15 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+    if (data.loggedIn) {
+        NSString *tempPath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
+        [_loginButton setImage:img forState:UIControlStateNormal];
+    }
+    else {
+        [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    }
+    
     if ([data GetNumCoordinates] < 2) {return;}
     
     NSArray *bounds = [data GetCoordinateBounds];
@@ -83,7 +95,18 @@
     [_path release];
     [_polyline release];
     [_cameraUpdate release];
+    [_distanceLabel release];
+    [_loginButton release];
+    [_distanceLabel release];
     [super dealloc];
+}
+
+- (IBAction)LoadLogin:(id)sender {
+    if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
+    [self presentViewController:login animated:YES completion:nil];
+    
+    [login release];
+    login = nil;
 }
 
 @end

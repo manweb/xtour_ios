@@ -25,10 +25,6 @@
     
     NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:NULL];
     
-    for (int i = 0; i < [directoryContent count]; i++) {
-        NSLog(@"%@", [directoryContent objectAtIndex:i]);
-    }
-    
     return directoryContent;
 }
 
@@ -49,7 +45,6 @@
             
             NSString *absFilePath = [currentFile stringByAppendingString:[currentDirectory objectAtIndex:k]];
             [fileList addObject:absFilePath];
-            NSLog(@"%@", [fileList objectAtIndex:k]);
         }
     }
     
@@ -71,7 +66,6 @@
         for (int k = 0; k < [currentDirectory count]; k++) {
             NSString *absFilePath = [currentFile stringByAppendingString:[currentDirectory objectAtIndex:k]];
             [fileList addObject:absFilePath];
-            NSLog(@"%@", [fileList objectAtIndex:k]);
         }
     }
     
@@ -82,22 +76,44 @@
 {
     NSArray *GPXFiles = [self GetFileList];
     
-    NSURL *url = [NSURL URLWithString:@"http://www.xtour.ch/fileUpload.php"];
+    for (int i = 0; i < [GPXFiles count]; i++) {
+        [self UploadFile:[GPXFiles objectAtIndex:i]];
+    }
+}
+
+- (void) UploadFile:(NSString *) filename
+{
+    NSURL *url = [NSURL URLWithString:@"http://www.xtour.ch/file_upload.php"];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
     
+    [request setDelegate:self];
+    [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:filename, @"file", nil]];
     [request setPostValue:data.userID forKey:@"userID"];
+    [request addFile:filename forKey:@"files"];
     
-    for (int i = 0; i < [GPXFiles count]; i++) {
-        [request addFile:[GPXFiles objectAtIndex:i] forKey:@"files[]"];
+    [request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSString *filename = [[request userInfo] valueForKey:@"file"];
+    NSString *response = [request responseString];
+    
+    if ([response isEqualToString:@"true"]) {
+        [[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
     }
     
-    [request startSynchronous];
-    
+    NSLog(@"Upload of file %@ was successful", filename);
+    NSLog(@"The response text is:\n%@", response);
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    NSString *filename = [[request userInfo] valueForKey:@"file"];
     NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
-        NSLog(@"%@", response);
-    }
+    
+    NSLog(@"Upload of file %@ failed", filename);
+    NSLog(@"Error:\n%@", error);
 }
 
 @end

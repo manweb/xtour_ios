@@ -23,6 +23,7 @@
 - (void) SetMetadataStartDate:(NSDate *)time_start;
 - (void) SetMetadataEndDate:(NSDate *)time_end;
 - (void) SetMetadataBounds:(NSArray *)bounds;
+- (void) SetMetadataTotalTime:(int)time;
 - (void) SetMetadataTotalDistance:(double)distance;
 - (void) SetMetadataTotalAltitude:(double)altitude;
 - (void) AddTrackpoint:(CLLocation *)coordinate;

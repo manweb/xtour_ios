@@ -7,9 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XTDataSingleton.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface XTAppDelegate : UIResponder <UIApplicationDelegate>
+@interface XTAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
+{
+    XTDataSingleton *data;
+}
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic) int TimeWhenBackgroundEntered;
+@property (nonatomic) int TimeWhenBackgroundLeft;
+@property (nonatomic,retain) CLLocationManager *LocationManager;
 
 @end
