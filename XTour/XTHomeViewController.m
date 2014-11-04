@@ -40,6 +40,9 @@
     
     _runStatus = 0;
     
+    [_locationManager requestWhenInUseAuthorization];
+    [_locationManager requestAlwaysAuthorization];
+    
     NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:userFile]) {
@@ -103,9 +106,7 @@
     
     }
     else if (_runStatus == 1) {
-        UIImage *img = [UIImage imageNamed:@"stop_button.png"];
-        [_PauseButton setImage:img forState:UIControlStateNormal];
-        [img release];
+        [_PauseButton setImage:[UIImage imageNamed:@"stop_button.png"] forState:UIControlStateNormal];
         _runStatus = 2;
     }
     else if (_runStatus == 2) {
@@ -122,9 +123,7 @@
         _runStatus = 0;
     }
     else if (_runStatus == 3) {
-        UIImage *img = [UIImage imageNamed:@"stop_button.png"];
-        [_PauseButton setImage:img forState:UIControlStateNormal];
-        [img release];
+        [_PauseButton setImage:[UIImage imageNamed:@"stop_button.png"] forState:UIControlStateNormal];
         _runStatus = 4;
     }
     else if (_runStatus == 4) {
@@ -172,9 +171,7 @@
     
     }
     else if (_runStatus == 2) {
-        UIImage *img = [UIImage imageNamed:@"pause_button.png"];
-        [_PauseButton setImage:img forState:UIControlStateNormal];
-        [img release];
+        [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
     }
     else if (_runStatus == 3) {
         data.endTime = [NSDate date];
@@ -185,9 +182,7 @@
         data.startTime = [NSDate date];
     }
     else if (_runStatus == 4) {
-        UIImage *img = [UIImage imageNamed:@"pause_button.png"];
-        [_PauseButton setImage:img forState:UIControlStateNormal];
-        [img release];
+        [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
         
         data.endTime = [NSDate date];
         [data CreateXMLForCategory:@"down"];
@@ -235,9 +230,7 @@
         data.startTime = [NSDate date];
     }
     else if (_runStatus == 2) {
-        UIImage *img = [UIImage imageNamed:@"pause_button.png"];
-        [_PauseButton setImage:img forState:UIControlStateNormal];
-        [img release];
+        [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
         
         data.endTime = [NSDate date];
         [data CreateXMLForCategory:@"up"];
@@ -250,9 +243,7 @@
     
     }
     else if (_runStatus == 4) {
-        UIImage *img = [UIImage imageNamed:@"pause_button.png"];
-        [_PauseButton setImage:img forState:UIControlStateNormal];
-        [img release];
+        [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
     }
     
     _runStatus = 3;
@@ -266,12 +257,13 @@
     login = nil;
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    CLLocationDegrees lon = newLocation.coordinate.longitude;
-    CLLocationDegrees lat = newLocation.coordinate.latitude;
-    CLLocationDistance alt = newLocation.altitude;
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation* Location = [locations lastObject];
+    CLLocationDegrees lon = Location.coordinate.longitude;
+    CLLocationDegrees lat = Location.coordinate.latitude;
+    CLLocationDistance alt = Location.altitude;
     
-    if (data.StartLocation == 0) {data.StartLocation = newLocation;}
+    if (data.StartLocation == 0) {data.StartLocation = Location;}
     
     double longitude = (double)lon;
     NSString *lonEW;
@@ -297,7 +289,7 @@
     _latLabel.text = latString;
     _elevationLabel.text = altString;
     
-    [data AddCoordinate:newLocation];
+    [data AddCoordinate:Location];
     double d = [data CalculateHaversineForCurrentCoordinate];
     double altitudeDiff = [data CalculateAltitudeDiffForCurrentCoordinate];
     if (altitudeDiff < 0) {altitudeDiff = 0;}

@@ -36,8 +36,6 @@
 		640BBEB41887B2270029327F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB31887B2270029327F /* OpenGLES.framework */; };
 		640BBEB61887B22F0029327F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB51887B22F0029327F /* QuartzCore.framework */; };
 		640BBEB81887B2370029327F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB71887B2370029327F /* SystemConfiguration.framework */; };
-		640BBEBA1887B2690029327F /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 640BBEB91887B2690029327F /* GoogleMaps.bundle */; };
-		640BBEBC1887B5480029327F /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEBB1887B5480029327F /* GoogleMaps.framework */; };
 		640BBEBF1887BBDB0029327F /* XTDataSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 640BBEBE1887BBDB0029327F /* XTDataSingleton.m */; };
 		642143E618C087A700144711 /* arrow_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 642143E518C087A700144711 /* arrow_back.png */; };
 		64251D17188FB45B004F1675 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251CC6188FB45B004F1675 /* ASIAuthenticationDialog.m */; };
@@ -60,6 +58,8 @@
 		6480121B18A6FD80000A387E /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121A18A6FD80000A387E /* button_green.png */; };
 		6480121D18A6FD8A000A387E /* button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121C18A6FD8A000A387E /* button_blue.png */; };
 		6480121F18A6FD95000A387E /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121E18A6FD95000A387E /* button_red.png */; };
+		648A872F1A072CC4009FCA6A /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 648A872E1A072CC4009FCA6A /* GoogleMaps.framework */; };
+		648A87311A072CD9009FCA6A /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 648A87301A072CD9009FCA6A /* GoogleMaps.bundle */; };
 		648E87F718B7D54700BE1AB3 /* XTCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87F618B7D54700BE1AB3 /* XTCameraViewController.m */; };
 		648E87FA18B7D6D300BE1AB3 /* XTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87F918B7D6D300BE1AB3 /* XTSettingsViewController.m */; };
 		648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87FC18B7DBE600BE1AB3 /* XTXMLParser.m */; };
@@ -133,8 +133,6 @@
 		640BBEB31887B2270029327F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		640BBEB51887B22F0029327F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		640BBEB71887B2370029327F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		640BBEB91887B2690029327F /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "../GoogleMaps-iOS-1.6.1/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
-		640BBEBB1887B5480029327F /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "../GoogleMaps-iOS-1.6.1/GoogleMaps.framework"; sourceTree = "<group>"; };
 		640BBEBD1887BBDB0029327F /* XTDataSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDataSingleton.h; sourceTree = "<group>"; };
 		640BBEBE1887BBDB0029327F /* XTDataSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDataSingleton.m; sourceTree = "<group>"; };
 		642143E518C087A700144711 /* arrow_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow_back.png; path = ../images/arrow_back.png; sourceTree = "<group>"; };
@@ -173,6 +171,8 @@
 		6480121A18A6FD80000A387E /* button_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_green.png; path = ../images/button_green.png; sourceTree = "<group>"; };
 		6480121C18A6FD8A000A387E /* button_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_blue.png; path = ../images/button_blue.png; sourceTree = "<group>"; };
 		6480121E18A6FD95000A387E /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_red.png; path = ../images/button_red.png; sourceTree = "<group>"; };
+		648A872E1A072CC4009FCA6A /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "GoogleMaps-iOS-1.8.1/GoogleMaps.framework"; sourceTree = "<group>"; };
+		648A87301A072CD9009FCA6A /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "GoogleMaps-iOS-1.8.1/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		648E87F518B7D54700BE1AB3 /* XTCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTCameraViewController.h; sourceTree = "<group>"; };
 		648E87F618B7D54700BE1AB3 /* XTCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTCameraViewController.m; sourceTree = "<group>"; };
 		648E87F818B7D6D300BE1AB3 /* XTSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSettingsViewController.h; sourceTree = "<group>"; };
@@ -209,6 +209,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				648A872F1A072CC4009FCA6A /* GoogleMaps.framework in Frameworks */,
 				64251D4C188FC1C8004F1675 /* libxml2.dylib in Frameworks */,
 				64251D43188FB91F004F1675 /* MobileCoreServices.framework in Frameworks */,
 				64251D41188FB908004F1675 /* CFNetwork.framework in Frameworks */,
@@ -224,7 +225,6 @@
 				640BBEA61887B1EE0029327F /* CoreLocation.framework in Frameworks */,
 				640BBEA41887B1DA0029327F /* CoreData.framework in Frameworks */,
 				640BBEA21887B1CF0029327F /* AVFoundation.framework in Frameworks */,
-				640BBEBC1887B5480029327F /* GoogleMaps.framework in Frameworks */,
 				640BBE6C1887B1A30029327F /* CoreGraphics.framework in Frameworks */,
 				640BBE6E1887B1A30029327F /* UIKit.framework in Frameworks */,
 				640BBE6A1887B1A30029327F /* Foundation.framework in Frameworks */,
@@ -247,7 +247,6 @@
 		640BBE5D1887B1A30029327F = {
 			isa = PBXGroup;
 			children = (
-				640BBEB91887B2690029327F /* GoogleMaps.bundle */,
 				640BBE6F1887B1A30029327F /* XTour */,
 				640BBE911887B1A30029327F /* XTourTests */,
 				640BBE681887B1A30029327F /* Frameworks */,
@@ -267,10 +266,11 @@
 		640BBE681887B1A30029327F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				648A87301A072CD9009FCA6A /* GoogleMaps.bundle */,
+				648A872E1A072CC4009FCA6A /* GoogleMaps.framework */,
 				64251D4B188FC1C8004F1675 /* libxml2.dylib */,
 				64251D42188FB91F004F1675 /* MobileCoreServices.framework */,
 				64251D40188FB908004F1675 /* CFNetwork.framework */,
-				640BBEBB1887B5480029327F /* GoogleMaps.framework */,
 				640BBEB71887B2370029327F /* SystemConfiguration.framework */,
 				640BBEB51887B22F0029327F /* QuartzCore.framework */,
 				640BBEB31887B2270029327F /* OpenGLES.framework */,
@@ -498,9 +498,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				648A87311A072CD9009FCA6A /* GoogleMaps.bundle in Resources */,
 				64A7B47618B1F508004E4B2F /* skier_down_button.png in Resources */,
 				645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */,
-				640BBEBA1887B2690029327F /* GoogleMaps.bundle in Resources */,
 				64D8C0E218B55BF4001A825E /* altitude_icon.png in Resources */,
 				64D8C0DE18B5598D001A825E /* item_background_60.png in Resources */,
 				642143E618C087A700144711 /* arrow_back.png in Resources */,
@@ -699,7 +699,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/manuel/Desktop/GoogleMaps-iOS-1.6.1",
+					"$(PROJECT_DIR)/GoogleMaps-iOS-1.8.1",
 				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/GoogleMaps-iOS-1.8.1";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XTour/XTour-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -726,7 +728,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/manuel/Desktop/GoogleMaps-iOS-1.6.1",
+					"$(PROJECT_DIR)/GoogleMaps-iOS-1.8.1",
 				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/GoogleMaps-iOS-1.8.1";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XTour/XTour-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
