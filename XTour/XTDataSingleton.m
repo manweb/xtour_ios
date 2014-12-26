@@ -36,6 +36,10 @@
     _totalAltitude = 0.0;
     _sumDistance = 0.0;
     _sumAltitude = 0.0;
+    _DistanceRate = 0.0;
+    _AltitudeRate = 0.0;
+    _rateLastDistance = 0.0;
+    _rateLastAltitude = 0.0;
     _startTime = 0;
     _endTime = 0;
     _TotalStartTime = 0;
@@ -46,6 +50,7 @@
     _tourID = nil;
     _upCount = 0;
     _downCount = 0;
+    _photoCount = 0;
 }
 
 - (void) ResetDataForNewRun
@@ -66,6 +71,10 @@
     _totalAltitude = 0.0;
     _sumDistance = 0.0;
     _sumAltitude = 0.0;
+    _DistanceRate = 0.0;
+    _AltitudeRate = 0.0;
+    _rateLastDistance = 0.0;
+    _rateLastAltitude = 0.0;
     _totalTime = 0;
     _startTime = 0;
     _TotalStartTime = 0;
@@ -75,6 +84,7 @@
     _tourID = nil;
     _upCount = 0;
     _downCount = 0;
+    _photoCount = 0;
 }
 
 - (void) AddCoordinate:(CLLocation *)p
@@ -269,6 +279,28 @@
     }
     
     return FilePath;
+}
+
+- (NSString *) GetCurrentTourDocumentPath
+{
+    if (!_tourID) {return nil;}
+    
+    NSString *path = [self GetDocumentFilePathForFile:@"/tours/" CheckIfExist:NO];
+    
+    NSString *currentTour = [[NSString alloc] initWithFormat:@"%@/%@",path,_tourID];
+    
+    return currentTour;
+}
+
+- (NSString *) GetNewPhotoName
+{
+    NSString *path = [self GetDocumentFilePathForFile:@"/tours/" CheckIfExist:NO];
+    
+    NSString *newName = [[NSString alloc] initWithFormat:@"%@/%@/images/%@_%03ld.jpg",path,_tourID,_tourID,_photoCount];
+    
+    _photoCount++;
+    
+    return newName;
 }
 
 - (void)dealloc

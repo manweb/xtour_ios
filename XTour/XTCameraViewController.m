@@ -30,16 +30,18 @@
     
     [self LoadCamera:nil];
     
+    data = [XTDataSingleton singleObj];
+    
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
     _ImageArray = [[NSMutableArray alloc] init];
-    for (int i = 0; i < 16; i++) {
+    /*for (int i = 0; i < 16; i++) {
         NSString *imgName = [[NSString alloc] initWithFormat:@"/tours/images/image%i.jpg", i+1];
         NSString *ImagePath = [documentsDirectory stringByAppendingString:imgName];
         if ([[NSFileManager defaultManager] fileExistsAtPath:ImagePath]) {
             [_ImageArray addObject:ImagePath];
         }
-    }
+    }*/
     
     UIImageView *CameraHeader = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)];
     CameraHeader.image = [UIImage imageNamed:@"xtour_header.png"];
@@ -57,8 +59,6 @@
     [self.view addSubview:_CameraIcon];
     
     [CameraHeader release];
-    
-    data = [XTDataSingleton singleObj];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,16 +71,25 @@
     else {
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     }
+    
+    [self.collectionView reloadData];
 }
 
 - (void) LoadCamera:(id)sender
 {
+    if (!data.tourID) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message: @"Photos können nur während einer Tour aufgenommen werden." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    
     if (!_ImagePicker) {_ImagePicker = [[UIImagePickerController alloc] init];}
     _ImagePicker.delegate = self;
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [_ImagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-        [self presentViewController:_ImagePicker animated: YES completion:nil];
+        [self.view.window.rootViewController presentViewController:_ImagePicker animated: YES completion:nil];
     }
     else
     {
@@ -102,6 +111,13 @@
     login = nil;
 }
 
+#pragma mark CollectionView methods
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [_ImageArray count];
@@ -112,16 +128,17 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     
     UIImageView *cellImageView = (UIImageView *)[cell viewWithTag:100];
-    cellImageView.image = [[UIImage alloc] initWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
+    NSLog(@"Setting image: %@",[_ImageArray objectAtIndex:indexPath.row]);
+    cellImageView.image = [UIImage imageWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
     
     return cell;
 }
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Selected photo %i", indexPath.row);
+    NSLog(@"Selected photo %li", indexPath.row);
     
-    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:indexPath];
+    UICollectionViewLayoutAttributes *attributes = [collectionView layoutAttributesForItemAtIndexPath:indexPath];
     _cellRect = attributes.frame;
     
     if (!_selectedImageView) {_selectedImageView = [[UIImageView alloc] initWithFrame:_cellRect];}
@@ -162,14 +179,31 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    
+    NSLog(@"New image");
     UIImage *pickedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     NSData *ImageData = UIImageJPEGRepresentation(pickedImage, 0.9);
     
-    NSString *tempPath = [data GetDocumentFilePathForFile:@"/test1.jpeg" CheckIfExist:NO];
+    NSString *newImageName = [data GetNewPhotoName];
     
-    [ImageData writeToFile:tempPath atomically:YES];
+    NSLog(@"New image saved at %@",newImageName);
+    [_ImageArray addObject:newImageName];
+    
+    [ImageData writeToFile:newImageName atomically:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) LoadImagesForCurrentTour
+{
+    NSString *tourPath = [data GetCurrentTourDocumentPath];
+    if (!tourPath) {return;}
+    
+    NSString *imagePath = [tourPath stringByAppendingString:@"/images/"];
+    
+    NSArray *imagesInDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:imagePath error:nil];
+    for (int i = 0; i < [imagesInDirectory count]; i++) {
+        NSString *img = [imagePath stringByAppendingString:[imagesInDirectory objectAtIndex:i]];
+        if ([[img pathExtension] isEqualToString:@"jpg"]) {[_ImageArray addObject:img];}
+    }
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker

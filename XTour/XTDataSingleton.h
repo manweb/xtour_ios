@@ -13,6 +13,7 @@
 @interface XTDataSingleton : NSObject
 
 @property(nonatomic) NSInteger timer;
+@property(nonatomic) NSInteger rateTimer;
 @property(nonatomic,retain) NSMutableArray *locationData;
 @property(nonatomic,retain) CLLocation *StartLocation;
 @property(nonatomic) int totalTime;
@@ -20,6 +21,10 @@
 @property(nonatomic) double totalAltitude;
 @property(nonatomic) double sumDistance;
 @property(nonatomic) double sumAltitude;
+@property(nonatomic) double DistanceRate;
+@property(nonatomic) double AltitudeRate;
+@property(nonatomic) double rateLastDistance;
+@property(nonatomic) double rateLastAltitude;
 @property(nonatomic,retain) NSDate *startTime;
 @property(nonatomic,retain) NSDate *endTime;
 @property(nonatomic,retain) NSDate *TotalStartTime;
@@ -29,6 +34,8 @@
 @property(nonatomic,retain) NSString *tourID;
 @property(nonatomic) NSInteger upCount;
 @property(nonatomic) NSInteger downCount;
+@property(nonatomic,retain) NSString *country;
+@property(nonatomic) NSInteger photoCount;
 
 + (XTDataSingleton *) singleObj;
 
@@ -48,5 +55,7 @@
 - (NSMutableArray *) GetCoordinateBounds;
 - (void) CreateXMLForCategory:(NSString *)category;
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check;
+- (NSString *) GetCurrentTourDocumentPath;
+- (NSString *) GetNewPhotoName;
 
 @end

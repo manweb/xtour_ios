@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
-@interface XTCameraViewController : UICollectionViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
+@interface XTCameraViewController : UICollectionViewController <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;

@@ -34,6 +34,9 @@
     
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
     _mapView = [GMSMapView mapWithFrame:self.view.bounds camera:camera];
+    _mapView.myLocationEnabled = YES;
+    
+    [_mapView addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context:NULL];
     
     [self.view insertSubview:_mapView atIndex:0];
     
@@ -53,7 +56,7 @@
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     }
     
-    if ([data GetNumCoordinates] < 2) {return;}
+    /*if ([data GetNumCoordinates] < 2) {return;}
     
     NSArray *bounds = [data GetCoordinateBounds];
     CLLocation *corner1 = [bounds objectAtIndex:0];
@@ -78,7 +81,31 @@
     
     [bounds release];
     [corner1 release];
-    [corner2 release];
+    [corner2 release];*/
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    CLLocation *location = [change objectForKey:NSKeyValueChangeNewKey];
+    CGFloat currentZoom = _mapView.camera.zoom;
+    GMSVisibleRegion visibleRegion = _mapView.projection.visibleRegion;
+    GMSCoordinateBounds *currentBounds = [[GMSCoordinateBounds alloc] initWithRegion:visibleRegion];
+    if ([currentBounds containsCoordinate:[location coordinate]]) {[currentBounds release]; return;}
+    
+    _mapView.camera = [GMSCameraPosition cameraWithTarget:location.coordinate zoom:currentZoom];
+    
+    if ([data GetNumCoordinates] < 2) {return;}
+    
+    [_path removeAllCoordinates];
+    for (int i = 0; i < [data GetNumCoordinates]; i++) {
+        CLLocation *location = [data GetCoordinatesAtIndex:i];
+        [_path addCoordinate:location.coordinate];
+    }
+    
+    [_polyline setPath:_path];
+    _polyline.strokeColor = [UIColor blueColor];
+    _polyline.strokeWidth = 5.f;
+    _polyline.map = _mapView;
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,6 +116,8 @@
 
 - (void)dealloc
 {
+    [_mapView removeObserver:self forKeyPath:@"myLocation" context:NULL];
+    
     [_timerLabel release];
     [_pollingTimer release];
     [_mapView release];

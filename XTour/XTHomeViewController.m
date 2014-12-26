@@ -18,6 +18,7 @@
 {
     data.timer++;
     data.totalTime++;
+    data.rateTimer++;
     int tm = (int)data.timer;
     NSString *currentTimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
                                    lround(floor(tm / 3600.)) % 100,
@@ -32,6 +33,8 @@
     data = [XTDataSingleton singleObj];
     data.timer = 0;
     
+    NSLog(@"%@",[data GetDocumentFilePathForFile:@"/" CheckIfExist:NO]);
+    
     //Create location manager
     _locationManager = [[CLLocationManager alloc] init];
     _locationManager.delegate = self;
@@ -43,6 +46,11 @@
     [_locationManager requestWhenInUseAuthorization];
     [_locationManager requestAlwaysAuthorization];
     
+    _geocoder = [[CLGeocoder alloc] init];
+    _placemark = [[CLPlacemark alloc] init];
+    
+    _oldAccuracy = 10000.0;
+    
     NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:userFile]) {
@@ -53,6 +61,15 @@
     NSString *tourImagePath = [data GetDocumentFilePathForFile:@"/tours" CheckIfExist:NO];
     if (![[NSFileManager defaultManager] fileExistsAtPath:tourImagePath]) {[[NSFileManager defaultManager] createDirectoryAtPath:tourImagePath withIntermediateDirectories:YES attributes:nil error:nil];}
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    NSString *dir = [data GetDocumentFilePathForFile:@"/tours/" CheckIfExist:NO];
+    NSArray *imagesInDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:nil];
+    NSLog(@"%@",imagesInDirectory);
+    
+    /*NSFileManager *fm = [NSFileManager defaultManager];
+    for (int i = 0; i < [imagesInDirectory count]; i++) {
+        [fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@", dir, [imagesInDirectory objectAtIndex:i]] error:nil];
+    }*/
 }
 
 - (void)viewDidUnload
@@ -75,6 +92,7 @@
     [_locationManager release];
     [login release];
     [summary release];
+    [_GPSSignal release];
     [super dealloc];
 }
 
@@ -263,7 +281,29 @@
     CLLocationDegrees lat = Location.coordinate.latitude;
     CLLocationDistance alt = Location.altitude;
     
-    if (data.StartLocation == 0) {data.StartLocation = Location;}
+    NSLog(@"Accuracy: %.1f",Location.horizontalAccuracy);
+    
+    double accuracy = Location.horizontalAccuracy;
+    if (accuracy != _oldAccuracy) {
+        if (accuracy >= 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_none.png"]]; return;}
+        if (accuracy >= 100.0 && accuracy < 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_weak.png"]]; return;}if (accuracy > 10.0 && accuracy < 100.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_medium.png"]]; return;}
+        if (accuracy <= 10.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_strong.png"]];}
+    }
+    else if (accuracy > 10.0) {return;}
+    
+    if (data.StartLocation == 0) {
+        data.StartLocation = Location;
+        
+        [_geocoder reverseGeocodeLocation:Location completionHandler:^(NSArray *placemarks, NSError *error) {
+            if (error == nil && [placemarks count] > 0) {
+                _placemark = [placemarks lastObject];
+                data.country = _placemark.country;
+            }
+            else {
+                NSLog(@"%@", error.debugDescription);
+            }
+        }];
+    }
     
     double longitude = (double)lon;
     NSString *lonEW;
@@ -302,6 +342,23 @@
     
     _distanceLabel.text = distTotal;
     _altitudeLabel.text = altTotal;
+    
+    if (data.rateTimer > 10) {
+        double diffDistance = data.totalDistance - data.rateLastDistance;
+        double diffAltitude = data.totalAltitude - data.rateLastAltitude;
+        data.DistanceRate = diffDistance/data.rateTimer * 3600.0;
+        data.AltitudeRate = diffAltitude/data.rateTimer * 3600.0;
+        
+        NSString *r_dist_str = [[NSString alloc] initWithFormat:@"%.1f km/h", data.DistanceRate];
+        NSString *r_alt_str = [[NSString alloc] initWithFormat:@"%.1f m/h", data.AltitudeRate];
+        
+        _distanceRateLabel.text = r_dist_str;
+        _altitudeRateLabel.text = r_alt_str;
+        
+        data.rateTimer = 0;
+        data.rateLastDistance = data.totalDistance;
+        data.rateLastAltitude = data.totalAltitude;
+    }
     
     NSLog(@"Haversine distance: %f", d);
     

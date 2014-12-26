@@ -31,10 +31,14 @@
 @property (retain, nonatomic) IBOutlet UILabel *altitudeRateLabel;
 @property (retain, nonatomic) IBOutlet UILabel *elevationLabel;
 @property (retain, nonatomic) CLLocationManager *locationManager;
+@property (retain, nonatomic) CLGeocoder *geocoder;
+@property (retain, nonatomic) CLPlacemark *placemark;
 @property (retain, nonatomic) IBOutlet UIButton *PauseButton;
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;
+@property (retain, nonatomic) IBOutlet UIImageView *GPSSignal;
 @property (retain, nonatomic) NSTimer *pollingTimer;
 @property (nonatomic) NSInteger runStatus;
+@property (nonatomic) double oldAccuracy;
 - (IBAction)startTimer:(id)sender;
 - (IBAction)stopTimer:(id)sender;
 - (IBAction)resetTimer:(id)sender;

@@ -47,7 +47,7 @@
     
     if (_TimeWhenBackgroundEntered != 0) {_TimeWhenBackgroundLeft = [[NSDate date] timeIntervalSince1970];}
     
-    data.timer += _TimeWhenBackgroundLeft - _TimeWhenBackgroundEntered;
+    //data.timer += _TimeWhenBackgroundLeft - _TimeWhenBackgroundEntered;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

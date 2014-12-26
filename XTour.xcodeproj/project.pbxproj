@@ -51,6 +51,23 @@
 		64251D46188FBA76004F1675 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251D45188FBA76004F1675 /* Reachability.m */; };
 		64251D4C188FC1C8004F1675 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64251D4B188FC1C8004F1675 /* libxml2.dylib */; };
 		64251D50188FC3EA004F1675 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251D4F188FC3EA004F1675 /* GDataXMLNode.m */; };
+		6431C4EE1A2EF566007A827F /* GPS_medium.png in Resources */ = {isa = PBXBuildFile; fileRef = 6431C4EA1A2EF566007A827F /* GPS_medium.png */; };
+		6431C4EF1A2EF566007A827F /* GPS_none.png in Resources */ = {isa = PBXBuildFile; fileRef = 6431C4EB1A2EF566007A827F /* GPS_none.png */; };
+		6431C4F01A2EF566007A827F /* GPS_strong.png in Resources */ = {isa = PBXBuildFile; fileRef = 6431C4EC1A2EF566007A827F /* GPS_strong.png */; };
+		6431C4F11A2EF566007A827F /* GPS_weak.png in Resources */ = {isa = PBXBuildFile; fileRef = 6431C4ED1A2EF566007A827F /* GPS_weak.png */; };
+		645181181A27BBE100D887CA /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 645181171A27BBE100D887CA /* GoogleMaps.framework */; };
+		6451811A1A27BCFC00D887CA /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 645181191A27BCFC00D887CA /* GoogleMaps.bundle */; };
+		645181291A27CC2500D887CA /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = 6451811E1A27CC2500D887CA /* Contents.json */; };
+		6451812A1A27CC2500D887CA /* Icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 6451811F1A27CC2500D887CA /* Icon-40.png */; };
+		6451812B1A27CC2500D887CA /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181201A27CC2500D887CA /* Icon-40@2x.png */; };
+		6451812C1A27CC2500D887CA /* Icon-40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181211A27CC2500D887CA /* Icon-40@3x.png */; };
+		6451812D1A27CC2500D887CA /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181221A27CC2500D887CA /* Icon-60@2x.png */; };
+		6451812E1A27CC2500D887CA /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181231A27CC2500D887CA /* Icon-60@3x.png */; };
+		6451812F1A27CC2500D887CA /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181241A27CC2500D887CA /* Icon-76.png */; };
+		645181301A27CC2500D887CA /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181251A27CC2500D887CA /* Icon-76@2x.png */; };
+		645181311A27CC2500D887CA /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181261A27CC2500D887CA /* Icon-Small.png */; };
+		645181321A27CC2500D887CA /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181271A27CC2500D887CA /* Icon-Small@2x.png */; };
+		645181331A27CC2500D887CA /* Icon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181281A27CC2500D887CA /* Icon-Small@3x.png */; };
 		645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */; };
 		645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */; };
 		646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646183FB18BC30AF00C50FBB /* camera_icon.png */; };
@@ -58,8 +75,6 @@
 		6480121B18A6FD80000A387E /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121A18A6FD80000A387E /* button_green.png */; };
 		6480121D18A6FD8A000A387E /* button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121C18A6FD8A000A387E /* button_blue.png */; };
 		6480121F18A6FD95000A387E /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121E18A6FD95000A387E /* button_red.png */; };
-		648A872F1A072CC4009FCA6A /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 648A872E1A072CC4009FCA6A /* GoogleMaps.framework */; };
-		648A87311A072CD9009FCA6A /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 648A87301A072CD9009FCA6A /* GoogleMaps.bundle */; };
 		648E87F718B7D54700BE1AB3 /* XTCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87F618B7D54700BE1AB3 /* XTCameraViewController.m */; };
 		648E87FA18B7D6D300BE1AB3 /* XTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87F918B7D6D300BE1AB3 /* XTSettingsViewController.m */; };
 		648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87FC18B7DBE600BE1AB3 /* XTXMLParser.m */; };
@@ -72,6 +87,7 @@
 		64A7B47618B1F508004E4B2F /* skier_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7B47518B1F508004E4B2F /* skier_down_button.png */; };
 		64A7B47C18B1F98E004E4B2F /* pause_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7B47B18B1F98E004E4B2F /* pause_button.png */; };
 		64B18CF918BD73DA002A5417 /* XTFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B18CF818BD73DA002A5417 /* XTFileUploader.m */; };
+		64B7FED71A2BB2ED008DE880 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64B7FED61A2BB2ED008DE880 /* AssetsLibrary.framework */; };
 		64C09A8B18B68E16004A230E /* item_background_40_half.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C09A8A18B68E16004A230E /* item_background_40_half.png */; };
 		64C2B97918B87AD100D4FDE4 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97818B87AD000D4FDE4 /* camera@2x.png */; };
 		64C2B97B18B87ADE00D4FDE4 /* cog_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */; };
@@ -163,6 +179,23 @@
 		64251D4B188FC1C8004F1675 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		64251D4E188FC3EA004F1675 /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
 		64251D4F188FC3EA004F1675 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
+		6431C4EA1A2EF566007A827F /* GPS_medium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPS_medium.png; path = images/GPS_medium.png; sourceTree = SOURCE_ROOT; };
+		6431C4EB1A2EF566007A827F /* GPS_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPS_none.png; path = images/GPS_none.png; sourceTree = SOURCE_ROOT; };
+		6431C4EC1A2EF566007A827F /* GPS_strong.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPS_strong.png; path = images/GPS_strong.png; sourceTree = SOURCE_ROOT; };
+		6431C4ED1A2EF566007A827F /* GPS_weak.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPS_weak.png; path = images/GPS_weak.png; sourceTree = SOURCE_ROOT; };
+		645181171A27BBE100D887CA /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "GoogleMaps-iOS-1.9.0/GoogleMaps.framework"; sourceTree = "<group>"; };
+		645181191A27BCFC00D887CA /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "GoogleMaps-iOS-1.9.0/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
+		6451811E1A27CC2500D887CA /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
+		6451811F1A27CC2500D887CA /* Icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-40.png"; sourceTree = "<group>"; };
+		645181201A27CC2500D887CA /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-40@2x.png"; sourceTree = "<group>"; };
+		645181211A27CC2500D887CA /* Icon-40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-40@3x.png"; sourceTree = "<group>"; };
+		645181221A27CC2500D887CA /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@2x.png"; sourceTree = "<group>"; };
+		645181231A27CC2500D887CA /* Icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@3x.png"; sourceTree = "<group>"; };
+		645181241A27CC2500D887CA /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
+		645181251A27CC2500D887CA /* Icon-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@2x.png"; sourceTree = "<group>"; };
+		645181261A27CC2500D887CA /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
+		645181271A27CC2500D887CA /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
+		645181281A27CC2500D887CA /* Icon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@3x.png"; sourceTree = "<group>"; };
 		645FEF1918BC67CA009619E9 /* XTLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTLoginViewController.h; sourceTree = "<group>"; };
 		645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTLoginViewController.m; sourceTree = "<group>"; };
 		645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XTLoginViewController.xib; sourceTree = "<group>"; };
@@ -171,8 +204,6 @@
 		6480121A18A6FD80000A387E /* button_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_green.png; path = ../images/button_green.png; sourceTree = "<group>"; };
 		6480121C18A6FD8A000A387E /* button_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_blue.png; path = ../images/button_blue.png; sourceTree = "<group>"; };
 		6480121E18A6FD95000A387E /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_red.png; path = ../images/button_red.png; sourceTree = "<group>"; };
-		648A872E1A072CC4009FCA6A /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "GoogleMaps-iOS-1.8.1/GoogleMaps.framework"; sourceTree = "<group>"; };
-		648A87301A072CD9009FCA6A /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "GoogleMaps-iOS-1.8.1/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		648E87F518B7D54700BE1AB3 /* XTCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTCameraViewController.h; sourceTree = "<group>"; };
 		648E87F618B7D54700BE1AB3 /* XTCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTCameraViewController.m; sourceTree = "<group>"; };
 		648E87F818B7D6D300BE1AB3 /* XTSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSettingsViewController.h; sourceTree = "<group>"; };
@@ -190,6 +221,7 @@
 		64A7B47B18B1F98E004E4B2F /* pause_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pause_button.png; path = ../images/pause_button.png; sourceTree = "<group>"; };
 		64B18CF718BD73DA002A5417 /* XTFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTFileUploader.h; sourceTree = "<group>"; };
 		64B18CF818BD73DA002A5417 /* XTFileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTFileUploader.m; sourceTree = "<group>"; };
+		64B7FED61A2BB2ED008DE880 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		64C09A8A18B68E16004A230E /* item_background_40_half.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = item_background_40_half.png; path = images/item_background_40_half.png; sourceTree = SOURCE_ROOT; };
 		64C2B97818B87AD000D4FDE4 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@2x.png"; path = "../images/camera@2x.png"; sourceTree = "<group>"; };
 		64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cog_01@2x.png"; path = "../images/cog_01@2x.png"; sourceTree = "<group>"; };
@@ -209,7 +241,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				648A872F1A072CC4009FCA6A /* GoogleMaps.framework in Frameworks */,
+				64B7FED71A2BB2ED008DE880 /* AssetsLibrary.framework in Frameworks */,
 				64251D4C188FC1C8004F1675 /* libxml2.dylib in Frameworks */,
 				64251D43188FB91F004F1675 /* MobileCoreServices.framework in Frameworks */,
 				64251D41188FB908004F1675 /* CFNetwork.framework in Frameworks */,
@@ -227,6 +259,7 @@
 				640BBEA21887B1CF0029327F /* AVFoundation.framework in Frameworks */,
 				640BBE6C1887B1A30029327F /* CoreGraphics.framework in Frameworks */,
 				640BBE6E1887B1A30029327F /* UIKit.framework in Frameworks */,
+				645181181A27BBE100D887CA /* GoogleMaps.framework in Frameworks */,
 				640BBE6A1887B1A30029327F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,8 +299,9 @@
 		640BBE681887B1A30029327F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				648A87301A072CD9009FCA6A /* GoogleMaps.bundle */,
-				648A872E1A072CC4009FCA6A /* GoogleMaps.framework */,
+				64B7FED61A2BB2ED008DE880 /* AssetsLibrary.framework */,
+				645181191A27BCFC00D887CA /* GoogleMaps.bundle */,
+				645181171A27BBE100D887CA /* GoogleMaps.framework */,
 				64251D4B188FC1C8004F1675 /* libxml2.dylib */,
 				64251D42188FB91F004F1675 /* MobileCoreServices.framework */,
 				64251D40188FB908004F1675 /* CFNetwork.framework */,
@@ -324,6 +358,7 @@
 				640BBE841887B1A30029327F /* Images.xcassets */,
 				640BBE701887B1A30029327F /* Supporting Files */,
 				64746CBB189F18270070B8D9 /* XTour_button.png */,
+				6451811D1A27CC2500D887CA /* AppIcon.appiconset */,
 				6480121A18A6FD80000A387E /* button_green.png */,
 				6480121C18A6FD8A000A387E /* button_blue.png */,
 				6480121E18A6FD95000A387E /* button_red.png */,
@@ -348,6 +383,10 @@
 				64A4A00918B952F0007B4E54 /* warning_icon@2x.png */,
 				646183FB18BC30AF00C50FBB /* camera_icon.png */,
 				642143E518C087A700144711 /* arrow_back.png */,
+				6431C4EA1A2EF566007A827F /* GPS_medium.png */,
+				6431C4EB1A2EF566007A827F /* GPS_none.png */,
+				6431C4EC1A2EF566007A827F /* GPS_strong.png */,
+				6431C4ED1A2EF566007A827F /* GPS_weak.png */,
 			);
 			path = XTour;
 			sourceTree = "<group>";
@@ -408,7 +447,7 @@
 				64251CD8188FB45B004F1675 /* ASIProgressDelegate.h */,
 			);
 			name = ASI;
-			path = "../../pokeb-asi-http-request-ebde72d/Classes";
+			path = ../ASI/Classes;
 			sourceTree = "<group>";
 		};
 		64251D4D188FC3EA004F1675 /* GDataXML */ = {
@@ -418,8 +457,27 @@
 				64251D4F188FC3EA004F1675 /* GDataXMLNode.m */,
 			);
 			name = GDataXML;
-			path = ../../GDataXML;
+			path = ../GDataXML;
 			sourceTree = "<group>";
+		};
+		6451811D1A27CC2500D887CA /* AppIcon.appiconset */ = {
+			isa = PBXGroup;
+			children = (
+				6451811E1A27CC2500D887CA /* Contents.json */,
+				6451811F1A27CC2500D887CA /* Icon-40.png */,
+				645181201A27CC2500D887CA /* Icon-40@2x.png */,
+				645181211A27CC2500D887CA /* Icon-40@3x.png */,
+				645181221A27CC2500D887CA /* Icon-60@2x.png */,
+				645181231A27CC2500D887CA /* Icon-60@3x.png */,
+				645181241A27CC2500D887CA /* Icon-76.png */,
+				645181251A27CC2500D887CA /* Icon-76@2x.png */,
+				645181261A27CC2500D887CA /* Icon-Small.png */,
+				645181271A27CC2500D887CA /* Icon-Small@2x.png */,
+				645181281A27CC2500D887CA /* Icon-Small@3x.png */,
+			);
+			name = AppIcon.appiconset;
+			path = images/icon/ios/AppIcon.appiconset;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -498,35 +556,50 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				648A87311A072CD9009FCA6A /* GoogleMaps.bundle in Resources */,
 				64A7B47618B1F508004E4B2F /* skier_down_button.png in Resources */,
 				645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */,
 				64D8C0E218B55BF4001A825E /* altitude_icon.png in Resources */,
+				645181291A27CC2500D887CA /* Contents.json in Resources */,
 				64D8C0DE18B5598D001A825E /* item_background_60.png in Resources */,
 				642143E618C087A700144711 /* arrow_back.png in Resources */,
 				648E87FF18B8274E00BE1AB3 /* home_icon@2x.png in Resources */,
+				6451811A1A27BCFC00D887CA /* GoogleMaps.bundle in Resources */,
+				645181311A27CC2500D887CA /* Icon-Small.png in Resources */,
 				640BBE851887B1A30029327F /* Images.xcassets in Resources */,
 				64C09A8B18B68E16004A230E /* item_background_40_half.png in Resources */,
 				648E880318B8402A00BE1AB3 /* stop_button.png in Resources */,
+				645181331A27CC2500D887CA /* Icon-Small@3x.png in Resources */,
 				64D8C0DC18B556C2001A825E /* clock_icon.png in Resources */,
+				645181321A27CC2500D887CA /* Icon-Small@2x.png in Resources */,
 				648E880118B82BFF00BE1AB3 /* map_icon@2x.png in Resources */,
 				64A7B47C18B1F98E004E4B2F /* pause_button.png in Resources */,
 				64C2B97918B87AD100D4FDE4 /* camera@2x.png in Resources */,
 				640BBE741887B1A30029327F /* InfoPlist.strings in Resources */,
+				645181301A27CC2500D887CA /* Icon-76@2x.png in Resources */,
+				6431C4EF1A2EF566007A827F /* GPS_none.png in Resources */,
 				64C2B97B18B87ADE00D4FDE4 /* cog_01@2x.png in Resources */,
+				6451812B1A27CC2500D887CA /* Icon-40@2x.png in Resources */,
 				64C2B97D18B87AF300D4FDE4 /* globe@2x.png in Resources */,
+				6451812C1A27CC2500D887CA /* Icon-40@3x.png in Resources */,
+				6451812E1A27CC2500D887CA /* Icon-60@3x.png in Resources */,
 				646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */,
 				6480121D18A6FD8A000A387E /* button_blue.png in Resources */,
+				6451812A1A27CC2500D887CA /* Icon-40.png in Resources */,
+				6451812D1A27CC2500D887CA /* Icon-60@2x.png in Resources */,
 				6480121B18A6FD80000A387E /* button_green.png in Resources */,
+				6431C4EE1A2EF566007A827F /* GPS_medium.png in Resources */,
 				64E3EB9F18B0200500514CFE /* xtour_header.png in Resources */,
+				6431C4F01A2EF566007A827F /* GPS_strong.png in Resources */,
 				64D8C0E018B55BD1001A825E /* item_background_40.png in Resources */,
 				640BBE7D1887B1A30029327F /* Main.storyboard in Resources */,
 				64746CBC189F18270070B8D9 /* XTour_button.png in Resources */,
 				64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */,
+				6431C4F11A2EF566007A827F /* GPS_weak.png in Resources */,
 				64D8C0E418B55C0E001A825E /* skier_up_icon.png in Resources */,
 				64A7B47418B1F501004E4B2F /* skier_up_button.png in Resources */,
 				64E3EBA118B020E400514CFE /* profile_icon.png in Resources */,
 				64A4A00A18B952F0007B4E54 /* warning_icon@2x.png in Resources */,
+				6451812F1A27CC2500D887CA /* Icon-76.png in Resources */,
 				64D8C0E618B55C50001A825E /* compass_icon.png in Resources */,
 				6480121F18A6FD95000A387E /* button_red.png in Resources */,
 			);
@@ -698,10 +771,12 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/manuel/Desktop/GoogleMaps-iOS-1.6.1",
-					"$(PROJECT_DIR)/GoogleMaps-iOS-1.8.1",
+					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/GoogleMaps-iOS-1.8.1";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XTour/XTour-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -715,6 +790,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -727,10 +803,12 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/manuel/Desktop/GoogleMaps-iOS-1.6.1",
-					"$(PROJECT_DIR)/GoogleMaps-iOS-1.8.1",
+					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/GoogleMaps-iOS-1.8.1";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XTour/XTour-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -744,6 +822,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
