@@ -129,7 +129,9 @@
     
     UIImageView *cellImageView = (UIImageView *)[cell viewWithTag:100];
     NSLog(@"Setting image: %@",[_ImageArray objectAtIndex:indexPath.row]);
-    cellImageView.image = [UIImage imageWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
+    UIImage *currentImage = [UIImage imageWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
+    UIImage *subImg = [self GetSquareSubImage:currentImage];
+    cellImageView.image = subImg;
     
     return cell;
 }
@@ -143,20 +145,81 @@
     
     if (!_selectedImageView) {_selectedImageView = [[UIImageView alloc] initWithFrame:_cellRect];}
     UIImage *selectedImage = [[UIImage alloc] initWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
+    
     _selectedImageView.image = selectedImage;
     
+    //[self.view addSubview:_selectedImageView];
+    
+    CGFloat imgWidth = selectedImage.size.width;
+    CGFloat imgHeight = selectedImage.size.height;
+    
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenBound.size.width;
+    CGFloat screenHeight = screenBound.size.height;
+    
+    UITabBarController *tabBarController = [super tabBarController];
+    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+    CGFloat fullWidth = screenWidth;
+    CGFloat fullHeight = imgHeight/imgWidth*fullWidth;
+    CGFloat yOffset = (screenHeight - 70 - tabBarHeight)/2. - fullHeight/2. + 70;
+    CGFloat xOffset = 0;
+    
+    UIColor *bgColorSolid = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.9];
+    UIColor *bgColorOpaque = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0];
+    
+    if (!_background) {
+        CGRect bgRect = CGRectMake(0, 70, screenWidth, screenHeight - 70);
+        _background = [[UIImageView alloc] initWithFrame:bgRect];
+        _background.backgroundColor = bgColorOpaque;
+    }
+    
+    [self.view addSubview:_background];
     [self.view addSubview:_selectedImageView];
     
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_selectedImageView.frame = CGRectMake(0, 70, 320, 480);} completion:NULL];
+    [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_selectedImageView.frame = CGRectMake(xOffset, yOffset, fullWidth, fullHeight); _background.backgroundColor = bgColorSolid;} completion:NULL];
     
     [_CameraIcon removeTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
     [_CameraIcon addTarget:self action:@selector(CloseImageView:) forControlEvents:UIControlEventTouchDown];
     [_CameraIcon setImage:[UIImage imageNamed:@"arrow_back.png"] forState:UIControlStateNormal];
 }
 
+- (UIImage *) GetSquareSubImage:(UIImage *)image
+{
+    CGFloat imgWidth = image.size.width;
+    CGFloat imgHeight = image.size.height;
+    CGFloat subImgWidth;
+    CGFloat subImgHeight;
+    CGFloat yOffset;
+    CGFloat xOffset;
+    
+    if (imgHeight > imgWidth) {
+        subImgHeight = imgWidth;
+        subImgWidth = imgWidth;
+        
+        yOffset = floor(imgHeight/2. - imgWidth/2.);
+        xOffset = 0;
+    }
+    else {
+        subImgHeight = imgHeight;
+        subImgWidth = imgHeight;
+        
+        yOffset = 0;
+        xOffset = floor(imgWidth/2. - imgHeight/2.);
+    }
+    
+    CGRect subImgRect = CGRectMake(xOffset, yOffset, subImgWidth, subImgHeight);
+    
+    CGImageRef newImage = CGImageCreateWithImageInRect(image.CGImage, subImgRect);
+    UIImage *subImg = [UIImage imageWithCGImage:newImage scale:1 orientation:image.imageOrientation];
+    
+    return subImg;
+}
+
 - (void) CloseImageView:(id)sender
 {
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_selectedImageView.frame = _cellRect;} completion:^(BOOL finished) {[_selectedImageView removeFromSuperview]; [_selectedImageView release]; _selectedImageView = nil;}];
+    UIColor *bgColorOpaque = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0];
+    
+    [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_selectedImageView.frame = _cellRect; _background.backgroundColor = bgColorOpaque;} completion:^(BOOL finished) {[_selectedImageView removeFromSuperview]; [_selectedImageView release]; _selectedImageView = nil; [_background removeFromSuperview]; [_background release]; _background = nil;}];
     
     [_CameraIcon removeTarget:self action:@selector(CloseImageView:) forControlEvents:UIControlEventTouchDown];
     [_CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
@@ -203,7 +266,7 @@
     NSString *newImageNameOriginal = [newImageName stringByReplacingOccurrencesOfString:@".jpg" withString:@"_original.jpg"];
     
     NSLog(@"New image saved at %@",newImageName);
-    [_ImageArray addObject:newImageName];
+    [_ImageArray addObject:newImageNameOriginal];
     
     [ImageData writeToFile:newImageNameOriginal atomically:YES];
     [imageResizedData writeToFile:newImageName atomically:YES];

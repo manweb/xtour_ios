@@ -58,7 +58,7 @@
         data.userID = [[NSString alloc] initWithContentsOfFile:userFile encoding:NSUTF8StringEncoding error:nil];
     }
     
-    [data CleanUpTourDirectory];
+    //[data CleanUpTourDirectory];
     
     [data CreateTourDirectory];
     NSArray *tourFiles = [data GetAllGPXFiles];

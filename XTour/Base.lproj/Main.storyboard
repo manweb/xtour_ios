@@ -411,7 +411,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="GPS_none.png" width="500" height="500"/>
+        <image name="GPS_none.png" width="550" height="550"/>
         <image name="altitude_icon.png" width="1000" height="1000"/>
         <image name="camera.png" width="26" height="26"/>
         <image name="clock_icon.png" width="1000" height="1000"/>
