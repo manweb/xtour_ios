@@ -43,6 +43,7 @@
     
     XTFileUploader *uploader = [[XTFileUploader alloc] init];
     [uploader UploadGPXFiles];
+    [uploader UploadImages];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

@@ -20,6 +20,7 @@
 - (NSArray *) GetFileList;
 - (NSArray *) GetImageList;
 - (void) UploadGPXFiles;
+- (void) UploadImages;
 - (void) UploadFile:(NSString *) filename;
 
 @end

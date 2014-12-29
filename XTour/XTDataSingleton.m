@@ -34,8 +34,10 @@
     _totalTime = 0;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
+    _totalDescent = 0.0;
     _sumDistance = 0.0;
     _sumAltitude = 0.0;
+    _sumDescent = 0.0;
     _DistanceRate = 0.0;
     _AltitudeRate = 0.0;
     _rateLastDistance = 0.0;
@@ -58,6 +60,7 @@
     [_locationData removeAllObjects];
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
+    _totalDescent = 0.0;
     _startTime = 0;
     _endTime = 0;
     _timer = 0;
@@ -69,8 +72,10 @@
     _StartLocation = 0;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
+    _totalDescent = 0.0;
     _sumDistance = 0.0;
     _sumAltitude = 0.0;
+    _sumDescent = 0.0;
     _DistanceRate = 0.0;
     _AltitudeRate = 0.0;
     _rateLastDistance = 0.0;
@@ -95,9 +100,16 @@
 - (void) AddDistance:(double)dist andHeight:(double)height
 {
     _totalDistance += dist;
-    _totalAltitude += height;
     _sumDistance += dist;
-    _sumAltitude += height;
+    
+    if (height > 0) {
+        _totalAltitude += height;
+        _sumAltitude += height;
+    }
+    else {
+        _totalDescent += fabs(height);
+        _sumDescent += fabs(height);
+    }
 }
 
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2
@@ -239,6 +251,8 @@
         _endTime = _TotalEndTime;
         _totalDistance = _sumDistance;
         _totalAltitude = _sumAltitude;
+        _totalDescent = _sumDescent;
+        _timer = _totalTime;
     }
     
     [xml SetMetadataUserID:_userID];
@@ -246,9 +260,10 @@
     [xml SetMetadataStartDate:_startTime];
     [xml SetMetadataEndDate:_endTime];
     [xml SetMetadataBounds:bounds];
-    [xml SetMetadataTotalTime:_totalTime];
+    [xml SetMetadataTotalTime:(int)_timer];
     [xml SetMetadataTotalDistance:_totalDistance];
     [xml SetMetadataTotalAltitude:_totalAltitude];
+    [xml SetMetadataTotalDescent: _totalDescent];
     
     for (int i = 0; i < [_locationData count]; i++) {
         [xml AddTrackpoint:[_locationData objectAtIndex:i]];

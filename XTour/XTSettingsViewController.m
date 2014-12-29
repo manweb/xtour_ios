@@ -39,6 +39,7 @@
     XTFileUploader *uploader = [[XTFileUploader alloc] init];
     
     [uploader UploadGPXFiles];
+    [uploader UploadImages];
 }
 
 @end

@@ -26,6 +26,7 @@
 - (void) SetMetadataTotalTime:(int)time;
 - (void) SetMetadataTotalDistance:(double)distance;
 - (void) SetMetadataTotalAltitude:(double)altitude;
+- (void) SetMetadataTotalDescent:(double)descent;
 - (void) AddTrackpoint:(CLLocation *)coordinate;
 - (void) SaveXML:(NSString *)filename;
 

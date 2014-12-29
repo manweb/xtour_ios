@@ -19,8 +19,10 @@
 @property(nonatomic) int totalTime;
 @property(nonatomic) double totalDistance;
 @property(nonatomic) double totalAltitude;
+@property(nonatomic) double totalDescent;
 @property(nonatomic) double sumDistance;
 @property(nonatomic) double sumAltitude;
+@property(nonatomic) double sumDescent;
 @property(nonatomic) double DistanceRate;
 @property(nonatomic) double AltitudeRate;
 @property(nonatomic) double rateLastDistance;

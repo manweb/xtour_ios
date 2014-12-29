@@ -104,6 +104,15 @@
     [Metadata addChild:TotalAltitude];
 }
 
+- (void) SetMetadataTotalDescent:(double)descent
+{
+    if (!Metadata) {return;}
+    
+    GDataXMLElement *TotalDescent = [GDataXMLElement elementWithName:@"TotalDescent" stringValue:[NSString stringWithFormat:@"%.0f", descent]];
+    
+    [Metadata addChild:TotalDescent];
+}
+
 - (void) AddTrackpoint:(CLLocation *)coordinate
 {
     if (!TrackSegment) {return;}

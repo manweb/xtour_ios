@@ -183,12 +183,30 @@
     UIImage *pickedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     NSData *ImageData = UIImageJPEGRepresentation(pickedImage, 0.9);
     
+    float imgHeight = pickedImage.size.height;
+    float imgWidth = pickedImage.size.width;
+    
+    float newImgHeight = 0.;
+    float newImgWidth = 0.;
+    if (imgHeight > imgWidth) {newImgHeight = 400.; newImgWidth = ceilf(imgWidth/imgHeight*400.);}
+    else {newImgWidth = 400.; newImgHeight = ceilf(imgHeight/imgWidth*400.);}
+    
+    CGRect rect = CGRectMake(0,0,newImgWidth,newImgHeight);
+    UIGraphicsBeginImageContext(rect.size);
+    [pickedImage drawInRect:rect];
+    UIImage *newImg= UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    NSData *imageResizedData = UIImageJPEGRepresentation(newImg, 0.9);
+    
     NSString *newImageName = [data GetNewPhotoName];
+    NSString *newImageNameOriginal = [newImageName stringByReplacingOccurrencesOfString:@".jpg" withString:@"_original.jpg"];
     
     NSLog(@"New image saved at %@",newImageName);
     [_ImageArray addObject:newImageName];
     
-    [ImageData writeToFile:newImageName atomically:YES];
+    [ImageData writeToFile:newImageNameOriginal atomically:YES];
+    [imageResizedData writeToFile:newImageName atomically:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

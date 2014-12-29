@@ -81,6 +81,15 @@
     }
 }
 
+- (void) UploadImages
+{
+    NSArray *ImageFiles = [self GetImageList];
+    
+    for (int i = 0; i < [ImageFiles count]; i++) {
+        [self UploadFile:[ImageFiles objectAtIndex:i]];
+    }
+}
+
 - (void) UploadFile:(NSString *) filename
 {
     NSURL *url = [NSURL URLWithString:@"http://www.xtour.ch/file_upload.php"];

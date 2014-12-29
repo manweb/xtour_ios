@@ -66,10 +66,13 @@
     NSArray *imagesInDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:nil];
     NSLog(@"%@",imagesInDirectory);
     
-    /*NSFileManager *fm = [NSFileManager defaultManager];
+    NSFileManager *fm = [NSFileManager defaultManager];
     for (int i = 0; i < [imagesInDirectory count]; i++) {
-        [fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@", dir, [imagesInDirectory objectAtIndex:i]] error:nil];
-    }*/
+        NSString *path = [NSString stringWithFormat:@"%@/%@", dir, [imagesInDirectory objectAtIndex:i]];
+        NSLog(@"Contents of directory: %@/%@", dir, [imagesInDirectory objectAtIndex:i]);
+        NSLog(@"%@",[fm contentsOfDirectoryAtPath:path error:nil]);
+        //[fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@", dir, [imagesInDirectory objectAtIndex:i]] error:nil];
+    }
 }
 
 - (void)viewDidUnload
@@ -332,7 +335,6 @@
     [data AddCoordinate:Location];
     double d = [data CalculateHaversineForCurrentCoordinate];
     double altitudeDiff = [data CalculateAltitudeDiffForCurrentCoordinate];
-    if (altitudeDiff < 0) {altitudeDiff = 0;}
     [data AddDistance:d andHeight:altitudeDiff];
     
     NSString *distTotal;
