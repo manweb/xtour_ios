@@ -57,7 +57,13 @@
 - (NSMutableArray *) GetCoordinateBounds;
 - (void) CreateXMLForCategory:(NSString *)category;
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check;
-- (NSString *) GetCurrentTourDocumentPath;
+- (NSString *) GetTourDocumentPath;
+- (NSString *) GetTourImagePath;
 - (NSString *) GetNewPhotoName;
+- (NSMutableArray *) GetAllGPXFiles;
+- (NSMutableArray *) GetGPXFilesForCurrentTour;
+- (NSMutableArray *) GetAllImages;
+- (NSMutableArray *) GetImagesForCurrentTour;
+- (void) CleanUpTourDirectory;
 
 @end

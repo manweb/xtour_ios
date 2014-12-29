@@ -74,7 +74,7 @@
 
 - (void) UploadGPXFiles
 {
-    NSArray *GPXFiles = [self GetFileList];
+    NSMutableArray *GPXFiles = [data GetAllGPXFiles];
     
     for (int i = 0; i < [GPXFiles count]; i++) {
         [self UploadFile:[GPXFiles objectAtIndex:i]];
@@ -83,9 +83,10 @@
 
 - (void) UploadImages
 {
-    NSArray *ImageFiles = [self GetImageList];
+    NSMutableArray *ImageFiles = [data GetAllImages];
     
     for (int i = 0; i < [ImageFiles count]; i++) {
+        if ([[ImageFiles objectAtIndex:i] containsString:@"_original"]) {continue;}
         [self UploadFile:[ImageFiles objectAtIndex:i]];
     }
 }

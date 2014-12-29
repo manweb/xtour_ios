@@ -177,9 +177,7 @@
 
 - (void) CreateTourDirectory
 {
-    if (!_tourID) {return;}
-    
-    NSString *tourImagePath = [self GetDocumentFilePathForFile:[NSString stringWithFormat:@"/tours/%@/images", _tourID] CheckIfExist:NO];
+    NSString *tourImagePath = [self GetDocumentFilePathForFile:@"/tours/images" CheckIfExist:NO];
     if (![[NSFileManager defaultManager] fileExistsAtPath:tourImagePath]) {[[NSFileManager defaultManager] createDirectoryAtPath:tourImagePath withIntermediateDirectories:YES attributes:nil error:nil];}
 }
 
@@ -278,7 +276,7 @@
     if ([category isEqualToString:@"down"]) {count = _downCount;}
     if ([category isEqualToString:@"sum"]) {count = 0;}
     
-    NSString *FileName = [NSString stringWithFormat:@"/tours/%@/%@_%@%i.gpx", _tourID, _tourID, category, (int)count];
+    NSString *FileName = [NSString stringWithFormat:@"/tours/%@_%@%i.gpx", _tourID, category, (int)count];
     
     [xml SaveXML:FileName];
 }
@@ -287,7 +285,7 @@
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *FilePath = [documentsDirectory stringByAppendingPathComponent:filename];
+    NSString *FilePath = [documentsDirectory stringByAppendingString:filename];
     
     if (check) {
         if (![[NSFileManager defaultManager] fileExistsAtPath:FilePath]) {return nil;}
@@ -296,26 +294,97 @@
     return FilePath;
 }
 
-- (NSString *) GetCurrentTourDocumentPath
+- (NSString *) GetTourDocumentPath
 {
-    if (!_tourID) {return nil;}
-    
-    NSString *path = [self GetDocumentFilePathForFile:@"/tours/" CheckIfExist:NO];
-    
-    NSString *currentTour = [[NSString alloc] initWithFormat:@"%@/%@",path,_tourID];
+    NSString *currentTour = [self GetDocumentFilePathForFile:@"/tours" CheckIfExist:NO];
     
     return currentTour;
 }
 
+- (NSString *) GetTourImagePath
+{
+    NSString *imagePath = [self GetDocumentFilePathForFile:@"/tours/images" CheckIfExist:NO];
+    
+    return imagePath;
+}
+
 - (NSString *) GetNewPhotoName
 {
-    NSString *path = [self GetDocumentFilePathForFile:@"/tours/" CheckIfExist:NO];
+    NSString *path = [self GetDocumentFilePathForFile:@"/tours" CheckIfExist:NO];
     
-    NSString *newName = [[NSString alloc] initWithFormat:@"%@/%@/images/%@_%03ld.jpg",path,_tourID,_tourID,_photoCount];
+    NSString *newName = [[NSString alloc] initWithFormat:@"%@/images/%@_%03ld.jpg",path,_tourID,_photoCount];
     
     _photoCount++;
     
     return newName;
+}
+
+- (NSMutableArray *) GetAllGPXFiles
+{
+    NSString *tourDirectory = [self GetTourDocumentPath];
+    NSArray *content = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:tourDirectory error:nil];
+    
+    NSMutableArray *GPXFiles = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [content count]; i++) {
+        NSString *file = [NSString stringWithFormat:@"%@/%@", tourDirectory, [content objectAtIndex:i]];
+        if ([[file pathExtension] isEqualToString:@"gpx"]) {[GPXFiles addObject:file];}
+    }
+    
+    return GPXFiles;
+}
+
+- (NSMutableArray *) GetGPXFilesForCurrentTour
+{
+    if (!_tourID) {return nil;}
+    
+    NSMutableArray *GPXFiles = [self GetAllGPXFiles];
+    NSMutableArray *GPXFilesCurrent = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [GPXFiles count]; i++) {
+        if ([[GPXFiles objectAtIndex:i] containsString:_tourID]) {[GPXFilesCurrent addObject:[GPXFiles objectAtIndex:i]];}
+    }
+    
+    return GPXFilesCurrent;
+}
+
+- (NSMutableArray *) GetAllImages
+{
+    NSString *imageDirectory = [self GetTourImagePath];
+    NSArray *content = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:imageDirectory error:nil];
+    
+    NSMutableArray *imageFiles = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [content count]; i++) {
+        NSString *file = [NSString stringWithFormat:@"%@/%@", imageDirectory, [content objectAtIndex:i]];
+        if ([[file pathExtension] isEqualToString:@"jpg"]) {[imageFiles addObject:file];}
+    }
+    
+    return imageFiles;
+}
+
+- (NSMutableArray *) GetImagesForCurrentTour
+{
+    if (!_tourID) {return nil;}
+    
+    NSMutableArray *imageFiles = [self GetAllImages];
+    NSMutableArray *imageFilesCurrent = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [imageFiles count]; i++) {
+        if ([[imageFiles objectAtIndex:i] containsString:_tourID]) {[imageFilesCurrent addObject:[imageFiles objectAtIndex:i]];}
+    }
+    
+    return imageFilesCurrent;
+}
+
+- (void) CleanUpTourDirectory
+{
+    NSMutableArray *GPXFiles = [self GetAllGPXFiles];
+    NSMutableArray *imageFiles = [self GetAllImages];
+    
+    for (int i = 0; i < [GPXFiles count]; i++) {
+        [[NSFileManager defaultManager] removeItemAtPath:[GPXFiles objectAtIndex:i] error:nil];
+    }
+    
+    for (int i = 0; i < [imageFiles count]; i++) {
+        [[NSFileManager defaultManager] removeItemAtPath:[imageFiles objectAtIndex:i] error:nil];
+    }
 }
 
 - (void)dealloc

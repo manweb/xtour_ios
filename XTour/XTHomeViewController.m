@@ -58,21 +58,20 @@
         data.userID = [[NSString alloc] initWithContentsOfFile:userFile encoding:NSUTF8StringEncoding error:nil];
     }
     
-    NSString *tourImagePath = [data GetDocumentFilePathForFile:@"/tours" CheckIfExist:NO];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:tourImagePath]) {[[NSFileManager defaultManager] createDirectoryAtPath:tourImagePath withIntermediateDirectories:YES attributes:nil error:nil];}
+    [data CleanUpTourDirectory];
+    
+    [data CreateTourDirectory];
+    NSArray *tourFiles = [data GetAllGPXFiles];
+    NSArray *imageFiles = [data GetAllImages];
+    
+    NSLog(@"GPX files: %@",tourFiles);
+    NSLog(@"Image files: %@",imageFiles);
+    
 	// Do any additional setup after loading the view, typically from a nib.
     
     NSString *dir = [data GetDocumentFilePathForFile:@"/tours/" CheckIfExist:NO];
     NSArray *imagesInDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:nil];
-    NSLog(@"%@",imagesInDirectory);
-    
-    NSFileManager *fm = [NSFileManager defaultManager];
-    for (int i = 0; i < [imagesInDirectory count]; i++) {
-        NSString *path = [NSString stringWithFormat:@"%@/%@", dir, [imagesInDirectory objectAtIndex:i]];
-        NSLog(@"Contents of directory: %@/%@", dir, [imagesInDirectory objectAtIndex:i]);
-        NSLog(@"%@",[fm contentsOfDirectoryAtPath:path error:nil]);
-        //[fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@", dir, [imagesInDirectory objectAtIndex:i]] error:nil];
-    }
+    NSLog(@"Content of tour directory: %@",imagesInDirectory);
 }
 
 - (void)viewDidUnload
@@ -181,7 +180,6 @@
         NSString *tourID = [[NSString alloc] initWithFormat:@"%@%s", [formatter stringFromDate:[NSDate date]], [userID UTF8String]];
         
         data.tourID = tourID;
-        [data CreateTourDirectory];
         data.upCount++;
         
         [formatter release];
@@ -235,7 +233,6 @@
         NSString *tourID = [[NSString alloc] initWithFormat:@"%@%s", [formatter stringFromDate:[NSDate date]], [userID UTF8String]];
         
         data.tourID = tourID;
-        [data CreateTourDirectory];
         data.downCount++;
         
         [formatter release];

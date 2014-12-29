@@ -72,6 +72,7 @@
 		645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */; };
 		646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646183FB18BC30AF00C50FBB /* camera_icon.png */; };
 		64746CBC189F18270070B8D9 /* XTour_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64746CBB189F18270070B8D9 /* XTour_button.png */; };
+		647FEF0B1A5169E700D7F2E7 /* XTFileBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 647FEF0A1A5169E700D7F2E7 /* XTFileBrowser.m */; };
 		6480121B18A6FD80000A387E /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121A18A6FD80000A387E /* button_green.png */; };
 		6480121D18A6FD8A000A387E /* button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121C18A6FD8A000A387E /* button_blue.png */; };
 		6480121F18A6FD95000A387E /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121E18A6FD95000A387E /* button_red.png */; };
@@ -201,6 +202,8 @@
 		645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XTLoginViewController.xib; sourceTree = "<group>"; };
 		646183FB18BC30AF00C50FBB /* camera_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon.png; path = images/camera_icon.png; sourceTree = SOURCE_ROOT; };
 		64746CBB189F18270070B8D9 /* XTour_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = XTour_button.png; path = ../images/XTour_button.png; sourceTree = "<group>"; };
+		647FEF091A5169E700D7F2E7 /* XTFileBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTFileBrowser.h; sourceTree = "<group>"; };
+		647FEF0A1A5169E700D7F2E7 /* XTFileBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTFileBrowser.m; sourceTree = "<group>"; };
 		6480121A18A6FD80000A387E /* button_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_green.png; path = ../images/button_green.png; sourceTree = "<group>"; };
 		6480121C18A6FD8A000A387E /* button_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_blue.png; path = ../images/button_blue.png; sourceTree = "<group>"; };
 		6480121E18A6FD95000A387E /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_red.png; path = ../images/button_red.png; sourceTree = "<group>"; };
@@ -339,6 +342,8 @@
 				640BBE821887B1A30029327F /* XTMapViewController.m */,
 				648E87F518B7D54700BE1AB3 /* XTCameraViewController.h */,
 				648E87F618B7D54700BE1AB3 /* XTCameraViewController.m */,
+				647FEF091A5169E700D7F2E7 /* XTFileBrowser.h */,
+				647FEF0A1A5169E700D7F2E7 /* XTFileBrowser.m */,
 				648E87F818B7D6D300BE1AB3 /* XTSettingsViewController.h */,
 				648E87F918B7D6D300BE1AB3 /* XTSettingsViewController.m */,
 				64A4A00B18B953D2007B4E54 /* XTWarnigsViewController.h */,
@@ -635,6 +640,7 @@
 				64251D1A188FB45B004F1675 /* ASIDownloadCache.m in Sources */,
 				64251D46188FBA76004F1675 /* Reachability.m in Sources */,
 				64251D1D188FB45B004F1675 /* ASIInputStream.m in Sources */,
+				647FEF0B1A5169E700D7F2E7 /* XTFileBrowser.m in Sources */,
 				64A4A00D18B953D2007B4E54 /* XTWarnigsViewController.m in Sources */,
 				64251D19188FB45B004F1675 /* ASIDataDecompressor.m in Sources */,
 				648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */,

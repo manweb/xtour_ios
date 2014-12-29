@@ -212,15 +212,12 @@
 
 - (void) LoadImagesForCurrentTour
 {
-    NSString *tourPath = [data GetCurrentTourDocumentPath];
-    if (!tourPath) {return;}
-    
-    NSString *imagePath = [tourPath stringByAppendingString:@"/images/"];
+    NSString *imagePath = [data GetTourImagePath];
     
     NSArray *imagesInDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:imagePath error:nil];
     for (int i = 0; i < [imagesInDirectory count]; i++) {
         NSString *img = [imagePath stringByAppendingString:[imagesInDirectory objectAtIndex:i]];
-        if ([[img pathExtension] isEqualToString:@"jpg"]) {[_ImageArray addObject:img];}
+        if ([[img pathExtension] isEqualToString:@"jpg"] && [img containsString:data.tourID]) {[_ImageArray addObject:img];}
     }
 }
 
