@@ -26,42 +26,34 @@
     return self;
 }
 
-- (void) SetMetadataUserID:(NSString *)uid
+- (void) SetMetadataString:(NSString *)value forKey:(NSString *)key
 {
     if (!Metadata) {return;}
     
-    GDataXMLElement *UserID = [GDataXMLElement elementWithName:@"userid" stringValue:uid];
+    GDataXMLElement *xmlElement = [GDataXMLElement elementWithName:key stringValue:value];
     
-    [Metadata addChild:UserID];
+    [Metadata addChild:xmlElement];
 }
 
-- (void) SetMetadataTourID:(NSString *)tid
+- (void) SetMetadataDouble:(double)value forKey:(NSString *)key withPrecision:(int)precision
 {
     if (!Metadata) {return;}
     
-    GDataXMLElement *TourID = [GDataXMLElement elementWithName:@"tourid" stringValue:tid];
+    NSString *precisionFormat = [NSString stringWithFormat:@"%%.%if",precision];
     
-    [Metadata addChild:TourID];
+    GDataXMLElement *xmlElement = [GDataXMLElement elementWithName:key stringValue:[NSString stringWithFormat:precisionFormat, value]];
+    
+    [Metadata addChild:xmlElement];
 }
 
-- (void) SetMetadataStartDate:(NSDate *)time_start
+- (void) SetMetadataDate:(NSDate *)date forKey:(NSString *)key
 {
     if (!Metadata) {return;}
     if (!formatter) {return;}
     
-    GDataXMLElement *StartTime = [GDataXMLElement elementWithName:@"StartTime" stringValue:[formatter stringFromDate:time_start]];
+    GDataXMLElement *xmlElement = [GDataXMLElement elementWithName:key stringValue:[formatter stringFromDate:date]];
     
-    [Metadata addChild:StartTime];
-}
-
-- (void) SetMetadataEndDate:(NSDate *)time_end
-{
-    if (!Metadata) {return;}
-    if (!formatter) {return;}
-    
-    GDataXMLElement *EndTime = [GDataXMLElement elementWithName:@"EndTime" stringValue:[formatter stringFromDate:time_end]];
-    
-    [Metadata addChild:EndTime];
+    [Metadata addChild:xmlElement];
 }
 
 - (void) SetMetadataBounds:(NSArray *)bounds
@@ -75,42 +67,6 @@
     [Bounds addAttribute:[GDataXMLNode attributeWithName:@"maxlon" stringValue:[bounds objectAtIndex:3]]];
     
     [Metadata addChild:Bounds];
-}
-
-- (void) SetMetadataTotalTime:(int)time
-{
-    if (!Metadata) {return;}
-    
-    GDataXMLElement *TotalTime = [GDataXMLElement elementWithName:@"TotalTime" stringValue:[NSString stringWithFormat:@"%i", time]];
-    
-    [Metadata addChild:TotalTime];
-}
-
-- (void) SetMetadataTotalDistance:(double)distance
-{
-    if (!Metadata) {return;}
-    
-    GDataXMLElement *TotalDistance = [GDataXMLElement elementWithName:@"TotalDistance" stringValue:[NSString stringWithFormat:@"%.1f", distance]];
-    
-    [Metadata addChild:TotalDistance];
-}
-
-- (void) SetMetadataTotalAltitude:(double)altitude
-{
-    if (!Metadata) {return;}
-    
-    GDataXMLElement *TotalAltitude = [GDataXMLElement elementWithName:@"TotalAltitude" stringValue:[NSString stringWithFormat:@"%.0f", altitude]];
-    
-    [Metadata addChild:TotalAltitude];
-}
-
-- (void) SetMetadataTotalDescent:(double)descent
-{
-    if (!Metadata) {return;}
-    
-    GDataXMLElement *TotalDescent = [GDataXMLElement elementWithName:@"TotalDescent" stringValue:[NSString stringWithFormat:@"%.0f", descent]];
-    
-    [Metadata addChild:TotalDescent];
 }
 
 - (void) AddTrackpoint:(CLLocation *)coordinate
@@ -167,6 +123,78 @@
     NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:filename];
     
     [xmlData writeToFile:documentsPath atomically:YES];
+}
+
+- (void) SaveRecoveryFile:(NSString *)filename
+{
+    GDataXMLElement *GPXElement = [GDataXMLNode elementWithName:@"xml"];
+    
+    GDataXMLElement *Track = [GDataXMLElement elementWithName:@"trk"];
+    [Track addChild:TrackSegment];
+    [GPXElement addChild:Metadata];
+    [GPXElement addChild:Track];
+    
+    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:GPXElement];
+    
+    NSData *xmlData = doc.XMLData;
+    NSString *xml = [[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+    [xmlData writeToFile:documentsPath atomically:YES];
+}
+
+- (void) Recover:(NSString *)filename
+{
+    NSData *xmlData = [[NSData alloc] initWithContentsOfFile:filename];
+    _RecoveredData = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:nil];
+}
+
+- (NSString *)GetValueFromRecoveryFile:(NSString *)element
+{
+    if (!_RecoveredData) {return nil;}
+    
+    GDataXMLElement *metadata = [[_RecoveredData.rootElement elementsForName:@"Metadata"] objectAtIndex:0];
+    GDataXMLElement *e = [[metadata elementsForName:element] objectAtIndex:0];
+    
+    return e.stringValue;
+}
+
+- (NSMutableArray *)GetLocationDataFromRecoveryFile
+{
+    if (!_RecoveredData) {return nil;}
+    
+    GDataXMLElement *trackSegment = [[_RecoveredData.rootElement elementsForName:@"trkseg"] objectAtIndex:0];
+    GDataXMLElement *track = [[trackSegment elementsForName:@"trk"] objectAtIndex:0];
+    
+    NSMutableArray *trackPoints = [track elementsForName:@"trkpt"];
+    
+    NSMutableArray *locations = [[NSMutableArray alloc] init];
+    
+    for (GDataXMLElement *trkpt in trackPoints) {
+        NSString *lat = [[trkpt attributeForName:@"lat"] stringValue];
+        NSString *lon = [[trkpt attributeForName:@"lon"] stringValue];
+        
+        GDataXMLElement *elevation = [[trkpt elementsForName:@"ele"] objectAtIndex:0];
+        GDataXMLElement *time = [[trkpt elementsForName:@"time"] objectAtIndex:0];
+        
+        NSString *ele = elevation.stringValue;
+        NSString *t = time.stringValue;
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-LL-dd HH:mm:ss"];
+        NSDate *date = [dateFormatter dateFromString:t];
+        
+        CLLocationCoordinate2D coordinates = CLLocationCoordinate2DMake(lat.floatValue, lon.floatValue);
+        
+        CLLocation *location = [[CLLocation alloc] initWithCoordinate:coordinates altitude:ele.floatValue horizontalAccuracy:0 verticalAccuracy:0 timestamp:date];
+        
+        [locations addObject:location];
+    }
+    
+    return locations;
 }
 
 @end

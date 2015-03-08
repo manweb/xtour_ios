@@ -14,20 +14,20 @@
     
 }
 
+@property(nonatomic,retain) GDataXMLDocument *RecoveredData;
 @property(nonatomic,retain) GDataXMLElement *Metadata;
 @property(nonatomic,retain) GDataXMLElement *TrackSegment;
 @property(nonatomic,retain) NSDateFormatter *formatter;
 
-- (void) SetMetadataUserID:(NSString *)uid;
-- (void) SetMetadataTourID:(NSString *)tid;
-- (void) SetMetadataStartDate:(NSDate *)time_start;
-- (void) SetMetadataEndDate:(NSDate *)time_end;
+- (void) SetMetadataString:(NSString *)value forKey:(NSString *)key;
+- (void) SetMetadataDouble:(double)value forKey:(NSString *)key withPrecision:(int)precision;
+- (void) SetMetadataDate:(NSDate *)date forKey:(NSString *)key;
 - (void) SetMetadataBounds:(NSArray *)bounds;
-- (void) SetMetadataTotalTime:(int)time;
-- (void) SetMetadataTotalDistance:(double)distance;
-- (void) SetMetadataTotalAltitude:(double)altitude;
-- (void) SetMetadataTotalDescent:(double)descent;
 - (void) AddTrackpoint:(CLLocation *)coordinate;
 - (void) SaveXML:(NSString *)filename;
+- (void) SaveRecoveryFile:(NSString *)filename;
+- (void) Recover:(NSString *)filename;
+- (NSString *)GetValueFromRecoveryFile:(NSString *)element;
+- (NSMutableArray *)GetLocationDataFromRecoveryFile;
 
 @end

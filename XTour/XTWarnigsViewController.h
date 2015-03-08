@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XTDataSingleton.h"
 
-@interface XTWarnigsViewController : UIViewController
+@interface XTWarnigsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+{
+    XTDataSingleton *data;
+}
+
+@property(nonatomic,retain) NSMutableArray *listOfFiles;
 
 @end

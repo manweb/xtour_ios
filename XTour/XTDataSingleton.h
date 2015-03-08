@@ -56,6 +56,8 @@
 - (NSMutableArray *) GetMinMaxCoordinates;
 - (NSMutableArray *) GetCoordinateBounds;
 - (void) CreateXMLForCategory:(NSString *)category;
+- (void) WriteRecoveryFile;
+- (void) RecoverTour;
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check;
 - (NSString *) GetTourDocumentPath;
 - (NSString *) GetTourImagePath;

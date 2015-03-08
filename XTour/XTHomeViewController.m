@@ -25,6 +25,8 @@
                                    lround(floor(tm / 60.)) % 60,
                                    lround(floor(tm)) % 60];
     _timerLabel.text = currentTimeString;
+    
+    if (data.timer - _recoveryTimer > 120) {[data WriteRecoveryFile]; _recoveryTimer = data.timer;}
 }
 
 - (void)viewDidLoad
@@ -51,12 +53,18 @@
     
     _oldAccuracy = 10000.0;
     
+    _recoveryTimer = 0;
+    
     NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:userFile]) {
         data.loggedIn = true;
         data.userID = [[NSString alloc] initWithContentsOfFile:userFile encoding:NSUTF8StringEncoding error:nil];
     }
+    
+    // Check whether the recovery file exist. If so, the app may have crashed, so re-load the data
+    NSString *recoveryFile = [data GetDocumentFilePathForFile:@"/recovery.xml" CheckIfExist:YES];
+    if (recoveryFile) {[data RecoverTour];}
     
     //[data CleanUpTourDirectory];
     

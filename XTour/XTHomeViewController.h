@@ -39,6 +39,7 @@
 @property (retain, nonatomic) NSTimer *pollingTimer;
 @property (nonatomic) NSInteger runStatus;
 @property (nonatomic) double oldAccuracy;
+@property (nonatomic) NSInteger recoveryTimer;
 - (IBAction)startTimer:(id)sender;
 - (IBAction)stopTimer:(id)sender;
 - (IBAction)resetTimer:(id)sender;

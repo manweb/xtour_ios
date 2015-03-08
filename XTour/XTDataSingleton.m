@@ -253,15 +253,16 @@
         _timer = _totalTime;
     }
     
-    [xml SetMetadataUserID:_userID];
-    [xml SetMetadataTourID:_tourID];
-    [xml SetMetadataStartDate:_startTime];
-    [xml SetMetadataEndDate:_endTime];
+    [xml SetMetadataString:_userID forKey:@"userid"];
+    [xml SetMetadataString:_tourID forKey:@"tourid"];
+    [xml SetMetadataDate:_startTime forKey:@"StartTime"];
+    [xml SetMetadataDate:_endTime forKey:@"EndTime"];
     [xml SetMetadataBounds:bounds];
-    [xml SetMetadataTotalTime:(int)_timer];
-    [xml SetMetadataTotalDistance:_totalDistance];
-    [xml SetMetadataTotalAltitude:_totalAltitude];
-    [xml SetMetadataTotalDescent: _totalDescent];
+    [xml SetMetadataDouble:(double)_timer forKey:@"TotalTime" withPrecision:0];
+    [xml SetMetadataDouble:_totalDistance forKey:@"TotalDistance" withPrecision:1];
+    [xml SetMetadataDouble:_totalAltitude forKey:@"TotalAltitude" withPrecision:1];
+    [xml SetMetadataDouble:_totalDescent forKey:@"TotalDescent" withPrecision:1];
+    [xml SetMetadataString:_country forKey:@"Country"];
     
     for (int i = 0; i < [_locationData count]; i++) {
         [xml AddTrackpoint:[_locationData objectAtIndex:i]];
@@ -279,6 +280,93 @@
     NSString *FileName = [NSString stringWithFormat:@"/tours/%@_%@%i.gpx", _tourID, category, (int)count];
     
     [xml SaveXML:FileName];
+}
+
+- (void) WriteRecoveryFile
+{
+    XTXMLParser *xml = [[XTXMLParser alloc] init];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-LL-dd HH:mm:ss"];
+    
+    [xml SetMetadataString:_userID forKey:@"userid"];
+    [xml SetMetadataString:_tourID forKey:@"tourid"];
+    [xml SetMetadataDouble:(double)_timer forKey:@"TotalTime" withPrecision:0];
+    [xml SetMetadataDouble:_totalDistance forKey:@"TotalDistance" withPrecision:1];
+    [xml SetMetadataDouble:_totalAltitude forKey:@"TotalAltitude" withPrecision:1];
+    [xml SetMetadataDouble:_totalDescent forKey:@"TotalDescent" withPrecision:1];
+    [xml SetMetadataDouble:_sumDistance forKey:@"SumDistance" withPrecision:1];
+    [xml SetMetadataDouble:_sumAltitude forKey:@"SumAltitude" withPrecision:1];
+    [xml SetMetadataDouble:_sumDescent forKey:@"SumDescent" withPrecision:1];
+    [xml SetMetadataString:[dateFormatter stringFromDate:_startTime] forKey:@"StartTime"];
+    [xml SetMetadataString:[dateFormatter stringFromDate:_endTime] forKey:@"EndTime"];
+    [xml SetMetadataString:[dateFormatter stringFromDate:_TotalStartTime] forKey:@"TotalStartTime"];
+    [xml SetMetadataString:[dateFormatter stringFromDate:_TotalEndTime] forKey:@"TotalEndTime"];
+    [xml SetMetadataDouble:_upCount forKey:@"UpCount" withPrecision:0];
+    [xml SetMetadataDouble:_downCount forKey:@"DownCount" withPrecision:0];
+    [xml SetMetadataDouble:_photoCount forKey:@"PhotoCount" withPrecision:0];
+    [xml SetMetadataDouble:_StartLocation.coordinate.latitude forKey:@"StartLocationLat" withPrecision:5];
+    [xml SetMetadataDouble:_StartLocation.coordinate.longitude forKey:@"StartLocationLon" withPrecision:5];
+    [xml SetMetadataDouble:_StartLocation.altitude forKey:@"StartLocationAltitude" withPrecision:1];
+    
+    for (int i = 0; i < [_locationData count]; i++) {
+        [xml AddTrackpoint:[_locationData objectAtIndex:i]];
+    }
+    
+    NSString *FileName = [NSString stringWithFormat:@"%@/recovery.xml",[self GetTourDocumentPath]];
+    
+    [xml SaveXML:FileName];
+}
+
+- (void) RecoverTour
+{
+    [self ResetAll];
+    
+    XTXMLParser *xml = [[XTXMLParser alloc] init];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-LL-dd HH:mm:ss"];
+    
+    NSString *FileName = [NSString stringWithFormat:@"%@/recovery.xml",[self GetTourDocumentPath]];
+    
+    [xml Recover:FileName];
+    _userID = [xml GetValueFromRecoveryFile:@"userid"];
+    _tourID = [xml GetValueFromRecoveryFile:@"tourid"];
+    _timer = [[xml GetValueFromRecoveryFile:@"TotalTime"] integerValue];
+    _totalDistance = [[xml GetValueFromRecoveryFile:@"TotalDistance"] doubleValue];
+    _totalAltitude = [[xml GetValueFromRecoveryFile:@"TotalAltitude"] doubleValue];
+    _totalDescent = [[xml GetValueFromRecoveryFile:@"TotalDescent"] doubleValue];
+    _sumDistance = [[xml GetValueFromRecoveryFile:@"SumDistance"] doubleValue];
+    _sumAltitude = [[xml GetValueFromRecoveryFile:@"SumAltitude"] doubleValue];
+    _sumDescent = [[xml GetValueFromRecoveryFile:@"SumDescent"] doubleValue];
+    _upCount = [[xml GetValueFromRecoveryFile:@"UpCount"] integerValue];
+    _downCount = [[xml GetValueFromRecoveryFile:@"DownCount"] integerValue];
+    _photoCount = [[xml GetValueFromRecoveryFile:@"PhotoCount"] integerValue];
+    
+    NSString *StartTime = [xml GetValueFromRecoveryFile:@"StartTime"];
+    NSString *EndTime = [xml GetValueFromRecoveryFile:@"EndTime"];
+    NSString *TotalStartTime = [xml GetValueFromRecoveryFile:@"TotalStartTime"];
+    NSString *TotalEndTime = [xml GetValueFromRecoveryFile:@"TotalEndTIme"];
+    
+    _startTime = [dateFormatter dateFromString:StartTime];
+    _endTime = [dateFormatter dateFromString:EndTime];
+    _TotalStartTime = [dateFormatter dateFromString:TotalStartTime];
+    _TotalEndTime = [dateFormatter dateFromString:TotalEndTime];
+    
+    double lat = [[xml GetValueFromRecoveryFile:@"StartLocationLat"] doubleValue];
+    double lon = [[xml GetValueFromRecoveryFile:@"StartLocationLon"] doubleValue];
+    double altitude = [[xml GetValueFromRecoveryFile:@"StartLocationAltitude"] doubleValue];
+    
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(lat, lon);
+    CLLocation *startLocation = [[CLLocation alloc] initWithCoordinate:coordinate altitude:altitude horizontalAccuracy:0 verticalAccuracy:0 timestamp:_TotalStartTime];
+    
+    _StartLocation = startLocation;
+    
+    NSMutableArray *locationData = [xml GetLocationDataFromRecoveryFile];
+    
+    for (CLLocation *location in locationData) {
+        [self AddCoordinate:location];
+    }
 }
 
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check
