@@ -89,6 +89,9 @@
 		64A7B47C18B1F98E004E4B2F /* pause_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7B47B18B1F98E004E4B2F /* pause_button.png */; };
 		64A7DBA41AA4E44300D8A4C5 /* more_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7DBA31AA4E44300D8A4C5 /* more_icon@2x.png */; };
 		64B18CF918BD73DA002A5417 /* XTFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B18CF818BD73DA002A5417 /* XTFileUploader.m */; };
+		64B6E50D1AC89CFA0069A1A7 /* skier_down_button_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B6E50C1AC89CFA0069A1A7 /* skier_down_button_inactive.png */; };
+		64B6E50F1AC89D070069A1A7 /* skier_up_button_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B6E50E1AC89D070069A1A7 /* skier_up_button_inactive.png */; };
+		64B6E5111AC8B0AB0069A1A7 /* skier_down_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B6E5101AC8B0AB0069A1A7 /* skier_down_icon.png */; };
 		64B7FED71A2BB2ED008DE880 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64B7FED61A2BB2ED008DE880 /* AssetsLibrary.framework */; };
 		64C09A8B18B68E16004A230E /* item_background_40_half.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C09A8A18B68E16004A230E /* item_background_40_half.png */; };
 		64C2B97918B87AD100D4FDE4 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97818B87AD000D4FDE4 /* camera@2x.png */; };
@@ -226,6 +229,9 @@
 		64A7DBA31AA4E44300D8A4C5 /* more_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more_icon@2x.png"; sourceTree = "<group>"; };
 		64B18CF718BD73DA002A5417 /* XTFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTFileUploader.h; sourceTree = "<group>"; };
 		64B18CF818BD73DA002A5417 /* XTFileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTFileUploader.m; sourceTree = "<group>"; };
+		64B6E50C1AC89CFA0069A1A7 /* skier_down_button_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skier_down_button_inactive.png; sourceTree = "<group>"; };
+		64B6E50E1AC89D070069A1A7 /* skier_up_button_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skier_up_button_inactive.png; sourceTree = "<group>"; };
+		64B6E5101AC8B0AB0069A1A7 /* skier_down_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skier_down_icon.png; sourceTree = "<group>"; };
 		64B7FED61A2BB2ED008DE880 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		64C09A8A18B68E16004A230E /* item_background_40_half.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = item_background_40_half.png; path = images/item_background_40_half.png; sourceTree = SOURCE_ROOT; };
 		64C2B97818B87AD000D4FDE4 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@2x.png"; path = "../images/camera@2x.png"; sourceTree = "<group>"; };
@@ -373,6 +379,8 @@
 				64E3EBA018B020E400514CFE /* profile_icon.png */,
 				64A7B47318B1F501004E4B2F /* skier_up_button.png */,
 				64A7B47518B1F508004E4B2F /* skier_down_button.png */,
+				64B6E50E1AC89D070069A1A7 /* skier_up_button_inactive.png */,
+				64B6E50C1AC89CFA0069A1A7 /* skier_down_button_inactive.png */,
 				64A7B47B18B1F98E004E4B2F /* pause_button.png */,
 				648E880218B8402A00BE1AB3 /* stop_button.png */,
 				64D8C0DB18B556C2001A825E /* clock_icon.png */,
@@ -380,6 +388,7 @@
 				64D8C0DF18B55BD1001A825E /* item_background_40.png */,
 				64D8C0E118B55BF4001A825E /* altitude_icon.png */,
 				64D8C0E318B55C0E001A825E /* skier_up_icon.png */,
+				64B6E5101AC8B0AB0069A1A7 /* skier_down_icon.png */,
 				64D8C0E518B55C50001A825E /* compass_icon.png */,
 				64C09A8A18B68E16004A230E /* item_background_40_half.png */,
 				648E87FE18B8274E00BE1AB3 /* home_icon@2x.png */,
@@ -535,6 +544,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Manuel Weber";
 				TargetAttributes = {
+					640BBE651887B1A30029327F = {
+						DevelopmentTeam = QU3775PTN9;
+					};
 					640BBE891887B1A30029327F = {
 						TestTargetID = 640BBE651887B1A30029327F;
 					};
@@ -583,6 +595,7 @@
 				64A7B47C18B1F98E004E4B2F /* pause_button.png in Resources */,
 				64C2B97918B87AD100D4FDE4 /* camera@2x.png in Resources */,
 				640BBE741887B1A30029327F /* InfoPlist.strings in Resources */,
+				64B6E50D1AC89CFA0069A1A7 /* skier_down_button_inactive.png in Resources */,
 				645181301A27CC2500D887CA /* Icon-76@2x.png in Resources */,
 				6431C4EF1A2EF566007A827F /* GPS_none.png in Resources */,
 				64C2B97B18B87ADE00D4FDE4 /* cog_01@2x.png in Resources */,
@@ -598,6 +611,7 @@
 				6480121B18A6FD80000A387E /* button_green.png in Resources */,
 				6431C4EE1A2EF566007A827F /* GPS_medium.png in Resources */,
 				64E3EB9F18B0200500514CFE /* xtour_header.png in Resources */,
+				64B6E5111AC8B0AB0069A1A7 /* skier_down_icon.png in Resources */,
 				6431C4F01A2EF566007A827F /* GPS_strong.png in Resources */,
 				64D8C0E018B55BD1001A825E /* item_background_40.png in Resources */,
 				640BBE7D1887B1A30029327F /* Main.storyboard in Resources */,
@@ -606,6 +620,7 @@
 				6431C4F11A2EF566007A827F /* GPS_weak.png in Resources */,
 				64D8C0E418B55C0E001A825E /* skier_up_icon.png in Resources */,
 				64A7B47418B1F501004E4B2F /* skier_up_button.png in Resources */,
+				64B6E50F1AC89D070069A1A7 /* skier_up_button_inactive.png in Resources */,
 				64E3EBA118B020E400514CFE /* profile_icon.png in Resources */,
 				64A4A00A18B952F0007B4E54 /* warning_icon@2x.png in Resources */,
 				6451812F1A27CC2500D887CA /* Icon-76.png in Resources */,
@@ -779,6 +794,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
@@ -800,6 +817,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -811,6 +829,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
@@ -832,6 +852,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

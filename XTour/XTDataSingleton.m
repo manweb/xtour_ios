@@ -313,9 +313,7 @@
         [xml AddTrackpoint:[_locationData objectAtIndex:i]];
     }
     
-    NSString *FileName = [NSString stringWithFormat:@"%@/recovery.xml",[self GetTourDocumentPath]];
-    
-    [xml SaveXML:FileName];
+    [xml SaveRecoveryFile:@"/recovery.xml"];
 }
 
 - (void) RecoverTour
@@ -329,44 +327,53 @@
     
     NSString *FileName = [NSString stringWithFormat:@"%@/recovery.xml",[self GetTourDocumentPath]];
     
-    [xml Recover:FileName];
-    _userID = [xml GetValueFromRecoveryFile:@"userid"];
-    _tourID = [xml GetValueFromRecoveryFile:@"tourid"];
-    _timer = [[xml GetValueFromRecoveryFile:@"TotalTime"] integerValue];
-    _totalDistance = [[xml GetValueFromRecoveryFile:@"TotalDistance"] doubleValue];
-    _totalAltitude = [[xml GetValueFromRecoveryFile:@"TotalAltitude"] doubleValue];
-    _totalDescent = [[xml GetValueFromRecoveryFile:@"TotalDescent"] doubleValue];
-    _sumDistance = [[xml GetValueFromRecoveryFile:@"SumDistance"] doubleValue];
-    _sumAltitude = [[xml GetValueFromRecoveryFile:@"SumAltitude"] doubleValue];
-    _sumDescent = [[xml GetValueFromRecoveryFile:@"SumDescent"] doubleValue];
-    _upCount = [[xml GetValueFromRecoveryFile:@"UpCount"] integerValue];
-    _downCount = [[xml GetValueFromRecoveryFile:@"DownCount"] integerValue];
-    _photoCount = [[xml GetValueFromRecoveryFile:@"PhotoCount"] integerValue];
+    [xml ReadGPXFile:FileName];
+    _userID = [xml GetValueFromFile:@"userid"];
+    _tourID = [xml GetValueFromFile:@"tourid"];
+    _timer = [[xml GetValueFromFile:@"TotalTime"] integerValue];
+    _totalDistance = [[xml GetValueFromFile:@"TotalDistance"] doubleValue];
+    _totalAltitude = [[xml GetValueFromFile:@"TotalAltitude"] doubleValue];
+    _totalDescent = [[xml GetValueFromFile:@"TotalDescent"] doubleValue];
+    _sumDistance = [[xml GetValueFromFile:@"SumDistance"] doubleValue];
+    _sumAltitude = [[xml GetValueFromFile:@"SumAltitude"] doubleValue];
+    _sumDescent = [[xml GetValueFromFile:@"SumDescent"] doubleValue];
+    _upCount = [[xml GetValueFromFile:@"UpCount"] integerValue];
+    _downCount = [[xml GetValueFromFile:@"DownCount"] integerValue];
+    _photoCount = [[xml GetValueFromFile:@"PhotoCount"] integerValue];
     
-    NSString *StartTime = [xml GetValueFromRecoveryFile:@"StartTime"];
-    NSString *EndTime = [xml GetValueFromRecoveryFile:@"EndTime"];
-    NSString *TotalStartTime = [xml GetValueFromRecoveryFile:@"TotalStartTime"];
-    NSString *TotalEndTime = [xml GetValueFromRecoveryFile:@"TotalEndTIme"];
+    NSString *StartTime = [xml GetValueFromFile:@"StartTime"];
+    NSString *EndTime = [xml GetValueFromFile:@"EndTime"];
+    NSString *TotalStartTime = [xml GetValueFromFile:@"TotalStartTime"];
+    NSString *TotalEndTime = [xml GetValueFromFile:@"TotalEndTIme"];
     
     _startTime = [dateFormatter dateFromString:StartTime];
     _endTime = [dateFormatter dateFromString:EndTime];
     _TotalStartTime = [dateFormatter dateFromString:TotalStartTime];
     _TotalEndTime = [dateFormatter dateFromString:TotalEndTime];
     
-    double lat = [[xml GetValueFromRecoveryFile:@"StartLocationLat"] doubleValue];
-    double lon = [[xml GetValueFromRecoveryFile:@"StartLocationLon"] doubleValue];
-    double altitude = [[xml GetValueFromRecoveryFile:@"StartLocationAltitude"] doubleValue];
+    double lat = [[xml GetValueFromFile:@"StartLocationLat"] doubleValue];
+    double lon = [[xml GetValueFromFile:@"StartLocationLon"] doubleValue];
+    double altitude = [[xml GetValueFromFile:@"StartLocationAltitude"] doubleValue];
     
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(lat, lon);
     CLLocation *startLocation = [[CLLocation alloc] initWithCoordinate:coordinate altitude:altitude horizontalAccuracy:0 verticalAccuracy:0 timestamp:_TotalStartTime];
     
     _StartLocation = startLocation;
     
-    NSMutableArray *locationData = [xml GetLocationDataFromRecoveryFile];
+    NSMutableArray *locationData = [xml GetLocationDataFromFile];
     
     for (CLLocation *location in locationData) {
         [self AddCoordinate:location];
     }
+}
+
+- (void) RemoveRecoveryFile
+{
+    NSString *recoveryFile = [NSString stringWithFormat:@"%@/recovery.xml",[self GetDocumentFilePathForFile:@"/" CheckIfExist:NO]];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:recoveryFile error:nil];
+    
+    NSLog(@"Removed recovery file");
 }
 
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check
@@ -473,6 +480,8 @@
     for (int i = 0; i < [imageFiles count]; i++) {
         [[NSFileManager defaultManager] removeItemAtPath:[imageFiles objectAtIndex:i] error:nil];
     }
+    
+    [self RemoveRecoveryFile];
 }
 
 - (void)dealloc

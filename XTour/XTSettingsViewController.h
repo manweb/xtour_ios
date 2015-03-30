@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "XTFileUploader.h"
+#import "XTSummaryViewController.h"
 
 @interface XTSettingsViewController : UIViewController
+{
+    XTSummaryViewController *summary;
+}
 
 - (IBAction)GetFileList:(id)sender;
+- (IBAction)ShowSummary:(id)sender;
 
 @end

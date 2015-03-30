@@ -146,13 +146,13 @@
     [xmlData writeToFile:documentsPath atomically:YES];
 }
 
-- (void) Recover:(NSString *)filename
+- (void) ReadGPXFile:(NSString *)filename
 {
     NSData *xmlData = [[NSData alloc] initWithContentsOfFile:filename];
     _RecoveredData = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:nil];
 }
 
-- (NSString *)GetValueFromRecoveryFile:(NSString *)element
+- (NSString *)GetValueFromFile:(NSString *)element
 {
     if (!_RecoveredData) {return nil;}
     
@@ -162,14 +162,14 @@
     return e.stringValue;
 }
 
-- (NSMutableArray *)GetLocationDataFromRecoveryFile
+- (NSMutableArray *)GetLocationDataFromFile
 {
     if (!_RecoveredData) {return nil;}
     
-    GDataXMLElement *trackSegment = [[_RecoveredData.rootElement elementsForName:@"trkseg"] objectAtIndex:0];
-    GDataXMLElement *track = [[trackSegment elementsForName:@"trk"] objectAtIndex:0];
+    GDataXMLElement *trackSegment = [[_RecoveredData.rootElement elementsForName:@"trk"] objectAtIndex:0];
+    GDataXMLElement *track = [[trackSegment elementsForName:@"trkseg"] objectAtIndex:0];
     
-    NSMutableArray *trackPoints = [track elementsForName:@"trkpt"];
+    NSArray *trackPoints = [track elementsForName:@"trkpt"];
     
     NSMutableArray *locations = [[NSMutableArray alloc] init];
     

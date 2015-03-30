@@ -58,6 +58,7 @@
 - (void) CreateXMLForCategory:(NSString *)category;
 - (void) WriteRecoveryFile;
 - (void) RecoverTour;
+- (void) RemoveRecoveryFile;
 - (NSString *) GetDocumentFilePathForFile:(NSString *)filename CheckIfExist:(bool)check;
 - (NSString *) GetTourDocumentPath;
 - (NSString *) GetTourImagePath;

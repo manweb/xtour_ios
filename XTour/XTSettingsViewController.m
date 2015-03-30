@@ -42,4 +42,13 @@
     [uploader UploadImages];
 }
 
+- (IBAction)ShowSummary:(id)sender {
+    if (!summary) {summary = [[XTSummaryViewController alloc] initWithNibName:nil bundle:nil];}
+    
+    [self presentViewController:summary animated:YES completion:nil];
+    [summary release];
+    
+    summary = nil;
+}
+
 @end

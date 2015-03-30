@@ -26,8 +26,8 @@
 - (void) AddTrackpoint:(CLLocation *)coordinate;
 - (void) SaveXML:(NSString *)filename;
 - (void) SaveRecoveryFile:(NSString *)filename;
-- (void) Recover:(NSString *)filename;
-- (NSString *)GetValueFromRecoveryFile:(NSString *)element;
-- (NSMutableArray *)GetLocationDataFromRecoveryFile;
+- (void) ReadGPXFile:(NSString *)filename;
+- (NSString *)GetValueFromFile:(NSString *)element;
+- (NSMutableArray *)GetLocationDataFromFile;
 
 @end

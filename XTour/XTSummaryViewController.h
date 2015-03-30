@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "XTDataSingleton.h"
 #import "XTFileUploader.h"
+#import "GoogleMaps/GoogleMaps.h"
+#import "XTXMLParser.h"
 
 @interface XTSummaryViewController : UIViewController
 {
@@ -16,5 +18,11 @@
 }
 
 - (IBAction)Close;
+- (IBAction)Back:(id)sender;
+@property (retain, nonatomic) GMSMapView *mapView;
+@property (retain, nonatomic) IBOutlet UILabel *TimeLabel;
+@property (retain, nonatomic) IBOutlet UILabel *AltitudeLabel;
+@property (retain, nonatomic) IBOutlet UILabel *UpLabel;
+@property (retain, nonatomic) IBOutlet UILabel *DownLabel;
 
 @end

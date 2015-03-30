@@ -26,7 +26,7 @@
                                    lround(floor(tm)) % 60];
     _timerLabel.text = currentTimeString;
     
-    if (data.timer - _recoveryTimer > 120) {[data WriteRecoveryFile]; _recoveryTimer = data.timer;}
+    if (data.timer - _recoveryTimer > 120) {NSLog(@"Writing recovery file"); [data WriteRecoveryFile]; _recoveryTimer = data.timer;}
 }
 
 - (void)viewDidLoad
@@ -55,6 +55,8 @@
     
     _recoveryTimer = 0;
     
+    _didReachInitialAccuracy = false;
+    
     NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:userFile]) {
@@ -64,7 +66,14 @@
     
     // Check whether the recovery file exist. If so, the app may have crashed, so re-load the data
     NSString *recoveryFile = [data GetDocumentFilePathForFile:@"/recovery.xml" CheckIfExist:YES];
-    if (recoveryFile) {[data RecoverTour];}
+    if (recoveryFile) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Recovery file found" message:@"Trying to recover last tour" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+        NSLog(@"Found recovery file");
+        
+        [data RecoverTour];
+    }
+    else {NSLog(@"No recovery file found");}
     
     //[data CleanUpTourDirectory];
     
@@ -80,6 +89,8 @@
     NSString *dir = [data GetDocumentFilePathForFile:@"/tours/" CheckIfExist:NO];
     NSArray *imagesInDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:nil];
     NSLog(@"Content of tour directory: %@",imagesInDirectory);
+    
+    [_locationManager startUpdatingLocation];
 }
 
 - (void)viewDidUnload
@@ -103,6 +114,8 @@
     [login release];
     [summary release];
     [_GPSSignal release];
+    [_StartButton release];
+    [_StopButton release];
     [super dealloc];
 }
 
@@ -167,6 +180,9 @@
         
         _runStatus = 0;
     }
+    
+    [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
+    [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
 }
 
 - (IBAction)startTimer:(id)sender {
@@ -218,6 +234,9 @@
         [data ResetDataForNewRun];
         data.startTime = [NSDate date];
     }
+    
+    [_StartButton setImage:[UIImage imageNamed:@"skier_up_button_inactive.png"] forState:UIControlStateNormal];
+    [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
     
     _runStatus = 1;
 }
@@ -272,6 +291,9 @@
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
     }
     
+    [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
+    [_StopButton setImage:[UIImage imageNamed:@"skier_down_button_inactive.png"] forState:UIControlStateNormal];
+    
     _runStatus = 3;
 }
 
@@ -292,12 +314,13 @@
     NSLog(@"Accuracy: %.1f",Location.horizontalAccuracy);
     
     double accuracy = Location.horizontalAccuracy;
-    if (accuracy != _oldAccuracy) {
+    if (accuracy != _oldAccuracy && _didReachInitialAccuracy == false) {
         if (accuracy >= 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_none.png"]]; return;}
         if (accuracy >= 100.0 && accuracy < 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_weak.png"]]; return;}if (accuracy > 10.0 && accuracy < 100.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_medium.png"]]; return;}
-        if (accuracy <= 10.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_strong.png"]];}
+        if (accuracy <= 10.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_strong.png"]]; _didReachInitialAccuracy = true; [_locationManager stopUpdatingLocation];}
     }
-    else if (accuracy > 10.0) {return;}
+    //else if (accuracy > 10.0 && _didReachInitialAccuracy == false) {return;}
+    else if (_didReachInitialAccuracy == false) {return;}
     
     if (data.StartLocation == 0) {
         data.StartLocation = Location;
