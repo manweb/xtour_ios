@@ -73,8 +73,8 @@
                                    lround(floor(data.totalTime)) % 60];
     
     [_TimeLabel setText:TimeString];
-    [_AltitudeLabel setText:[NSString stringWithFormat:@"%f.1 m",data.sumAltitude]];
-    [_UpLabel setText:[NSString stringWithFormat:@"%f.1 km",data.sumDistance/1000.]];
+    [_AltitudeLabel setText:[NSString stringWithFormat:@"%f.1 m",data.sumDistance]];
+    [_UpLabel setText:[NSString stringWithFormat:@"%f.1 m",data.sumAltitude]];
     [_DownLabel setText:[NSString stringWithFormat:@"%f.1 m",data.sumDescent]];
     // Do any additional setup after loading the view from its nib.
 }

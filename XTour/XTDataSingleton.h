@@ -23,6 +23,10 @@
 @property(nonatomic) double sumDistance;
 @property(nonatomic) double sumAltitude;
 @property(nonatomic) double sumDescent;
+@property(nonatomic) double lowestPoint;
+@property(nonatomic) double highestPoint;
+@property(nonatomic) double sumlowestPoint;
+@property(nonatomic) double sumhighestPoint;
 @property(nonatomic) double DistanceRate;
 @property(nonatomic) double AltitudeRate;
 @property(nonatomic) double rateLastDistance;

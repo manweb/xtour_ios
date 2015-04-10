@@ -314,13 +314,20 @@
     NSLog(@"Accuracy: %.1f",Location.horizontalAccuracy);
     
     double accuracy = Location.horizontalAccuracy;
-    if (accuracy != _oldAccuracy && _didReachInitialAccuracy == false) {
-        if (accuracy >= 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_none.png"]]; return;}
-        if (accuracy >= 100.0 && accuracy < 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_weak.png"]]; return;}if (accuracy > 10.0 && accuracy < 100.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_medium.png"]]; return;}
-        if (accuracy <= 10.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_strong.png"]]; _didReachInitialAccuracy = true; [_locationManager stopUpdatingLocation];}
+    if (accuracy != _oldAccuracy) {
+        if (accuracy >= 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_none.png"]]; if (!_didReachInitialAccuracy) {return;}}
+        if (accuracy >= 100.0 && accuracy < 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_weak.png"]]; if (!_didReachInitialAccuracy) {return;}}
+        if (accuracy > 10.0 && accuracy < 100.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_medium.png"]]; if (!_didReachInitialAccuracy) {return;}}
+        if (accuracy <= 10.0) {
+            [_GPSSignal setImage:[UIImage imageNamed:@"GPS_strong.png"]];
+            if (!_didReachInitialAccuracy) {
+                _didReachInitialAccuracy = true;
+                [_locationManager stopUpdatingLocation];
+            }
+        }
     }
     //else if (accuracy > 10.0 && _didReachInitialAccuracy == false) {return;}
-    else if (_didReachInitialAccuracy == false) {return;}
+    if (!_didReachInitialAccuracy) {return;}
     
     if (data.StartLocation == 0) {
         data.StartLocation = Location;
@@ -364,6 +371,11 @@
     double d = [data CalculateHaversineForCurrentCoordinate];
     double altitudeDiff = [data CalculateAltitudeDiffForCurrentCoordinate];
     [data AddDistance:d andHeight:altitudeDiff];
+    
+    if (alt < data.lowestPoint) {data.lowestPoint = alt;}
+    if (alt > data.highestPoint) {data.highestPoint = alt;}
+    if (alt < data.sumlowestPoint) {data.sumlowestPoint = alt;}
+    if (alt > data.sumhighestPoint) {data.sumhighestPoint = alt;}
     
     NSString *distTotal;
     if (data.totalDistance < 0.1) {distTotal = [[NSString alloc] initWithFormat:@"%.0f m", (data.totalDistance)*1000];}

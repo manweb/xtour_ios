@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "XTFileUploader.h"
 #import "XTSummaryViewController.h"
+#import "XTNewsFeedViewController.h"
 
 @interface XTSettingsViewController : UIViewController
 {
     XTSummaryViewController *summary;
+    XTNewsFeedViewController *NewsFeed;
 }
 
 - (IBAction)GetFileList:(id)sender;
 - (IBAction)ShowSummary:(id)sender;
+- (IBAction)ShowNewsFeed:(id)sender;
 
 @end

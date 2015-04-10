@@ -51,4 +51,13 @@
     summary = nil;
 }
 
+- (IBAction)ShowNewsFeed:(id)sender {
+    if (!NewsFeed) {NewsFeed = [[XTNewsFeedViewController alloc] initWithNibName:nil bundle:nil];}
+    
+    [self presentViewController:NewsFeed animated:YES completion:nil];
+    [NewsFeed release];
+    
+    NewsFeed = nil;
+}
+
 @end

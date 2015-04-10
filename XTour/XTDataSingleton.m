@@ -38,6 +38,10 @@
     _sumDistance = 0.0;
     _sumAltitude = 0.0;
     _sumDescent = 0.0;
+    _lowestPoint = 1e6;
+    _highestPoint = -1e6;
+    _sumlowestPoint = 1e6;
+    _sumhighestPoint = -1e6;
     _DistanceRate = 0.0;
     _AltitudeRate = 0.0;
     _rateLastDistance = 0.0;
@@ -61,6 +65,8 @@
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
     _totalDescent = 0.0;
+    _lowestPoint = 1e6;
+    _highestPoint = -1e6;
     _startTime = 0;
     _endTime = 0;
     _timer = 0;
@@ -76,6 +82,10 @@
     _sumDistance = 0.0;
     _sumAltitude = 0.0;
     _sumDescent = 0.0;
+    _lowestPoint = 1e6;
+    _highestPoint = -1e6;
+    _sumlowestPoint = 1e6;
+    _sumhighestPoint = -1e6;
     _DistanceRate = 0.0;
     _AltitudeRate = 0.0;
     _rateLastDistance = 0.0;
@@ -250,6 +260,8 @@
         _totalDistance = _sumDistance;
         _totalAltitude = _sumAltitude;
         _totalDescent = _sumDescent;
+        _lowestPoint = _sumlowestPoint;
+        _highestPoint = _sumhighestPoint;
         _timer = _totalTime;
     }
     
@@ -262,6 +274,8 @@
     [xml SetMetadataDouble:_totalDistance forKey:@"TotalDistance" withPrecision:1];
     [xml SetMetadataDouble:_totalAltitude forKey:@"TotalAltitude" withPrecision:1];
     [xml SetMetadataDouble:_totalDescent forKey:@"TotalDescent" withPrecision:1];
+    [xml SetMetadataDouble:_lowestPoint forKey:@"LowestPoint" withPrecision:1];
+    [xml SetMetadataDouble:_highestPoint forKey:@"HighestPoint" withPrecision:1];
     [xml SetMetadataString:_country forKey:@"Country"];
     
     for (int i = 0; i < [_locationData count]; i++) {
@@ -298,6 +312,10 @@
     [xml SetMetadataDouble:_sumDistance forKey:@"SumDistance" withPrecision:1];
     [xml SetMetadataDouble:_sumAltitude forKey:@"SumAltitude" withPrecision:1];
     [xml SetMetadataDouble:_sumDescent forKey:@"SumDescent" withPrecision:1];
+    [xml SetMetadataDouble:_lowestPoint forKey:@"LowestPoint" withPrecision:1];
+    [xml SetMetadataDouble:_highestPoint forKey:@"HighestPoint" withPrecision:1];
+    [xml SetMetadataDouble:_sumlowestPoint forKey:@"SumLowestPoint" withPrecision:1];
+    [xml SetMetadataDouble:_sumhighestPoint forKey:@"SumHighestPoint" withPrecision:1];
     [xml SetMetadataString:[dateFormatter stringFromDate:_startTime] forKey:@"StartTime"];
     [xml SetMetadataString:[dateFormatter stringFromDate:_endTime] forKey:@"EndTime"];
     [xml SetMetadataString:[dateFormatter stringFromDate:_TotalStartTime] forKey:@"TotalStartTime"];
@@ -337,6 +355,10 @@
     _sumDistance = [[xml GetValueFromFile:@"SumDistance"] doubleValue];
     _sumAltitude = [[xml GetValueFromFile:@"SumAltitude"] doubleValue];
     _sumDescent = [[xml GetValueFromFile:@"SumDescent"] doubleValue];
+    _lowestPoint = [[xml GetValueFromFile:@"LowestPoint"] doubleValue];
+    _highestPoint = [[xml GetValueFromFile:@"HighestPoint"] doubleValue];
+    _sumlowestPoint = [[xml GetValueFromFile:@"SumLowestPoint"] doubleValue];
+    _sumhighestPoint = [[xml GetValueFromFile:@"SumHighestPoint"] doubleValue];
     _upCount = [[xml GetValueFromFile:@"UpCount"] integerValue];
     _downCount = [[xml GetValueFromFile:@"DownCount"] integerValue];
     _photoCount = [[xml GetValueFromFile:@"PhotoCount"] integerValue];

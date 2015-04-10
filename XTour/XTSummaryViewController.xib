@@ -44,13 +44,13 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clock_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="zWM-dy-QHk">
                     <rect key="frame" x="8" y="330" width="40" height="40"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="altitude_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="SuO-V5-6ZF">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="distance_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="SuO-V5-6ZF">
                     <rect key="frame" x="160" y="330" width="40" height="40"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="skier_up_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="I7U-28-kgo">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="skier_up_icon_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="I7U-28-kgo">
                     <rect key="frame" x="8" y="390" width="40" height="40"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="skier_down_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Wqg-js-nHk">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="skier_down_icon_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="Wqg-js-nHk">
                     <rect key="frame" x="160" y="390" width="40" height="40"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Pn-Fi-IN0">
@@ -82,11 +82,11 @@
         </view>
     </objects>
     <resources>
-        <image name="altitude_icon.png" width="1000" height="1000"/>
         <image name="arrow_back.png" width="500" height="400"/>
         <image name="clock_icon.png" width="1000" height="1000"/>
-        <image name="skier_down_icon.png" width="1000" height="1000"/>
-        <image name="skier_up_icon.png" width="1000" height="1000"/>
+        <image name="distance_icon.png" width="1000" height="1000"/>
+        <image name="skier_down_icon_2.png" width="1000" height="1000"/>
+        <image name="skier_up_icon_2.png" width="1000" height="1000"/>
         <image name="xtour_header.png" width="320" height="70"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
