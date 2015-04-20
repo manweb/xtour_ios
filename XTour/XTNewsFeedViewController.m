@@ -2,7 +2,7 @@
 //  XTNewsFeedViewController.m
 //  XTour
 //
-//  Created by Manuel Weber on 07/04/15.
+//  Created by Manuel Weber on 16/04/15.
 //  Copyright (c) 2015 Manuel Weber. All rights reserved.
 //
 
@@ -14,7 +14,7 @@
 
 @implementation XTNewsFeedViewController
 
-static NSString * const reuseIdentifier = @"NewsFeedCell";
+static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,58 +23,32 @@ static NSString * const reuseIdentifier = @"NewsFeedCell";
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Register cell classes
-    //[self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[XTNewsFeedCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     // Do any additional setup after loading the view.
+    [self.collectionView setBackgroundColor:[UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f]];
+    
     ServerHandler = [[XTServerRequestHandler alloc] init];
+    
+    self.collectionView.alwaysBounceVertical = YES;
+    
+    if (refreshControl == nil) {
+        refreshControl = [[UIRefreshControl alloc] init];
+    }
+    [refreshControl addTarget:self action:@selector(refreshNewsFeed) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:refreshControl];
+    
+    [refreshControl beginRefreshing];
     
     dispatch_queue_t fetch = dispatch_queue_create("fetchQueue", NULL);
     
     dispatch_async(fetch, ^{
-        //UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        //activityView.tag = 15;
-        
-        //activityView.center = self.view.center;
-        
-        //[activityView startAnimating];
-        
-        //[self.view addSubview:activityView];
-        
-        CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
-        UIView *loadingView = [[UIView alloc] initWithFrame:applicationFrame];
-        loadingView.backgroundColor = [UIColor blackColor];
-        loadingView.alpha = 0.8;
-        loadingView.tag = 15;
-        
-        UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        
-        activityView.center = loadingView.center;
-        [loadingView addSubview:activityView];
-        [activityView startAnimating];
-        
-        UILabel *loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(applicationFrame.size.width/2, applicationFrame.size.height/2+50, 100, 20)];
-        [loadingLabel setText:@"fetching data..."];
-        [loadingLabel setTextColor:[UIColor whiteColor]];
-        [loadingView addSubview:loadingLabel];
-        
-        [self.view addSubview:loadingView];
-        
         self.news_feed = [ServerHandler GetNewsFeedString:10];
         
-        self.profile_pictures = [[NSMutableArray alloc] init];
-        for (NSString *feed in self.news_feed) {
-            NSString *url = [[feed componentsSeparatedByString:@","] objectAtIndex:3];
-            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-            UIImage *image = [UIImage imageWithData:imageData];
-            
-            [self.profile_pictures addObject:image];
-        }
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"finished with loading projects");
-            UIView *viewToRemove = [self.view viewWithTag:15];
-            [viewToRemove removeFromSuperview];
             [self.collectionView reloadData];
+            
+            [refreshControl endRefreshing];
         });
     });
     
@@ -102,37 +76,70 @@ static NSString * const reuseIdentifier = @"NewsFeedCell";
     return 1;
 }
 
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [self.news_feed count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    XTNewsFeedCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     // Configure the cell
-    UIImageView *cellImageView = (UIImageView *)[cell viewWithTag:100];
-    UILabel *title = (UILabel *)[cell viewWithTag:101];
-    UILabel *time = (UILabel *)[cell viewWithTag:102];
-    UILabel *altitude = (UILabel *)[cell viewWithTag:103];
-    UILabel *distance = (UILabel *)[cell viewWithTag:104];
-    
-    NSLog(@"row: %li number of feeds: %lu",(long)indexPath.row,(unsigned long)[self.news_feed count]);
+    cell.backgroundColor = [UIColor whiteColor];
     
     NSString *currentElement = [self.news_feed objectAtIndex:indexPath.row];
     NSArray *element = [currentElement componentsSeparatedByString:@","];
     NSMutableArray *elements = [NSMutableArray arrayWithArray:element];
     [elements removeLastObject];
     
-    //NSString *url = [elements objectAtIndex:3];
-    //NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-    cellImageView.image = [self.profile_pictures objectAtIndex:indexPath.row];
+    NSInteger timestamp = [[elements objectAtIndex:4] integerValue];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd.MM.yyyy"];
+    NSString *formattedDate = [formatter stringFromDate:date];
     
-    title.text = [NSString stringWithFormat:@"%@ am %@",[elements objectAtIndex:2], [elements objectAtIndex:4]];
-    time.text = [NSString stringWithFormat:@"%@", [elements objectAtIndex:5]];
-    altitude.text = [NSString stringWithFormat:@"%@ m", [elements objectAtIndex:6]];
-    distance.text = [NSString stringWithFormat:@"%@ km", [elements objectAtIndex:7]];
+    NSInteger tm = [[elements objectAtIndex:5] integerValue];
+    
+    NSString *TimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
+                            lround(floor(tm / 3600.)) % 100,
+                            lround(floor(tm / 60.)) % 60,
+                            lround(floor(tm)) % 60];
+    
+    [cell.profilePicture setImageWithURL:[elements objectAtIndex:3] placeholderImage:[UIImage imageNamed:@"profile_icon_gray.png"]];
+    
+    cell.title.text = [NSString stringWithFormat:@"%@ am %@",[elements objectAtIndex:2], formattedDate];
+    cell.time.text = TimeString;
+    cell.altitude.text = [NSString stringWithFormat:@"%.1f m", [[elements objectAtIndex:6] doubleValue]];
+    cell.distance.text = [NSString stringWithFormat:@"%.2f km", [[elements objectAtIndex:7] doubleValue]];
     
     return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(300, 100);
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(10, 0, 10, 0);
+}
+
+- (void) refreshNewsFeed
+{
+    dispatch_queue_t fetch = dispatch_queue_create("fetchQueue", NULL);
+    
+    dispatch_async(fetch, ^{
+        self.news_feed = [ServerHandler GetNewsFeedString:10];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
+            
+            [refreshControl endRefreshing];
+        });
+    });
+    
+    dispatch_release(fetch);
 }
 
 #pragma mark <UICollectionViewDelegate>

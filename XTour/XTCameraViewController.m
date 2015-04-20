@@ -34,7 +34,7 @@
     
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
-    _ImageArray = [[NSMutableArray alloc] init];
+    self.ImageArray = [[NSMutableArray alloc] init];
     /*for (int i = 0; i < 16; i++) {
         NSString *imgName = [[NSString alloc] initWithFormat:@"/tours/images/image%i.jpg", i+1];
         NSString *ImagePath = [documentsDirectory stringByAppendingString:imgName];
@@ -72,7 +72,7 @@
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     }
     
-    [self.collectionView reloadData];
+    //[self.collectionView reloadData];
 }
 
 - (void) LoadCamera:(id)sender
@@ -120,7 +120,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [_ImageArray count];
+    return [self.ImageArray count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -128,8 +128,8 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     
     UIImageView *cellImageView = (UIImageView *)[cell viewWithTag:100];
-    NSLog(@"Setting image: %@",[_ImageArray objectAtIndex:indexPath.row]);
-    UIImage *currentImage = [UIImage imageWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
+    NSLog(@"Setting image: %@",[self.ImageArray objectAtIndex:indexPath.row]);
+    UIImage *currentImage = [UIImage imageWithContentsOfFile:[self.ImageArray objectAtIndex:indexPath.row]];
     UIImage *subImg = [self GetSquareSubImage:currentImage];
     cellImageView.image = subImg;
     
@@ -144,7 +144,7 @@
     _cellRect = attributes.frame;
     
     if (!_selectedImageView) {_selectedImageView = [[UIImageView alloc] initWithFrame:_cellRect];}
-    UIImage *selectedImage = [[UIImage alloc] initWithContentsOfFile:[_ImageArray objectAtIndex:indexPath.row]];
+    UIImage *selectedImage = [[UIImage alloc] initWithContentsOfFile:[self.ImageArray objectAtIndex:indexPath.row]];
     
     _selectedImageView.image = selectedImage;
     
@@ -211,6 +211,7 @@
     
     CGImageRef newImage = CGImageCreateWithImageInRect(image.CGImage, subImgRect);
     UIImage *subImg = [UIImage imageWithCGImage:newImage scale:1 orientation:image.imageOrientation];
+    CGImageRelease(newImage);
     
     return subImg;
 }
@@ -242,35 +243,45 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
     NSLog(@"New image");
     UIImage *pickedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    NSData *ImageData = UIImageJPEGRepresentation(pickedImage, 0.9);
     
-    float imgHeight = pickedImage.size.height;
-    float imgWidth = pickedImage.size.width;
+    if (!pickedImage) {return;}
     
-    float newImgHeight = 0.;
-    float newImgWidth = 0.;
-    if (imgHeight > imgWidth) {newImgHeight = 400.; newImgWidth = ceilf(imgWidth/imgHeight*400.);}
-    else {newImgWidth = 400.; newImgHeight = ceilf(imgHeight/imgWidth*400.);}
-    
-    CGRect rect = CGRectMake(0,0,newImgWidth,newImgHeight);
-    UIGraphicsBeginImageContext(rect.size);
-    [pickedImage drawInRect:rect];
-    UIImage *newImg= UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    NSData *imageResizedData = UIImageJPEGRepresentation(newImg, 0.9);
-    
-    NSString *newImageName = [data GetNewPhotoName];
-    NSString *newImageNameOriginal = [newImageName stringByReplacingOccurrencesOfString:@".jpg" withString:@"_original.jpg"];
-    
-    NSLog(@"New image saved at %@",newImageName);
-    [_ImageArray addObject:newImageNameOriginal];
-    
-    [ImageData writeToFile:newImageNameOriginal atomically:YES];
-    [imageResizedData writeToFile:newImageName atomically:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        float imgHeight = pickedImage.size.height;
+        float imgWidth = pickedImage.size.width;
+        
+        float newImgHeight = 0.;
+        float newImgWidth = 0.;
+        if (imgHeight > imgWidth) {newImgHeight = 1024.; newImgWidth = ceilf(imgWidth/imgHeight*1024.);}
+        else {newImgWidth = 1024.; newImgHeight = ceilf(imgHeight/imgWidth*1024.);}
+        
+        CGRect rect = CGRectMake(0,0,newImgWidth,newImgHeight);
+        UIGraphicsBeginImageContext(rect.size);
+        [pickedImage drawInRect:rect];
+        UIImage *newImg= UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        NSString *newImageName = [data GetNewPhotoName];
+        NSString *newImageNameOriginal = [newImageName stringByReplacingOccurrencesOfString:@".jpg" withString:@"_original.jpg"];
+        
+        NSLog(@"Resizing image %@...",newImageName);
+        
+        NSData *ImageData = UIImageJPEGRepresentation(pickedImage, 0.9);
+        NSData *imageResizedData = UIImageJPEGRepresentation(newImg, 0.9);
+        
+        [ImageData writeToFile:newImageNameOriginal atomically:YES];
+        [imageResizedData writeToFile:newImageName atomically:YES];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Done");
+            [self.ImageArray addObject:newImageNameOriginal];
+            [self.collectionView reloadData];
+        });
+    });
 }
 
 - (void) LoadImagesForCurrentTour

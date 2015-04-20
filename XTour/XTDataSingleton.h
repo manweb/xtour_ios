@@ -42,6 +42,7 @@
 @property(nonatomic) NSInteger downCount;
 @property(nonatomic,retain) NSString *country;
 @property(nonatomic) NSInteger photoCount;
+@property(nonatomic) NSInteger lastRunIndex;
 
 + (XTDataSingleton *) singleObj;
 

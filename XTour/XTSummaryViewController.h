@@ -15,11 +15,11 @@
 @interface XTSummaryViewController : UIViewController
 {
     XTDataSingleton *data;
+    GMSMapView *mapView;
 }
 
 - (IBAction)Close;
 - (IBAction)Back:(id)sender;
-@property (retain, nonatomic) GMSMapView *mapView;
 @property (retain, nonatomic) IBOutlet UILabel *TimeLabel;
 @property (retain, nonatomic) IBOutlet UILabel *AltitudeLabel;
 @property (retain, nonatomic) IBOutlet UILabel *UpLabel;

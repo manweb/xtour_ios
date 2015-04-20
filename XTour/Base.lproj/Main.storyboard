@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8YX-ce-x5E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8YX-ce-x5E">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
         <!--First-->
@@ -289,10 +289,10 @@
             </objects>
             <point key="canvasLocation" x="-2627" y="1551"/>
         </scene>
-        <!--Warnings-->
+        <!--More-->
         <scene sceneID="YHB-CF-zcx">
             <objects>
-                <viewController title="Warnings" id="35g-tW-ucu" customClass="XTWarnigsViewController" sceneMemberID="viewController">
+                <viewController title="More" id="35g-tW-ucu" customClass="XTMoreViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uYY-LM-wws"/>
                         <viewControllerLayoutGuide type="bottom" id="SXb-gp-QWl"/>
@@ -301,14 +301,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="UU3-BF-cuD">
-                                <rect key="frame" x="0.0" y="70" width="320" height="449"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="35g-tW-ucu" id="07Y-36-Hyh"/>
-                                    <outlet property="delegate" destination="35g-tW-ucu" id="gXP-1m-B0K"/>
-                                </connections>
-                            </tableView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="xtour_header.png" translatesAutoresizingMaskIntoConstraints="NO" id="bpT-gL-tRI">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                             </imageView>
@@ -318,15 +310,34 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="LoadLogin:" destination="35g-tW-ucu" eventType="touchUpInside" id="1zg-2G-zgo"/>
                                     <action selector="loadLogin:" destination="35g-tW-ucu" eventType="touchUpInside" id="AHW-Id-EuE"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UWp-II-nET">
+                                <rect key="frame" x="16" y="30" width="40" height="30"/>
+                                <state key="normal" image="arrow_back.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="back:" destination="35g-tW-ucu" eventType="touchUpInside" id="wwk-O6-ixV"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tuR-dr-b3F">
+                                <rect key="frame" x="0.0" y="70" width="326" height="449"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="35g-tW-ucu" id="o5u-eK-PSm"/>
+                                    <outlet property="delegate" destination="35g-tW-ucu" id="wsW-Eq-jXj"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Warnings" image="warning_icon.png" badgeValue="2" id="Bwp-NI-PEX"/>
+                    <tabBarItem key="tabBarItem" title="More" image="more_icon.png" id="Bwp-NI-PEX"/>
                     <connections>
-                        <outlet property="loginButton" destination="33W-fV-SHT" id="MLN-eZ-NYA"/>
+                        <outlet property="backButton" destination="UWp-II-nET" id="Bwz-Wz-Xme"/>
+                        <outlet property="loginButton" destination="33W-fV-SHT" id="BSK-ao-snp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ja8-YT-aLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -380,81 +391,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VPy-Sp-XQ1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2627" y="2261"/>
-        </scene>
-        <!--News Feed View Controller-->
-        <scene sceneID="eMX-At-0BD">
-            <objects>
-                <collectionViewController id="i9e-DS-eMJ" customClass="XTNewsFeedViewController" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="0oX-LN-CRG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fLG-Md-8PH">
-                            <size key="itemSize" width="300" height="100"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="80" maxX="0.0" maxY="50"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NewsFeedCell" id="Fq1-Yx-lry">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="100"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jIt-A1-sYF">
-                                            <rect key="frame" x="5" y="15" width="50" height="50"/>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DhX-s5-A03">
-                                            <rect key="frame" x="5" y="0.0" width="232" height="15"/>
-                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
-                                            <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clock_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Sp9-7a-nCY">
-                                            <rect key="frame" x="60" y="15" width="30" height="30"/>
-                                        </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="altitude_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="IUk-bg-uh7">
-                                            <rect key="frame" x="120" y="15" width="30" height="30"/>
-                                        </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="skier_up_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="KFO-lt-yrY">
-                                            <rect key="frame" x="180" y="15" width="30" height="30"/>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nYh-z4-n0p">
-                                            <rect key="frame" x="60" y="45" width="50" height="15"/>
-                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="103" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1QR-w7-bE2">
-                                            <rect key="frame" x="120" y="45" width="50" height="15"/>
-                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hHj-t2-lim">
-                                            <rect key="frame" x="180" y="45" width="50" height="15"/>
-                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="i9e-DS-eMJ" id="bKh-uA-cEV"/>
-                            <outlet property="delegate" destination="i9e-DS-eMJ" id="FcF-np-UYS"/>
-                        </connections>
-                    </collectionView>
-                    <tabBarItem key="tabBarItem" systemItem="history" id="mUG-0K-BXk"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hcl-FF-lRC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2257" y="2260"/>
         </scene>
         <!--Second-->
         <scene sceneID="ot8-2e-RuS">
@@ -521,9 +457,8 @@
                         <segue destination="CZ4-MO-1fc" kind="relationship" relationship="viewControllers" id="SUk-Ux-ee1"/>
                         <segue destination="QUy-BD-bpt" kind="relationship" relationship="viewControllers" id="M8t-EP-wfW"/>
                         <segue destination="mt3-FC-beg" kind="relationship" relationship="viewControllers" id="cSO-XM-5oU"/>
-                        <segue destination="35g-tW-ucu" kind="relationship" relationship="viewControllers" id="OmY-nL-G6s"/>
                         <segue destination="kRN-1r-Lnn" kind="relationship" relationship="viewControllers" id="n5r-2P-mhU"/>
-                        <segue destination="i9e-DS-eMJ" kind="relationship" relationship="viewControllers" id="VBB-Gj-KIi"/>
+                        <segue destination="35g-tW-ucu" kind="relationship" relationship="viewControllers" id="OmY-nL-G6s"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNP-y4-bzi" sceneMemberID="firstResponder"/>
@@ -534,6 +469,7 @@
     <resources>
         <image name="GPS_none.png" width="550" height="550"/>
         <image name="altitude_icon.png" width="1000" height="1000"/>
+        <image name="arrow_back.png" width="500" height="400"/>
         <image name="camera.png" width="26" height="26"/>
         <image name="clock_icon.png" width="1000" height="1000"/>
         <image name="cog_01.png" width="26" height="26"/>
@@ -543,12 +479,12 @@
         <image name="item_background_40.png" width="300" height="60"/>
         <image name="item_background_40_half.png" width="300" height="60"/>
         <image name="item_background_60.png" width="300" height="80"/>
+        <image name="more_icon.png" width="26" height="26"/>
         <image name="pause_button.png" width="1200" height="1200"/>
         <image name="profile_icon.png" width="530" height="530"/>
         <image name="skier_down_button.png" width="1200" height="1200"/>
         <image name="skier_up_button.png" width="1200" height="1200"/>
         <image name="skier_up_icon.png" width="1000" height="1000"/>
-        <image name="warning_icon.png" width="26" height="26"/>
         <image name="xtour_header.png" width="320" height="70"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

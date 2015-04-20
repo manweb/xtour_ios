@@ -1,18 +1,18 @@
 //
-//  XTWarnigsViewController.m
+//  XTMoreViewController.m
 //  XTour
 //
-//  Created by Manuel Weber on 22/02/14.
-//  Copyright (c) 2014 Manuel Weber. All rights reserved.
+//  Created by Manuel Weber on 19/04/15.
+//  Copyright (c) 2015 Manuel Weber. All rights reserved.
 //
 
-#import "XTWarnigsViewController.h"
+#import "XTMoreViewController.h"
 
-@interface XTWarnigsViewController ()
+@interface XTMoreViewController ()
 
 @end
 
-@implementation XTWarnigsViewController
+@implementation XTMoreViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -26,15 +26,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     
     data = [XTDataSingleton singleObj];
     
     //_listOfFiles = [data GetAllImages];
     
     _listOfFiles = [[NSMutableArray alloc] init];
-    [_listOfFiles addObject:@"Test1"];
-    [_listOfFiles addObject:@"Test2"];
+    [_listOfFiles addObject:@"Profile"];
+    [_listOfFiles addObject:@"Settings"];
+    [_listOfFiles addObject:@"News feed"];
+    
+    _listOfIcons = [[NSMutableArray alloc] init];
+    [_listOfIcons addObject:@"profile_icon_small@3x.png"];
+    [_listOfIcons addObject:@"settings_icon@3x.png"];
+    [_listOfIcons addObject:@"news_feed_icon@3x.png"];
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
@@ -61,8 +67,6 @@
     else {
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     }
-
-    [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", [_listOfFiles count]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,15 +88,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TableCell"];
     }
     
-    // Get filename
-    NSString *currentFile = [_listOfFiles objectAtIndex:indexPath.row];
-    NSArray *parts = [currentFile componentsSeparatedByString:@"/"];
-    NSString *fname = [parts lastObject];
-    
-    cell.textLabel.text = fname;
-    if ([[fname pathExtension] isEqualToString:@"jpg"]) {
-        cell.imageView.image = [UIImage imageNamed:currentFile];
-    }
+    cell.textLabel.text = [_listOfFiles objectAtIndex:indexPath.row];
+    cell.imageView.image = [UIImage imageNamed:[_listOfIcons objectAtIndex:indexPath.row]];
     
     return cell;
 }
@@ -129,6 +126,18 @@
         }
             
             break;
+        case 2:
+        {
+            UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+            [layout setItemSize:CGSizeMake(300, 100)];
+            collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
+            collection.view.frame = CGRectMake(screenBound.size.width, 70, screenBound.size.width, screenBound.size.height-70-tabBarHeight);
+            
+            [self.view addSubview:collection.view];
+            
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {collection.view.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);} completion:^(bool finished) {[_backButton setHidden:NO];}];
+        }
+            break;
     }
     
     //[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_detailView.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);} completion:^(bool finished) {[_backButton setHidden:NO];}];
@@ -156,6 +165,10 @@
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_detailView.frame = CGRectMake(2*width, 70, width, height-70-tabBarHeight);} completion:NULL];
+    
+    if (collection.view.frame.origin.x == 0) {
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {collection.view.frame = CGRectMake(2*width, 70, width, height-70-tabBarHeight);} completion:NULL];
+    }
     
     for (UIView *view in _detailView.subviews) {
         [view removeFromSuperview];

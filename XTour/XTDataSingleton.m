@@ -57,11 +57,12 @@
     _upCount = 0;
     _downCount = 0;
     _photoCount = 0;
+    _lastRunIndex = 0;
 }
 
 - (void) ResetDataForNewRun
 {
-    [_locationData removeAllObjects];
+    //[_locationData removeAllObjects];
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
     _totalDescent = 0.0;
@@ -70,6 +71,7 @@
     _startTime = 0;
     _endTime = 0;
     _timer = 0;
+    _lastRunIndex = [_locationData count];
 }
 
 - (void) ResetAll
@@ -100,6 +102,7 @@
     _upCount = 0;
     _downCount = 0;
     _photoCount = 0;
+    _lastRunIndex = 0;
 }
 
 - (void) AddCoordinate:(CLLocation *)p
@@ -263,6 +266,7 @@
         _lowestPoint = _sumlowestPoint;
         _highestPoint = _sumhighestPoint;
         _timer = _totalTime;
+        _lastRunIndex = 0;
     }
     
     [xml SetMetadataString:_userID forKey:@"userid"];
@@ -278,13 +282,13 @@
     [xml SetMetadataDouble:_highestPoint forKey:@"HighestPoint" withPrecision:1];
     [xml SetMetadataString:_country forKey:@"Country"];
     
-    for (int i = 0; i < [_locationData count]; i++) {
+    for (int i = _lastRunIndex; i < [_locationData count]; i++) {
         [xml AddTrackpoint:[_locationData objectAtIndex:i]];
     }
     
-    if ([category isEqualToString:@"sum"]) {
+    /*if ([category isEqualToString:@"sum"]) {
         [xml AddTrackpoint:_StartLocation];
-    }
+    }*/
     
     NSInteger count;
     if ([category isEqualToString:@"up"]) {count = _upCount;}
@@ -323,6 +327,7 @@
     [xml SetMetadataDouble:_upCount forKey:@"UpCount" withPrecision:0];
     [xml SetMetadataDouble:_downCount forKey:@"DownCount" withPrecision:0];
     [xml SetMetadataDouble:_photoCount forKey:@"PhotoCount" withPrecision:0];
+    [xml SetMetadataDouble:_lastRunIndex forKey:@"LastRunIndex" withPrecision:0];
     [xml SetMetadataDouble:_StartLocation.coordinate.latitude forKey:@"StartLocationLat" withPrecision:5];
     [xml SetMetadataDouble:_StartLocation.coordinate.longitude forKey:@"StartLocationLon" withPrecision:5];
     [xml SetMetadataDouble:_StartLocation.altitude forKey:@"StartLocationAltitude" withPrecision:1];
@@ -362,6 +367,7 @@
     _upCount = [[xml GetValueFromFile:@"UpCount"] integerValue];
     _downCount = [[xml GetValueFromFile:@"DownCount"] integerValue];
     _photoCount = [[xml GetValueFromFile:@"PhotoCount"] integerValue];
+    _lastRunIndex = [[xml GetValueFromFile:@"LastRunIndex"] integerValue];
     
     NSString *StartTime = [xml GetValueFromFile:@"StartTime"];
     NSString *EndTime = [xml GetValueFromFile:@"EndTime"];

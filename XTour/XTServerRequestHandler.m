@@ -30,6 +30,8 @@
     }
     else {
         NSLog(@"There was a problem retrieving the news feed");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
     }
     
     return news_feeds;

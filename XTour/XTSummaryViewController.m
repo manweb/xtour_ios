@@ -29,9 +29,9 @@
     data = [XTDataSingleton singleObj];
     
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
-    _mapView = [GMSMapView mapWithFrame:CGRectMake(0, 70, 320, 250) camera:camera];
+    if (!mapView) {mapView = [GMSMapView mapWithFrame:CGRectMake(0, 70, 320, 250) camera:camera];}
     
-    [self.view addSubview:_mapView];
+    [self.view addSubview:mapView];
     
     NSMutableArray *GPXFiles = [data GetGPXFilesForCurrentTour];
     
@@ -64,7 +64,7 @@
     for (int i = 0; i < [GPXFiles count]; i++) {
         GMSPolyline *currentPolyline = [polylines objectAtIndex:i];
         
-        currentPolyline.map = _mapView;
+        currentPolyline.map = mapView;
     }
     
     NSString *TimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
@@ -73,9 +73,9 @@
                                    lround(floor(data.totalTime)) % 60];
     
     [_TimeLabel setText:TimeString];
-    [_AltitudeLabel setText:[NSString stringWithFormat:@"%f.1 m",data.sumDistance]];
-    [_UpLabel setText:[NSString stringWithFormat:@"%f.1 m",data.sumAltitude]];
-    [_DownLabel setText:[NSString stringWithFormat:@"%f.1 m",data.sumDescent]];
+    [_AltitudeLabel setText:[NSString stringWithFormat:@"%.1f m",data.sumDistance]];
+    [_UpLabel setText:[NSString stringWithFormat:@"%.1f m",data.sumAltitude]];
+    [_DownLabel setText:[NSString stringWithFormat:@"%.1f m",data.sumDescent]];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -102,7 +102,6 @@
 }
 
 - (void)dealloc {
-    [_mapView release];
     [_TimeLabel release];
     [_AltitudeLabel release];
     [_UpLabel release];
