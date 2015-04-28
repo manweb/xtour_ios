@@ -128,14 +128,19 @@
             break;
         case 2:
         {
+            navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
+            navigationView.view.frame = CGRectMake(2*width, 0, width, height);
+            
+            [[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
+            
             UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
             [layout setItemSize:CGSizeMake(300, 100)];
             collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
-            collection.view.frame = CGRectMake(screenBound.size.width, 70, screenBound.size.width, screenBound.size.height-70-tabBarHeight);
+            collection.view.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);
             
-            [self.view addSubview:collection.view];
+            [navigationView.view addSubview:collection.view];
             
-            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {collection.view.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);} completion:^(bool finished) {[_backButton setHidden:NO];}];
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height);} completion:^(bool finished) {[navigationView.backButton setHidden:NO];}];
         }
             break;
     }

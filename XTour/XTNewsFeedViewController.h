@@ -10,11 +10,13 @@
 #import "XTServerRequestHandler.h"
 #import "XTNewsFeedCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "XTNavigationViewContainer.h"
 
 @interface XTNewsFeedViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 {
     XTServerRequestHandler *ServerHandler;
     UIRefreshControl *refreshControl;
+    XTNavigationViewContainer *navigationView;
 }
 
 @property (nonatomic,retain) NSMutableArray *news_feed;

@@ -11,7 +11,7 @@
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
 
-@interface XTMapViewController : UIViewController
+@interface XTMapViewController : UIViewController <GMSMapViewDelegate>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
@@ -21,11 +21,14 @@
 @property (retain, nonatomic) NSTimer *pollingTimer;
 @property (retain, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;
+@property (retain, nonatomic) IBOutlet UIButton *centerButton;
 @property (retain, nonatomic) GMSMapView *mapView;
 @property (retain, nonatomic) GMSMutablePath *path;
 @property (retain, nonatomic) GMSPolyline *polyline;
 @property (retain, nonatomic) GMSCameraUpdate *cameraUpdate;
+@property (nonatomic) bool mapHasMoved;
 
 - (IBAction)LoadLogin:(id)sender;
+- (IBAction)centerMap:(id)sender;
 
 @end

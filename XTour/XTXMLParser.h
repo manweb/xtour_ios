@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "GDataXMLNode.h"
 #import <CoreLocation/CoreLocation.h>
+#import "XTImageInfo.h"
 
 @interface XTXMLParser : NSObject {
     
@@ -17,6 +18,7 @@
 @property(nonatomic,retain) GDataXMLDocument *RecoveredData;
 @property(nonatomic,retain) GDataXMLElement *Metadata;
 @property(nonatomic,retain) GDataXMLElement *TrackSegment;
+@property(nonatomic,retain) GDataXMLElement *Images;
 @property(nonatomic,retain) NSDateFormatter *formatter;
 
 - (void) SetMetadataString:(NSString *)value forKey:(NSString *)key;
@@ -29,5 +31,7 @@
 - (void) ReadGPXFile:(NSString *)filename;
 - (NSString *)GetValueFromFile:(NSString *)element;
 - (NSMutableArray *)GetLocationDataFromFile;
+- (void) AddImageInfo:(XTImageInfo *)imageInfo;
+- (void) SaveImageInfo:(NSString *)filename;
 
 @end

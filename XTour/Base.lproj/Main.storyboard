@@ -271,7 +271,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Chh-RC-okU">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -428,12 +428,23 @@
                                     <action selector="LoadLogin:" destination="QUy-BD-bpt" eventType="touchUpInside" id="Rbw-Wo-kux"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k8c-C3-hsJ">
+                                <rect key="frame" x="110" y="481" width="100" height="30"/>
+                                <state key="normal" title="Center map">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="centerMap:" destination="QUy-BD-bpt" eventType="touchUpInside" id="WKk-xj-AJ6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="globe.png" id="Z7h-1E-pvt"/>
                     <connections>
                         <outlet property="LoginButton" destination="GPs-u1-yKw" id="DGD-Hu-ffW"/>
+                        <outlet property="centerButton" destination="k8c-C3-hsJ" id="bLM-hh-moh"/>
                         <outlet property="distanceLabel" destination="AaD-Jf-fNU" id="839-Ye-lWS"/>
                         <outlet property="loginButton" destination="GPs-u1-yKw" id="bMo-8C-prf"/>
                         <outlet property="timerLabel" destination="dW7-M9-jzC" id="MnY-OX-OhM"/>

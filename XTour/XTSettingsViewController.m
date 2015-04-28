@@ -40,6 +40,7 @@
     
     [uploader UploadGPXFiles];
     [uploader UploadImages];
+    [uploader UploadImageInfo];
 }
 
 - (IBAction)ShowSummary:(id)sender {

@@ -34,7 +34,7 @@
     
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
-    self.ImageArray = [[NSMutableArray alloc] init];
+    //self.ImageArray = [[NSMutableArray alloc] init];
     /*for (int i = 0; i < 16; i++) {
         NSString *imgName = [[NSString alloc] initWithFormat:@"/tours/images/image%i.jpg", i+1];
         NSString *ImagePath = [documentsDirectory stringByAppendingString:imgName];
@@ -120,18 +120,21 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.ImageArray count];
+    return [data GetNumImages];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     
+    NSString *imageName = [data GetImageFilenameAt:indexPath.row];
+    
     UIImageView *cellImageView = (UIImageView *)[cell viewWithTag:100];
-    NSLog(@"Setting image: %@",[self.ImageArray objectAtIndex:indexPath.row]);
-    UIImage *currentImage = [UIImage imageWithContentsOfFile:[self.ImageArray objectAtIndex:indexPath.row]];
-    UIImage *subImg = [self GetSquareSubImage:currentImage];
-    cellImageView.image = subImg;
+    NSLog(@"Setting image: %@",imageName);
+    UIImage *currentImage = [UIImage imageWithContentsOfFile:imageName];
+    
+    cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+    cellImageView.image = currentImage;
     
     return cell;
 }
@@ -143,9 +146,13 @@
     UICollectionViewLayoutAttributes *attributes = [collectionView layoutAttributesForItemAtIndexPath:indexPath];
     _cellRect = attributes.frame;
     
-    if (!_selectedImageView) {_selectedImageView = [[UIImageView alloc] initWithFrame:_cellRect];}
-    UIImage *selectedImage = [[UIImage alloc] initWithContentsOfFile:[self.ImageArray objectAtIndex:indexPath.row]];
+    NSString *imageName = [data GetImageFilenameAt:indexPath.row];
     
+    if (!_selectedImageView) {_selectedImageView = [[UIImageView alloc] initWithFrame:_cellRect];}
+    UIImage *selectedImage = [UIImage imageWithContentsOfFile:imageName];
+    
+    _selectedImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _selectedImageView.clipsToBounds = true;
     _selectedImageView.image = selectedImage;
     
     //[self.view addSubview:_selectedImageView];
@@ -164,19 +171,90 @@
     CGFloat yOffset = (screenHeight - 70 - tabBarHeight)/2. - fullHeight/2. + 70;
     CGFloat xOffset = 0;
     
-    UIColor *bgColorSolid = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.9];
+    UIColor *bgColorSolid = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:1.0];
     UIColor *bgColorOpaque = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0];
     
     if (!_background) {
-        CGRect bgRect = CGRectMake(0, 70, screenWidth, screenHeight - 70);
+        CGRect bgRect = CGRectMake(0, 0, screenWidth, screenHeight + tabBarHeight);
         _background = [[UIImageView alloc] initWithFrame:bgRect];
         _background.backgroundColor = bgColorOpaque;
     }
     
-    [self.view addSubview:_background];
-    [self.view addSubview:_selectedImageView];
+    NSString *imageLongitude = [data GetImageLongitudeStringAt:indexPath.row];
+    NSString *imageLatitude = [data GetImageLatitudeStringAt:indexPath.row];
+    float imageElevation = [data GetImageElevationAt:indexPath.row];
+    NSString *imageComment = [data GetImageCommentAt:indexPath.row];
+    NSDate *imageDate = [data GetImageDateAt:indexPath.row];
     
-    [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_selectedImageView.frame = CGRectMake(xOffset, yOffset, fullWidth, fullHeight); _background.backgroundColor = bgColorSolid;} completion:NULL];
+    if (!_compassImage) {
+        _compassImage = [[UIImageView alloc] initWithFrame:CGRectMake(10, yOffset-45, 40, 40)];
+        _compassImage.image = [UIImage imageNamed:@"compass_icon_white.png"];
+    }
+    
+    if (!_imgLongitudeLabel) {
+        _imgLongitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, yOffset-45, 100, 20)];
+        _imgLongitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
+        _imgLongitudeLabel.textColor = [UIColor whiteColor];
+    }
+    
+    if (!_imgLatitudeLabel) {
+        _imgLatitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, yOffset-25, 100, 20)];
+        _imgLatitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
+        _imgLatitudeLabel.textColor = [UIColor whiteColor];
+    }
+    
+    if (!_imgElevationLabel) {
+        _imgElevationLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, yOffset-35, 50, 20)];
+        _imgElevationLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
+        _imgElevationLabel.textColor = [UIColor whiteColor];
+    }
+    
+    if (imageLongitude) {_imgLongitudeLabel.text = imageLongitude;}
+    else {_imgLongitudeLabel.text = @"";}
+    
+    if (imageLatitude) {_imgLatitudeLabel.text = imageLatitude;}
+    else {_imgLatitudeLabel.text = @"";}
+    
+    if (imageElevation) {_imgElevationLabel.text = [NSString stringWithFormat:@"%.0f müm",imageElevation];}
+    else {_imgLongitudeLabel.text = @"";}
+    
+    if (!_imgCommentLabel) {
+        _imgCommentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, yOffset+fullHeight+5, 310, 20)];
+        _imgCommentLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
+        _imgCommentLabel.textColor = [UIColor whiteColor];
+    }
+    
+    if (imageComment) {_imgCommentLabel.text = imageComment;}
+    else {_imgCommentLabel.text = @"No comments";}
+    
+    [_background addSubview:_selectedImageView];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:_background];
+    //[self.view addSubview:_background];
+    //[self.view addSubview:_selectedImageView];
+    
+    _selectedIndexPath = indexPath;
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+    
+    [cell setHidden:YES];
+    
+    UITapGestureRecognizer *tapRecognition = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(CloseImageView:)];
+    tapRecognition.numberOfTapsRequired = 1;
+    
+    _background.userInteractionEnabled = YES;
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        _selectedImageView.frame = CGRectMake(xOffset-10, yOffset-10, fullWidth+20, fullHeight+20);
+        _background.backgroundColor = bgColorSolid;
+    } completion:^(bool finished)
+     {
+         [_background addGestureRecognizer:tapRecognition];
+         [_background addSubview:_compassImage];
+         [_background addSubview:_imgLongitudeLabel];
+         [_background addSubview:_imgLatitudeLabel];
+         [_background addSubview:_imgElevationLabel];
+         [_background addSubview:_imgCommentLabel];
+         [UIView animateWithDuration:0.2f animations:^(void) {_selectedImageView.frame = CGRectMake(xOffset, yOffset, fullWidth, fullHeight);}];
+     }];
     
     [_CameraIcon removeTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
     [_CameraIcon addTarget:self action:@selector(CloseImageView:) forControlEvents:UIControlEventTouchDown];
@@ -220,7 +298,30 @@
 {
     UIColor *bgColorOpaque = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0];
     
-    [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_selectedImageView.frame = _cellRect; _background.backgroundColor = bgColorOpaque;} completion:^(BOOL finished) {[_selectedImageView removeFromSuperview]; [_selectedImageView release]; _selectedImageView = nil; [_background removeFromSuperview]; [_background release]; _background = nil;}];
+    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:_selectedIndexPath];
+    
+    [_compassImage removeFromSuperview];
+    [_imgLongitudeLabel removeFromSuperview];
+    [_imgLatitudeLabel removeFromSuperview];
+    [_imgElevationLabel removeFromSuperview];
+    [_imgCommentLabel removeFromSuperview];
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        _selectedImageView.frame = CGRectMake(_cellRect.origin.x + 3, _cellRect.origin.y + 3, _cellRect.size.width - 6, _cellRect.size.height - 6);
+        _background.backgroundColor = bgColorOpaque;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2f animations:^(void) {
+            _selectedImageView.frame = _cellRect;
+        } completion:^(bool finished) {
+            [cell setHidden:NO];
+            [_selectedImageView removeFromSuperview];
+            [_selectedImageView release];
+            _selectedImageView = nil;
+            [_background removeFromSuperview];
+            [_background release];
+            _background = nil;
+        }];
+    }];
     
     [_CameraIcon removeTarget:self action:@selector(CloseImageView:) forControlEvents:UIControlEventTouchDown];
     [_CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
@@ -276,10 +377,23 @@
         [ImageData writeToFile:newImageNameOriginal atomically:YES];
         [imageResizedData writeToFile:newImageName atomically:YES];
         
+        XTImageInfo *imageInfo = [[XTImageInfo alloc] init];
+        imageInfo.Filename = newImageNameOriginal;
+        
+        CLLocation *location = (CLLocation*)[data GetLastCoordinates];
+        
+        if (location) {
+            imageInfo.Longitude = location.coordinate.longitude;
+            imageInfo.Latitude = location.coordinate.latitude;
+            imageInfo.Elevation = location.altitude;
+            imageInfo.Date = location.timestamp;
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"Done");
-            [self.ImageArray addObject:newImageNameOriginal];
+            [data AddImage:imageInfo];
             [self.collectionView reloadData];
+            [imageInfo release];
         });
     });
 }

@@ -12,7 +12,7 @@
 #import "GoogleMaps/GoogleMaps.h"
 #import "XTXMLParser.h"
 
-@interface XTSummaryViewController : UIViewController
+@interface XTSummaryViewController : UIViewController <UIScrollViewDelegate>
 {
     XTDataSingleton *data;
     GMSMapView *mapView;
@@ -20,9 +20,17 @@
 
 - (IBAction)Close;
 - (IBAction)Back:(id)sender;
-@property (retain, nonatomic) IBOutlet UILabel *TimeLabel;
-@property (retain, nonatomic) IBOutlet UILabel *AltitudeLabel;
-@property (retain, nonatomic) IBOutlet UILabel *UpLabel;
-@property (retain, nonatomic) IBOutlet UILabel *DownLabel;
+@property (retain, nonatomic) UIView *mapViewContainer;
+@property (retain, nonatomic) UIView *summaryViewContainer;
+@property (retain, nonatomic) UIView *imageViewContainer;
+@property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (retain, nonatomic) UIImageView *TimeIcon;
+@property (retain, nonatomic) UIImageView *DistanceIcon;
+@property (retain, nonatomic) UIImageView *UpIcon;
+@property (retain, nonatomic) UIImageView *DownIcon;
+@property (retain, nonatomic) UILabel *TimeLabel;
+@property (retain, nonatomic) UILabel *AltitudeLabel;
+@property (retain, nonatomic) UILabel *UpLabel;
+@property (retain, nonatomic) UILabel *DownLabel;
 
 @end

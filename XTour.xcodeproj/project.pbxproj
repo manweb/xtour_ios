@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		640113CB1AEC72B000E6A9F6 /* camera_marker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640113CA1AEC72B000E6A9F6 /* camera_marker@2x.png */; };
 		64059E6218BDD3C800FDA369 /* XTSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */; };
 		64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */; };
 		640BBE6A1887B1A30029327F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE691887B1A30029327F /* Foundation.framework */; };
@@ -37,6 +38,8 @@
 		640BBEB61887B22F0029327F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB51887B22F0029327F /* QuartzCore.framework */; };
 		640BBEB81887B2370029327F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB71887B2370029327F /* SystemConfiguration.framework */; };
 		640BBEBF1887BBDB0029327F /* XTDataSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 640BBEBE1887BBDB0029327F /* XTDataSingleton.m */; };
+		641493811AEFEC2C0020ADDD /* XTNavigationViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 641493801AEFEC2C0020ADDD /* XTNavigationViewContainer.m */; };
+		641493851AF00C000020ADDD /* arrow_back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 641493841AF00C000020ADDD /* arrow_back@3x.png */; };
 		642143E618C087A700144711 /* arrow_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 642143E518C087A700144711 /* arrow_back.png */; };
 		64251D17188FB45B004F1675 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251CC6188FB45B004F1675 /* ASIAuthenticationDialog.m */; };
 		64251D18188FB45B004F1675 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251CC9188FB45B004F1675 /* ASIDataCompressor.m */; };
@@ -74,6 +77,7 @@
 		645181321A27CC2500D887CA /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181271A27CC2500D887CA /* Icon-Small@2x.png */; };
 		645181331A27CC2500D887CA /* Icon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181281A27CC2500D887CA /* Icon-Small@3x.png */; };
 		64571D3F1AD8E0FB00B9D6F3 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64571D3E1AD8E0FB00B9D6F3 /* Launch Screen.xib */; };
+		645E31201AE886C300B2FF89 /* XTImageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 645E311F1AE886C300B2FF89 /* XTImageInfo.m */; };
 		645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */; };
 		645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */; };
 		646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646183FB18BC30AF00C50FBB /* camera_icon.png */; };
@@ -108,6 +112,7 @@
 		64C2B97918B87AD100D4FDE4 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97818B87AD000D4FDE4 /* camera@2x.png */; };
 		64C2B97B18B87ADE00D4FDE4 /* cog_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */; };
 		64C2B97D18B87AF300D4FDE4 /* globe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97C18B87AF300D4FDE4 /* globe@2x.png */; };
+		64CA2FFF1AEB67A0006F4219 /* compass_icon_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 64CA2FFE1AEB67A0006F4219 /* compass_icon_white.png */; };
 		64D8C0DC18B556C2001A825E /* clock_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D8C0DB18B556C2001A825E /* clock_icon.png */; };
 		64D8C0DE18B5598D001A825E /* item_background_60.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D8C0DD18B5598D001A825E /* item_background_60.png */; };
 		64D8C0E018B55BD1001A825E /* item_background_40.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D8C0DF18B55BD1001A825E /* item_background_40.png */; };
@@ -132,6 +137,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		640113CA1AEC72B000E6A9F6 /* camera_marker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_marker@2x.png"; sourceTree = "<group>"; };
 		64059E5F18BDD3C800FDA369 /* XTSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSummaryViewController.h; sourceTree = "<group>"; };
 		64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSummaryViewController.m; sourceTree = "<group>"; };
 		64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XTSummaryViewController.xib; sourceTree = "<group>"; };
@@ -170,6 +176,9 @@
 		640BBEB71887B2370029327F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		640BBEBD1887BBDB0029327F /* XTDataSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDataSingleton.h; sourceTree = "<group>"; };
 		640BBEBE1887BBDB0029327F /* XTDataSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDataSingleton.m; sourceTree = "<group>"; };
+		6414937F1AEFEC2C0020ADDD /* XTNavigationViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTNavigationViewContainer.h; sourceTree = "<group>"; };
+		641493801AEFEC2C0020ADDD /* XTNavigationViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTNavigationViewContainer.m; sourceTree = "<group>"; };
+		641493841AF00C000020ADDD /* arrow_back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_back@3x.png"; sourceTree = "<group>"; };
 		642143E518C087A700144711 /* arrow_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow_back.png; path = ../images/arrow_back.png; sourceTree = "<group>"; };
 		64251CC5188FB45B004F1675 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		64251CC6188FB45B004F1675 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
@@ -223,6 +232,8 @@
 		645181271A27CC2500D887CA /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		645181281A27CC2500D887CA /* Icon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@3x.png"; sourceTree = "<group>"; };
 		64571D3E1AD8E0FB00B9D6F3 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		645E311E1AE886C300B2FF89 /* XTImageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTImageInfo.h; sourceTree = "<group>"; };
+		645E311F1AE886C300B2FF89 /* XTImageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTImageInfo.m; sourceTree = "<group>"; };
 		645FEF1918BC67CA009619E9 /* XTLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTLoginViewController.h; sourceTree = "<group>"; };
 		645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTLoginViewController.m; sourceTree = "<group>"; };
 		645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XTLoginViewController.xib; sourceTree = "<group>"; };
@@ -265,6 +276,7 @@
 		64C2B97818B87AD000D4FDE4 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@2x.png"; path = "../images/camera@2x.png"; sourceTree = "<group>"; };
 		64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cog_01@2x.png"; path = "../images/cog_01@2x.png"; sourceTree = "<group>"; };
 		64C2B97C18B87AF300D4FDE4 /* globe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "globe@2x.png"; path = "../images/globe@2x.png"; sourceTree = "<group>"; };
+		64CA2FFE1AEB67A0006F4219 /* compass_icon_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass_icon_white.png; sourceTree = "<group>"; };
 		64D8C0DB18B556C2001A825E /* clock_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = clock_icon.png; path = ../images/clock_icon.png; sourceTree = "<group>"; };
 		64D8C0DD18B5598D001A825E /* item_background_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = item_background_60.png; path = ../images/item_background_60.png; sourceTree = "<group>"; };
 		64D8C0DF18B55BD1001A825E /* item_background_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = item_background_40.png; path = ../images/item_background_40.png; sourceTree = "<group>"; };
@@ -379,8 +391,12 @@
 				640BBE7B1887B1A30029327F /* Main.storyboard */,
 				640BBE7E1887B1A30029327F /* XTHomeViewController.h */,
 				640BBE7F1887B1A30029327F /* XTHomeViewController.m */,
+				645E311E1AE886C300B2FF89 /* XTImageInfo.h */,
+				645E311F1AE886C300B2FF89 /* XTImageInfo.m */,
 				64A2FECB1AE46F02002F7987 /* XTMoreViewController.h */,
 				64A2FECC1AE46F03002F7987 /* XTMoreViewController.m */,
+				6414937F1AEFEC2C0020ADDD /* XTNavigationViewContainer.h */,
+				641493801AEFEC2C0020ADDD /* XTNavigationViewContainer.m */,
 				643470761AE0D049003DDA13 /* XTNewsFeedViewController.h */,
 				643470771AE0D049003DDA13 /* XTNewsFeedViewController.m */,
 				643470791AE0E332003DDA13 /* XTNewsFeedCell.h */,
@@ -437,16 +453,19 @@
 				6434706E1ACB703C00C8F916 /* skier_down_icon_2.png */,
 				6434706A1ACB6F2E00C8F916 /* distance_icon.png */,
 				64D8C0E518B55C50001A825E /* compass_icon.png */,
+				64CA2FFE1AEB67A0006F4219 /* compass_icon_white.png */,
 				64C09A8A18B68E16004A230E /* item_background_40_half.png */,
 				648E87FE18B8274E00BE1AB3 /* home_icon@2x.png */,
 				648E880018B82BFF00BE1AB3 /* map_icon@2x.png */,
 				64C2B97818B87AD000D4FDE4 /* camera@2x.png */,
+				640113CA1AEC72B000E6A9F6 /* camera_marker@2x.png */,
 				64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */,
 				64C2B97C18B87AF300D4FDE4 /* globe@2x.png */,
 				64A4A00918B952F0007B4E54 /* warning_icon@2x.png */,
 				64A7DBA31AA4E44300D8A4C5 /* more_icon@2x.png */,
 				646183FB18BC30AF00C50FBB /* camera_icon.png */,
 				642143E518C087A700144711 /* arrow_back.png */,
+				641493841AF00C000020ADDD /* arrow_back@3x.png */,
 				6431C4EA1A2EF566007A827F /* GPS_medium.png */,
 				6431C4EB1A2EF566007A827F /* GPS_none.png */,
 				6431C4EC1A2EF566007A827F /* GPS_strong.png */,
@@ -631,6 +650,7 @@
 				645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */,
 				64D8C0E218B55BF4001A825E /* altitude_icon.png in Resources */,
 				645181291A27CC2500D887CA /* Contents.json in Resources */,
+				640113CB1AEC72B000E6A9F6 /* camera_marker@2x.png in Resources */,
 				64D8C0DE18B5598D001A825E /* item_background_60.png in Resources */,
 				642143E618C087A700144711 /* arrow_back.png in Resources */,
 				649192D51ADB31DB0059E796 /* icon.png in Resources */,
@@ -682,6 +702,8 @@
 				64A7B47418B1F501004E4B2F /* skier_up_button.png in Resources */,
 				64B6E50F1AC89D070069A1A7 /* skier_up_button_inactive.png in Resources */,
 				64E3EBA118B020E400514CFE /* profile_icon.png in Resources */,
+				641493851AF00C000020ADDD /* arrow_back@3x.png in Resources */,
+				64CA2FFF1AEB67A0006F4219 /* compass_icon_white.png in Resources */,
 				64A4A00A18B952F0007B4E54 /* warning_icon@2x.png in Resources */,
 				6451812F1A27CC2500D887CA /* Icon-76.png in Resources */,
 				64D8C0E618B55C50001A825E /* compass_icon.png in Resources */,
@@ -727,7 +749,9 @@
 				648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */,
 				64251D1E188FB45B004F1675 /* ASINetworkQueue.m in Sources */,
 				64A2FECD1AE46F03002F7987 /* XTMoreViewController.m in Sources */,
+				645E31201AE886C300B2FF89 /* XTImageInfo.m in Sources */,
 				643470781AE0D049003DDA13 /* XTNewsFeedViewController.m in Sources */,
+				641493811AEFEC2C0020ADDD /* XTNavigationViewContainer.m in Sources */,
 				640BBE831887B1A30029327F /* XTMapViewController.m in Sources */,
 				645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */,
 				640BBE801887B1A30029327F /* XTHomeViewController.m in Sources */,

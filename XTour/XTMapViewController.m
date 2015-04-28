@@ -32,16 +32,23 @@
     data = [XTDataSingleton singleObj];
     _pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:10];
     _mapView = [GMSMapView mapWithFrame:self.view.bounds camera:camera];
     _mapView.myLocationEnabled = YES;
     
     [_mapView addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context:NULL];
     
     [self.view insertSubview:_mapView atIndex:0];
+    [_mapView setDelegate:self];
     
     _path = [[GMSMutablePath alloc] init];
     _polyline = [[GMSPolyline alloc] init];
+    
+    _mapHasMoved = false;
+    
+    [_centerButton setHidden:YES];
+    _centerButton.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6];
+    _centerButton.layer.cornerRadius = 5.0f;
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -54,6 +61,16 @@
     }
     else {
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    }
+    
+    for (int i = 0; i < [data GetNumImages]; i++) {
+        if ([data GetImageLongitudeAt:i] && [data GetImageLatitudeAt:i]) {
+            CLLocationCoordinate2D position = CLLocationCoordinate2DMake([data GetImageLatitudeAt:i], [data GetImageLongitudeAt:i]);
+            
+            GMSMarker *marker = [GMSMarker markerWithPosition:position];
+            marker.icon = [UIImage imageNamed:@"camera_marker@2x.png"];
+            marker.map = _mapView;
+        }
     }
     
     /*if ([data GetNumCoordinates] < 2) {return;}
@@ -90,14 +107,15 @@
     CGFloat currentZoom = _mapView.camera.zoom;
     GMSVisibleRegion visibleRegion = _mapView.projection.visibleRegion;
     GMSCoordinateBounds *currentBounds = [[GMSCoordinateBounds alloc] initWithRegion:visibleRegion];
-    if ([currentBounds containsCoordinate:[location coordinate]]) {[currentBounds release]; return;}
-    
-    _mapView.camera = [GMSCameraPosition cameraWithTarget:location.coordinate zoom:currentZoom];
+    if (!_mapHasMoved) {
+        _mapView.camera = [GMSCameraPosition cameraWithTarget:location.coordinate zoom:currentZoom];
+    }
     
     if ([data GetNumCoordinates] < 2) {return;}
     
     [_path removeAllCoordinates];
-    for (int i = 0; i < [data GetNumCoordinates]; i++) {
+    NSMutableArray *locations = [data GetCoordinatesForCurrentRun];
+    for (int i = 0; i < [locations count]; i++) {
         CLLocation *location = [data GetCoordinatesAtIndex:i];
         [_path addCoordinate:location.coordinate];
     }
@@ -106,6 +124,17 @@
     _polyline.strokeColor = [UIColor blueColor];
     _polyline.strokeWidth = 5.f;
     _polyline.map = _mapView;
+    
+    [currentBounds release];
+    return;
+}
+
+- (void)mapView:(GMSMapView *)mapView willMove:(BOOL)gesture
+{
+    if (gesture) {
+        _mapHasMoved = true;
+        [_centerButton setHidden:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,6 +156,7 @@
     [_distanceLabel release];
     [_loginButton release];
     [_distanceLabel release];
+    [_centerButton release];
     [super dealloc];
 }
 
@@ -136,6 +166,11 @@
     
     [login release];
     login = nil;
+}
+
+- (IBAction)centerMap:(id)sender {
+    _mapHasMoved = false;
+    [_centerButton setHidden:YES];
 }
 
 @end

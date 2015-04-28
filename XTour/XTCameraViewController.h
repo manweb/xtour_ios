@@ -10,6 +10,7 @@
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface XTCameraViewController : UICollectionViewController <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 {
@@ -23,7 +24,13 @@
 @property(retain, nonatomic) UIImagePickerController *ImagePicker;
 @property(retain, nonatomic) UIImageView *selectedImageView;
 @property(retain, nonatomic) UIImageView *background;
+@property(retain, nonatomic) UILabel *imgLongitudeLabel;
+@property(retain, nonatomic) UILabel *imgLatitudeLabel;
+@property(retain, nonatomic) UILabel *imgElevationLabel;
+@property(retain, nonatomic) UILabel *imgCommentLabel;
+@property(retain, nonatomic) UIImageView *compassImage;
 @property(nonatomic) CGRect cellRect;
+@property(retain, nonatomic) NSIndexPath *selectedIndexPath;
 
 - (void) LoadCamera:(id)sender;
 - (void) LoadLogin:(id)sender;

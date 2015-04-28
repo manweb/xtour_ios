@@ -115,6 +115,43 @@ static NSString * const reuseIdentifier = @"Cell";
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *currentElement = [self.news_feed objectAtIndex:indexPath.row];
+    NSArray *element = [currentElement componentsSeparatedByString:@","];
+    NSMutableArray *elements = [NSMutableArray arrayWithArray:element];
+    [elements removeLastObject];
+    
+    if (!navigationView) {navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];}
+    
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
+    UITabBarController *tabBarController = [super tabBarController];
+    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+    
+    navigationView.view.frame = CGRectMake(2*width, 0, width, height);
+    
+    UIView *detailView = [[UIView alloc] initWithFrame:CGRectMake(0, 70, width, height-70-tabBarHeight)];
+    detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
+    
+    UILabel *tourID = [[UILabel alloc] initWithFrame:CGRectMake(50, 100, 200, 20)];
+    tourID.text = [elements objectAtIndex:0];
+    
+    [detailView addSubview:tourID];
+    
+    [navigationView.view addSubview:detailView];
+    [[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        navigationView.view.frame = CGRectMake(0, 0, width, height);
+    } completion:^(bool finished)
+     {
+         [navigationView.backButton setHidden:NO];
+     }];
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return CGSizeMake(300, 100);

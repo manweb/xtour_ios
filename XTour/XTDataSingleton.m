@@ -29,6 +29,7 @@
 - (void) ClearData
 {
     if (!_locationData) {_locationData = [[NSMutableArray alloc] init];}
+    if (!_imageInfo) {_imageInfo = [[NSMutableArray alloc] init];}
     [_locationData removeAllObjects];
     _StartLocation = 0;
     _totalTime = 0;
@@ -77,6 +78,7 @@
 - (void) ResetAll
 {
     [_locationData removeAllObjects];
+    [_imageInfo removeAllObjects];
     _StartLocation = 0;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
@@ -186,6 +188,18 @@
     if ([_locationData count] == 0) {NSLog(@"No data in the location array."); return 0;}
     
     return [_locationData objectAtIndex:([self GetNumCoordinates] - 1)];
+}
+
+- (NSMutableArray *) GetCoordinatesForCurrentRun
+{
+    if ([_locationData count] == 0) {NSLog(@"No data in the location array."); return 0;}
+    
+    NSMutableArray *locations = [[NSMutableArray alloc] init];
+    for (int i = (int)_lastRunIndex; i < [_locationData count]; i++) {
+        [locations addObject:[_locationData objectAtIndex:i]];
+    }
+    
+    return locations;
 }
 
 - (void) CreateTourDirectory
@@ -496,6 +510,20 @@
     return imageFilesCurrent;
 }
 
+- (NSMutableArray *) GetAllImageInfoFiles
+{
+    NSString *tourDirectory = [self GetTourDocumentPath];
+    NSArray *content = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:tourDirectory error:nil];
+    
+    NSMutableArray *imageInfoFiles = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [content count]; i++) {
+        NSString *file = [NSString stringWithFormat:@"%@/%@", tourDirectory, [content objectAtIndex:i]];
+        if ([file containsString:@"ImageInfo"] && [[file pathExtension] isEqualToString:@"xml"]) {[imageInfoFiles addObject:file];}
+    }
+    
+    return imageInfoFiles;
+}
+
 - (void) CleanUpTourDirectory
 {
     NSMutableArray *GPXFiles = [self GetAllGPXFiles];
@@ -510,6 +538,136 @@
     }
     
     [self RemoveRecoveryFile];
+}
+
+- (void) AddImage:(XTImageInfo *)image
+{
+    [_imageInfo addObject:image];
+}
+
+- (NSUInteger) GetNumImages
+{
+    return [_imageInfo count];
+}
+
+- (XTImageInfo *) GetImageInfoAt:(NSUInteger)index
+{
+    if (index > [_imageInfo count] - 1) {NSLog(@"Array index exceeds boundary"); return 0;}
+    
+    return [_imageInfo objectAtIndex:index];
+}
+
+- (NSString *) GetImageFilenameAt:(NSUInteger)index
+{
+    return [self GetImageInfoAt:index].Filename;
+}
+
+- (float) GetImageLongitudeAt:(NSUInteger)index
+{
+    float lon = [self GetImageInfoAt:index].Longitude;
+    
+    if (lon) {return lon;}
+    else {return 0;}
+}
+
+- (float) GetImageLatitudeAt:(NSUInteger)index
+{
+    float lat = [self GetImageInfoAt:index].Latitude;
+    
+    if (lat) {return lat;}
+    else {return 0;}
+}
+
+- (float) GetImageElevationAt:(NSUInteger)index
+{
+    float elevation = [self GetImageInfoAt:index].Elevation;
+    
+    if (elevation) {return elevation;}
+    else {return 0;}
+}
+
+- (NSString *) GetImageCommentAt:(NSUInteger)index
+{
+    NSString *comment = [self GetImageInfoAt:index].Comment;
+    
+    if (comment) {return comment;}
+    else {return 0;}
+}
+
+- (NSDate *) GetImageDateAt:(NSUInteger)index
+{
+    NSDate *date = [self GetImageInfoAt:index].Date;
+    
+    if (date) {return date;}
+    else {return 0;}
+}
+
+- (NSString *) GetImageLongitudeStringAt:(NSUInteger)index
+{
+    float lon = [self GetImageInfoAt:index].Longitude;
+    
+    NSString *longitude = nil;
+    
+    if (lon) {
+        NSString *lonEW;
+        if (lon < 0) {lonEW = [[NSString alloc] initWithString:@"W"]; lon = fabsf(lon);}
+        else {lonEW = [[NSString alloc] initWithString:@"E"];}
+        
+        longitude = [[NSString alloc] initWithFormat:@"%.0f°%.0f'%.1f\" %s",
+                               floor(lon),
+                               floor((lon - floor(lon)) * 60),
+                               ((lon - floor(lon)) * 60 - floor((lon - floor(lon)) * 60)) * 60, [lonEW UTF8String]];
+    }
+    
+    return longitude;
+}
+
+- (NSString *) GetImageLatitudeStringAt:(NSUInteger)index
+{
+    float lat = [self GetImageInfoAt:index].Latitude;
+    
+    NSString *latitude = nil;
+    
+    if (lat) {
+        NSString *latNS;
+        if (lat < 0) {latNS = [[NSString alloc] initWithString:@"S"]; lat = fabsf(lat);}
+        else {latNS = [[NSString alloc] initWithString:@"N"];}
+        
+        latitude = [[NSString alloc] initWithFormat:@"%.0f°%.0f'%.1f\" %s",
+                               floor(lat),
+                               floor((lat - floor(lat)) * 60),
+                               ((lat - floor(lat)) * 60 - floor((lat - floor(lat)) * 60)) * 60, [latNS UTF8String]];
+    }
+    
+    return latitude;
+}
+
+- (NSString *) GetImageCoordinateStringAt:(NSUInteger)index
+{
+    NSString *longitude = [self GetImageLongitudeStringAt:index];
+    NSString *latitude = [self GetImageLatitudeStringAt:index];
+    float elevation = [self GetImageElevationAt:index];
+    
+    NSString *coordinates = nil;
+    
+    if (longitude && latitude && elevation) {
+        coordinates = [NSString stringWithFormat:@"%@ %@ %.0f",longitude,latitude,elevation];
+    }
+    
+    return coordinates;
+}
+
+- (void) WriteImageInfo
+{
+    XTXMLParser *parser = [[XTXMLParser alloc] init];
+    
+    for (int i = 0; i < [_imageInfo count]; i++) {
+        [parser AddImageInfo:[_imageInfo objectAtIndex:i]];
+    }
+    
+    NSString *filename = [NSString stringWithFormat:@"/tours/ImageInfo_%@.xml",_tourID];
+    
+    [parser SaveImageInfo:filename];
 }
 
 - (void)dealloc

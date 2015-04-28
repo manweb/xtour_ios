@@ -10,12 +10,14 @@
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
 #import "XTNewsFeedViewController.h"
+#import "XTNavigationViewContainer.h"
 
 @interface XTMoreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
     XTNewsFeedViewController *collection;
+    XTNavigationViewContainer *navigationView;
 }
 
 @property(nonatomic,retain) NSMutableArray *listOfFiles;

@@ -12,6 +12,7 @@
 
 @synthesize Metadata;
 @synthesize TrackSegment;
+@synthesize Images;
 @synthesize formatter;
 
 - (XTXMLParser *) init
@@ -19,6 +20,7 @@
     if (self = [super init]) {
         Metadata = [GDataXMLElement elementWithName:@"Metadata"];
         TrackSegment = [GDataXMLElement elementWithName:@"trkseg"];
+        Images = [GDataXMLElement elementWithName:@"images"];
         formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-LL-dd HH:mm:ss"];
     }
@@ -195,6 +197,48 @@
     }
     
     return locations;
+}
+
+- (void) AddImageInfo:(XTImageInfo *)imageInfo
+{
+    GDataXMLElement *image = [GDataXMLElement elementWithName:@"image"];
+    
+    NSArray *fnameString = [imageInfo.Filename componentsSeparatedByString:@"/"];
+    NSString *fnameOriginal = [fnameString lastObject];
+    NSString *fname = [fnameOriginal stringByReplacingOccurrencesOfString:@"_original.jpg" withString:@".jpg"];
+    GDataXMLElement *filename = [GDataXMLElement elementWithName:@"filename" stringValue:fname];
+    GDataXMLElement *longitude = [GDataXMLElement elementWithName:@"longitude" stringValue:[NSString stringWithFormat:@"%f",imageInfo.Longitude]];
+    GDataXMLElement *latitude = [GDataXMLElement elementWithName:@"latitude" stringValue:[NSString stringWithFormat:@"%f",imageInfo.Latitude]];
+    GDataXMLElement *elevation = [GDataXMLElement elementWithName:@"elevation" stringValue:[NSString stringWithFormat:@"%f",imageInfo.Elevation]];
+    GDataXMLElement *comment = [GDataXMLElement elementWithName:@"comment" stringValue:imageInfo.Comment];
+    GDataXMLElement *date = [GDataXMLElement elementWithName:@"date" stringValue:[formatter stringFromDate:imageInfo.Date]];
+    
+    [image addChild:filename];
+    [image addChild:longitude];
+    [image addChild:latitude];
+    [image addChild:elevation];
+    [image addChild:comment];
+    [image addChild:date];
+    
+    [Images addChild:image];
+}
+
+- (void) SaveImageInfo:(NSString *)filename
+{
+    GDataXMLElement *XMLElement = [GDataXMLNode elementWithName:@"xml"];
+    
+    [XMLElement addChild:Images];
+    
+    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:XMLElement];
+    
+    NSData *xmlData = doc.XMLData;
+    NSString *xml = [[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+    [xmlData writeToFile:documentsPath atomically:YES];
 }
 
 @end

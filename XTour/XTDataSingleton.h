@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import "XTXMLParser.h"
+#import "XTImageInfo.h"
 
 @interface XTDataSingleton : NSObject
 
@@ -43,6 +44,7 @@
 @property(nonatomic,retain) NSString *country;
 @property(nonatomic) NSInteger photoCount;
 @property(nonatomic) NSInteger lastRunIndex;
+@property(nonatomic,retain) NSMutableArray *imageInfo;
 
 + (XTDataSingleton *) singleObj;
 
@@ -57,6 +59,7 @@
 - (NSUInteger) GetNumCoordinates;
 - (CLLocation *) GetCoordinatesAtIndex:(NSUInteger)index;
 - (CLLocation *) GetLastCoordinates;
+- (NSMutableArray *) GetCoordinatesForCurrentRun;
 - (void) CreateTourDirectory;
 - (NSMutableArray *) GetMinMaxCoordinates;
 - (NSMutableArray *) GetCoordinateBounds;
@@ -72,6 +75,20 @@
 - (NSMutableArray *) GetGPXFilesForCurrentTour;
 - (NSMutableArray *) GetAllImages;
 - (NSMutableArray *) GetImagesForCurrentTour;
+- (NSMutableArray *) GetAllImageInfoFiles;
 - (void) CleanUpTourDirectory;
+- (void) AddImage:(XTImageInfo *)image;
+- (NSUInteger) GetNumImages;
+- (XTImageInfo *) GetImageInfoAt:(NSUInteger)index;
+- (NSString *) GetImageFilenameAt:(NSUInteger)index;
+- (float) GetImageLongitudeAt:(NSUInteger)index;
+- (float) GetImageLatitudeAt:(NSUInteger)index;
+- (float) GetImageElevationAt:(NSUInteger)index;
+- (NSString *) GetImageCommentAt:(NSUInteger)index;
+- (NSDate *) GetImageDateAt:(NSUInteger)index;
+- (NSString *) GetImageLongitudeStringAt:(NSUInteger)index;
+- (NSString *) GetImageLatitudeStringAt:(NSUInteger)index;
+- (NSString *) GetImageCoordinateStringAt:(NSUInteger)index;
+- (void) WriteImageInfo;
 
 @end

@@ -91,6 +91,15 @@
     }
 }
 
+- (void) UploadImageInfo
+{
+    NSMutableArray *ImageInfoFiles = [data GetAllImageInfoFiles];
+    
+    for (int i = 0; i < [ImageInfoFiles count]; i++) {
+        [self UploadFile:[ImageInfoFiles objectAtIndex:i]];
+    }
+}
+
 - (void) UploadFile:(NSString *) filename
 {
     NSURL *url = [NSURL URLWithString:@"http://www.xtour.ch/file_upload.php"];
@@ -110,10 +119,11 @@
     NSString *response = [request responseString];
     
     if ([response isEqualToString:@"true"]) {
+        NSLog(@"Upload of file %@ was successful", filename);
+        
         [[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
     }
     
-    NSLog(@"Upload of file %@ was successful", filename);
     NSLog(@"The response text is:\n%@", response);
 }
 

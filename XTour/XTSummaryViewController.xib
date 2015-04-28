@@ -7,10 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="XTSummaryViewController">
             <connections>
-                <outlet property="AltitudeLabel" destination="0ep-RV-DJ5" id="BmQ-hB-8SG"/>
-                <outlet property="DownLabel" destination="e5O-dq-Lvd" id="Nmq-JQ-jlc"/>
-                <outlet property="TimeLabel" destination="6Pn-Fi-IN0" id="WKS-bC-5C7"/>
-                <outlet property="UpLabel" destination="J1Q-Dc-DMa" id="kSu-D5-7h5"/>
+                <outlet property="scrollView" destination="5u5-9S-m2S" id="TNQ-Ui-eBw"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -23,7 +20,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNe-fu-63M">
-                    <rect key="frame" x="25" y="30" width="38" height="30"/>
+                    <rect key="frame" x="25" y="30" width="40" height="30"/>
                     <state key="normal" title="Button" image="arrow_back.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -41,52 +38,18 @@
                         <action selector="Close" destination="-1" eventType="touchUpInside" id="LuX-1n-y6z"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clock_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="zWM-dy-QHk">
-                    <rect key="frame" x="8" y="330" width="40" height="40"/>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="distance_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="SuO-V5-6ZF">
-                    <rect key="frame" x="160" y="330" width="40" height="40"/>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="skier_up_icon_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="I7U-28-kgo">
-                    <rect key="frame" x="8" y="390" width="40" height="40"/>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="skier_down_icon_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="Wqg-js-nHk">
-                    <rect key="frame" x="160" y="390" width="40" height="40"/>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Pn-Fi-IN0">
-                    <rect key="frame" x="56" y="339" width="94" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J1Q-Dc-DMa">
-                    <rect key="frame" x="56" y="399" width="94" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e5O-dq-Lvd">
-                    <rect key="frame" x="207" y="399" width="94" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ep-RV-DJ5">
-                    <rect key="frame" x="207" y="339" width="94" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5u5-9S-m2S">
+                    <rect key="frame" x="0.0" y="70" width="320" height="498"/>
+                    <connections>
+                        <outlet property="delegate" destination="1" id="D2z-EH-dqM"/>
+                    </connections>
+                </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
         </view>
     </objects>
     <resources>
         <image name="arrow_back.png" width="500" height="400"/>
-        <image name="clock_icon.png" width="1000" height="1000"/>
-        <image name="distance_icon.png" width="1000" height="1000"/>
-        <image name="skier_down_icon_2.png" width="1000" height="1000"/>
-        <image name="skier_up_icon_2.png" width="1000" height="1000"/>
         <image name="xtour_header.png" width="320" height="70"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
