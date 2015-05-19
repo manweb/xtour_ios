@@ -16,9 +16,16 @@
     XTDataSingleton *data;
 }
 
-@property (retain, nonatomic) IBOutlet UITextField *username;
-@property (retain, nonatomic) IBOutlet UITextField *password;
-- (IBAction)Login;
-- (IBAction)Cancel;
+@property (retain, nonatomic) UIView *loginView;
+@property (retain, nonatomic) UITextField *username;
+@property (retain, nonatomic) UITextField *password;
+@property (retain, nonatomic) UIButton *loginButton;
+@property (retain, nonatomic) UIButton *cancelButton;
+
+- (void)Login;
+- (void)Cancel;
+- (void) animate;
+- (void) ShowView;
+- (void) HideView;
 
 @end

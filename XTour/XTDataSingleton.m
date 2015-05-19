@@ -154,7 +154,14 @@
     CLLocation *p1 = [self GetCoordinatesAtIndex:(nCoordinates - 1)];
     CLLocation *p2 = [self GetCoordinatesAtIndex:(nCoordinates - 2)];
     
-    return [self CalculateHaversineForPoint:p1 andPoint:p2];
+    double timeDiff = (p1.timestamp.timeIntervalSince1970 - p2.timestamp.timeIntervalSince1970)/3600.0;
+    
+    double distance = [self CalculateHaversineForPoint:p1 andPoint:p2];
+    double speed = distance/timeDiff;
+    
+    if (speed > 50.0) {return -1;}
+    
+    return distance;
 }
 
 - (double) CalculateAltitudeDiffForCurrentCoordinate
@@ -169,6 +176,13 @@
     double alt2 = p2.altitude;
     
     return alt1 - alt2;
+}
+
+- (void) RemoveLastCoordinate
+{
+    [_locationData removeLastObject];
+    
+    return;
 }
 
 - (NSUInteger) GetNumCoordinates
@@ -301,8 +315,8 @@
     }
     
     /*if ([category isEqualToString:@"sum"]) {
-        [xml AddTrackpoint:_StartLocation];
-    }*/
+     [xml AddTrackpoint:_StartLocation];
+     }*/
     
     NSInteger count;
     if ([category isEqualToString:@"up"]) {count = _upCount;}

@@ -44,6 +44,11 @@
     _path = [[GMSMutablePath alloc] init];
     _polyline = [[GMSPolyline alloc] init];
     
+    [_polyline setPath:_path];
+    _polyline.strokeColor = [UIColor blueColor];
+    _polyline.strokeWidth = 5.f;
+    _polyline.map = _mapView;
+    
     _mapHasMoved = false;
     
     [_centerButton setHidden:YES];
@@ -111,19 +116,37 @@
         _mapView.camera = [GMSCameraPosition cameraWithTarget:location.coordinate zoom:currentZoom];
     }
     
-    if ([data GetNumCoordinates] < 2) {return;}
+    NSUInteger coordinateSize = [[data GetCoordinatesForCurrentRun] count];
+    NSUInteger pathSize = [_path count];
     
-    [_path removeAllCoordinates];
+    if (coordinateSize < 2) {return;}
+    
+    if (pathSize > coordinateSize) {
+        [_path removeAllCoordinates];
+        pathSize = 0;
+    }
+    
+    if (!(coordinateSize > pathSize)) {return;}
+    
+    // Add new coordinates to the path
+    NSUInteger i;
     NSMutableArray *locations = [data GetCoordinatesForCurrentRun];
-    for (int i = 0; i < [locations count]; i++) {
-        CLLocation *location = [data GetCoordinatesAtIndex:i];
+    for (i = pathSize; i < coordinateSize; i++) {
+        CLLocation * location = [locations objectAtIndex:i];
         [_path addCoordinate:location.coordinate];
     }
     
+    /*[_path removeAllCoordinates];
+    NSMutableArray *locations = [data GetCoordinatesForCurrentRun];
+    for (int i = 0; i < [locations count]; i++) {
+        CLLocation *location = [locations objectAtIndex:i];
+        [_path addCoordinate:location.coordinate];
+    }*/
+    
     [_polyline setPath:_path];
-    _polyline.strokeColor = [UIColor blueColor];
+    /*_polyline.strokeColor = [UIColor blueColor];
     _polyline.strokeWidth = 5.f;
-    _polyline.map = _mapView;
+    _polyline.map = _mapView;*/
     
     [currentBounds release];
     return;

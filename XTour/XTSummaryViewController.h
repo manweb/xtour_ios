@@ -11,6 +11,8 @@
 #import "XTFileUploader.h"
 #import "GoogleMaps/GoogleMaps.h"
 #import "XTXMLParser.h"
+#import "XTTourInfo.h"
+#import "XTTourDetailView.h"
 
 @interface XTSummaryViewController : UIViewController <UIScrollViewDelegate>
 {

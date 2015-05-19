@@ -146,6 +146,11 @@
     UICollectionViewLayoutAttributes *attributes = [collectionView layoutAttributesForItemAtIndexPath:indexPath];
     _cellRect = attributes.frame;
     
+    CGPoint p = [self.view.superview convertPoint:_cellRect.origin toView:nil];
+    
+    _cellRect.origin.x = p.x;
+    _cellRect.origin.y = p.y;
+    
     NSString *imageName = [data GetImageFilenameAt:indexPath.row];
     
     if (!_selectedImageView) {_selectedImageView = [[UIImageView alloc] initWithFrame:_cellRect];}
@@ -245,7 +250,7 @@
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         _selectedImageView.frame = CGRectMake(xOffset-10, yOffset-10, fullWidth+20, fullHeight+20);
         _background.backgroundColor = bgColorSolid;
-    } completion:^(bool finished)
+    } completion:^(BOOL finished)
      {
          [_background addGestureRecognizer:tapRecognition];
          [_background addSubview:_compassImage];
@@ -312,7 +317,7 @@
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.2f animations:^(void) {
             _selectedImageView.frame = _cellRect;
-        } completion:^(bool finished) {
+        } completion:^(BOOL finished) {
             [cell setHidden:NO];
             [_selectedImageView removeFromSuperview];
             [_selectedImageView release];

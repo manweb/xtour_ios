@@ -7,11 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
+#import "XTTourInfo.h"
+#import "XTImageInfo.h"
 
 @interface XTServerRequestHandler : NSObject
 
 - (NSMutableArray *) GetNewsFeedString:(int)numberOfNewsFeeds;
+- (NSMutableArray *) GetTourFilesForTour:(NSString *)tourID andType:(NSString *)type;
+- (NSMutableArray *) GetCoordinatesForFile:(NSString *)file;
+- (NSMutableArray *) GetImagesForTour:(NSString *)tourID;
 
 @end

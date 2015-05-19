@@ -87,40 +87,38 @@ static NSString * const reuseIdentifier = @"Cell";
     // Configure the cell
     cell.backgroundColor = [UIColor whiteColor];
     
-    NSString *currentElement = [self.news_feed objectAtIndex:indexPath.row];
-    NSArray *element = [currentElement componentsSeparatedByString:@","];
-    NSMutableArray *elements = [NSMutableArray arrayWithArray:element];
-    [elements removeLastObject];
+    XTTourInfo *currentElement = [self.news_feed objectAtIndex:indexPath.row];
     
-    NSInteger timestamp = [[elements objectAtIndex:4] integerValue];
+    NSUInteger timestamp = currentElement.date;
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd.MM.yyyy"];
     NSString *formattedDate = [formatter stringFromDate:date];
     
-    NSInteger tm = [[elements objectAtIndex:5] integerValue];
+    NSUInteger tm = currentElement.totalTime;
     
     NSString *TimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
                             lround(floor(tm / 3600.)) % 100,
                             lround(floor(tm / 60.)) % 60,
                             lround(floor(tm)) % 60];
     
-    [cell.profilePicture setImageWithURL:[elements objectAtIndex:3] placeholderImage:[UIImage imageNamed:@"profile_icon_gray.png"]];
+    [cell.profilePicture setImageWithURL:[NSURL URLWithString:currentElement.profilePicture] placeholderImage:[UIImage imageNamed:@"profile_icon_gray.png"]];
     
-    cell.title.text = [NSString stringWithFormat:@"%@ am %@",[elements objectAtIndex:2], formattedDate];
+    cell.title.text = [NSString stringWithFormat:@"%@ am %@",currentElement.userName, formattedDate];
     cell.time.text = TimeString;
-    cell.altitude.text = [NSString stringWithFormat:@"%.1f m", [[elements objectAtIndex:6] doubleValue]];
-    cell.distance.text = [NSString stringWithFormat:@"%.2f km", [[elements objectAtIndex:7] doubleValue]];
+    cell.altitude.text = [NSString stringWithFormat:@"%.1f m", currentElement.altitude];
+    cell.distance.text = [NSString stringWithFormat:@"%.2f km", currentElement.distance];
     
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *currentElement = [self.news_feed objectAtIndex:indexPath.row];
-    NSArray *element = [currentElement componentsSeparatedByString:@","];
-    NSMutableArray *elements = [NSMutableArray arrayWithArray:element];
-    [elements removeLastObject];
+    //UICollectionViewLayoutAttributes *attributes = [collectionView layoutAttributesForItemAtIndexPath:indexPath];
+    //float imageOriginX = attributes.frame.origin.x + 8;
+    //float imageOriginY = attributes.frame.origin.y + 25 - collectionView.contentOffset.y;
+    
+    XTTourInfo *currentElement = [self.news_feed objectAtIndex:indexPath.row];
     
     if (!navigationView) {navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];}
     
@@ -131,24 +129,24 @@ static NSString * const reuseIdentifier = @"Cell";
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
-    navigationView.view.frame = CGRectMake(2*width, 0, width, height);
+    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
+    //navigationView.view.alpha = 0.0f;
     
-    UIView *detailView = [[UIView alloc] initWithFrame:CGRectMake(0, 70, width, height-70-tabBarHeight)];
+    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 70, width, height-70-tabBarHeight)];
     detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
     
-    UILabel *tourID = [[UILabel alloc] initWithFrame:CGRectMake(50, 100, 200, 20)];
-    tourID.text = [elements objectAtIndex:0];
-    
-    [detailView addSubview:tourID];
+    [detailView Initialize:currentElement fromServer:YES];
     
     [navigationView.view addSubview:detailView];
     [[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        navigationView.view.frame = CGRectMake(0, 0, width, height);
-    } completion:^(bool finished)
+        navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
+    } completion:^(BOOL finished)
      {
          [navigationView.backButton setHidden:NO];
+         
+         [detailView LoadTourDetail:currentElement fromServer:YES];
      }];
 }
 

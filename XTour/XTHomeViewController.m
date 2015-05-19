@@ -26,12 +26,38 @@
                                    lround(floor(tm)) % 60];
     _timerLabel.text = currentTimeString;
     
-    if (data.timer - _recoveryTimer > 120) {NSLog(@"Writing recovery file"); [data WriteRecoveryFile]; _recoveryTimer = data.timer;}
+    int tm_total = (int)data.totalTime;
+    NSString *currentTotalTimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
+                                   lround(floor(tm_total / 3600.)) % 100,
+                                   lround(floor(tm_total / 60.)) % 60,
+                                   lround(floor(tm_total)) % 60];
+    _totalTimeLabel.text = currentTotalTimeString;
+    
+    if (data.timer - _recoveryTimer > 120) {
+        NSLog(@"Writing recovery file");
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [data WriteRecoveryFile];
+            _recoveryTimer = data.timer;
+        });
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _timerSection.layer.cornerRadius = 12.0f;
+    _distanceSection.layer.cornerRadius = 12.0f;
+    _altitudeSection.layer.cornerRadius = 12.0f;
+    _locationSection.layer.cornerRadius = 12.0f;
+    
+    [_totalTimeLabel setHidden:YES];
+    [_totalDistanceLabel setHidden:YES];
+    [_totalAltitudeLabel setHidden:YES];
+    
+    [_altitudeRateIcon setHidden:YES];
+    
     data = [XTDataSingleton singleObj];
     data.timer = 0;
     
@@ -57,6 +83,8 @@
     
     _didReachInitialAccuracy = false;
     
+    _didRecoverTour = false;
+    
     NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:userFile]) {
@@ -71,7 +99,15 @@
         [alert show];
         NSLog(@"Found recovery file");
         
-        [data RecoverTour];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [data RecoverTour];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"Tour was recovered");
+                
+                _didRecoverTour = true;
+            });
+        });
     }
     else {NSLog(@"No recovery file found");}
     
@@ -116,6 +152,14 @@
     [_GPSSignal release];
     [_StartButton release];
     [_StopButton release];
+    [_timerSection release];
+    [_distanceSection release];
+    [_altitudeSection release];
+    [_locationSection release];
+    [_totalDistanceLabel release];
+    [_totalTimeLabel release];
+    [_totalAltitudeLabel release];
+    [_altitudeRateIcon release];
     [super dealloc];
 }
 
@@ -142,6 +186,18 @@
     _pollingTimer = nil;
     
     [_locationManager stopUpdatingLocation];
+    
+    if (_didRecoverTour) {
+        _didRecoverTour = false;
+        
+        [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
+        [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
+        [_PauseButton setImage:[UIImage imageNamed:@"stop_button.png"] forState:UIControlStateNormal];
+        
+        _runStatus = 2;
+        
+        return;
+    }
     
     if (_runStatus == 0) {
     
@@ -183,12 +239,29 @@
     
     [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
     [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
+    
+    if (data.upCount > 0 && data.downCount > 0 && [_totalTimeLabel isHidden]) {
+        [_totalTimeLabel setHidden:NO];
+        [_totalDistanceLabel setHidden:NO];
+        [_totalAltitudeLabel setHidden:NO];
+    }
 }
 
 - (IBAction)startTimer:(id)sender {
     if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     
     [_locationManager startUpdatingLocation];
+    
+    if (_didRecoverTour) {
+        _didRecoverTour = false;
+        
+        [_StartButton setImage:[UIImage imageNamed:@"skier_up_button_inactive.png"] forState:UIControlStateNormal];
+        [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
+        [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
+        
+        _runStatus = 1;
+        return;
+    }
     
     if (_runStatus == 0) {
         data.startTime = [NSDate date];
@@ -239,12 +312,29 @@
     [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
     
     _runStatus = 1;
+    
+    if (data.upCount > 0 && data.downCount > 0 && [_totalTimeLabel isHidden]) {
+        [_totalTimeLabel setHidden:NO];
+        [_totalDistanceLabel setHidden:NO];
+        [_totalAltitudeLabel setHidden:NO];
+    }
 }
 
 - (IBAction)resetTimer:(id)sender {
     if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     
     [_locationManager startUpdatingLocation];
+    
+    if (_didRecoverTour) {
+        _didRecoverTour = false;
+        
+        [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
+        [_StopButton setImage:[UIImage imageNamed:@"skier_down_button_inactive.png"] forState:UIControlStateNormal];
+        [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
+        
+        _runStatus = 3;
+        return;
+    }
     
     if (_runStatus == 0) {
         data.startTime = [NSDate date];
@@ -295,14 +385,21 @@
     [_StopButton setImage:[UIImage imageNamed:@"skier_down_button_inactive.png"] forState:UIControlStateNormal];
     
     _runStatus = 3;
+    
+    if (data.upCount > 0 && data.downCount > 0 && [_totalTimeLabel isHidden]) {
+        [_totalTimeLabel setHidden:NO];
+        [_totalDistanceLabel setHidden:NO];
+        [_totalAltitudeLabel setHidden:NO];
+    }
 }
 
 - (IBAction)LoadLogin:(id)sender {
-    if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
-    [self presentViewController:login animated:YES completion:nil];
+    if (login) {[login.view removeFromSuperview];}
     
-    [login release];
-    login = nil;
+    login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:login.view];
+    [login animate];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
@@ -329,28 +426,14 @@
     //else if (accuracy > 10.0 && _didReachInitialAccuracy == false) {return;}
     if (!_didReachInitialAccuracy) {return;}
     
-    if (data.StartLocation == 0) {
-        data.StartLocation = Location;
-        
-        [_geocoder reverseGeocodeLocation:Location completionHandler:^(NSArray *placemarks, NSError *error) {
-            if (error == nil && [placemarks count] > 0) {
-                _placemark = [placemarks lastObject];
-                data.country = _placemark.country;
-            }
-            else {
-                NSLog(@"%@", error.debugDescription);
-            }
-        }];
-    }
-    
     double longitude = (double)lon;
     NSString *lonEW;
-    if (longitude < 0) {lonEW = [[NSString alloc] initWithString:@"W"]; longitude = abs(longitude);}
+    if (longitude < 0) {lonEW = [[NSString alloc] initWithString:@"W"]; longitude = fabs(longitude);}
     else {lonEW = [[NSString alloc] initWithString:@"E"];}
     
     double latitude = (double)lat;
     NSString *latNS;
-    if (latitude < 0) {latNS = [[NSString alloc] initWithString:@"S"]; latitude = abs(latitude);}
+    if (latitude < 0) {latNS = [[NSString alloc] initWithString:@"S"]; latitude = fabs(latitude);}
     else {latNS = [[NSString alloc] initWithString:@"N"];}
     
     NSString *lonString = [[NSString alloc] initWithFormat:@"%.0f°%.0f'%.1f\" %s",
@@ -367,8 +450,27 @@
     _latLabel.text = latString;
     _elevationLabel.text = altString;
     
+    if (_runStatus == 0 || _runStatus == 2 || _runStatus == 4) {return;}
+    
+    if (data.StartLocation == 0) {
+        data.StartLocation = Location;
+        
+        [_geocoder reverseGeocodeLocation:Location completionHandler:^(NSArray *placemarks, NSError *error) {
+            if (error == nil && [placemarks count] > 0) {
+                _placemark = [placemarks lastObject];
+                data.country = _placemark.country;
+            }
+            else {
+                NSLog(@"%@", error.debugDescription);
+            }
+        }];
+    }
+    NSLog(@"Calculating haversine distance...");
     [data AddCoordinate:Location];
     double d = [data CalculateHaversineForCurrentCoordinate];
+    
+    if (d == -1) {[data RemoveLastCoordinate]; return;}
+    
     double altitudeDiff = [data CalculateAltitudeDiffForCurrentCoordinate];
     [data AddDistance:d andHeight:altitudeDiff];
     
@@ -385,6 +487,9 @@
     _distanceLabel.text = distTotal;
     _altitudeLabel.text = altTotal;
     
+    _totalDistanceLabel.text = [NSString stringWithFormat:@"%.1f km",data.sumDistance];
+    _totalAltitudeLabel.text = [NSString stringWithFormat:@"%.1f m",data.sumAltitude];
+    
     if (data.rateTimer > 10) {
         double diffDistance = data.totalDistance - data.rateLastDistance;
         double diffAltitude = data.totalAltitude - data.rateLastAltitude;
@@ -396,6 +501,10 @@
         
         _distanceRateLabel.text = r_dist_str;
         _altitudeRateLabel.text = r_alt_str;
+        
+        if (data.AltitudeRate > 0) {_altitudeRateIcon.image = [UIImage imageNamed:@"arrow_up@3x.png"]; [_altitudeRateIcon setHidden:NO];}
+        else if (data.AltitudeRate < 0) {_altitudeRateIcon.image = [UIImage imageNamed:@"arrow_down@3x.png"]; [_altitudeRateIcon setHidden:NO];}
+        else {[_altitudeLabel setHidden:YES];}
         
         data.rateTimer = 0;
         data.rateLastDistance = data.totalDistance;

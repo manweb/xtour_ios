@@ -11,6 +11,7 @@
 #import "XTLoginViewController.h"
 #import "XTNewsFeedViewController.h"
 #import "XTNavigationViewContainer.h"
+#import "XTFileUploader.h"
 
 @interface XTMoreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

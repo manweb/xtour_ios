@@ -11,6 +11,8 @@
 #import "XTNewsFeedCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "XTNavigationViewContainer.h"
+#import "XTTourDetailView.h"
+#import "XTTourInfo.h"
 
 @interface XTNewsFeedViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 {

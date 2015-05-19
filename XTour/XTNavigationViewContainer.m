@@ -27,7 +27,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _backButton = [[UIButton alloc] initWithFrame:CGRectMake(16, 25, 40, 40)];
+    _backButton = [[UIButton alloc] initWithFrame:CGRectMake(16, 30, 30, 30)];
     [_backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     [_backButton setImage:[UIImage imageNamed:@"arrow_back@3x.png"] forState:UIControlStateNormal];
     [_backButton setHidden:YES];
@@ -51,7 +51,7 @@
     
     [_backButton setHidden:YES];
     
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {self.view.frame = CGRectMake(2*width, 0, width, height);} completion:^(bool finished) {[self.view removeFromSuperview];}];
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {self.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[self.view removeFromSuperview];}];
 }
 
 /*

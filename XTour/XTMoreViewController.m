@@ -36,11 +36,13 @@
     [_listOfFiles addObject:@"Profile"];
     [_listOfFiles addObject:@"Settings"];
     [_listOfFiles addObject:@"News feed"];
+    [_listOfFiles addObject:@"Upload files"];
     
     _listOfIcons = [[NSMutableArray alloc] init];
     [_listOfIcons addObject:@"profile_icon_small@3x.png"];
     [_listOfIcons addObject:@"settings_icon@3x.png"];
     [_listOfIcons addObject:@"news_feed_icon@3x.png"];
+    [_listOfIcons addObject:@"upload_icon@3x.png"];
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
@@ -129,9 +131,10 @@
         case 2:
         {
             navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
-            navigationView.view.frame = CGRectMake(2*width, 0, width, height);
+            navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
             
-            [[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
+            //[[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
+            [self.view addSubview:navigationView.view];
             
             UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
             [layout setItemSize:CGSizeMake(300, 100)];
@@ -140,9 +143,19 @@
             
             [navigationView.view addSubview:collection.view];
             
-            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height);} completion:^(bool finished) {[navigationView.backButton setHidden:NO];}];
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
         }
             break;
+        case 3:
+        {
+            XTFileUploader *uploader = [[XTFileUploader alloc] init];
+            
+            [uploader UploadGPXFiles];
+            [uploader UploadImages];
+            [uploader UploadImageInfo];
+            
+            break;
+        }
     }
     
     //[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_detailView.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);} completion:^(bool finished) {[_backButton setHidden:NO];}];

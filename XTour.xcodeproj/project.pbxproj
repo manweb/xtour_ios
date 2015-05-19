@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6400D0561AF56E130079203C /* arrow_back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6400D0551AF56E130079203C /* arrow_back@3x.png */; };
 		640113CB1AEC72B000E6A9F6 /* camera_marker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640113CA1AEC72B000E6A9F6 /* camera_marker@2x.png */; };
 		64059E6218BDD3C800FDA369 /* XTSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */; };
 		64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */; };
@@ -38,8 +39,8 @@
 		640BBEB61887B22F0029327F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB51887B22F0029327F /* QuartzCore.framework */; };
 		640BBEB81887B2370029327F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB71887B2370029327F /* SystemConfiguration.framework */; };
 		640BBEBF1887BBDB0029327F /* XTDataSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 640BBEBE1887BBDB0029327F /* XTDataSingleton.m */; };
+		640E71AC1AF3FD3D009EEA34 /* XTHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 640BBE7F1887B1A30029327F /* XTHomeViewController.m */; };
 		641493811AEFEC2C0020ADDD /* XTNavigationViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 641493801AEFEC2C0020ADDD /* XTNavigationViewContainer.m */; };
-		641493851AF00C000020ADDD /* arrow_back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 641493841AF00C000020ADDD /* arrow_back@3x.png */; };
 		642143E618C087A700144711 /* arrow_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 642143E518C087A700144711 /* arrow_back.png */; };
 		64251D17188FB45B004F1675 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251CC6188FB45B004F1675 /* ASIAuthenticationDialog.m */; };
 		64251D18188FB45B004F1675 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251CC9188FB45B004F1675 /* ASIDataCompressor.m */; };
@@ -77,10 +78,11 @@
 		645181321A27CC2500D887CA /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181271A27CC2500D887CA /* Icon-Small@2x.png */; };
 		645181331A27CC2500D887CA /* Icon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181281A27CC2500D887CA /* Icon-Small@3x.png */; };
 		64571D3F1AD8E0FB00B9D6F3 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64571D3E1AD8E0FB00B9D6F3 /* Launch Screen.xib */; };
+		6458D0BE1AF9333B008268B8 /* XTTourInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6458D0BD1AF9333B008268B8 /* XTTourInfo.m */; };
 		645E31201AE886C300B2FF89 /* XTImageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 645E311F1AE886C300B2FF89 /* XTImageInfo.m */; };
 		645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */; };
-		645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */; };
 		646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646183FB18BC30AF00C50FBB /* camera_icon.png */; };
+		6463C3261B0519C0000ACB6E /* XTSummaryImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6463C3251B0519C0000ACB6E /* XTSummaryImageViewController.m */; };
 		64746CBC189F18270070B8D9 /* XTour_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64746CBB189F18270070B8D9 /* XTour_button.png */; };
 		647FEF0B1A5169E700D7F2E7 /* XTFileBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 647FEF0A1A5169E700D7F2E7 /* XTFileBrowser.m */; };
 		6480121B18A6FD80000A387E /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121A18A6FD80000A387E /* button_green.png */; };
@@ -122,8 +124,12 @@
 		64DBCCDD1AD5930D009DB4DC /* XTServerRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 64DBCCDC1AD5930D009DB4DC /* XTServerRequestHandler.m */; };
 		64E3EB9F18B0200500514CFE /* xtour_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E3EB9E18B0200500514CFE /* xtour_header.png */; };
 		64E3EBA118B020E400514CFE /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E3EBA018B020E400514CFE /* profile_icon.png */; };
+		64F3A6FF1AF597BA0083856F /* XTTourDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F3A6FE1AF597BA0083856F /* XTTourDetailView.m */; };
 		64F5735A1AE2F39C00BFC7FE /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F573591AE2F39C00BFC7FE /* SDWebImage.framework */; };
 		64F5735E1AE301C700BFC7FE /* profile_icon_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F5735D1AE301C700BFC7FE /* profile_icon_gray.png */; };
+		64F99EB81B031E26007EB2CE /* arrow_up@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F99EB71B031E26007EB2CE /* arrow_up@3x.png */; };
+		64F99EBA1B031E3F007EB2CE /* arrow_down@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F99EB91B031E3F007EB2CE /* arrow_down@3x.png */; };
+		64F99EBC1B031E50007EB2CE /* upload_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F99EBB1B031E50007EB2CE /* upload_icon@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +143,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6400D0551AF56E130079203C /* arrow_back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_back@3x.png"; sourceTree = "<group>"; };
 		640113CA1AEC72B000E6A9F6 /* camera_marker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_marker@2x.png"; sourceTree = "<group>"; };
 		64059E5F18BDD3C800FDA369 /* XTSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSummaryViewController.h; sourceTree = "<group>"; };
 		64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSummaryViewController.m; sourceTree = "<group>"; };
@@ -178,7 +185,6 @@
 		640BBEBE1887BBDB0029327F /* XTDataSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDataSingleton.m; sourceTree = "<group>"; };
 		6414937F1AEFEC2C0020ADDD /* XTNavigationViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTNavigationViewContainer.h; sourceTree = "<group>"; };
 		641493801AEFEC2C0020ADDD /* XTNavigationViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTNavigationViewContainer.m; sourceTree = "<group>"; };
-		641493841AF00C000020ADDD /* arrow_back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_back@3x.png"; sourceTree = "<group>"; };
 		642143E518C087A700144711 /* arrow_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow_back.png; path = ../images/arrow_back.png; sourceTree = "<group>"; };
 		64251CC5188FB45B004F1675 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		64251CC6188FB45B004F1675 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
@@ -232,12 +238,15 @@
 		645181271A27CC2500D887CA /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		645181281A27CC2500D887CA /* Icon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@3x.png"; sourceTree = "<group>"; };
 		64571D3E1AD8E0FB00B9D6F3 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		6458D0BC1AF9333B008268B8 /* XTTourInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTTourInfo.h; sourceTree = "<group>"; };
+		6458D0BD1AF9333B008268B8 /* XTTourInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTTourInfo.m; sourceTree = "<group>"; };
 		645E311E1AE886C300B2FF89 /* XTImageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTImageInfo.h; sourceTree = "<group>"; };
 		645E311F1AE886C300B2FF89 /* XTImageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTImageInfo.m; sourceTree = "<group>"; };
 		645FEF1918BC67CA009619E9 /* XTLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTLoginViewController.h; sourceTree = "<group>"; };
 		645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTLoginViewController.m; sourceTree = "<group>"; };
-		645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XTLoginViewController.xib; sourceTree = "<group>"; };
 		646183FB18BC30AF00C50FBB /* camera_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon.png; path = images/camera_icon.png; sourceTree = SOURCE_ROOT; };
+		6463C3241B0519C0000ACB6E /* XTSummaryImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSummaryImageViewController.h; sourceTree = "<group>"; };
+		6463C3251B0519C0000ACB6E /* XTSummaryImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSummaryImageViewController.m; sourceTree = "<group>"; };
 		64746CBB189F18270070B8D9 /* XTour_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = XTour_button.png; path = ../images/XTour_button.png; sourceTree = "<group>"; };
 		647FEF091A5169E700D7F2E7 /* XTFileBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTFileBrowser.h; sourceTree = "<group>"; };
 		647FEF0A1A5169E700D7F2E7 /* XTFileBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTFileBrowser.m; sourceTree = "<group>"; };
@@ -287,8 +296,13 @@
 		64DBCCDC1AD5930D009DB4DC /* XTServerRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTServerRequestHandler.m; sourceTree = "<group>"; };
 		64E3EB9E18B0200500514CFE /* xtour_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = xtour_header.png; path = ../images/xtour_header.png; sourceTree = "<group>"; };
 		64E3EBA018B020E400514CFE /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = profile_icon.png; path = ../images/profile_icon.png; sourceTree = "<group>"; };
+		64F3A6FD1AF597BA0083856F /* XTTourDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTTourDetailView.h; sourceTree = "<group>"; };
+		64F3A6FE1AF597BA0083856F /* XTTourDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTTourDetailView.m; sourceTree = "<group>"; };
 		64F573591AE2F39C00BFC7FE /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = "<group>"; };
 		64F5735D1AE301C700BFC7FE /* profile_icon_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon_gray.png; sourceTree = "<group>"; };
+		64F99EB71B031E26007EB2CE /* arrow_up@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_up@3x.png"; sourceTree = "<group>"; };
+		64F99EB91B031E3F007EB2CE /* arrow_down@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_down@3x.png"; sourceTree = "<group>"; };
+		64F99EBB1B031E50007EB2CE /* upload_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upload_icon@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -391,6 +405,12 @@
 				640BBE7B1887B1A30029327F /* Main.storyboard */,
 				640BBE7E1887B1A30029327F /* XTHomeViewController.h */,
 				640BBE7F1887B1A30029327F /* XTHomeViewController.m */,
+				6463C3241B0519C0000ACB6E /* XTSummaryImageViewController.h */,
+				6463C3251B0519C0000ACB6E /* XTSummaryImageViewController.m */,
+				6458D0BC1AF9333B008268B8 /* XTTourInfo.h */,
+				6458D0BD1AF9333B008268B8 /* XTTourInfo.m */,
+				64F3A6FD1AF597BA0083856F /* XTTourDetailView.h */,
+				64F3A6FE1AF597BA0083856F /* XTTourDetailView.m */,
 				645E311E1AE886C300B2FF89 /* XTImageInfo.h */,
 				645E311F1AE886C300B2FF89 /* XTImageInfo.m */,
 				64A2FECB1AE46F02002F7987 /* XTMoreViewController.h */,
@@ -416,7 +436,6 @@
 				64A4A00C18B953D2007B4E54 /* XTWarnigsViewController.m */,
 				645FEF1918BC67CA009619E9 /* XTLoginViewController.h */,
 				645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */,
-				645FEF1B18BC67CA009619E9 /* XTLoginViewController.xib */,
 				64059E5F18BDD3C800FDA369 /* XTSummaryViewController.h */,
 				64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */,
 				64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */,
@@ -465,7 +484,10 @@
 				64A7DBA31AA4E44300D8A4C5 /* more_icon@2x.png */,
 				646183FB18BC30AF00C50FBB /* camera_icon.png */,
 				642143E518C087A700144711 /* arrow_back.png */,
-				641493841AF00C000020ADDD /* arrow_back@3x.png */,
+				6400D0551AF56E130079203C /* arrow_back@3x.png */,
+				64F99EB71B031E26007EB2CE /* arrow_up@3x.png */,
+				64F99EB91B031E3F007EB2CE /* arrow_down@3x.png */,
+				64F99EBB1B031E50007EB2CE /* upload_icon@3x.png */,
 				6431C4EA1A2EF566007A827F /* GPS_medium.png */,
 				6431C4EB1A2EF566007A827F /* GPS_none.png */,
 				6431C4EC1A2EF566007A827F /* GPS_strong.png */,
@@ -647,7 +669,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				64A7B47618B1F508004E4B2F /* skier_down_button.png in Resources */,
-				645FEF1D18BC67CA009619E9 /* XTLoginViewController.xib in Resources */,
 				64D8C0E218B55BF4001A825E /* altitude_icon.png in Resources */,
 				645181291A27CC2500D887CA /* Contents.json in Resources */,
 				640113CB1AEC72B000E6A9F6 /* camera_marker@2x.png in Resources */,
@@ -679,6 +700,7 @@
 				6434706F1ACB703C00C8F916 /* skier_down_icon_2.png in Resources */,
 				6451812B1A27CC2500D887CA /* Icon-40@2x.png in Resources */,
 				64C2B97D18B87AF300D4FDE4 /* globe@2x.png in Resources */,
+				64F99EB81B031E26007EB2CE /* arrow_up@3x.png in Resources */,
 				6451812C1A27CC2500D887CA /* Icon-40@3x.png in Resources */,
 				6451812E1A27CC2500D887CA /* Icon-60@3x.png in Resources */,
 				64571D3F1AD8E0FB00B9D6F3 /* Launch Screen.xib in Resources */,
@@ -695,17 +717,19 @@
 				640BBE7D1887B1A30029327F /* Main.storyboard in Resources */,
 				64746CBC189F18270070B8D9 /* XTour_button.png in Resources */,
 				6434706B1ACB6F2E00C8F916 /* distance_icon.png in Resources */,
+				64F99EBA1B031E3F007EB2CE /* arrow_down@3x.png in Resources */,
 				6434706D1ACB702A00C8F916 /* skier_up_icon_2.png in Resources */,
 				64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */,
 				6431C4F11A2EF566007A827F /* GPS_weak.png in Resources */,
 				64D8C0E418B55C0E001A825E /* skier_up_icon.png in Resources */,
+				6400D0561AF56E130079203C /* arrow_back@3x.png in Resources */,
 				64A7B47418B1F501004E4B2F /* skier_up_button.png in Resources */,
 				64B6E50F1AC89D070069A1A7 /* skier_up_button_inactive.png in Resources */,
 				64E3EBA118B020E400514CFE /* profile_icon.png in Resources */,
-				641493851AF00C000020ADDD /* arrow_back@3x.png in Resources */,
 				64CA2FFF1AEB67A0006F4219 /* compass_icon_white.png in Resources */,
 				64A4A00A18B952F0007B4E54 /* warning_icon@2x.png in Resources */,
 				6451812F1A27CC2500D887CA /* Icon-76.png in Resources */,
+				64F99EBC1B031E50007EB2CE /* upload_icon@3x.png in Resources */,
 				64D8C0E618B55C50001A825E /* compass_icon.png in Resources */,
 				6480121F18A6FD95000A387E /* button_red.png in Resources */,
 			);
@@ -742,15 +766,18 @@
 				64DBCCDD1AD5930D009DB4DC /* XTServerRequestHandler.m in Sources */,
 				64251D1A188FB45B004F1675 /* ASIDownloadCache.m in Sources */,
 				64251D46188FBA76004F1675 /* Reachability.m in Sources */,
+				6458D0BE1AF9333B008268B8 /* XTTourInfo.m in Sources */,
 				64251D1D188FB45B004F1675 /* ASIInputStream.m in Sources */,
 				647FEF0B1A5169E700D7F2E7 /* XTFileBrowser.m in Sources */,
 				64A4A00D18B953D2007B4E54 /* XTWarnigsViewController.m in Sources */,
 				64251D19188FB45B004F1675 /* ASIDataDecompressor.m in Sources */,
+				6463C3261B0519C0000ACB6E /* XTSummaryImageViewController.m in Sources */,
 				648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */,
 				64251D1E188FB45B004F1675 /* ASINetworkQueue.m in Sources */,
 				64A2FECD1AE46F03002F7987 /* XTMoreViewController.m in Sources */,
 				645E31201AE886C300B2FF89 /* XTImageInfo.m in Sources */,
 				643470781AE0D049003DDA13 /* XTNewsFeedViewController.m in Sources */,
+				64F3A6FF1AF597BA0083856F /* XTTourDetailView.m in Sources */,
 				641493811AEFEC2C0020ADDD /* XTNavigationViewContainer.m in Sources */,
 				640BBE831887B1A30029327F /* XTMapViewController.m in Sources */,
 				645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */,
@@ -763,6 +790,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				640BBE981887B1A30029327F /* XTourTests.m in Sources */,
+				640E71AC1AF3FD3D009EEA34 /* XTHomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

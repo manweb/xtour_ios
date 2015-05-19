@@ -53,6 +53,7 @@
 - (void) ResetAll;
 - (void) AddCoordinate:(CLLocation *)p;
 - (void) AddDistance:(double)dist andHeight:(double)height;
+- (void) RemoveLastCoordinate;
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2;
 - (double) CalculateHaversineForCurrentCoordinate;
 - (double) CalculateAltitudeDiffForCurrentCoordinate;
