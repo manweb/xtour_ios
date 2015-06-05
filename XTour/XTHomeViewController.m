@@ -47,6 +47,9 @@
 {
     [super viewDidLoad];
     
+    _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
     _timerSection.layer.cornerRadius = 12.0f;
     _distanceSection.layer.cornerRadius = 12.0f;
     _altitudeSection.layer.cornerRadius = 12.0f;
@@ -160,6 +163,8 @@
     [_totalTimeLabel release];
     [_totalAltitudeLabel release];
     [_altitudeRateIcon release];
+    [_header release];
+    [_header_shadow release];
     [super dealloc];
 }
 

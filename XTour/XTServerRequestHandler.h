@@ -19,5 +19,6 @@
 - (NSMutableArray *) GetTourFilesForTour:(NSString *)tourID andType:(NSString *)type;
 - (NSMutableArray *) GetCoordinatesForFile:(NSString *)file;
 - (NSMutableArray *) GetImagesForTour:(NSString *)tourID;
+- (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID;
 
 @end

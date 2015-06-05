@@ -12,6 +12,8 @@
 #import "XTNewsFeedViewController.h"
 #import "XTNavigationViewContainer.h"
 #import "XTFileUploader.h"
+#import "XTSettingsViewController.h"
+#import "XTProfileViewController.h"
 
 @interface XTMoreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
@@ -21,6 +23,9 @@
     XTNavigationViewContainer *navigationView;
 }
 
+@property (retain, nonatomic) IBOutlet UITableView *tableView;
+@property (retain, nonatomic) IBOutlet UIView *header;
+@property (retain, nonatomic) IBOutlet UIView *header_shadow;
 @property(nonatomic,retain) NSMutableArray *listOfFiles;
 @property(nonatomic,retain) NSMutableArray *listOfIcons;
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;

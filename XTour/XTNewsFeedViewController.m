@@ -25,6 +25,8 @@ static NSString * const reuseIdentifier = @"Cell";
     // Register cell classes
     [self.collectionView registerClass:[XTNewsFeedCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
+    [self.collectionView setContentInset:UIEdgeInsetsMake(70, 0, 0, 0)];
+    
     // Do any additional setup after loading the view.
     [self.collectionView setBackgroundColor:[UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f]];
     
@@ -132,13 +134,13 @@ static NSString * const reuseIdentifier = @"Cell";
     navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
     //navigationView.view.alpha = 0.0f;
     
-    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 70, width, height-70-tabBarHeight)];
+    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height-tabBarHeight)];
     detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
     
-    [detailView Initialize:currentElement fromServer:YES];
+    [detailView Initialize:currentElement fromServer:YES withOffset:70];
     
     [navigationView.view addSubview:detailView];
-    [[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
+    [self.view addSubview:navigationView.view];
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);

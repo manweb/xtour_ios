@@ -16,11 +16,14 @@
     XTLoginViewController *login;
 }
 
-@property(nonatomic,retain) NSMutableArray *listOfFiles;
+@property (retain, nonatomic) IBOutlet UIView *header;
+@property (retain, nonatomic) IBOutlet UIView *header_shadow;
+@property (retain, nonatomic) UIView *background;
+@property (retain, nonatomic) UILabel *emptyLabel;
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;
-@property(nonatomic,retain) UIView *detailView;
-@property (retain, nonatomic) IBOutlet UIButton *backButton;
-- (IBAction)back:(id)sender;
+@property (retain, nonatomic) IBOutlet UITableView *tableView;
+@property (retain, nonatomic) NSMutableArray *warningsArray;
+
 - (IBAction)LoadLogin:(id)sender;
 
 @end

@@ -22,6 +22,8 @@
     XTSummaryViewController *summary;
 }
 
+@property (retain, nonatomic) IBOutlet UIView *header;
+@property (retain, nonatomic) IBOutlet UIView *header_shadow;
 @property (retain, nonatomic) IBOutlet UIView *timerSection;
 @property (retain, nonatomic) IBOutlet UIView *distanceSection;
 @property (retain, nonatomic) IBOutlet UIView *altitudeSection;

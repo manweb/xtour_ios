@@ -32,6 +32,9 @@
     data = [XTDataSingleton singleObj];
     _pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];
     
+    _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:10];
     _mapView = [GMSMapView mapWithFrame:self.view.bounds camera:camera];
     _mapView.myLocationEnabled = YES;
@@ -160,6 +163,16 @@
     }
 }
 
+- (void) mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate
+{
+    GMSMarker *marker = [[GMSMarker alloc] init];
+    marker.position = coordinate;
+    marker.title = [NSString stringWithFormat:@"Gefahrenstelle bei Koordinate: %.5f %.5f",coordinate.longitude,coordinate.latitude];
+    marker.icon = [UIImage imageNamed:@"ski_pole_camera@3x.png"];
+    marker.groundAnchor = CGPointMake(0.88, 1.0);
+    marker.map = _mapView;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -180,15 +193,18 @@
     [_loginButton release];
     [_distanceLabel release];
     [_centerButton release];
+    [_header release];
+    [_header_shadow release];
     [super dealloc];
 }
 
 - (IBAction)LoadLogin:(id)sender {
-    if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
-    [self presentViewController:login animated:YES completion:nil];
+    if (login) {[login.view removeFromSuperview];}
     
-    [login release];
-    login = nil;
+    login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:login.view];
+    [login animate];
 }
 
 - (IBAction)centerMap:(id)sender {

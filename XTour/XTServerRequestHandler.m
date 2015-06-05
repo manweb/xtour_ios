@@ -173,4 +173,28 @@
     return tour_images;
 }
 
+- (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID
+{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/insert_image_comment.php?image=%@&comment=%@", imageID, [comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request startSynchronous];
+    
+    NSError *error = [request error];
+    if (!error) {
+        NSString *response = [request responseString];
+        
+        if ([response isEqualToString:@"true"]) {return true;}
+        else {return false;}
+    }
+    else {
+        NSLog(@"There was a problem submitting the image comment");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    return false;
+}
+
 @end

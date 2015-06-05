@@ -18,14 +18,17 @@
 }
 */
 
-- (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server
+- (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset
 {
+    _viewOffset = 0;
+    if (offset) {_viewOffset = offset;}
+    
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
     if (!mapView) {mapView = [GMSMapView mapWithFrame:CGRectMake(5, 5, 300, 240) camera:camera];}
     
-    _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, 5, 310, 140)];
-    _mapViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, 150, 310, 250)];
-    _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, 405, 310, 200)];
+    _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, _viewOffset+5, 310, 140)];
+    _mapViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, _viewOffset+150, 310, 250)];
+    _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, _viewOffset+405, 310, 200)];
     
     _mapViewContainer.backgroundColor = [UIColor whiteColor];
     _summaryViewContainer.backgroundColor = [UIColor whiteColor];
@@ -166,7 +169,7 @@
     [self addSubview:_summaryViewContainer];
     [self addSubview:_imageViewContainer];
     
-    self.contentSize = CGSizeMake(320, 610);
+    self.contentSize = CGSizeMake(320, _viewOffset+610);
 }
 
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server

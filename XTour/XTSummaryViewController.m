@@ -26,6 +26,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
     data = [XTDataSingleton singleObj];
     
     XTTourInfo *tourInfo = [[XTTourInfo alloc] init];
@@ -49,15 +53,26 @@
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
-    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 70, width, height-70-tabBarHeight)];
+    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
     
-    [self.view addSubview:detailView];
+    UIView *ratingViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0, height-tabBarHeight-70, width, 50)];
+    ratingViewContainer.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.4f];
     
-    [detailView Initialize:tourInfo fromServer:NO];
+    DXStarRatingView *ratingView = [[DXStarRatingView alloc] initWithFrame:CGRectMake(20, 5, 320, 40)];
+    [ratingView setStars:0];
+    
+    [ratingViewContainer addSubview:ratingView];
+    
+    [self.view addSubview:detailView];
+    [self.view addSubview:ratingViewContainer];
+    
+    [self.view bringSubviewToFront:_header];
+    [self.view bringSubviewToFront:_header_shadow];
+    
+    [detailView Initialize:tourInfo fromServer:NO withOffset:70];
     
     [detailView LoadTourDetail:tourInfo fromServer:NO];
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,6 +116,8 @@
     [_mapViewContainer release];
     [_summaryViewContainer release];
     [_imageViewContainer release];
+    [_header release];
+    [_header_shadow release];
     [super dealloc];
 }
 @end

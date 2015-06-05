@@ -49,8 +49,9 @@
 @property (retain, nonatomic) UILabel *LowestPointLabel;
 @property (retain, nonatomic) UILabel *UpRateLabel;
 @property (retain, nonatomic) UILabel *DownRateLabel;
+@property (nonatomic) NSInteger viewOffset;
 
-- (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server;
+- (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset;
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server;
 
 @end

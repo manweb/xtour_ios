@@ -43,8 +43,11 @@
         }
     }*/
     
-    UIImageView *CameraHeader = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)];
-    CameraHeader.image = [UIImage imageNamed:@"xtour_header.png"];
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 69)];
+    UIView *header_shadow = [[UIView alloc] initWithFrame:CGRectMake(0, 69, 320, 1)];
+    
+    header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
     
     _loginButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 25, 40, 40)];
     [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
@@ -54,11 +57,13 @@
     [_CameraIcon setImage:[UIImage imageNamed:@"camera_icon.png"] forState:UIControlStateNormal];
     [_CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
     
-    [self.view addSubview:CameraHeader];
-    [self.view addSubview:_loginButton];
-    [self.view addSubview:_CameraIcon];
+    [header addSubview:_loginButton];
+    [header addSubview:_CameraIcon];
     
-    [CameraHeader release];
+    [self.view addSubview:header];
+    [self.view addSubview:header_shadow];
+    
+    [header release];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -104,11 +109,12 @@
 
 - (void) LoadLogin:(id)sender
 {
-    if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
-    [self presentViewController:login animated:YES completion:nil];
+    if (login) {[login.view removeFromSuperview];}
     
-    [login release];
-    login = nil;
+    login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:login.view];
+    [login animate];
 }
 
 #pragma mark CollectionView methods
@@ -151,119 +157,21 @@
     _cellRect.origin.x = p.x;
     _cellRect.origin.y = p.y;
     
-    NSString *imageName = [data GetImageFilenameAt:indexPath.row];
-    
-    if (!_selectedImageView) {_selectedImageView = [[UIImageView alloc] initWithFrame:_cellRect];}
-    UIImage *selectedImage = [UIImage imageWithContentsOfFile:imageName];
-    
-    _selectedImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _selectedImageView.clipsToBounds = true;
-    _selectedImageView.image = selectedImage;
-    
-    //[self.view addSubview:_selectedImageView];
-    
-    CGFloat imgWidth = selectedImage.size.width;
-    CGFloat imgHeight = selectedImage.size.height;
+    XTImageInfo *imageInfo = [[XTImageInfo alloc] init];
+    imageInfo.Filename = [data GetImageFilenameAt:indexPath.row];
+    imageInfo.Longitude = [data GetImageLongitudeAt:indexPath.row];
+    imageInfo.Latitude = [data GetImageLatitudeAt:indexPath.row];
+    imageInfo.Elevation = [data GetImageElevationAt:indexPath.row];
+    imageInfo.Comment = [data GetImageCommentAt:indexPath.row];
+    imageInfo.Date = [data GetImageDateAt:indexPath.row];
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenBound.size.width;
-    CGFloat screenHeight = screenBound.size.height;
     
-    UITabBarController *tabBarController = [super tabBarController];
-    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
-    CGFloat fullWidth = screenWidth;
-    CGFloat fullHeight = imgHeight/imgWidth*fullWidth;
-    CGFloat yOffset = (screenHeight - 70 - tabBarHeight)/2. - fullHeight/2. + 70;
-    CGFloat xOffset = 0;
+    XTImageDetailView *imageDetailView = [[XTImageDetailView alloc] initWithFrame:screenBound fromPosition:_cellRect withImage:imageInfo andImageID:indexPath.row];
     
-    UIColor *bgColorSolid = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:1.0];
-    UIColor *bgColorOpaque = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:imageDetailView];
     
-    if (!_background) {
-        CGRect bgRect = CGRectMake(0, 0, screenWidth, screenHeight + tabBarHeight);
-        _background = [[UIImageView alloc] initWithFrame:bgRect];
-        _background.backgroundColor = bgColorOpaque;
-    }
-    
-    NSString *imageLongitude = [data GetImageLongitudeStringAt:indexPath.row];
-    NSString *imageLatitude = [data GetImageLatitudeStringAt:indexPath.row];
-    float imageElevation = [data GetImageElevationAt:indexPath.row];
-    NSString *imageComment = [data GetImageCommentAt:indexPath.row];
-    NSDate *imageDate = [data GetImageDateAt:indexPath.row];
-    
-    if (!_compassImage) {
-        _compassImage = [[UIImageView alloc] initWithFrame:CGRectMake(10, yOffset-45, 40, 40)];
-        _compassImage.image = [UIImage imageNamed:@"compass_icon_white.png"];
-    }
-    
-    if (!_imgLongitudeLabel) {
-        _imgLongitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, yOffset-45, 100, 20)];
-        _imgLongitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
-        _imgLongitudeLabel.textColor = [UIColor whiteColor];
-    }
-    
-    if (!_imgLatitudeLabel) {
-        _imgLatitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, yOffset-25, 100, 20)];
-        _imgLatitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
-        _imgLatitudeLabel.textColor = [UIColor whiteColor];
-    }
-    
-    if (!_imgElevationLabel) {
-        _imgElevationLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, yOffset-35, 50, 20)];
-        _imgElevationLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
-        _imgElevationLabel.textColor = [UIColor whiteColor];
-    }
-    
-    if (imageLongitude) {_imgLongitudeLabel.text = imageLongitude;}
-    else {_imgLongitudeLabel.text = @"";}
-    
-    if (imageLatitude) {_imgLatitudeLabel.text = imageLatitude;}
-    else {_imgLatitudeLabel.text = @"";}
-    
-    if (imageElevation) {_imgElevationLabel.text = [NSString stringWithFormat:@"%.0f müm",imageElevation];}
-    else {_imgLongitudeLabel.text = @"";}
-    
-    if (!_imgCommentLabel) {
-        _imgCommentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, yOffset+fullHeight+5, 310, 20)];
-        _imgCommentLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
-        _imgCommentLabel.textColor = [UIColor whiteColor];
-    }
-    
-    if (imageComment) {_imgCommentLabel.text = imageComment;}
-    else {_imgCommentLabel.text = @"No comments";}
-    
-    [_background addSubview:_selectedImageView];
-    [[[UIApplication sharedApplication] keyWindow] addSubview:_background];
-    //[self.view addSubview:_background];
-    //[self.view addSubview:_selectedImageView];
-    
-    _selectedIndexPath = indexPath;
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
-    
-    [cell setHidden:YES];
-    
-    UITapGestureRecognizer *tapRecognition = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(CloseImageView:)];
-    tapRecognition.numberOfTapsRequired = 1;
-    
-    _background.userInteractionEnabled = YES;
-    
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _selectedImageView.frame = CGRectMake(xOffset-10, yOffset-10, fullWidth+20, fullHeight+20);
-        _background.backgroundColor = bgColorSolid;
-    } completion:^(BOOL finished)
-     {
-         [_background addGestureRecognizer:tapRecognition];
-         [_background addSubview:_compassImage];
-         [_background addSubview:_imgLongitudeLabel];
-         [_background addSubview:_imgLatitudeLabel];
-         [_background addSubview:_imgElevationLabel];
-         [_background addSubview:_imgCommentLabel];
-         [UIView animateWithDuration:0.2f animations:^(void) {_selectedImageView.frame = CGRectMake(xOffset, yOffset, fullWidth, fullHeight);}];
-     }];
-    
-    [_CameraIcon removeTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
-    [_CameraIcon addTarget:self action:@selector(CloseImageView:) forControlEvents:UIControlEventTouchDown];
-    [_CameraIcon setImage:[UIImage imageNamed:@"arrow_back.png"] forState:UIControlStateNormal];
+    [imageDetailView animate];
 }
 
 - (UIImage *) GetSquareSubImage:(UIImage *)image
@@ -297,40 +205,6 @@
     CGImageRelease(newImage);
     
     return subImg;
-}
-
-- (void) CloseImageView:(id)sender
-{
-    UIColor *bgColorOpaque = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0];
-    
-    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:_selectedIndexPath];
-    
-    [_compassImage removeFromSuperview];
-    [_imgLongitudeLabel removeFromSuperview];
-    [_imgLatitudeLabel removeFromSuperview];
-    [_imgElevationLabel removeFromSuperview];
-    [_imgCommentLabel removeFromSuperview];
-    
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _selectedImageView.frame = CGRectMake(_cellRect.origin.x + 3, _cellRect.origin.y + 3, _cellRect.size.width - 6, _cellRect.size.height - 6);
-        _background.backgroundColor = bgColorOpaque;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.2f animations:^(void) {
-            _selectedImageView.frame = _cellRect;
-        } completion:^(BOOL finished) {
-            [cell setHidden:NO];
-            [_selectedImageView removeFromSuperview];
-            [_selectedImageView release];
-            _selectedImageView = nil;
-            [_background removeFromSuperview];
-            [_background release];
-            _background = nil;
-        }];
-    }];
-    
-    [_CameraIcon removeTarget:self action:@selector(CloseImageView:) forControlEvents:UIControlEventTouchDown];
-    [_CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
-    [_CameraIcon setImage:[UIImage imageNamed:@"camera_icon.png"] forState:UIControlStateNormal];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

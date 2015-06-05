@@ -1,18 +1,18 @@
 //
-//  XTNavigationViewContainer.m
+//  XTProfileViewController.m
 //  XTour
 //
-//  Created by Manuel Weber on 28/04/15.
+//  Created by Manuel Weber on 03/06/15.
 //  Copyright (c) 2015 Manuel Weber. All rights reserved.
 //
 
-#import "XTNavigationViewContainer.h"
+#import "XTProfileViewController.h"
 
-@interface XTNavigationViewContainer ()
+@interface XTProfileViewController ()
 
 @end
 
-@implementation XTNavigationViewContainer
+@implementation XTProfileViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,21 +27,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _backButton = [[UIButton alloc] initWithFrame:CGRectMake(16, 30, 30, 30)];
-    [_backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    [_backButton setImage:[UIImage imageNamed:@"arrow_back@3x.png"] forState:UIControlStateNormal];
-    [_backButton setHidden:YES];
+    data = [XTDataSingleton singleObj];
     
-    [[[UIApplication sharedApplication] keyWindow] addSubview:_backButton];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void) back:(id)sender
-{
+    self.view.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
+    
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
     float height = screenBound.size.height;
@@ -49,9 +38,22 @@
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
-    [_backButton setHidden:YES];
+    _profileSummary = [[UIView alloc] initWithFrame:CGRectMake(5, 75, 310, 140)];
     
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {self.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[self.view removeFromSuperview];}];
+    _profileSummary.backgroundColor = [UIColor whiteColor];
+    _profileSummary.layer.cornerRadius = 5.0f;
+    
+    _profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 40, 40)];
+    
+    _profilePicture.image = [UIImage imageNamed:[data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO]];
+    
+    [_profileSummary addSubview:_profilePicture];
+    [self.view addSubview:_profileSummary];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 /*

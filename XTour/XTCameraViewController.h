@@ -11,6 +11,8 @@
 #import "XTLoginViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <CoreLocation/CoreLocation.h>
+#import "XTImageInfo.h"
+#import "XTImageDetailView.h"
 
 @interface XTCameraViewController : UICollectionViewController <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 {
@@ -35,6 +37,5 @@
 - (void) LoadCamera:(id)sender;
 - (void) LoadLogin:(id)sender;
 - (void) CloseImageView:(id)sender;
-- (UIImage *) GetSquareSubImage:(UIImage *)image;
 
 @end

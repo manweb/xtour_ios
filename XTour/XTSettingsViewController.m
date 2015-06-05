@@ -27,6 +27,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    self.view.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,30 +37,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)GetFileList:(id)sender {
-    XTFileUploader *uploader = [[XTFileUploader alloc] init];
-    
-    [uploader UploadGPXFiles];
-    [uploader UploadImages];
-    [uploader UploadImageInfo];
+- (IBAction)LoadLogin:(id)sender {
 }
 
-- (IBAction)ShowSummary:(id)sender {
-    if (!summary) {summary = [[XTSummaryViewController alloc] initWithNibName:nil bundle:nil];}
-    
-    [self presentViewController:summary animated:YES completion:nil];
-    [summary release];
-    
-    summary = nil;
+- (void)dealloc {
+    [super dealloc];
 }
-
-- (IBAction)ShowNewsFeed:(id)sender {
-    if (!NewsFeed) {NewsFeed = [[XTNewsFeedViewController alloc] initWithNibName:nil bundle:nil];}
-    
-    [self presentViewController:NewsFeed animated:YES completion:nil];
-    [NewsFeed release];
-    
-    NewsFeed = nil;
-}
-
 @end

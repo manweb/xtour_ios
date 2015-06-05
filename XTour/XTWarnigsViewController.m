@@ -28,27 +28,40 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    
+    _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
+    [_tableView setContentInset:UIEdgeInsetsMake(75, 0, 0, 0)];
+    
+    _background = [[UIView alloc] initWithFrame:screenBounds];
+    _background.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
+    
+    _emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, screenBounds.size.height/2-25, screenBounds.size.width - 40, 50)];
+    _emptyLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _emptyLabel.text = @"Im Umkreis von 20km sind keine Gefahrenstellen markiert.";
+    [_emptyLabel setNumberOfLines:3];
+    [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
+    
+    [_background addSubview:_emptyLabel];
+    [self.view addSubview:_background];
+    
+    [self.view sendSubviewToBack:_background];
+    
+    _warningsArray = [[NSMutableArray alloc] init];
+    [_warningsArray removeAllObjects];
+    
+    if ([_warningsArray count] == 0) {
+        [_tableView setHidden:YES];
+        [_background setHidden:NO];
+    }
+    else {
+        [_tableView setHidden:NO];
+        [_background setHidden:YES];
+    }
+    
     data = [XTDataSingleton singleObj];
-    
-    //_listOfFiles = [data GetAllImages];
-    
-    _listOfFiles = [[NSMutableArray alloc] init];
-    [_listOfFiles addObject:@"Test1"];
-    [_listOfFiles addObject:@"Test2"];
-    
-    CGRect screenBound = [[UIScreen mainScreen] bounds];
-    float width = screenBound.size.width;
-    float height = screenBound.size.height;
-    
-    UITabBarController *tabBarController = [super tabBarController];
-    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
-    
-    _detailView = [[UIView alloc] initWithFrame:CGRectMake(2*width, 70, width, height-70-tabBarHeight)];
-    _detailView.backgroundColor = [UIColor whiteColor];
-    
-    [self.view addSubview:_detailView];
-    
-    [_backButton setHidden:YES];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -62,7 +75,7 @@
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     }
 
-    [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", [_listOfFiles count]];
+    [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", 0];
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,7 +86,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_listOfFiles count];
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -84,84 +97,27 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TableCell"];
     }
     
-    // Get filename
-    NSString *currentFile = [_listOfFiles objectAtIndex:indexPath.row];
-    NSArray *parts = [currentFile componentsSeparatedByString:@"/"];
-    NSString *fname = [parts lastObject];
-    
-    cell.textLabel.text = fname;
-    if ([[fname pathExtension] isEqualToString:@"jpg"]) {
-        cell.imageView.image = [UIImage imageNamed:currentFile];
-    }
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    CGRect screenBound = [[UIScreen mainScreen] bounds];
-    float width = screenBound.size.width;
-    float height = screenBound.size.height;
-    
-    UITabBarController *tabBarController = [super tabBarController];
-    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
-    
-    switch (indexPath.row) {
-        case 0:
-        {
-            UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 200, 20)];
-            label1.text = @"First detail view";
-            label1.textColor = [UIColor blackColor];
-            
-            [_detailView addSubview:label1];
-        }
-            
-            break;
-        case 1:
-        {
-            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 200, 20)];
-            label2.text = @"Second detail view";
-            label2.textColor = [UIColor blackColor];
-            
-            [_detailView addSubview:label2];
-        }
-            
-            break;
-    }
-    
-    //[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_detailView.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);} completion:^(bool finished) {[_backButton setHidden:NO];}];
+
 }
 
 - (void)dealloc {
     [_loginButton release];
-    [_backButton release];
+    [_tableView release];
     [super dealloc];
 }
-- (IBAction)loadLogin:(id)sender {
-    if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
-    [self presentViewController:login animated:YES completion:nil];
-    
-    [login release];
-    login = nil;
-}
 
-- (IBAction)back:(id)sender {
-    CGRect screenBound = [[UIScreen mainScreen] bounds];
-    float width = screenBound.size.width;
-    float height = screenBound.size.height;
+- (IBAction)LoadLogin:(id)sender {
+    if (login) {[login.view removeFromSuperview];}
     
-    UITabBarController *tabBarController = [super tabBarController];
-    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+    login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
     
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_detailView.frame = CGRectMake(2*width, 70, width, height-70-tabBarHeight);} completion:NULL];
-    
-    for (UIView *view in _detailView.subviews) {
-        [view removeFromSuperview];
-    }
-    
-    [_backButton setHidden:YES];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:login.view];
+    [login animate];
 }
 
 @end

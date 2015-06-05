@@ -28,6 +28,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
+    [_tableView setContentInset:UIEdgeInsetsMake(75, 0, 0, 0)];
+    
     data = [XTDataSingleton singleObj];
     
     //_listOfFiles = [data GetAllImages];
@@ -37,12 +42,14 @@
     [_listOfFiles addObject:@"Settings"];
     [_listOfFiles addObject:@"News feed"];
     [_listOfFiles addObject:@"Upload files"];
+    [_listOfFiles addObject:@"CLean up"];
     
     _listOfIcons = [[NSMutableArray alloc] init];
     [_listOfIcons addObject:@"profile_icon_small@3x.png"];
     [_listOfIcons addObject:@"settings_icon@3x.png"];
     [_listOfIcons addObject:@"news_feed_icon@3x.png"];
     [_listOfIcons addObject:@"upload_icon@3x.png"];
+    [_listOfIcons addObject:@"delete_icon@3x.png"];
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
@@ -110,21 +117,41 @@
     switch (indexPath.row) {
         case 0:
         {
-            UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 200, 20)];
-            label1.text = @"First detail view";
-            label1.textColor = [UIColor blackColor];
+            navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
+            navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
             
-            [_detailView addSubview:label1];
+            [self.view addSubview:navigationView.view];
+            
+            [self.view bringSubviewToFront:_header];
+            [self.view bringSubviewToFront:_header_shadow];
+            
+            XTProfileViewController *settings = [[XTProfileViewController alloc] initWithNibName:nil bundle:nil];
+            
+            settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
+            
+            [navigationView.view addSubview:settings.view];
+            
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
         }
             
             break;
         case 1:
         {
-            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 200, 20)];
-            label2.text = @"Second detail view";
-            label2.textColor = [UIColor blackColor];
+            navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
+            navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
             
-            [_detailView addSubview:label2];
+            [self.view addSubview:navigationView.view];
+            
+            [self.view bringSubviewToFront:_header];
+            [self.view bringSubviewToFront:_header_shadow];
+            
+            XTSettingsViewController *settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
+            
+            settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
+            
+            [navigationView.view addSubview:settings.view];
+            
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
         }
             
             break;
@@ -136,10 +163,13 @@
             //[[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
             [self.view addSubview:navigationView.view];
             
+            [self.view bringSubviewToFront:_header];
+            [self.view bringSubviewToFront:_header_shadow];
+            
             UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
             [layout setItemSize:CGSizeMake(300, 100)];
             collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
-            collection.view.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);
+            collection.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
             
             [navigationView.view addSubview:collection.view];
             
@@ -156,6 +186,12 @@
             
             break;
         }
+        case 4:
+        {
+            [data CleanUpTourDirectory];
+            
+            break;
+        }
     }
     
     //[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_detailView.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);} completion:^(bool finished) {[_backButton setHidden:NO];}];
@@ -164,14 +200,18 @@
 - (void)dealloc {
     [_loginButton release];
     [_backButton release];
+    [_header release];
+    [_header_shadow release];
+    [_tableView release];
     [super dealloc];
 }
 - (IBAction)loadLogin:(id)sender {
-    if (!login) {login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];}
-    [self presentViewController:login animated:YES completion:nil];
+    if (login) {[login.view removeFromSuperview];}
     
-    [login release];
-    login = nil;
+    login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:login.view];
+    [login animate];
 }
 
 - (IBAction)back:(id)sender {

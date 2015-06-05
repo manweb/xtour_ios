@@ -13,6 +13,7 @@
 #import "XTXMLParser.h"
 #import "XTTourInfo.h"
 #import "XTTourDetailView.h"
+#import "DXStarRatingView.h"
 
 @interface XTSummaryViewController : UIViewController <UIScrollViewDelegate>
 {
@@ -22,6 +23,8 @@
 
 - (IBAction)Close;
 - (IBAction)Back:(id)sender;
+@property (retain, nonatomic) IBOutlet UIView *header;
+@property (retain, nonatomic) IBOutlet UIView *header_shadow;
 @property (retain, nonatomic) UIView *mapViewContainer;
 @property (retain, nonatomic) UIView *summaryViewContainer;
 @property (retain, nonatomic) UIView *imageViewContainer;

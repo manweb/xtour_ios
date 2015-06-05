@@ -17,6 +17,8 @@
     XTLoginViewController *login;
 }
 
+@property (retain, nonatomic) IBOutlet UIView *header;
+@property (retain, nonatomic) IBOutlet UIView *header_shadow;
 @property (retain, nonatomic) IBOutlet UILabel *timerLabel;
 @property (retain, nonatomic) NSTimer *pollingTimer;
 @property (retain, nonatomic) IBOutlet UILabel *distanceLabel;
