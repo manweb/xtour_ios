@@ -10,6 +10,7 @@
 #import "GDataXMLNode.h"
 #import <CoreLocation/CoreLocation.h>
 #import "XTImageInfo.h"
+#import "XTUserInfo.h"
 
 @interface XTXMLParser : NSObject {
     
@@ -19,6 +20,7 @@
 @property(nonatomic,retain) GDataXMLElement *Metadata;
 @property(nonatomic,retain) GDataXMLElement *TrackSegment;
 @property(nonatomic,retain) GDataXMLElement *Images;
+@property(nonatomic,retain) GDataXMLDocument *UserInfo;
 @property(nonatomic,retain) NSDateFormatter *formatter;
 
 - (void) SetMetadataString:(NSString *)value forKey:(NSString *)key;

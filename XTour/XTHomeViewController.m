@@ -509,7 +509,7 @@
         
         if (data.AltitudeRate > 0) {_altitudeRateIcon.image = [UIImage imageNamed:@"arrow_up@3x.png"]; [_altitudeRateIcon setHidden:NO];}
         else if (data.AltitudeRate < 0) {_altitudeRateIcon.image = [UIImage imageNamed:@"arrow_down@3x.png"]; [_altitudeRateIcon setHidden:NO];}
-        else {[_altitudeLabel setHidden:YES];}
+        else {[_altitudeRateIcon setHidden:YES];}
         
         data.rateTimer = 0;
         data.rateLastDistance = data.totalDistance;

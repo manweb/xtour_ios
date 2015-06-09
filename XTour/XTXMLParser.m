@@ -13,6 +13,7 @@
 @synthesize Metadata;
 @synthesize TrackSegment;
 @synthesize Images;
+@synthesize UserInfo;
 @synthesize formatter;
 
 - (XTXMLParser *) init
@@ -239,6 +240,28 @@
     NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:filename];
     
     [xmlData writeToFile:documentsPath atomically:YES];
+}
+
+- (XTUserInfo*) GetUserInfo:(NSString*)filename
+{
+    NSData *xmlData = [[NSData alloc] initWithContentsOfFile:filename];
+    GDataXMLDocument *userInfoFile = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:nil];
+    
+    GDataXMLElement *userInfo = [[userInfoFile.rootElement elementsForName:@"userdata"] objectAtIndex:0];
+    
+    XTUserInfo *info = [[XTUserInfo alloc] init];
+    
+    info.userID = [[[userInfo elementsForName:@"userID"] objectAtIndex:0] integerValue];
+    info.userName = [[[userInfo elementsForName:@"userName"] objectAtIndex:0] stringValue];
+    info.dateJoined = [[[userInfo elementsForName:@"dateJoined"] objectAtIndex:0] integerValue];
+    info.timeThisSeason = [[[userInfo elementsForName:@"timeThisSeason"] objectAtIndex:0] integerValue];
+    info.timeTotal = [[[userInfo elementsForName:@"totalTime"] objectAtIndex:0] integerValue];
+    info.distanceThisSeason = [[[userInfo elementsForName:@"distanceThisSeason"] objectAtIndex:0] floatValue];
+    info.distanceTotal = [[[userInfo elementsForName:@"distanceTotal"] objectAtIndex:0] floatValue];
+    info.altitudeThisSeason = [[[userInfo elementsForName:@"altitudeThisSeason"] objectAtIndex:0] floatValue];
+    info.altitudeTotal = [[[userInfo elementsForName:@"altitudeTotal"] objectAtIndex:0] floatValue];
+    
+    return info;
 }
 
 @end
