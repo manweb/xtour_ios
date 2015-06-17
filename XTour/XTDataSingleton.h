@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "XTXMLParser.h"
 #import "XTImageInfo.h"
+#import "XTUserInfo.h"
 
 @interface XTDataSingleton : NSObject
 
@@ -45,6 +46,7 @@
 @property(nonatomic) NSInteger photoCount;
 @property(nonatomic) NSInteger lastRunIndex;
 @property(nonatomic,retain) NSMutableArray *imageInfo;
+@property(nonatomic,retain) XTUserInfo *userInfo;
 
 + (XTDataSingleton *) singleObj;
 
@@ -91,5 +93,8 @@
 - (NSString *) GetImageLatitudeStringAt:(NSUInteger)index;
 - (NSString *) GetImageCoordinateStringAt:(NSUInteger)index;
 - (void) WriteImageInfo;
+- (XTUserInfo*) GetUserInfo;
+- (void) CheckLogin;
+- (void) Logout;
 
 @end

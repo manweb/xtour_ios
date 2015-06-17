@@ -88,12 +88,7 @@
     
     _didRecoverTour = false;
     
-    NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:userFile]) {
-        data.loggedIn = true;
-        data.userID = [[NSString alloc] initWithContentsOfFile:userFile encoding:NSUTF8StringEncoding error:nil];
-    }
+    [data CheckLogin];
     
     // Check whether the recovery file exist. If so, the app may have crashed, so re-load the data
     NSString *recoveryFile = [data GetDocumentFilePathForFile:@"/recovery.xml" CheckIfExist:YES];
@@ -176,14 +171,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if (data.loggedIn) {
-        NSString *tempPath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
-        UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
-        [_loginButton setImage:img forState:UIControlStateNormal];
-    }
-    else {
-        [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
-    }
+    [self LoginViewDidClose:nil];
 }
 
 - (IBAction)stopTimer:(id)sender {
@@ -398,13 +386,48 @@
     }
 }
 
-- (IBAction)LoadLogin:(id)sender {
+- (void)LoadLogin:(id)sender {
     if (login) {[login.view removeFromSuperview];}
     
     login = [[XTLoginViewController alloc] initWithNibName:nil bundle:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LoginViewDidClose:) name:@"LoginViewDismissed" object:nil];
+    
     [[[UIApplication sharedApplication] keyWindow] addSubview:login.view];
     [login animate];
+}
+
+- (void)ShowLoginOptions:(id)sender {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LoginViewDidClose:) name:@"LoginViewDismissed" object:nil];
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"Du bist eingelogged als %@",data.userInfo.userName] delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Ausloggen" otherButtonTitles:@"Profil anzeigen", nil];
+    
+    [actionSheet showInView:self.view];
+}
+
+- (void) LoginViewDidClose:(id)sender
+{
+    [_loginButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    
+    if (data.loggedIn) {
+        NSString *tempPath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
+        [_loginButton setImage:img forState:UIControlStateNormal];
+        [_loginButton addTarget:self action:@selector(ShowLoginOptions:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else {
+        [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+        [_loginButton addTarget:self action:@selector(LoadLogin:) forControlEvents:UIControlEventTouchUpInside];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if ([buttonTitle isEqualToString:@"Ausloggen"]) {[data Logout];}
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {

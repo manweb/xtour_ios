@@ -10,7 +10,7 @@
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
 
-@interface XTWarnigsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface XTWarnigsViewController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
@@ -24,6 +24,6 @@
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
 @property (retain, nonatomic) NSMutableArray *warningsArray;
 
-- (IBAction)LoadLogin:(id)sender;
+- (void)LoadLogin:(id)sender;
 
 @end

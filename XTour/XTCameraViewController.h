@@ -14,7 +14,7 @@
 #import "XTImageInfo.h"
 #import "XTImageDetailView.h"
 
-@interface XTCameraViewController : UICollectionViewController <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
+@interface XTCameraViewController : UICollectionViewController <UIActionSheetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
@@ -36,6 +36,8 @@
 
 - (void) LoadCamera:(id)sender;
 - (void) LoadLogin:(id)sender;
+- (void)ShowLoginOptions:(id)sender;
+- (void)LoginViewDidClose:(id)sender;
 - (void) CloseImageView:(id)sender;
 
 @end

@@ -197,4 +197,46 @@
     return false;
 }
 
+- (BOOL) DownloadProfilePicture:(NSString*)userID
+{
+    BOOL success = false;
+    
+    if (!data) {data = [XTDataSingleton singleObj];}
+    
+    NSString *filePath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
+    
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/users/%@/profile.png", userID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request setDownloadDestinationPath:filePath];
+    [request startSynchronous];
+    
+    NSError *error = [request error];
+    if (!error) {success = true;}
+    else {NSLog(@"There was a problem downloading the profile picture.");}
+    
+    return success;
+}
+
+- (BOOL) DownloadUserInfo:(NSString*)userID
+{
+    BOOL success = false;
+    
+    if (!data) {data = [XTDataSingleton singleObj];}
+        
+        NSString *filePath = [data GetDocumentFilePathForFile:@"/UserInfo.xml" CheckIfExist:NO];
+        
+        NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/users/%@/UserInfo.xml", userID];
+        NSURL *url = [NSURL URLWithString:requestString];
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+        [request setDownloadDestinationPath:filePath];
+        [request startSynchronous];
+        
+        NSError *error = [request error];
+        if (!error) {success = true;}
+        else {NSLog(@"There was a problem downloading the user info file.");}
+        
+        return success;
+}
+
 @end

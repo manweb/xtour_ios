@@ -251,15 +251,10 @@
     
     XTUserInfo *info = [[XTUserInfo alloc] init];
     
-    info.userID = [[[userInfo elementsForName:@"userID"] objectAtIndex:0] integerValue];
+    info.userID = [[[userInfo elementsForName:@"userID"] objectAtIndex:0] stringValue];
     info.userName = [[[userInfo elementsForName:@"userName"] objectAtIndex:0] stringValue];
-    info.dateJoined = [[[userInfo elementsForName:@"dateJoined"] objectAtIndex:0] integerValue];
-    info.timeThisSeason = [[[userInfo elementsForName:@"timeThisSeason"] objectAtIndex:0] integerValue];
-    info.timeTotal = [[[userInfo elementsForName:@"totalTime"] objectAtIndex:0] integerValue];
-    info.distanceThisSeason = [[[userInfo elementsForName:@"distanceThisSeason"] objectAtIndex:0] floatValue];
-    info.distanceTotal = [[[userInfo elementsForName:@"distanceTotal"] objectAtIndex:0] floatValue];
-    info.altitudeThisSeason = [[[userInfo elementsForName:@"altitudeThisSeason"] objectAtIndex:0] floatValue];
-    info.altitudeTotal = [[[userInfo elementsForName:@"altitudeTotal"] objectAtIndex:0] floatValue];
+    info.dateJoined = [[[userInfo elementsForName:@"dateJoined"] objectAtIndex:0] stringValue];
+    info.home = [[[userInfo elementsForName:@"home"]objectAtIndex:0] stringValue];
     
     return info;
 }

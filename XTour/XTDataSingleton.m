@@ -30,6 +30,7 @@
 {
     if (!_locationData) {_locationData = [[NSMutableArray alloc] init];}
     if (!_imageInfo) {_imageInfo = [[NSMutableArray alloc] init];}
+    if (!_userInfo) {_userInfo = [[XTUserInfo alloc] init];}
     [_locationData removeAllObjects];
     _StartLocation = 0;
     _totalTime = 0;
@@ -682,6 +683,50 @@
     NSString *filename = [NSString stringWithFormat:@"/tours/ImageInfo_%@.xml",_tourID];
     
     [parser SaveImageInfo:filename];
+}
+
+- (XTUserInfo*) GetUserInfo
+{
+    NSString *userInfoFile = [self GetDocumentFilePathForFile:@"/UserInfo.xml" CheckIfExist:YES];
+    
+    XTUserInfo *info = nil;
+    if (userInfoFile) {
+        XTXMLParser *parser = [[XTXMLParser alloc] init];
+        
+        info = [parser GetUserInfo:userInfoFile];
+    }
+    
+    return info;
+}
+
+- (void) CheckLogin
+{
+    XTUserInfo *info = [self GetUserInfo];
+    
+    NSString *profilePicture = [self GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:YES];
+    
+    if (info && profilePicture) {
+        self.loggedIn = true;
+        self.userID = [NSString stringWithFormat:@"%lu",(unsigned long)info.userID];
+        self.userInfo = info;
+    }
+    else {
+        self.loggedIn = false;
+    }
+}
+
+- (void) Logout
+{
+    NSString *profilePicture = [self GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
+    
+    NSString *userInfo = [self GetDocumentFilePathForFile:@"/UserInfo.xml" CheckIfExist:NO];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    [fileManager removeItemAtPath:profilePicture error:nil];
+    [fileManager removeItemAtPath:userInfo error:nil];
+    
+    self.loggedIn = false;
 }
 
 - (void)dealloc

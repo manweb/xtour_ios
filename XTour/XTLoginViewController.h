@@ -10,10 +10,12 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 #import "XTDataSingleton.h"
+#import "XTServerRequestHandler.h"
 
 @interface XTLoginViewController : UIViewController
 {
     XTDataSingleton *data;
+    XTServerRequestHandler *serverRequest;
 }
 
 @property (retain, nonatomic) UIView *loginView;
@@ -27,5 +29,6 @@
 - (void) animate;
 - (void) ShowView;
 - (void) HideView;
+- (BOOL) ValidateLogin;
 
 @end

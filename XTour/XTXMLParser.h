@@ -35,5 +35,6 @@
 - (NSMutableArray *)GetLocationDataFromFile;
 - (void) AddImageInfo:(XTImageInfo *)imageInfo;
 - (void) SaveImageInfo:(NSString *)filename;
+- (XTUserInfo*) GetUserInfo:(NSString*)filename;
 
 @end

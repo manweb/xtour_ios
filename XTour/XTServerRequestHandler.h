@@ -12,13 +12,19 @@
 #import "ASIFormDataRequest.h"
 #import "XTTourInfo.h"
 #import "XTImageInfo.h"
+#import "XTDataSingleton.h"
 
 @interface XTServerRequestHandler : NSObject
+{
+    XTDataSingleton *data;
+}
 
 - (NSMutableArray *) GetNewsFeedString:(int)numberOfNewsFeeds;
 - (NSMutableArray *) GetTourFilesForTour:(NSString *)tourID andType:(NSString *)type;
 - (NSMutableArray *) GetCoordinatesForFile:(NSString *)file;
 - (NSMutableArray *) GetImagesForTour:(NSString *)tourID;
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID;
+- (BOOL) DownloadProfilePicture:(NSString*)userID;
+- (BOOL) DownloadUserInfo:(NSString*)userID;
 
 @end

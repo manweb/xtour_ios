@@ -10,15 +10,9 @@
 
 @interface XTUserInfo : NSObject
 
-@property(nonatomic) NSUInteger userID;
+@property(nonatomic, retain) NSString *userID;
 @property(nonatomic, retain) NSString *userName;
-@property(nonatomic) NSUInteger dateJoined;
+@property(nonatomic, retain) NSString *dateJoined;
 @property(nonatomic, retain) NSString *home;
-@property(nonatomic) NSUInteger timeThisSeason;
-@property(nonatomic) NSUInteger timeTotal;
-@property(nonatomic) float distanceThisSeason;
-@property(nonatomic) float distanceTotal;
-@property(nonatomic) float altitudeThisSeason;
-@property(nonatomic) float altitudeTotal;
 
 @end

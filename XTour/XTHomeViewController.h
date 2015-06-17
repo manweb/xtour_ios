@@ -15,7 +15,7 @@
 #import "XTLoginViewController.h"
 #import "XTSummaryViewController.h"
 
-@interface XTHomeViewController : UIViewController <CLLocationManagerDelegate>
+@interface XTHomeViewController : UIViewController <UIActionSheetDelegate, CLLocationManagerDelegate>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
@@ -57,6 +57,8 @@
 - (IBAction)startTimer:(id)sender;
 - (IBAction)stopTimer:(id)sender;
 - (IBAction)resetTimer:(id)sender;
-- (IBAction)LoadLogin:(id)sender;
+- (void)LoadLogin:(id)sender;
+- (void)ShowLoginOptions:(id)sender;
+- (void)LoginViewDidClose:(id)sender;
 
 @end

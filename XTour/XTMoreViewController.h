@@ -15,7 +15,7 @@
 #import "XTSettingsViewController.h"
 #import "XTProfileViewController.h"
 
-@interface XTMoreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface XTMoreViewController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
@@ -32,6 +32,8 @@
 @property(nonatomic,retain) UIView *detailView;
 @property (retain, nonatomic) IBOutlet UIButton *backButton;
 - (IBAction)back:(id)sender;
-- (IBAction)loadLogin:(id)sender;
+- (void)LoadLogin:(id)sender;
+- (void)ShowLoginOptions:(id)sender;
+- (void)LoginViewDidClose:(id)sender;
 
 @end

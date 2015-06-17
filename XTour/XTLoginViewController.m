@@ -102,41 +102,16 @@
 }
 
 - (void)Login {
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/validate_login.php?uid=%s&pwd=%s", [_username.text UTF8String], [_password.text UTF8String]];
-    NSURL *url = [NSURL URLWithString:requestString];
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request startSynchronous];
-    NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
-        if ([response isEqualToString:@"false"]) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message: @"Incorrect login." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-            [alert show];
-            
-            data.loggedIn = false;
-        }
-        else {
-            data.loggedIn = true;
-            
-            NSString *tempPath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
-            NSString *userFile = [data GetDocumentFilePathForFile:@"/user.nfo" CheckIfExist:NO];
-            
-            data.userID = response;
-            [response writeToFile:userFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
-            
-            NSString *requestString2 = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/users/%s/profile.png", [response UTF8String]];
-            NSURL *url2 = [NSURL URLWithString:requestString2];
-            ASIHTTPRequest *request2 = [ASIHTTPRequest requestWithURL:url2];
-            [request2 setDownloadDestinationPath:tempPath];
-            [request2 startSynchronous];
-            NSError *error2 = [request2 error];
-            if (error2) {NSLog(@"There was an error downloading the profile picture.");}
-            [self Cancel];
-        }
-    }
-    else {
-        NSLog(@"There was a problem sending login information.");
-    }
+    if (![self ValidateLogin]) {return;}
+    
+    if (!serverRequest) {serverRequest = [[XTServerRequestHandler alloc] init];}
+    
+    if (![serverRequest DownloadProfilePicture:data.userID]) {data.loggedIn = false; return;}
+    if (![serverRequest DownloadUserInfo:data.userID]) {data.loggedIn = false; return;}
+    
+    [data CheckLogin];
+    
+    [self HideView];
 }
 
 - (void)Cancel {
@@ -168,8 +143,41 @@
     }];
 }
 
+- (BOOL) ValidateLogin
+{
+    BOOL success = false;
+    
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/validate_login.php?uid=%s&pwd=%s", [_username.text UTF8String], [_password.text UTF8String]];
+    NSURL *url = [NSURL URLWithString:requestString];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request startSynchronous];
+    NSError *error = [request error];
+    if (!error) {
+        NSString *response = [request responseString];
+        if ([response isEqualToString:@"false"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Die Login-Informationen sind falsch." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            data.loggedIn = false;
+        }
+        else {
+            data.loggedIn = true;
+            data.userID = response;
+            
+            success = true;
+        }
+    }
+    else {
+        NSLog(@"There was a problem sending login information.");
+    }
+    
+    return success;
+}
+
 - (void) HideView
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
+    
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
         _loginView.frame = CGRectMake(280, 30, 0, 0);
