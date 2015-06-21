@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
+#import "XTWarningsInfo.h"
+#import "XTServerRequestHandler.h"
 
 @interface XTWarnigsViewController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
 {
@@ -25,5 +27,6 @@
 @property (retain, nonatomic) NSMutableArray *warningsArray;
 
 - (void)LoadLogin:(id)sender;
+- (void)UpdateWarnings:(id)sender;
 
 @end

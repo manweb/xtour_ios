@@ -24,15 +24,20 @@
 @property (retain, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;
 @property (retain, nonatomic) IBOutlet UIButton *centerButton;
+@property (retain, nonatomic) UIView *addWarningBackground;
+@property (retain, nonatomic) UIButton *addWarningButton;
+@property (retain, nonatomic) UITextView *addWarningText;
 @property (retain, nonatomic) GMSMapView *mapView;
 @property (retain, nonatomic) GMSMutablePath *path;
 @property (retain, nonatomic) GMSPolyline *polyline;
 @property (retain, nonatomic) GMSCameraUpdate *cameraUpdate;
 @property (nonatomic) bool mapHasMoved;
+@property (nonatomic) bool addWarning;
 
 - (void)LoadLogin:(id)sender;
 - (void)ShowLoginOptions:(id)sender;
 - (void)LoginViewDidClose:(id)sender;
+- (void)AddWarning:(id)sender;
 - (IBAction)centerMap:(id)sender;
 
 @end

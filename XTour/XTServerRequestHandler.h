@@ -13,6 +13,7 @@
 #import "XTTourInfo.h"
 #import "XTImageInfo.h"
 #import "XTDataSingleton.h"
+#import "XTWarningsInfo.h"
 
 @interface XTServerRequestHandler : NSObject
 {
@@ -23,6 +24,7 @@
 - (NSMutableArray *) GetTourFilesForTour:(NSString *)tourID andType:(NSString *)type;
 - (NSMutableArray *) GetCoordinatesForFile:(NSString *)file;
 - (NSMutableArray *) GetImagesForTour:(NSString *)tourID;
+- (NSMutableArray *) GetWarningsWithinRadius:(double)radius atLongitude:(double)longitude andLatitude:(double)latitude;
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID;
 - (BOOL) DownloadProfilePicture:(NSString*)userID;
 - (BOOL) DownloadUserInfo:(NSString*)userID;

@@ -173,6 +173,57 @@
     return tour_images;
 }
 
+- (NSMutableArray*) GetWarningsWithinRadius:(double)radius atLongitude:(double)longitude andLatitude:(double)latitude
+{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_warnings_string.php?radius=%f&longitude=%f&latitude=%f", radius, longitude, latitude];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request startSynchronous];
+    
+    NSMutableArray *warnings = [[NSMutableArray alloc] init];
+    
+    NSError *error = [request error];
+    if (!error) {
+        NSString *response = [request responseString];
+        
+        if ([response isEqualToString:@"0"]) {return nil;}
+        
+        NSArray *warnings_array = [response componentsSeparatedByString:@";"];
+        NSMutableArray *warnings_info = [NSMutableArray arrayWithArray:warnings_array];
+        [warnings_info removeLastObject];
+        
+        for (int i = 0; i < [warnings_info count]; i++) {
+            XTWarningsInfo *warningsInfo = [[XTWarningsInfo alloc] init];
+            
+            NSString *currentWarning = [warnings_info objectAtIndex:i];
+            
+            NSArray *warningsInfoArray = [currentWarning componentsSeparatedByString:@","];
+            
+            if ([warningsInfoArray count] < 9) {continue;}
+            
+            warningsInfo.userID = [warningsInfoArray objectAtIndex:0];
+            warningsInfo.userName = [warningsInfoArray objectAtIndex:1];
+            warningsInfo.submitDate = [warningsInfoArray objectAtIndex:2];
+            warningsInfo.category = [[warningsInfoArray objectAtIndex:3] integerValue];
+            warningsInfo.longitude = [[warningsInfoArray objectAtIndex:4] floatValue];
+            warningsInfo.latitude = [[warningsInfoArray objectAtIndex:5] floatValue];
+            warningsInfo.elevation = [[warningsInfoArray objectAtIndex:6] floatValue];
+            warningsInfo.comment = [warningsInfoArray objectAtIndex:7];
+            warningsInfo.distance = [[warningsInfoArray objectAtIndex:8] floatValue];
+            
+            [warnings addObject:warningsInfo];
+        }
+    }
+    else {
+        NSLog(@"There was a problem retrieving the warnings");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    return warnings;
+}
+
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID
 {
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/insert_image_comment.php?image=%@&comment=%@", imageID, [comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];

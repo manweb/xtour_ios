@@ -57,6 +57,32 @@
     [_centerButton setHidden:YES];
     _centerButton.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6];
     _centerButton.layer.cornerRadius = 5.0f;
+    
+    _addWarningBackground = [[UIView alloc] initWithFrame:CGRectMake(270, 80, 40, 40)];
+    
+    _addWarningBackground.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6];
+    _addWarningBackground.layer.cornerRadius = 5.0f;
+    
+    _addWarningButton = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 30, 30)];
+    
+    [_addWarningButton setImage:[UIImage imageNamed:@"add_warning_icon@3x.png"] forState:UIControlStateNormal];
+    [_addWarningButton addTarget:self action:@selector(AddWarning:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _addWarningText = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 250, 30)];
+    
+    _addWarningText.text = @"Klicke auf die Karte für midestens 2s um eine Gefahrenstelle zu markieren.";
+    _addWarningText.textColor = [UIColor whiteColor];
+    _addWarningText.font = [UIFont fontWithName:@"Helvetica" size:12];
+    _addWarningText.contentInset = UIEdgeInsetsMake(-8, 0, 0, 0);
+    _addWarningText.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    
+    [_addWarningText setHidden:YES];
+    
+    [_addWarningBackground addSubview:_addWarningButton];
+    [_addWarningBackground addSubview:_addWarningText];
+    [self.view addSubview:_addWarningBackground];
+    
+    _addWarning = false;
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -69,7 +95,7 @@
             CLLocationCoordinate2D position = CLLocationCoordinate2DMake([data GetImageLatitudeAt:i], [data GetImageLongitudeAt:i]);
             
             GMSMarker *marker = [GMSMarker markerWithPosition:position];
-            marker.icon = [UIImage imageNamed:@"camera_marker@2x.png"];
+            marker.icon = [UIImage imageNamed:@"ski_pole_camera@3x.png"];
             marker.map = _mapView;
         }
     }
@@ -158,12 +184,16 @@
 
 - (void) mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
+    if (!_addWarning) {return;}
+    
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = coordinate;
     marker.title = [NSString stringWithFormat:@"Gefahrenstelle bei Koordinate: %.5f %.5f",coordinate.longitude,coordinate.latitude];
-    marker.icon = [UIImage imageNamed:@"ski_pole_camera@3x.png"];
+    marker.icon = [UIImage imageNamed:@"ski_pole_warning@3x.png"];
     marker.groundAnchor = CGPointMake(0.88, 1.0);
     marker.map = _mapView;
+    
+    [self HideAddWarning];
 }
 
 - (void)didReceiveMemoryWarning
@@ -188,6 +218,9 @@
     [_centerButton release];
     [_header release];
     [_header_shadow release];
+    [_addWarningBackground release];
+    [_addWarningText release];
+    [_addWarningButton release];
     [super dealloc];
 }
 
@@ -229,6 +262,45 @@
 - (IBAction)centerMap:(id)sender {
     _mapHasMoved = false;
     [_centerButton setHidden:YES];
+}
+
+- (void)AddWarning:(id)sender {
+    if (!_addWarning) {
+        [self ShowAddWarning];
+    }
+    else {
+        [self HideAddWarning];
+    }
+}
+
+- (void) ShowAddWarning
+{
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        _addWarningBackground.frame = CGRectMake(10, 80, 300, 40);
+        _addWarningButton.frame = CGRectMake(265, 5, 30, 30);
+        [_addWarningButton setImage:[UIImage imageNamed:@"cancel_icon@3x.png"] forState:UIControlStateNormal];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            [_addWarningText setHidden:NO];
+        } completion:nil];
+    }];
+    
+    _addWarning = true;
+}
+
+- (void) HideAddWarning
+{
+    [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        [_addWarningText setHidden:YES];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            _addWarningBackground.frame = CGRectMake(270, 80, 40, 40);
+            _addWarningButton.frame = CGRectMake(5, 5, 30, 30);
+            [_addWarningButton setImage:[UIImage imageNamed:@"add_warning_icon@3x.png"] forState:UIControlStateNormal];
+        } completion:nil];
+    }];
+    
+    _addWarning = false;
 }
 
 @end

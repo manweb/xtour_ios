@@ -44,7 +44,15 @@
     [_emptyLabel setNumberOfLines:3];
     [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
     
+    UIButton *updateButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    updateButton.frame = CGRectMake(screenBounds.size.width/2-50, screenBounds.size.height/2+40, 100, 30);
+    
+    [updateButton setTitle:@"Update" forState:UIControlStateNormal];
+    [updateButton addTarget:self action:@selector(UpdateWarnings:) forControlEvents:UIControlEventTouchUpInside];
+    
     [_background addSubview:_emptyLabel];
+    [_background addSubview:updateButton];
     [self.view addSubview:_background];
     
     [self.view sendSubviewToBack:_background];
@@ -52,14 +60,7 @@
     _warningsArray = [[NSMutableArray alloc] init];
     [_warningsArray removeAllObjects];
     
-    if ([_warningsArray count] == 0) {
-        [_tableView setHidden:YES];
-        [_background setHidden:NO];
-    }
-    else {
-        [_tableView setHidden:NO];
-        [_background setHidden:YES];
-    }
+    [self UpdateWarnings:nil];
     
     data = [XTDataSingleton singleObj];
 }
@@ -67,8 +68,6 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [self LoginViewDidClose:nil];
-    
-    [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", 0];
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,7 +78,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return [_warningsArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -89,6 +88,13 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TableCell"];
     }
+    
+    XTWarningsInfo *currentWarning = [_warningsArray objectAtIndex:indexPath.row];
+    
+    cell.imageView.image = [UIImage imageNamed:@"warning_icon@2x.png"];
+    cell.textLabel.text = currentWarning.comment;
+    
+    [currentWarning release];
     
     return cell;
 }
@@ -146,6 +152,32 @@
     if ([buttonTitle isEqualToString:@"Ausloggen"]) {[data Logout];}
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
+}
+
+- (void) UpdateWarnings:(id)sender
+{
+    XTServerRequestHandler *request = [[XTServerRequestHandler alloc] init];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        self.warningsArray = [request GetWarningsWithinRadius:20 atLongitude:-122.167894 andLatitude:37.428857];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([_warningsArray count] > 0) {
+                [_background setHidden:YES];
+                [_tableView setHidden:NO];
+                [self.tableView reloadData];
+                
+                [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", [_warningsArray count]];
+            }
+            else {
+                [_background setHidden:NO];
+                [_tableView setHidden:YES];
+                
+                [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", 0];
+            }
+        });
+    });
 }
 
 @end

@@ -323,6 +323,10 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Fbc-tE-nal">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="kRN-1r-Lnn" id="YXN-IA-Hdy"/>
+                                    <outlet property="delegate" destination="kRN-1r-Lnn" id="fMq-yv-r6C"/>
+                                </connections>
                             </tableView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LBN-OC-d3d">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
@@ -345,7 +349,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Warnings" image="warning_icon.png" id="Wuw-tE-o41"/>
                     <connections>
-                        <outlet property="LoginButton" destination="xPs-TU-NhA" id="5cJ-2A-NfZ"/>
                         <outlet property="header" destination="LBN-OC-d3d" id="aSf-GE-wxL"/>
                         <outlet property="header_shadow" destination="sC4-H7-lMX" id="8pK-Fd-9gf"/>
                         <outlet property="loginButton" destination="xPs-TU-NhA" id="O23-75-Egc"/>
