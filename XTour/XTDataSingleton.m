@@ -304,7 +304,7 @@
     [xml SetMetadataDate:_endTime forKey:@"EndTime"];
     [xml SetMetadataBounds:bounds];
     [xml SetMetadataDouble:(double)_timer forKey:@"TotalTime" withPrecision:0];
-    [xml SetMetadataDouble:_totalDistance forKey:@"TotalDistance" withPrecision:1];
+    [xml SetMetadataDouble:_totalDistance forKey:@"TotalDistance" withPrecision:4];
     [xml SetMetadataDouble:_totalAltitude forKey:@"TotalAltitude" withPrecision:1];
     [xml SetMetadataDouble:_totalDescent forKey:@"TotalDescent" withPrecision:1];
     [xml SetMetadataDouble:_lowestPoint forKey:@"LowestPoint" withPrecision:1];
@@ -707,11 +707,12 @@
     
     if (info && profilePicture) {
         self.loggedIn = true;
-        self.userID = [NSString stringWithFormat:@"%lu",(unsigned long)info.userID];
+        self.userID = info.userID;
         self.userInfo = info;
     }
     else {
         self.loggedIn = false;
+        self.userID = @"0000";
     }
 }
 

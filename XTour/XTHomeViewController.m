@@ -262,19 +262,13 @@
     
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyyLLddHHmmss"];
-    
-        NSString *userID;
-        if (data.loggedIn && data.userID) {userID = data.userID;}
-        else {userID = @"0000";}
         
-        NSString *tourID = [[NSString alloc] initWithFormat:@"%@%s", [formatter stringFromDate:[NSDate date]], [userID UTF8String]];
+        NSString *tourID = [[NSString alloc] initWithFormat:@"%@%@", [formatter stringFromDate:[NSDate date]], data.userID];
         
         data.tourID = tourID;
         data.upCount++;
         
         [formatter release];
-        [userID release];
-        [tourID release];
     }
     else if (_runStatus == 1) {
     
@@ -336,18 +330,12 @@
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyyLLddHHmmss"];
         
-        NSString *userID;
-        if (data.loggedIn && data.userID) {userID = data.userID;}
-        else {userID = @"0000";}
-        
-        NSString *tourID = [[NSString alloc] initWithFormat:@"%@%s", [formatter stringFromDate:[NSDate date]], [userID UTF8String]];
+        NSString *tourID = [[NSString alloc] initWithFormat:@"%@%@", [formatter stringFromDate:[NSDate date]], data.userID];
         
         data.tourID = tourID;
         data.downCount++;
         
         [formatter release];
-        [userID release];
-        [tourID release];
     }
     else if (_runStatus == 1) {
         data.endTime = [NSDate date];
