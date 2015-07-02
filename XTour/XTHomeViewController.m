@@ -424,6 +424,8 @@
     CLLocationDegrees lat = Location.coordinate.latitude;
     CLLocationDistance alt = Location.altitude;
     
+    data.CurrentLocation = Location;
+    
     NSLog(@"Accuracy: %.1f",Location.horizontalAccuracy);
     
     double accuracy = Location.horizontalAccuracy;

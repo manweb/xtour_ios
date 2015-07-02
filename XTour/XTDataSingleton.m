@@ -31,8 +31,10 @@
     if (!_locationData) {_locationData = [[NSMutableArray alloc] init];}
     if (!_imageInfo) {_imageInfo = [[NSMutableArray alloc] init];}
     if (!_userInfo) {_userInfo = [[XTUserInfo alloc] init];}
+    if (!_warningInfo) {_warningInfo = [[NSMutableArray alloc] init];}
     [_locationData removeAllObjects];
     _StartLocation = 0;
+    _CurrentLocation = 0;
     _totalTime = 0;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
@@ -80,6 +82,7 @@
 {
     [_locationData removeAllObjects];
     [_imageInfo removeAllObjects];
+    [_warningInfo removeAllObjects];
     _StartLocation = 0;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
@@ -697,6 +700,11 @@
     }
     
     return info;
+}
+
+- (void) AddWarningInfo:(XTWarningsInfo *)warningInfo
+{
+    [self.warningInfo addObject:warningInfo];
 }
 
 - (void) CheckLogin

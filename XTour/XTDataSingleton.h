@@ -11,6 +11,7 @@
 #import "XTXMLParser.h"
 #import "XTImageInfo.h"
 #import "XTUserInfo.h"
+#import "XTWarningsInfo.h"
 
 @interface XTDataSingleton : NSObject
 
@@ -18,6 +19,7 @@
 @property(nonatomic) NSInteger rateTimer;
 @property(nonatomic,retain) NSMutableArray *locationData;
 @property(nonatomic,retain) CLLocation *StartLocation;
+@property(nonatomic,retain) CLLocation *CurrentLocation;
 @property(nonatomic) int totalTime;
 @property(nonatomic) double totalDistance;
 @property(nonatomic) double totalAltitude;
@@ -47,6 +49,7 @@
 @property(nonatomic) NSInteger lastRunIndex;
 @property(nonatomic,retain) NSMutableArray *imageInfo;
 @property(nonatomic,retain) XTUserInfo *userInfo;
+@property(nonatomic,retain) NSMutableArray *warningInfo;
 
 + (XTDataSingleton *) singleObj;
 
@@ -94,6 +97,7 @@
 - (NSString *) GetImageCoordinateStringAt:(NSUInteger)index;
 - (void) WriteImageInfo;
 - (XTUserInfo*) GetUserInfo;
+- (void) AddWarningInfo:(XTWarningsInfo *)warningInfo;
 - (void) CheckLogin;
 - (void) Logout;
 

@@ -26,6 +26,7 @@
 - (NSMutableArray *) GetImagesForTour:(NSString *)tourID;
 - (NSMutableArray *) GetWarningsWithinRadius:(double)radius atLongitude:(double)longitude andLatitude:(double)latitude;
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID;
+- (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo;
 - (BOOL) DownloadProfilePicture:(NSString*)userID;
 - (BOOL) DownloadUserInfo:(NSString*)userID;
 

@@ -60,13 +60,12 @@
     _warningsArray = [[NSMutableArray alloc] init];
     [_warningsArray removeAllObjects];
     
-    [self UpdateWarnings:nil];
-    
     data = [XTDataSingleton singleObj];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
+    [self UpdateWarnings:nil];
     [self LoginViewDidClose:nil];
 }
 
@@ -124,7 +123,7 @@
 - (void)ShowLoginOptions:(id)sender {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LoginViewDidClose:) name:@"LoginViewDismissed" object:nil];
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Du bist eingelogged!" delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Ausloggen" otherButtonTitles:@"Profil anzeigen", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"Du bist eingelogged als %@",data.userInfo.userName] delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Ausloggen" otherButtonTitles:@"Profil anzeigen", nil];
     
     [actionSheet showInView:self.view];
 }
@@ -158,9 +157,11 @@
 {
     XTServerRequestHandler *request = [[XTServerRequestHandler alloc] init];
     
+    if (!data.CurrentLocation) {return;}
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        self.warningsArray = [request GetWarningsWithinRadius:20 atLongitude:-122.167894 andLatitude:37.428857];
+        self.warningsArray = [request GetWarningsWithinRadius:20 atLongitude:data.CurrentLocation.coordinate.longitude andLatitude:data.CurrentLocation.coordinate.latitude];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([_warningsArray count] > 0) {

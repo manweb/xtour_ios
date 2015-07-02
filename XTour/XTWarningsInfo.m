@@ -10,4 +10,18 @@
 
 @implementation XTWarningsInfo
 
+- (void) ClearData
+{
+    _userID = nil;
+    _tourID = nil;
+    _userName = nil;
+    _submitDate = nil;
+    _category = 0;
+    _longitude = 0;
+    _latitude = 0;
+    _elevation = 0;
+    _comment = nil;
+    _distance = 0;
+}
+
 @end

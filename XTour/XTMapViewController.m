@@ -76,10 +76,31 @@
     _addWarningText.contentInset = UIEdgeInsetsMake(-8, 0, 0, 0);
     _addWarningText.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
     
+    _editWarningText = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 250, 100)];
+    
+    _editWarningText.alpha = 1.0;
+    _editWarningText.layer.borderWidth = 1.0f;
+    _editWarningText.layer.borderColor = [[UIColor whiteColor] CGColor];
+    _editWarningText.layer.cornerRadius = 5.0f;
+    _editWarningText.textColor = [UIColor whiteColor];
+    _editWarningText.font = [UIFont fontWithName:@"Helvetica" size:12];
+    _editWarningText.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f];
+    
+    _enterWarning = [[UIButton alloc] initWithFrame:CGRectMake(265, 75, 30, 30)];
+    
+    [_enterWarning setImage:[UIImage imageNamed:@"check_icon@3x.png"] forState:UIControlStateNormal];
+    [_enterWarning addTarget:self action:@selector(EnterWarning:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_editWarningText setHidden:YES];
+    
     [_addWarningText setHidden:YES];
+    
+    [_enterWarning setHidden:YES];
     
     [_addWarningBackground addSubview:_addWarningButton];
     [_addWarningBackground addSubview:_addWarningText];
+    [_addWarningBackground addSubview:_editWarningText];
+    [_addWarningBackground addSubview:_enterWarning];
     [self.view addSubview:_addWarningBackground];
     
     _addWarning = false;
@@ -186,14 +207,18 @@
 {
     if (!_addWarning) {return;}
     
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = coordinate;
-    marker.title = [NSString stringWithFormat:@"Gefahrenstelle bei Koordinate: %.5f %.5f",coordinate.longitude,coordinate.latitude];
-    marker.icon = [UIImage imageNamed:@"ski_pole_warning@3x.png"];
-    marker.groundAnchor = CGPointMake(0.88, 1.0);
-    marker.map = _mapView;
+    if (!warningInfo) {warningInfo = [[XTWarningsInfo alloc] init];}
     
-    [self HideAddWarning];
+    [warningInfo ClearData];
+    
+    warningInfo.userID = data.userID;
+    warningInfo.tourID = data.tourID;
+    warningInfo.userName = data.userInfo.userName;
+    warningInfo.submitDate = [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
+    warningInfo.longitude = coordinate.longitude;
+    warningInfo.latitude = coordinate.latitude;
+    
+    [self ShowEditWarning];
 }
 
 - (void)didReceiveMemoryWarning
@@ -238,7 +263,7 @@
 - (void)ShowLoginOptions:(id)sender {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LoginViewDidClose:) name:@"LoginViewDismissed" object:nil];
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Du bist eingelogged!" delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Ausloggen" otherButtonTitles:@"Profil anzeigen", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"Du bist eingelogged als %@",data.userInfo.userName] delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Ausloggen" otherButtonTitles:@"Profil anzeigen", nil];
     
     [actionSheet showInView:self.view];
 }
@@ -273,6 +298,26 @@
     }
 }
 
+- (void) EnterWarning:(id)sender {
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(warningInfo.latitude, warningInfo.longitude);
+    GMSMarker *marker = [[GMSMarker alloc] init];
+    marker.position = coordinate;
+    marker.title = [NSString stringWithFormat:@"Gefahrenstelle bei Koordinate: %.5f %.5f",coordinate.longitude,coordinate.latitude];
+    marker.icon = [UIImage imageNamed:@"ski_pole_warning@3x.png"];
+    marker.groundAnchor = CGPointMake(0.88, 1.0);
+    marker.map = _mapView;
+    
+    warningInfo.comment = _editWarningText.text;
+    
+    [data AddWarningInfo:warningInfo];
+    
+    if (!request) {request = [[XTServerRequestHandler alloc] init];}
+    
+    [request SubmitWarningInfo:warningInfo];
+    
+    [self HideAddWarning];
+}
+
 - (void) ShowAddWarning
 {
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
@@ -282,6 +327,7 @@
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
             [_addWarningText setHidden:NO];
+            [_enterWarning setHidden:NO];
         } completion:nil];
     }];
     
@@ -292,6 +338,9 @@
 {
     [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         [_addWarningText setHidden:YES];
+        [_editWarningText setHidden:YES];
+        [_enterWarning setHidden:YES];
+        [_editWarningText resignFirstResponder];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
             _addWarningBackground.frame = CGRectMake(270, 80, 40, 40);
@@ -301,6 +350,19 @@
     }];
     
     _addWarning = false;
+}
+
+- (void) ShowEditWarning
+{
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        _addWarningBackground.frame = CGRectMake(10, 80, 300, 110);
+        [_addWarningText setHidden:YES];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            [_editWarningText setHidden:NO];
+            [_editWarningText becomeFirstResponder];
+        } completion:nil];
+    }];
 }
 
 @end

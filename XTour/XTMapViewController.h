@@ -10,11 +10,15 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
+#import "XTWarningsInfo.h"
+#import "XTServerRequestHandler.h"
 
 @interface XTMapViewController : UIViewController <UIActionSheetDelegate, GMSMapViewDelegate>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
+    XTWarningsInfo *warningInfo;
+    XTServerRequestHandler *request;
 }
 
 @property (retain, nonatomic) IBOutlet UIView *header;
@@ -27,6 +31,8 @@
 @property (retain, nonatomic) UIView *addWarningBackground;
 @property (retain, nonatomic) UIButton *addWarningButton;
 @property (retain, nonatomic) UITextView *addWarningText;
+@property (retain, nonatomic) UITextView *editWarningText;
+@property (retain, nonatomic) UIButton *enterWarning;
 @property (retain, nonatomic) GMSMapView *mapView;
 @property (retain, nonatomic) GMSMutablePath *path;
 @property (retain, nonatomic) GMSPolyline *polyline;
@@ -38,6 +44,7 @@
 - (void)ShowLoginOptions:(id)sender;
 - (void)LoginViewDidClose:(id)sender;
 - (void)AddWarning:(id)sender;
+- (void)EnterWarning:(id)sender;
 - (IBAction)centerMap:(id)sender;
 
 @end

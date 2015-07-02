@@ -248,6 +248,30 @@
     return false;
 }
 
+- (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo
+{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/insert_warning_info.php?userID=%@&tourID=%@&date=%@&longitude=%.5f&latitude=%.5f&elevation=%.5f&category=%lu&comment=%@", warningInfo.userID, warningInfo.tourID, warningInfo.submitDate, warningInfo.longitude, warningInfo.latitude, warningInfo.elevation, (unsigned long)warningInfo.category, [warningInfo.comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request startSynchronous];
+    
+    NSError *error = [request error];
+    if (!error) {
+        NSString *response = [request responseString];
+        
+        if ([response isEqualToString:@"true"]) {return true;}
+        else {return false;}
+    }
+    else {
+        NSLog(@"There was a problem submitting the warning info");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    return false;
+}
+
 - (BOOL) DownloadProfilePicture:(NSString*)userID
 {
     BOOL success = false;
