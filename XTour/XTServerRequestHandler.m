@@ -187,7 +187,7 @@
     if (!error) {
         NSString *response = [request responseString];
         
-        if ([response isEqualToString:@"0"]) {return nil;}
+        if ([response isEqualToString:@"false"]) {return nil;}
         
         NSArray *warnings_array = [response componentsSeparatedByString:@";"];
         NSMutableArray *warnings_info = [NSMutableArray arrayWithArray:warnings_array];

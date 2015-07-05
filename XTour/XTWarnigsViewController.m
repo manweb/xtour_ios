@@ -14,6 +14,8 @@
 
 @implementation XTWarnigsViewController
 
+static NSString * const reuseIdentifier = @"Cell";
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -28,12 +30,29 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    // Register cell classes
+    [self.collectionView registerClass:[XTWarningCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    
+    [self.collectionView setContentInset:UIEdgeInsetsMake(70, 0, 0, 0)];
+    
+    // Do any additional setup after loading the view.
+    [self.collectionView setBackgroundColor:[UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f]];
+    
+    self.collectionView.alwaysBounceVertical = YES;
+    
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    
+    _header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 69)];
+    _header_shadow = [[UIView alloc] initWithFrame:CGRectMake(0, 69, 320, 1)];
     
     _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
     
-    [_tableView setContentInset:UIEdgeInsetsMake(75, 0, 0, 0)];
+    _loginButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 25, 40, 40)];
+    [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    [_loginButton addTarget:self action:@selector(LoadLogin:) forControlEvents:UIControlEventTouchDown];
+    
+    [_header addSubview:_loginButton];
     
     _background = [[UIView alloc] initWithFrame:screenBounds];
     _background.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
@@ -53,6 +72,8 @@
     
     [_background addSubview:_emptyLabel];
     [_background addSubview:updateButton];
+    [self.view addSubview:_header];
+    [self.view addSubview:_header_shadow];
     [self.view addSubview:_background];
     
     [self.view sendSubviewToBack:_background];
@@ -61,6 +82,12 @@
     [_warningsArray removeAllObjects];
     
     data = [XTDataSingleton singleObj];
+    
+    if (refreshControl == nil) {
+        refreshControl = [[UIRefreshControl alloc] init];
+    }
+    [refreshControl addTarget:self action:@selector(UpdateWarnings:) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:refreshControl];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -75,37 +102,49 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [_warningsArray count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TableCell"];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    XTWarningCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TableCell"];
-    }
+    cell.backgroundColor = [UIColor whiteColor];
     
     XTWarningsInfo *currentWarning = [_warningsArray objectAtIndex:indexPath.row];
     
-    cell.imageView.image = [UIImage imageNamed:@"warning_icon@2x.png"];
-    cell.textLabel.text = currentWarning.comment;
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[currentWarning.submitDate integerValue]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd.MM.yyyy HH:mm"];
+    NSString *formattedDate = [formatter stringFromDate:date];
     
-    [currentWarning release];
+    cell.warningTitle.text = @"Title of warning";
+    cell.warningDescription.text = [NSString stringWithFormat:@"Eingetragen von %@ am %@. Distanz zur Gefahrenstelle: %.1f km",currentWarning.userName,formattedDate,currentWarning.distance];
     
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+}
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(300, 100);
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(10, 0, 10, 0);
 }
 
 - (void)dealloc {
     [_loginButton release];
-    [_tableView release];
     [super dealloc];
 }
 
@@ -166,17 +205,19 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([_warningsArray count] > 0) {
                 [_background setHidden:YES];
-                [_tableView setHidden:NO];
-                [self.tableView reloadData];
+                [self.collectionView setHidden:NO];
+                [self.collectionView reloadData];
                 
                 [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", [_warningsArray count]];
             }
             else {
                 [_background setHidden:NO];
-                [_tableView setHidden:YES];
+                [self.collectionView setHidden:YES];
                 
                 [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", 0];
             }
+            
+            [refreshControl endRefreshing];
         });
     });
 }
