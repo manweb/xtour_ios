@@ -45,9 +45,27 @@
     
     _profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 40, 40)];
     
-    _profilePicture.image = [UIImage imageNamed:[data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO]];
+    if (data.loggedIn) {
+        _profilePicture.image = [UIImage imageNamed:[data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO]];
+    }
+    else {
+        _profilePicture.image = [UIImage imageNamed:@"profile_icon_gray.png"];
+    }
+    
+    _userName = [[UILabel alloc] initWithFrame:CGRectMake(55, 15, 255, 20)];
+    
+    _userName.font = [UIFont fontWithName:@"Helvetica-BoldMT" size:12];
+    _userName.textColor = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:1.0];
+    
+    if (data.loggedIn) {
+        _userName.text = data.userInfo.userName;
+    }
+    else {
+        _userName.text = @"Nicht eingelogged";
+    }
     
     [_profileSummary addSubview:_profilePicture];
+    [_profileSummary addSubview:_userName];
     [self.view addSubview:_profileSummary];
 }
 

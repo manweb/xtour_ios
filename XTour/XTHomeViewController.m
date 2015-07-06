@@ -33,7 +33,7 @@
                                    lround(floor(tm_total)) % 60];
     _totalTimeLabel.text = currentTotalTimeString;
     
-    if (data.timer - _recoveryTimer > 120) {
+    if (data.timer - _recoveryTimer > 120 && _writeRecoveryFile) {
         NSLog(@"Writing recovery file");
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -87,12 +87,13 @@
     _didReachInitialAccuracy = false;
     
     _didRecoverTour = false;
+    _writeRecoveryFile = false;
     
     [data CheckLogin];
     
     // Check whether the recovery file exist. If so, the app may have crashed, so re-load the data
     NSString *recoveryFile = [data GetDocumentFilePathForFile:@"/recovery.xml" CheckIfExist:YES];
-    if (recoveryFile) {
+    if (recoveryFile && _writeRecoveryFile) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Recovery file found" message:@"Trying to recover last tour" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
         NSLog(@"Found recovery file");
@@ -174,7 +175,7 @@
     [self LoginViewDidClose:nil];
 }
 
-- (IBAction)stopTimer:(id)sender {
+- (IBAction)pauseTour:(id)sender {
     [_pollingTimer invalidate];
     _pollingTimer = nil;
     
@@ -240,7 +241,7 @@
     }
 }
 
-- (IBAction)startTimer:(id)sender {
+- (IBAction)startUpTour:(id)sender {
     if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     
     [_locationManager startUpdatingLocation];
@@ -307,7 +308,7 @@
     }
 }
 
-- (IBAction)resetTimer:(id)sender {
+- (IBAction)startDownTour:(id)sender {
     if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     
     [_locationManager startUpdatingLocation];

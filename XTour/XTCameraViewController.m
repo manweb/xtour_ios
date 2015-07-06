@@ -28,20 +28,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    [self LoadCamera:nil];
-    
     data = [XTDataSingleton singleObj];
-    
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    //self.ImageArray = [[NSMutableArray alloc] init];
-    /*for (int i = 0; i < 16; i++) {
-        NSString *imgName = [[NSString alloc] initWithFormat:@"/tours/images/image%i.jpg", i+1];
-        NSString *ImagePath = [documentsDirectory stringByAppendingString:imgName];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:ImagePath]) {
-            [_ImageArray addObject:ImagePath];
-        }
-    }*/
     
     UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 69)];
     UIView *header_shadow = [[UIView alloc] initWithFrame:CGRectMake(0, 69, 320, 1)];
@@ -76,7 +63,7 @@
 - (void) LoadCamera:(id)sender
 {
     if (!data.tourID) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message: @"Photos können nur während einer Tour aufgenommen werden." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sorry" message: @"Photos können nur während einer Tour aufgenommen werden." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [alert show];
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
@@ -295,6 +282,8 @@
             imageInfo.Elevation = location.altitude;
             imageInfo.Date = location.timestamp;
         }
+        
+        UIImageWriteToSavedPhotosAlbum(pickedImage, nil, nil, nil);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"Done");

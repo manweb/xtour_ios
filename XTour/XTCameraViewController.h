@@ -38,6 +38,5 @@
 - (void) LoadLogin:(id)sender;
 - (void)ShowLoginOptions:(id)sender;
 - (void)LoginViewDidClose:(id)sender;
-- (void) CloseImageView:(id)sender;
 
 @end

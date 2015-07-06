@@ -16,5 +16,6 @@
 
 @property (retain, nonatomic) UIView *profileSummary;
 @property (retain, nonatomic) UIImageView *profilePicture;
+@property (retain, nonatomic) UILabel *userName;
 
 @end

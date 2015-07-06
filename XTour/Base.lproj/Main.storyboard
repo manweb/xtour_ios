@@ -23,7 +23,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="startTimer:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="Uxe-O6-WHm"/>
+                                    <action selector="startUpTour:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="Bso-VV-5Yb"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0l-w6-lFI">
@@ -32,7 +32,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="stopTimer:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="g7t-sz-opC"/>
+                                    <action selector="pauseTour:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="jwe-NI-zq8"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tvs-K4-IVB">
@@ -41,7 +41,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="resetTimer:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="Acb-bb-oY8"/>
+                                    <action selector="startDownTour:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="uMy-zd-TQP"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f5P-VG-4kP">
@@ -175,7 +175,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94879415760869568" green="0.94879415760869568" blue="0.94879415760869568" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Home" image="home_icon.png" id="u1e-5L-l1D"/>
+                    <tabBarItem key="tabBarItem" title="Tour" image="home_icon.png" id="u1e-5L-l1D"/>
                     <connections>
                         <outlet property="GPSSignal" destination="g73-dp-uhu" id="jRc-gZ-FLZ"/>
                         <outlet property="PauseButton" destination="Q0l-w6-lFI" id="jk3-U1-Fxb"/>
@@ -241,13 +241,13 @@
                             <outlet property="delegate" destination="mt3-FC-beg" id="qhe-PD-dcv"/>
                         </connections>
                     </collectionView>
-                    <tabBarItem key="tabBarItem" title="Camera" image="camera.png" id="klT-29-sHJ"/>
+                    <tabBarItem key="tabBarItem" title="Kamera" image="camera.png" id="klT-29-sHJ"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yIv-za-Hjk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2627" y="1551"/>
         </scene>
-        <!--Warnings-->
+        <!--Warnungen-->
         <scene sceneID="rDU-0v-LyX">
             <objects>
                 <collectionViewController id="9nX-Qx-9bP" customClass="XTWarnigsViewController" sceneMemberID="viewController">
@@ -267,7 +267,7 @@
                             <outlet property="delegate" destination="9nX-Qx-9bP" id="N8e-Xk-zPL"/>
                         </connections>
                     </collectionView>
-                    <tabBarItem key="tabBarItem" title="Warnings" image="warning_icon.png" id="bJS-VU-8vr"/>
+                    <tabBarItem key="tabBarItem" title="Warnungen" image="warning_icon.png" id="bJS-VU-8vr"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qpQ-RM-Tdy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -321,7 +321,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="More" image="more_icon.png" id="Bwp-NI-PEX"/>
+                    <tabBarItem key="tabBarItem" title="Mehr" image="more_icon.png" id="Bwp-NI-PEX"/>
                     <connections>
                         <outlet property="backButton" destination="UWp-II-nET" id="Bwz-Wz-Xme"/>
                         <outlet property="header" destination="4NV-n7-IuU" id="LpQ-yf-lDr"/>
@@ -387,7 +387,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" image="globe.png" id="Z7h-1E-pvt"/>
+                    <tabBarItem key="tabBarItem" title="Karte" image="globe.png" id="Z7h-1E-pvt"/>
                     <connections>
                         <outlet property="LoginButton" destination="GPs-u1-yKw" id="DGD-Hu-ffW"/>
                         <outlet property="centerButton" destination="k8c-C3-hsJ" id="bLM-hh-moh"/>
@@ -440,7 +440,7 @@
         <image name="skier_down_button.png" width="1200" height="1200"/>
         <image name="skier_up_button.png" width="1200" height="1200"/>
         <image name="skier_up_icon.png" width="1000" height="1000"/>
-        <image name="warning_icon.png" width="26" height="26"/>
+        <image name="warning_icon.png" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

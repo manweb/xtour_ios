@@ -38,11 +38,11 @@
     //_listOfFiles = [data GetAllImages];
     
     _listOfFiles = [[NSMutableArray alloc] init];
-    [_listOfFiles addObject:@"Profile"];
-    [_listOfFiles addObject:@"Settings"];
+    [_listOfFiles addObject:@"Profil"];
+    [_listOfFiles addObject:@"Einstellungen"];
     [_listOfFiles addObject:@"News feed"];
-    [_listOfFiles addObject:@"Upload files"];
-    [_listOfFiles addObject:@"Clean up"];
+    [_listOfFiles addObject:@"Dateien hochladen (beta)"];
+    [_listOfFiles addObject:@"Aufräumen (beta)"];
     [_listOfFiles addObject:@"Wunschliste"];
     
     _listOfIcons = [[NSMutableArray alloc] init];

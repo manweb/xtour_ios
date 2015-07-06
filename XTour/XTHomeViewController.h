@@ -54,9 +54,10 @@
 @property (nonatomic) NSInteger recoveryTimer;
 @property (nonatomic) bool didReachInitialAccuracy;
 @property (nonatomic) bool didRecoverTour;
-- (IBAction)startTimer:(id)sender;
-- (IBAction)stopTimer:(id)sender;
-- (IBAction)resetTimer:(id)sender;
+@property (nonatomic) bool writeRecoveryFile;
+- (IBAction)startUpTour:(id)sender;
+- (IBAction)startDownTour:(id)sender;
+- (IBAction)pauseTour:(id)sender;
 - (void)LoadLogin:(id)sender;
 - (void)ShowLoginOptions:(id)sender;
 - (void)LoginViewDidClose:(id)sender;
