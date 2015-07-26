@@ -38,6 +38,7 @@
     tourInfo.profilePicture = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
     tourInfo.date = [data.TotalStartTime timeIntervalSince1970];
     tourInfo.userName = @"";
+    tourInfo.totalTime = data.totalTime;
     tourInfo.longitude = data.StartLocation.coordinate.longitude;
     tourInfo.latitude = data.StartLocation.coordinate.latitude;
     tourInfo.distance = data.sumDistance;
@@ -73,6 +74,11 @@
     [detailView Initialize:tourInfo fromServer:NO withOffset:70];
     
     [detailView LoadTourDetail:tourInfo fromServer:NO];
+    
+    [detailView release];
+    [ratingViewContainer release];
+    [ratingView release];
+    [tourInfo release];
 }
 
 - (void)didReceiveMemoryWarning

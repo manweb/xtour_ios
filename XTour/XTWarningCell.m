@@ -15,6 +15,10 @@
     self = [super initWithFrame:frame];
     if (self)
     {
+        float boxRadius = 5.f;
+        float boxBorderWidth = 1.0f;
+        UIColor *boxBorderColor = [UIColor colorWithRed:220.0f/255.0f green:220.0f/255.0f blue:220.0f/255.0f alpha:1.0f];
+        
         UIImageView *warningIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
         
         warningIcon.image = [UIImage imageNamed:@"warning_icon@3x.png"];
@@ -33,7 +37,11 @@
         [self addSubview:_warningTitle];
         [self addSubview:_warningDescription];
         
-        self.layer.cornerRadius = 3.f;
+        self.layer.borderWidth = boxBorderWidth;
+        self.layer.borderColor = boxBorderColor.CGColor;
+        self.layer.cornerRadius = boxRadius;
+        
+        [warningIcon release];
     }
     
     return self;

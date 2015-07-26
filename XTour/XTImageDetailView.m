@@ -99,6 +99,8 @@
         }
         
         [self addSubview:_imageView];
+        
+        [selectedImage release];
     }
     
     return self;
@@ -162,10 +164,10 @@
 - (NSString*)GetFormattedLongitude:(float)longitude
 {
     NSString *lonEW;
-    if (longitude < 0) {lonEW = [[NSString alloc] initWithString:@"W"]; longitude = fabs(longitude);}
-    else {lonEW = [[NSString alloc] initWithString:@"E"];}
+    if (longitude < 0) {lonEW = @"W"; longitude = fabs(longitude);}
+    else {lonEW = @"E";}
     
-    NSString *lonString = [[NSString alloc] initWithFormat:@"%.0f°%.0f'%.1f\" %s",
+    NSString *lonString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
                            floor(longitude),
                            floor((longitude - floor(longitude)) * 60),
                            ((longitude - floor(longitude)) * 60 - floor((longitude - floor(longitude)) * 60)) * 60, [lonEW UTF8String]];
@@ -176,10 +178,10 @@
 - (NSString*)GetFormattedLatitude:(float)latitude
 {
     NSString *latNS;
-    if (latitude < 0) {latNS = [[NSString alloc] initWithString:@"S"]; latitude = fabs(latitude);}
-    else {latNS = [[NSString alloc] initWithString:@"N"];}
+    if (latitude < 0) {latNS = @"S"; latitude = fabs(latitude);}
+    else {latNS = @"N";}
     
-    NSString *latString = [[NSString alloc] initWithFormat:@"%.0f°%.0f'%.1f\" %s",
+    NSString *latString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
                            floor(latitude),
                            floor((latitude - floor(latitude)) * 60),
                            ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];

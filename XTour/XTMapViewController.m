@@ -109,6 +109,8 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:nil];
+    
     [self LoginViewDidClose:nil];
     
     for (int i = 0; i < [data GetNumImages]; i++) {

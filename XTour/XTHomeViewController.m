@@ -55,6 +55,18 @@
     _altitudeSection.layer.cornerRadius = 12.0f;
     _locationSection.layer.cornerRadius = 12.0f;
     
+    UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
+    
+    _timerSection.layer.borderWidth = 1.0f;
+    _distanceSection.layer.borderWidth = 1.0f;
+    _altitudeSection.layer.borderWidth = 1.0f;
+    _locationSection.layer.borderWidth = 1.0f;
+    
+    _timerSection.layer.borderColor = boxBorderColor.CGColor;
+    _distanceSection.layer.borderColor = boxBorderColor.CGColor;
+    _altitudeSection.layer.borderColor = boxBorderColor.CGColor;
+    _locationSection.layer.borderColor = boxBorderColor.CGColor;
+    
     [_totalTimeLabel setHidden:YES];
     [_totalDistanceLabel setHidden:YES];
     [_totalAltitudeLabel setHidden:YES];
@@ -172,6 +184,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:nil];
+    
     [self LoginViewDidClose:nil];
 }
 
@@ -270,6 +284,7 @@
         data.upCount++;
         
         [formatter release];
+        [tourID release];
     }
     else if (_runStatus == 1) {
     
@@ -337,6 +352,7 @@
         data.downCount++;
         
         [formatter release];
+        [tourID release];
     }
     else if (_runStatus == 1) {
         data.endTime = [NSDate date];
@@ -403,6 +419,8 @@
         UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
         [_loginButton setImage:img forState:UIControlStateNormal];
         [_loginButton addTarget:self action:@selector(ShowLoginOptions:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [img release];
     }
     else {
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
@@ -447,23 +465,23 @@
     
     double longitude = (double)lon;
     NSString *lonEW;
-    if (longitude < 0) {lonEW = [[NSString alloc] initWithString:@"W"]; longitude = fabs(longitude);}
-    else {lonEW = [[NSString alloc] initWithString:@"E"];}
+    if (longitude < 0) {lonEW = @"W"; longitude = fabs(longitude);}
+    else {lonEW = @"E";}
     
     double latitude = (double)lat;
     NSString *latNS;
-    if (latitude < 0) {latNS = [[NSString alloc] initWithString:@"S"]; latitude = fabs(latitude);}
-    else {latNS = [[NSString alloc] initWithString:@"N"];}
+    if (latitude < 0) {latNS = @"S"; latitude = fabs(latitude);}
+    else {latNS = @"N";}
     
-    NSString *lonString = [[NSString alloc] initWithFormat:@"%.0f°%.0f'%.1f\" %s",
+    NSString *lonString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
                            floor(longitude),
                            floor((longitude - floor(longitude)) * 60),
                            ((longitude - floor(longitude)) * 60 - floor((longitude - floor(longitude)) * 60)) * 60, [lonEW UTF8String]];
-    NSString *latString = [[NSString alloc] initWithFormat:@"%.0f°%.0f'%.1f\" %s",
+    NSString *latString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
                            floor(latitude),
                            floor((latitude - floor(latitude)) * 60),
                            ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];
-    NSString *altString = [[NSString alloc] initWithFormat:@"%.0f müm", alt];
+    NSString *altString = [NSString stringWithFormat:@"%.0f müm", alt];
     
     _longLabel.text = lonString;
     _latLabel.text = latString;
@@ -515,8 +533,8 @@
         data.DistanceRate = diffDistance/data.rateTimer * 3600.0;
         data.AltitudeRate = diffAltitude/data.rateTimer * 3600.0;
         
-        NSString *r_dist_str = [[NSString alloc] initWithFormat:@"%.1f km/h", data.DistanceRate];
-        NSString *r_alt_str = [[NSString alloc] initWithFormat:@"%.1f m/h", data.AltitudeRate];
+        NSString *r_dist_str = [NSString stringWithFormat:@"%.1f km/h", data.DistanceRate];
+        NSString *r_alt_str = [NSString stringWithFormat:@"%.1f m/h", data.AltitudeRate];
         
         _distanceRateLabel.text = r_dist_str;
         _altitudeRateLabel.text = r_alt_str;
@@ -534,9 +552,6 @@
     
     [lonEW release];
     [latNS release];
-    [lonString release];
-    [latString release];
-    [altString release];
     [distTotal release];
     [altTotal release];
 }

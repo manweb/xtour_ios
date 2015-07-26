@@ -15,6 +15,10 @@
     self = [super initWithFrame:frame];
     if (self)
     {
+        float boxRadius = 5.f;
+        float boxBorderWidth = 1.0f;
+        UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
+        
         // initialize label and imageview here, then add them as subviews to the content view
         _profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(8, 25, 50, 50)];
         _title = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 223, 15)];
@@ -51,7 +55,9 @@
         [self addSubview:_altitudeIcon];
         [self addSubview:_distanceIcon];
         
-        self.layer.cornerRadius = 3.f;
+        self.layer.borderWidth = boxBorderWidth;
+        self.layer.borderColor = boxBorderColor.CGColor;
+        self.layer.cornerRadius = boxRadius;
     }
     return self;
 }

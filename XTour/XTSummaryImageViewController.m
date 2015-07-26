@@ -29,7 +29,14 @@
     
     //self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    self.view.frame = CGRectMake(5, 5, 300, 190);
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    
+    float boxWidth = width - 30;
+    float boxMarginLeft = 5.0f;
+    float boxMarginTop = 5.0f;
+    
+    self.view.frame = CGRectMake(boxMarginLeft, boxMarginTop, boxWidth, 190);
     
     UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
     _collectionView = [[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
@@ -40,6 +47,8 @@
     [_collectionView setBackgroundColor:[UIColor whiteColor]];
     
     [self.view addSubview:_collectionView];
+    
+    [layout release];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,7 +68,13 @@
     XTImageInfo *imageInfo = [_images objectAtIndex:indexPath.row];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
-    [imageView setImageWithURL:[NSURL URLWithString:imageInfo.Filename]];
+    
+    if ([imageInfo.Filename containsString:@"http://www.xtour.ch"]) {
+        [imageView setImageWithURL:[NSURL URLWithString:imageInfo.Filename]];
+    }
+    else {
+        imageView.image = [UIImage imageNamed:imageInfo.Filename];
+    }
     
     [cell addSubview:imageView];
     

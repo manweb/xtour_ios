@@ -92,6 +92,8 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:nil];
+    
     [self UpdateWarnings:nil];
     [self LoginViewDidClose:nil];
 }
@@ -125,6 +127,8 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.warningTitle.text = @"Title of warning";
     cell.warningDescription.text = [NSString stringWithFormat:@"Eingetragen von %@ am %@. Distanz zur Gefahrenstelle: %.1f km",currentWarning.userName,formattedDate,currentWarning.distance];
     
+    [formatter release];
+    
     return cell;
 }
 
@@ -135,7 +139,12 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(300, 100);
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    
+    float boxWidth = width - 20;
+    
+    return CGSizeMake(boxWidth, 100);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -176,6 +185,8 @@ static NSString * const reuseIdentifier = @"Cell";
         UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
         [_loginButton setImage:img forState:UIControlStateNormal];
         [_loginButton addTarget:self action:@selector(ShowLoginOptions:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [img release];
     }
     else {
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
@@ -194,7 +205,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void) UpdateWarnings:(id)sender
 {
-    XTServerRequestHandler *request = [[XTServerRequestHandler alloc] init];
+    XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
     
     if (!data.CurrentLocation) {return;}
     

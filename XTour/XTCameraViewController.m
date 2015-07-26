@@ -51,6 +51,7 @@
     [self.view addSubview:header_shadow];
     
     [header release];
+    [header_shadow release];
 }
 
 - (void)viewWillAppear:(BOOL)animated

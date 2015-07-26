@@ -23,20 +23,39 @@
     _viewOffset = 0;
     if (offset) {_viewOffset = offset;}
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
-    if (!mapView) {mapView = [GMSMapView mapWithFrame:CGRectMake(5, 5, 300, 240) camera:camera];}
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
     
-    _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, _viewOffset+5, 310, 140)];
-    _mapViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, _viewOffset+150, 310, 250)];
-    _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(5, _viewOffset+405, 310, 200)];
+    float boxWidth = width - 20;
+    float boxRadius = 5.f;
+    float boxBorderWidth = 1.0f;
+    float boxMarginLeft = 10.0f;
+    float boxMarginTop = 75.0f;
+    UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
+    if (!mapView) {mapView = [GMSMapView mapWithFrame:CGRectMake(5, 5, boxWidth - 10, 240) camera:camera];}
+    
+    _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+5, boxWidth, 140)];
+    _mapViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+150, boxWidth, 250)];
+    _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+405, boxWidth, 200)];
     
     _mapViewContainer.backgroundColor = [UIColor whiteColor];
     _summaryViewContainer.backgroundColor = [UIColor whiteColor];
     _imageViewContainer.backgroundColor = [UIColor whiteColor];
     
-    _mapViewContainer.layer.cornerRadius = 5.0f;
-    _summaryViewContainer.layer.cornerRadius = 5.0f;
-    _imageViewContainer.layer.cornerRadius = 5.0f;
+    _mapViewContainer.layer.cornerRadius = boxRadius;
+    _summaryViewContainer.layer.cornerRadius = boxRadius;
+    _imageViewContainer.layer.cornerRadius = boxRadius;
+    
+    _mapViewContainer.layer.borderWidth = boxBorderWidth;
+    _summaryViewContainer.layer.borderWidth = boxBorderWidth;
+    _imageViewContainer.layer.borderWidth = boxBorderWidth;
+    
+    _mapViewContainer.layer.borderColor = boxBorderColor.CGColor;
+    _summaryViewContainer.layer.borderColor = boxBorderColor.CGColor;
+    _imageViewContainer.layer.borderColor = boxBorderColor.CGColor;
     
     /*NSString *TimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
      lround(floor(data.totalTime / 3600.)) % 100,
@@ -174,11 +193,15 @@
 
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server
 {
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float boxWidth = width - 20;
+    
     _coordinateArray = [[NSMutableArray alloc] init];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (server) {
-            XTServerRequestHandler *request = [[XTServerRequestHandler alloc] init];
+            XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
             NSMutableArray *tourFilesUp = [request GetTourFilesForTour:tourInfo.tourID andType:@"up"];
             NSMutableArray *tourFilesDown = [request GetTourFilesForTour:tourInfo.tourID andType:@"down"];
             _tourFiles = [tourFilesUp mutableCopy];
@@ -255,7 +278,7 @@
             
             XTSummaryImageViewController *imageView = [[XTSummaryImageViewController alloc] initWithNibName:nil bundle:nil];
             
-            imageView.view.frame = CGRectMake(0, 0, 310, 200);
+            imageView.view.frame = CGRectMake(0, 0, boxWidth, 200);
             imageView.images = _tourImages;
             
             [_imageViewContainer addSubview:imageView.view];

@@ -95,6 +95,8 @@
         NSString *fname = [filename lastObject];
         
         [request SubmitImageComment:_imageInfoComment.text forImage:fname];
+        
+        [request release];
     }
     else {
         [data GetImageInfoAt:_imageID].Comment = _imageInfoComment.text;

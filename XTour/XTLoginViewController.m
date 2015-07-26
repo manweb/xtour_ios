@@ -171,6 +171,8 @@
         NSLog(@"There was a problem sending login information.");
     }
     
+    [requestString release];
+    
     return success;
 }
 

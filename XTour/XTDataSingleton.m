@@ -212,7 +212,7 @@
 {
     if ([_locationData count] == 0) {NSLog(@"No data in the location array."); return 0;}
     
-    NSMutableArray *locations = [[NSMutableArray alloc] init];
+    NSMutableArray *locations = [[[NSMutableArray alloc] init] autorelease];
     for (int i = (int)_lastRunIndex; i < [_locationData count]; i++) {
         [locations addObject:[_locationData objectAtIndex:i]];
     }
@@ -241,17 +241,17 @@
         if (tmp.coordinate.longitude > maxLon) {maxLon = tmp.coordinate.longitude;}
     }
     
-    NSMutableArray *arrayMinMax = [[NSMutableArray alloc] init];
+    NSMutableArray *arrayMinMax = [[[NSMutableArray alloc] init] autorelease];
     if ([_locationData count] == 0) {
         minLat = 0;
         minLon = 0;
         maxLat = 0;
         maxLon = 0;
     }
-    [arrayMinMax addObject:[[NSString alloc] initWithFormat:@"%f",minLat]];
-    [arrayMinMax addObject:[[NSString alloc] initWithFormat:@"%f",minLon]];
-    [arrayMinMax addObject:[[NSString alloc] initWithFormat:@"%f",maxLat]];
-    [arrayMinMax addObject:[[NSString alloc] initWithFormat:@"%f",maxLon]];
+    [arrayMinMax addObject:[NSString stringWithFormat:@"%f",minLat]];
+    [arrayMinMax addObject:[NSString stringWithFormat:@"%f",minLon]];
+    [arrayMinMax addObject:[NSString stringWithFormat:@"%f",maxLat]];
+    [arrayMinMax addObject:[NSString stringWithFormat:@"%f",maxLon]];
     
     return arrayMinMax;
 }

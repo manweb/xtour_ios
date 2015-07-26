@@ -111,6 +111,8 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.altitude.text = [NSString stringWithFormat:@"%.1f m", currentElement.altitude];
     cell.distance.text = [NSString stringWithFormat:@"%.2f km", currentElement.distance];
     
+    [formatter release];
+    
     return cell;
 }
 
@@ -154,7 +156,12 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(300, 100);
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    
+    float boxWidth = width - 20;
+    
+    return CGSizeMake(boxWidth, 100);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section

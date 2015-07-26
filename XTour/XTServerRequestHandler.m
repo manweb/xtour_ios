@@ -18,7 +18,7 @@
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
     [request startSynchronous];
     
-    NSMutableArray *news_feeds = [[NSMutableArray alloc] init];
+    NSMutableArray *news_feeds = [[[NSMutableArray alloc] init] autorelease];
     
     NSError *error = [request error];
     if (!error) {
@@ -49,6 +49,8 @@
             tourInfo.longitude = [[element objectAtIndex:12] floatValue];
             
             [news_feeds addObject:tourInfo];
+            
+            [tourInfo release];
         }
     }
     else {
@@ -56,6 +58,8 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
     }
+    
+    [requestString release];
     
     return news_feeds;
 }

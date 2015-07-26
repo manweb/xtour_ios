@@ -98,6 +98,10 @@
     [TrackPoint addChild:Elevation];
     [TrackPoint addChild:Time];
     [TrackSegment addChild:TrackPoint];
+    
+    [latitude release];
+    [longitude release];
+    [elevation release];
 }
 
 - (void) SaveXML:(NSString *)filename
@@ -119,13 +123,14 @@
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:GPXElement];
     
     NSData *xmlData = doc.XMLData;
-    NSString *xml = [[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:filename];
     
     [xmlData writeToFile:documentsPath atomically:YES];
+    
+    [doc release];
 }
 
 - (void) SaveRecoveryFile:(NSString *)filename
@@ -140,13 +145,14 @@
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:GPXElement];
     
     NSData *xmlData = doc.XMLData;
-    NSString *xml = [[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:filename];
     
     [xmlData writeToFile:documentsPath atomically:YES];
+    
+    [doc release];
 }
 
 - (void) ReadGPXFile:(NSString *)filename

@@ -35,13 +35,22 @@
     float width = screenBound.size.width;
     float height = screenBound.size.height;
     
+    float boxWidth = width - 20;
+    float boxRadius = 5.f;
+    float boxBorderWidth = 1.0f;
+    float boxMarginLeft = 10.0f;
+    float boxMarginTop = 75.0f;
+    UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
+    
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
-    _profileSummary = [[UIView alloc] initWithFrame:CGRectMake(5, 75, 310, 140)];
+    _profileSummary = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, boxMarginTop, boxWidth, 140)];
     
     _profileSummary.backgroundColor = [UIColor whiteColor];
-    _profileSummary.layer.cornerRadius = 5.0f;
+    _profileSummary.layer.cornerRadius = boxRadius;
+    _profileSummary.layer.borderWidth = boxBorderWidth;
+    _profileSummary.layer.borderColor = boxBorderColor.CGColor;
     
     _profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 40, 40)];
     

@@ -70,6 +70,8 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:nil];
+    
     [self LoginViewDidClose:nil];
 }
 
@@ -126,6 +128,8 @@
             
             [navigationView.view addSubview:settings.view];
             
+            [settings release];
+            
             [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
         }
             
@@ -145,6 +149,8 @@
             settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
             
             [navigationView.view addSubview:settings.view];
+            
+            [settings release];
             
             [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
         }
