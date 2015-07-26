@@ -159,6 +159,8 @@
 {
     NSData *xmlData = [[NSData alloc] initWithContentsOfFile:filename];
     _RecoveredData = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:nil];
+    
+    [xmlData release];
 }
 
 - (NSString *)GetValueFromFile:(NSString *)element
@@ -180,7 +182,10 @@
     
     NSArray *trackPoints = [track elementsForName:@"trkpt"];
     
-    NSMutableArray *locations = [[NSMutableArray alloc] init];
+    NSMutableArray *locations = [[[NSMutableArray alloc] init] autorelease];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-LL-dd HH:mm:ss"];
     
     for (GDataXMLElement *trkpt in trackPoints) {
         NSString *lat = [[trkpt attributeForName:@"lat"] stringValue];
@@ -192,8 +197,6 @@
         NSString *ele = elevation.stringValue;
         NSString *t = time.stringValue;
         
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-LL-dd HH:mm:ss"];
         NSDate *date = [dateFormatter dateFromString:t];
         
         CLLocationCoordinate2D coordinates = CLLocationCoordinate2DMake(lat.floatValue, lon.floatValue);
@@ -201,7 +204,11 @@
         CLLocation *location = [[CLLocation alloc] initWithCoordinate:coordinates altitude:ele.floatValue horizontalAccuracy:0 verticalAccuracy:0 timestamp:date];
         
         [locations addObject:location];
+        
+        [location release];
     }
+    
+    [dateFormatter release];
     
     return locations;
 }
@@ -239,13 +246,14 @@
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:XMLElement];
     
     NSData *xmlData = doc.XMLData;
-    NSString *xml = [[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:filename];
     
     [xmlData writeToFile:documentsPath atomically:YES];
+    
+    [doc release];
 }
 
 - (XTUserInfo*) GetUserInfo:(NSString*)filename
@@ -255,12 +263,14 @@
     
     GDataXMLElement *userInfo = [[userInfoFile.rootElement elementsForName:@"userdata"] objectAtIndex:0];
     
-    XTUserInfo *info = [[XTUserInfo alloc] init];
+    XTUserInfo *info = [[[XTUserInfo alloc] init] autorelease];
     
     info.userID = [[[userInfo elementsForName:@"userID"] objectAtIndex:0] stringValue];
     info.userName = [[[userInfo elementsForName:@"userName"] objectAtIndex:0] stringValue];
     info.dateJoined = [[[userInfo elementsForName:@"dateJoined"] objectAtIndex:0] stringValue];
     info.home = [[[userInfo elementsForName:@"home"]objectAtIndex:0] stringValue];
+    
+    [xmlData release];
     
     return info;
 }

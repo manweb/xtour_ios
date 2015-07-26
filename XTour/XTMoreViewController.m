@@ -175,6 +175,8 @@
             [navigationView.view addSubview:collection.view];
             
             [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
+            
+            [layout release];
         }
             break;
         case 3:
@@ -232,6 +234,8 @@
         UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
         [_loginButton setImage:img forState:UIControlStateNormal];
         [_loginButton addTarget:self action:@selector(ShowLoginOptions:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [img release];
     }
     else {
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];

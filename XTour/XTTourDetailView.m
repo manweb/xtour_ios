@@ -221,7 +221,7 @@
             
             _tourFiles = [data GetGPXFilesForCurrentTour];
             
-            XTXMLParser *xml = [[XTXMLParser alloc] init];
+            XTXMLParser *xml = [[[XTXMLParser alloc] init] autorelease];
             
             for (int i = 0; i < [_tourFiles count]; i++) {
                 NSString *currentFile = [_tourFiles objectAtIndex:i];

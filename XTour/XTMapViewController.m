@@ -156,7 +156,6 @@
     CLLocation *location = [change objectForKey:NSKeyValueChangeNewKey];
     CGFloat currentZoom = _mapView.camera.zoom;
     GMSVisibleRegion visibleRegion = _mapView.projection.visibleRegion;
-    GMSCoordinateBounds *currentBounds = [[GMSCoordinateBounds alloc] initWithRegion:visibleRegion];
     if (!_mapHasMoved) {
         _mapView.camera = [GMSCameraPosition cameraWithTarget:location.coordinate zoom:currentZoom];
     }
@@ -193,7 +192,6 @@
     _polyline.strokeWidth = 5.f;
     _polyline.map = _mapView;*/
     
-    [currentBounds release];
     return;
 }
 

@@ -56,6 +56,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:nil];
+    
     [self LoginViewDidClose:nil];
     
     //[self.collectionView reloadData];

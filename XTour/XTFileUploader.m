@@ -56,7 +56,7 @@
     NSArray *ListOfTourDir = [self GetTourDirList];
     NSString *pathTMP = [data GetDocumentFilePathForFile:@"/tours" CheckIfExist:NO];
     NSString *path = [pathTMP stringByAppendingString:@"/"];
-    NSMutableArray *fileList = [[NSMutableArray alloc] init];
+    NSMutableArray *fileList = [[[NSMutableArray alloc] init] autorelease];
     
     for (int i = 0; i < [ListOfTourDir count]; i++) {
         NSString *currentFileTMP = [path stringByAppendingString:[ListOfTourDir objectAtIndex:i]];

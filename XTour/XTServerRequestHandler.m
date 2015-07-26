@@ -88,6 +88,8 @@
         [alert show];
     }
     
+    [requestString release];
+    
     return tour_files;
 }
 

@@ -271,7 +271,7 @@
         if (tmp.coordinate.longitude > maxLon) {maxLon = tmp.coordinate.longitude;}
     }
     
-    NSMutableArray *arrayBounds = [[NSMutableArray alloc] init];
+    NSMutableArray *arrayBounds = [[[NSMutableArray alloc] init] autorelease];
     [arrayBounds addObject:[[CLLocation alloc] initWithLatitude:maxLat longitude:minLon]];
     [arrayBounds addObject:[[CLLocation alloc] initWithLatitude:minLat longitude:maxLon]];
     
