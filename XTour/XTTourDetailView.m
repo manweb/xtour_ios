@@ -18,10 +18,13 @@
 }
 */
 
-- (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset
+- (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset andContentOffset:(NSInteger)offsetContent
 {
     _viewOffset = 0;
     if (offset) {_viewOffset = offset;}
+    
+    _viewContentOffset = 0;
+    if (offsetContent) {_viewContentOffset = offsetContent;}
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
@@ -40,22 +43,27 @@
     _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+5, boxWidth, 140)];
     _mapViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+150, boxWidth, 250)];
     _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+405, boxWidth, 200)];
+    _descriptionViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+610, boxWidth, 200)];
     
     _mapViewContainer.backgroundColor = [UIColor whiteColor];
     _summaryViewContainer.backgroundColor = [UIColor whiteColor];
     _imageViewContainer.backgroundColor = [UIColor whiteColor];
+    _descriptionViewContainer.backgroundColor = [UIColor whiteColor];
     
     _mapViewContainer.layer.cornerRadius = boxRadius;
     _summaryViewContainer.layer.cornerRadius = boxRadius;
     _imageViewContainer.layer.cornerRadius = boxRadius;
+    _descriptionViewContainer.layer.cornerRadius = boxRadius;
     
     _mapViewContainer.layer.borderWidth = boxBorderWidth;
     _summaryViewContainer.layer.borderWidth = boxBorderWidth;
     _imageViewContainer.layer.borderWidth = boxBorderWidth;
+    _descriptionViewContainer.layer.borderWidth = boxBorderWidth;
     
     _mapViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _summaryViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _imageViewContainer.layer.borderColor = boxBorderColor.CGColor;
+    _descriptionViewContainer.layer.borderColor = boxBorderColor.CGColor;
     
     /*NSString *TimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
      lround(floor(data.totalTime / 3600.)) % 100,
@@ -151,6 +159,17 @@
     _HighestPointLabel.text = [NSString stringWithFormat:@"%.1f m", tourInfo.highestPoint];
     _LowestPointLabel.text = [NSString stringWithFormat:@"%.1f m", tourInfo.lowestPoint];
     
+    _descriptionView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, boxWidth-10, 190)];
+    
+    _descriptionView.layer.borderColor = [[UIColor blackColor] CGColor];
+    _descriptionView.layer.borderWidth = 1.0f;
+    _descriptionView.layer.cornerRadius = boxRadius;
+    
+    _descriptionView.text = tourInfo.tourDescription;
+    
+    if (server) {_descriptionView.editable = NO;}
+    else {_descriptionView.editable = YES;}
+    
     /*[_TimeLabel setText:TimeString];
      [_AltitudeLabel setText:[NSString stringWithFormat:@"%.1f km",data.sumDistance]];
      [_UpLabel setText:[NSString stringWithFormat:@"%.1f m",data.sumAltitude]];
@@ -183,12 +202,25 @@
     [_summaryViewContainer addSubview:_DownLabel];
     [_summaryViewContainer addSubview:_HighestPointLabel];
     [_summaryViewContainer addSubview:_LowestPointLabel];
+    [_descriptionViewContainer addSubview:_descriptionView];
     
     [self addSubview:_mapViewContainer];
     [self addSubview:_summaryViewContainer];
     [self addSubview:_imageViewContainer];
+    [self addSubview:_descriptionViewContainer];
     
-    self.contentSize = CGSizeMake(320, _viewOffset+610);
+    if (server) {self.contentSize = CGSizeMake(320, _viewOffset+815+_viewContentOffset);}
+    else {self.contentSize = CGSizeMake(320, _viewOffset+815);}
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server
@@ -284,6 +316,32 @@
             [_imageViewContainer addSubview:imageView.view];
         });
     });
+}
+
+- (void)keyboardWasShown:(NSNotification *)notification
+{
+    
+    // Step 1: Get the size of the keyboard.
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    // Step 2: Adjust the bottom content inset of your scroll view by the keyboard height.
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0);
+    self.contentInset = contentInsets;
+    self.scrollIndicatorInsets = contentInsets;
+    
+    [self setContentOffset:CGPointMake(0, self.contentSize.height - self.bounds.size.height + self.contentInset.bottom) animated:YES];
+}
+
+- (void) keyboardWillHide:(NSNotification *)notification {
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.contentInset = contentInsets;
+    self.scrollIndicatorInsets = contentInsets;
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.descriptionView endEditing:YES];
 }
 
 @end

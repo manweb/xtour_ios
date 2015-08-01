@@ -30,6 +30,8 @@
 @property (retain, nonatomic) UIView *mapViewContainer;
 @property (retain, nonatomic) UIView *summaryViewContainer;
 @property (retain, nonatomic) UIView *imageViewContainer;
+@property (retain, nonatomic) UIView *descriptionViewContainer;
+@property (retain, nonatomic) UITextView *descriptionView;
 @property (retain, nonatomic) UIImageView *profilePicture;
 @property (retain, nonatomic) UILabel *TimeTitleLabel;
 @property (retain, nonatomic) UILabel *DistanceTitleLabel;
@@ -50,8 +52,11 @@
 @property (retain, nonatomic) UILabel *UpRateLabel;
 @property (retain, nonatomic) UILabel *DownRateLabel;
 @property (nonatomic) NSInteger viewOffset;
+@property (nonatomic) NSInteger viewContentOffset;
 
-- (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset;
+- (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset andContentOffset:(NSInteger)offsetContent;
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server;
+- (void) keyboardWasShown:(NSNotification *) notification;
+- (void) keyboardWillHide:(NSNotification *) notification;
 
 @end

@@ -18,7 +18,9 @@
 @interface XTSummaryViewController : UIViewController <UIScrollViewDelegate>
 {
     XTDataSingleton *data;
+    XTTourDetailView *detailView;
     GMSMapView *mapView;
+    DXStarRatingView *ratingView;
 }
 
 - (IBAction)Close;

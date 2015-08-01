@@ -496,6 +496,7 @@
             if (error == nil && [placemarks count] > 0) {
                 _placemark = [placemarks lastObject];
                 data.country = _placemark.country;
+                data.province = _placemark.administrativeArea;
             }
             else {
                 NSLog(@"%@", error.debugDescription);

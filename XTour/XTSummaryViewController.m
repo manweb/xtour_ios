@@ -46,6 +46,7 @@
     tourInfo.descent = data.sumDescent;
     tourInfo.highestPoint = data.sumhighestPoint;
     tourInfo.lowestPoint = data.sumlowestPoint;
+    tourInfo.tourDescription = @"";
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
@@ -54,14 +55,16 @@
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
-    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
     
     UIView *ratingViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0, height-tabBarHeight-70, width, 50)];
     ratingViewContainer.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.4f];
     
-    DXStarRatingView *ratingView = [[DXStarRatingView alloc] initWithFrame:CGRectMake(20, 5, 320, 40)];
-    [ratingView setStars:0];
+    ratingView = [[DXStarRatingView alloc] initWithFrame:CGRectMake(20, 5, 320, 40)];
+    [ratingView setStars:0 callbackBlock:^(NSNumber *newRating) {
+        data.tourRating = [newRating integerValue];
+    }];
     
     [ratingViewContainer addSubview:ratingView];
     
@@ -71,7 +74,7 @@
     [self.view bringSubviewToFront:_header];
     [self.view bringSubviewToFront:_header_shadow];
     
-    [detailView Initialize:tourInfo fromServer:NO withOffset:70];
+    [detailView Initialize:tourInfo fromServer:NO withOffset:70 andContentOffset:0];
     
     [detailView LoadTourDetail:tourInfo fromServer:NO];
     
@@ -89,6 +92,7 @@
 
 - (IBAction)Close {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        data.tourDescription = detailView.descriptionView.text;
         [data CreateXMLForCategory:@"sum"];
         [data WriteImageInfo];
         

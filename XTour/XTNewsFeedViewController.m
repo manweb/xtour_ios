@@ -110,6 +110,16 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.time.text = TimeString;
     cell.altitude.text = [NSString stringWithFormat:@"%.1f m", currentElement.altitude];
     cell.distance.text = [NSString stringWithFormat:@"%.2f km", currentElement.distance];
+    cell.tourDescription.text = currentElement.tourDescription;
+    
+    if ([currentElement.tourDescription isEqualToString:@""]) {
+        [cell.tourDescription setHidden:YES];
+        [cell.gradientOverlay setHidden:YES];
+    }
+    else {
+        [cell.tourDescription setHidden:NO];
+        [cell.gradientOverlay setHidden:NO];
+    }
     
     [formatter release];
     
@@ -139,7 +149,7 @@ static NSString * const reuseIdentifier = @"Cell";
     XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height-tabBarHeight)];
     detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
     
-    [detailView Initialize:currentElement fromServer:YES withOffset:70];
+    [detailView Initialize:currentElement fromServer:YES withOffset:70 andContentOffset:50];
     
     [navigationView.view addSubview:detailView];
     [self.view addSubview:navigationView.view];
@@ -160,8 +170,13 @@ static NSString * const reuseIdentifier = @"Cell";
     float width = screenBound.size.width;
     
     float boxWidth = width - 20;
+    float height;
     
-    return CGSizeMake(boxWidth, 100);
+    XTTourInfo *currentElement = [self.news_feed objectAtIndex:indexPath.row];
+    if ([currentElement.tourDescription isEqualToString:@""]) {height = 100;}
+    else {height = 140;}
+    
+    return CGSizeMake(boxWidth, height);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section

@@ -39,12 +39,15 @@
 @property(nonatomic,retain) NSDate *endTime;
 @property(nonatomic,retain) NSDate *TotalStartTime;
 @property(nonatomic,retain) NSDate *TotalEndTime;
+@property(nonatomic,retain) NSString *tourDescription;
+@property(nonatomic) NSInteger tourRating;
 @property(nonatomic) bool loggedIn;
 @property(nonatomic,retain) NSString *userID;
 @property(nonatomic,retain) NSString *tourID;
 @property(nonatomic) NSInteger upCount;
 @property(nonatomic) NSInteger downCount;
 @property(nonatomic,retain) NSString *country;
+@property(nonatomic,retain) NSString *province;
 @property(nonatomic) NSInteger photoCount;
 @property(nonatomic) NSInteger lastRunIndex;
 @property(nonatomic,retain) NSMutableArray *imageInfo;

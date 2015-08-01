@@ -54,6 +54,8 @@
     _endTime = 0;
     _TotalStartTime = 0;
     _TotalEndTime = 0;
+    _tourDescription = nil;
+    _tourRating = 0;
     _timer = 0;
     _loggedIn = false;
     _userID = nil;
@@ -109,6 +111,8 @@
     _downCount = 0;
     _photoCount = 0;
     _lastRunIndex = 0;
+    _tourDescription = nil;
+    _tourRating = 0;
 }
 
 - (void) AddCoordinate:(CLLocation *)p
@@ -313,6 +317,9 @@
     [xml SetMetadataDouble:_lowestPoint forKey:@"LowestPoint" withPrecision:1];
     [xml SetMetadataDouble:_highestPoint forKey:@"HighestPoint" withPrecision:1];
     [xml SetMetadataString:_country forKey:@"Country"];
+    [xml SetMetadataString:_province forKey:@"Province"];
+    [xml SetMetadataString:_tourDescription forKey:@"Description"];
+    [xml SetMetadataDouble:(double)_tourRating forKey:@"Rating" withPrecision:0];
     
     for (int i = _lastRunIndex; i < [_locationData count]; i++) {
         [xml AddTrackpoint:[_locationData objectAtIndex:i]];

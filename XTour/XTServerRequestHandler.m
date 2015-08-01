@@ -30,7 +30,7 @@
             NSString *elements = [news_feed_array objectAtIndex:i];
             NSArray *element = [elements componentsSeparatedByString:@","];
             
-            if ([element count] < 13) {continue;}
+            if ([element count] < 17) {continue;}
             
             XTTourInfo *tourInfo = [[XTTourInfo alloc] init];
             
@@ -47,6 +47,13 @@
             tourInfo.highestPoint = [[element objectAtIndex:10] floatValue];
             tourInfo.latitude = [[element objectAtIndex:11] floatValue];
             tourInfo.longitude = [[element objectAtIndex:12] floatValue];
+            tourInfo.country = [element objectAtIndex:13];
+            tourInfo.province = [element objectAtIndex:14];
+            
+            NSString *tourDescriptionEncoded = [element objectAtIndex:15];
+            tourDescriptionEncoded = [tourDescriptionEncoded stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+            tourInfo.tourDescription = [tourDescriptionEncoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            tourInfo.tourRating = [[element objectAtIndex:16] integerValue];
             
             [news_feeds addObject:tourInfo];
             

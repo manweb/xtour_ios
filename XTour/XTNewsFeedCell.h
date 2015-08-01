@@ -18,5 +18,7 @@
 @property(nonatomic, retain) UIImageView *timeIcon;
 @property(nonatomic, retain) UIImageView *altitudeIcon;
 @property(nonatomic, retain) UIImageView *distanceIcon;
+@property(nonatomic, retain) UITextView *tourDescription;
+@property(nonatomic, retain) UIView *gradientOverlay;
 
 @end

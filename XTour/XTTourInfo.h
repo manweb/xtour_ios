@@ -25,5 +25,7 @@
 @property (nonatomic) float latitude;
 @property (retain, nonatomic) NSString *country;
 @property (retain, nonatomic) NSString *province;
+@property (retain, nonatomic) NSString *tourDescription;
+@property (nonatomic) NSInteger tourRating;
 
 @end
