@@ -51,25 +51,33 @@
         _yOffset = screenHeight/2. - _fullHeight/2.;
         _xOffset = 0;
         
+        _coordinatesBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 20, screenWidth, 50)];
+        
+        _coordinatesBackground.backgroundColor = [UIColor blackColor];
+        
+        _commentBackground = [[UIView alloc] initWithFrame:CGRectMake(0, screenHeight-50, screenWidth, 50)];
+        
+        _commentBackground.backgroundColor = [UIColor blackColor];
+        
         if (!_compassImage) {
-            _compassImage = [[UIImageView alloc] initWithFrame:CGRectMake(10, _yOffset-45, 40, 40)];
+            _compassImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 40, 40)];
             _compassImage.image = [UIImage imageNamed:@"compass_icon_white.png"];
         }
         
         if (!_imgLongitudeLabel) {
-            _imgLongitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, _yOffset-45, 100, 20)];
+            _imgLongitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, 5, 100, 20)];
             _imgLongitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
             _imgLongitudeLabel.textColor = [UIColor whiteColor];
         }
         
         if (!_imgLatitudeLabel) {
-            _imgLatitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, _yOffset-25, 100, 20)];
+            _imgLatitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, 25, 100, 20)];
             _imgLatitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
             _imgLatitudeLabel.textColor = [UIColor whiteColor];
         }
         
         if (!_imgElevationLabel) {
-            _imgElevationLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, _yOffset-35, 50, 20)];
+            _imgElevationLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, 15, 100, 20)];
             _imgElevationLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
             _imgElevationLabel.textColor = [UIColor whiteColor];
         }
@@ -84,7 +92,7 @@
         else {_imgLongitudeLabel.text = @"";}
         
         if (!_imgCommentLabel) {
-            _imgCommentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, _yOffset+_fullHeight+5, 310, 20)];
+            _imgCommentLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, 310, 20)];
             _imgCommentLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
             _imgCommentLabel.textColor = [UIColor whiteColor];
         }
@@ -93,12 +101,24 @@
         else {_imgCommentLabel.text = @"No comments";}
         
         if (!_editIcon) {
-            _editIcon = [[UIButton alloc] initWithFrame:CGRectMake(295, _yOffset+_fullHeight+5, 20, 20)];
+            _editIcon = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth-25, 5, 20, 20)];
             [_editIcon setBackgroundImage:[UIImage imageNamed:@"edit_icon.png"] forState:UIControlStateNormal];
             [_editIcon addTarget:self action:@selector(EditImageInfo:) forControlEvents:UIControlEventTouchUpInside];
         }
         
+        [_coordinatesBackground setHidden:YES];
+        [_commentBackground setHidden:YES];
+        
+        [_coordinatesBackground addSubview:_compassImage];
+        [_coordinatesBackground addSubview:_imgLongitudeLabel];
+        [_coordinatesBackground addSubview:_imgLatitudeLabel];
+        [_coordinatesBackground addSubview:_imgElevationLabel];
+        [_commentBackground addSubview:_imgCommentLabel];
+        [_commentBackground addSubview:_editIcon];
+        
         [self addSubview:_imageView];
+        [self addSubview:_coordinatesBackground];
+        [self addSubview:_commentBackground];
         
         [selectedImage release];
     }
@@ -119,24 +139,19 @@
          _imageView.userInteractionEnabled = YES;
          
          [_imageView addGestureRecognizer:tapRecognition];
-         [self addSubview:_compassImage];
-         [self addSubview:_imgLongitudeLabel];
-         [self addSubview:_imgLatitudeLabel];
-         [self addSubview:_imgElevationLabel];
-         [self addSubview:_imgCommentLabel];
-         [self addSubview:_editIcon];
-         [UIView animateWithDuration:0.2f animations:^(void) {_imageView.frame = CGRectMake(_xOffset, _yOffset, _fullWidth, _fullHeight);}];
+         [UIView animateWithDuration:0.2f animations:^(void) {
+             _imageView.frame = CGRectMake(_xOffset, _yOffset, _fullWidth, _fullHeight);
+             
+             [_coordinatesBackground setHidden:NO];
+             [_commentBackground setHidden:NO];
+         }];
      }];
 }
 
 - (void)close:(id)sender
 {
-    [_compassImage removeFromSuperview];
-    [_imgLongitudeLabel removeFromSuperview];
-    [_imgLatitudeLabel removeFromSuperview];
-    [_imgElevationLabel removeFromSuperview];
-    [_imgCommentLabel removeFromSuperview];
-    [_editIcon removeFromSuperview];
+    [_coordinatesBackground removeFromSuperview];
+    [_commentBackground removeFromSuperview];
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         _imageView.frame = CGRectMake(_cellRect.origin.x + 3, _cellRect.origin.y + 3, _cellRect.size.width - 6, _cellRect.size.height - 6);

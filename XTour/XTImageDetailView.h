@@ -18,6 +18,8 @@
 }
 
 @property (retain,nonatomic) UIImageView *imageView;
+@property(retain, nonatomic) UIView *coordinatesBackground;
+@property(retain, nonatomic) UIView *commentBackground;
 @property(retain, nonatomic) UILabel *imgLongitudeLabel;
 @property(retain, nonatomic) UILabel *imgLatitudeLabel;
 @property(retain, nonatomic) UILabel *imgElevationLabel;

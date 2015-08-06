@@ -13,6 +13,7 @@
 #import "XTTourInfo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "XTSummaryImageViewController.h"
+#import "XTGraphPageViewController.h"
 #import "XTDataSingleton.h"
 #import "XTXMLParser.h"
 
@@ -31,6 +32,7 @@
 @property (retain, nonatomic) UIView *summaryViewContainer;
 @property (retain, nonatomic) UIView *imageViewContainer;
 @property (retain, nonatomic) UIView *descriptionViewContainer;
+@property (retain, nonatomic) UIView *graphViewContainer;
 @property (retain, nonatomic) UITextView *descriptionView;
 @property (retain, nonatomic) UIImageView *profilePicture;
 @property (retain, nonatomic) UILabel *TimeTitleLabel;

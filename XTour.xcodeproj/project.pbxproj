@@ -115,6 +115,8 @@
 		648E87FF18B8274E00BE1AB3 /* home_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 648E87FE18B8274E00BE1AB3 /* home_icon@2x.png */; };
 		648E880118B82BFF00BE1AB3 /* map_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 648E880018B82BFF00BE1AB3 /* map_icon@2x.png */; };
 		648E880318B8402A00BE1AB3 /* stop_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 648E880218B8402A00BE1AB3 /* stop_button.png */; };
+		648FE08F1B72F4A400FC20F7 /* XTGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 648FE08E1B72F4A400FC20F7 /* XTGraphViewController.m */; };
+		648FE0921B72F59C00FC20F7 /* XTGraphPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 648FE0911B72F59C00FC20F7 /* XTGraphPageViewController.m */; };
 		649192D51ADB31DB0059E796 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 649192D41ADB31DB0059E796 /* icon.png */; };
 		64A1E0001AE47D6A00403950 /* profile_icon_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A1DFFF1AE47D6A00403950 /* profile_icon_small@3x.png */; };
 		64A1E0021AE47D9E00403950 /* news_feed_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A1E0011AE47D9E00403950 /* news_feed_icon@3x.png */; };
@@ -319,6 +321,10 @@
 		648E87FE18B8274E00BE1AB3 /* home_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home_icon@2x.png"; path = "../images/home_icon@2x.png"; sourceTree = "<group>"; };
 		648E880018B82BFF00BE1AB3 /* map_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "map_icon@2x.png"; path = "../images/map_icon@2x.png"; sourceTree = "<group>"; };
 		648E880218B8402A00BE1AB3 /* stop_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stop_button.png; path = ../images/stop_button.png; sourceTree = "<group>"; };
+		648FE08D1B72F4A400FC20F7 /* XTGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTGraphViewController.h; sourceTree = "<group>"; };
+		648FE08E1B72F4A400FC20F7 /* XTGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTGraphViewController.m; sourceTree = "<group>"; };
+		648FE0901B72F59C00FC20F7 /* XTGraphPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTGraphPageViewController.h; sourceTree = "<group>"; };
+		648FE0911B72F59C00FC20F7 /* XTGraphPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTGraphPageViewController.m; sourceTree = "<group>"; };
 		649192D41ADB31DB0059E796 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		64A1DFFF1AE47D6A00403950 /* profile_icon_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile_icon_small@3x.png"; sourceTree = "<group>"; };
 		64A1E0011AE47D9E00403950 /* news_feed_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "news_feed_icon@3x.png"; sourceTree = "<group>"; };
@@ -478,6 +484,10 @@
 				640BBE7B1887B1A30029327F /* Main.storyboard */,
 				640BBE7E1887B1A30029327F /* XTHomeViewController.h */,
 				640BBE7F1887B1A30029327F /* XTHomeViewController.m */,
+				648FE0901B72F59C00FC20F7 /* XTGraphPageViewController.h */,
+				648FE0911B72F59C00FC20F7 /* XTGraphPageViewController.m */,
+				648FE08D1B72F4A400FC20F7 /* XTGraphViewController.h */,
+				648FE08E1B72F4A400FC20F7 /* XTGraphViewController.m */,
 				64DCB34F1B31D85E009D61B8 /* XTWarningsInfo.h */,
 				64DCB3501B31D85F009D61B8 /* XTWarningsInfo.m */,
 				6453E9F91B25E90800EE5242 /* XTUserInfo.h */,
@@ -892,6 +902,7 @@
 				640BBE7A1887B1A30029327F /* XTAppDelegate.m in Sources */,
 				64AD8EFF1B13C6E000960A6C /* XTImageDetailView.m in Sources */,
 				64251D17188FB45B004F1675 /* ASIAuthenticationDialog.m in Sources */,
+				648FE0921B72F59C00FC20F7 /* XTGraphPageViewController.m in Sources */,
 				648E87FA18B7D6D300BE1AB3 /* XTSettingsViewController.m in Sources */,
 				64251D50188FC3EA004F1675 /* GDataXMLNode.m in Sources */,
 				64251D18188FB45B004F1675 /* ASIDataCompressor.m in Sources */,
@@ -928,6 +939,7 @@
 				645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */,
 				640BBE801887B1A30029327F /* XTHomeViewController.m in Sources */,
 				64F051E71B13F61F004CEBA1 /* XTImageEditViewController.m in Sources */,
+				648FE08F1B72F4A400FC20F7 /* XTGraphViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

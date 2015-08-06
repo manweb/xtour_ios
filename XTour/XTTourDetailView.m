@@ -44,26 +44,31 @@
     _mapViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+150, boxWidth, 250)];
     _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+405, boxWidth, 200)];
     _descriptionViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+610, boxWidth, 200)];
+    _graphViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+815, boxWidth, 200)];
     
     _mapViewContainer.backgroundColor = [UIColor whiteColor];
     _summaryViewContainer.backgroundColor = [UIColor whiteColor];
     _imageViewContainer.backgroundColor = [UIColor whiteColor];
     _descriptionViewContainer.backgroundColor = [UIColor whiteColor];
+    _graphViewContainer.backgroundColor = [UIColor whiteColor];
     
     _mapViewContainer.layer.cornerRadius = boxRadius;
     _summaryViewContainer.layer.cornerRadius = boxRadius;
     _imageViewContainer.layer.cornerRadius = boxRadius;
     _descriptionViewContainer.layer.cornerRadius = boxRadius;
+    _graphViewContainer.layer.cornerRadius = boxRadius;
     
     _mapViewContainer.layer.borderWidth = boxBorderWidth;
     _summaryViewContainer.layer.borderWidth = boxBorderWidth;
     _imageViewContainer.layer.borderWidth = boxBorderWidth;
     _descriptionViewContainer.layer.borderWidth = boxBorderWidth;
+    _graphViewContainer.layer.borderWidth = boxBorderWidth;
     
     _mapViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _summaryViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _imageViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _descriptionViewContainer.layer.borderColor = boxBorderColor.CGColor;
+    _graphViewContainer.layer.borderColor = boxBorderColor.CGColor;
     
     /*NSString *TimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
      lround(floor(data.totalTime / 3600.)) % 100,
@@ -208,9 +213,10 @@
     [self addSubview:_summaryViewContainer];
     [self addSubview:_imageViewContainer];
     [self addSubview:_descriptionViewContainer];
+    [self addSubview:_graphViewContainer];
     
-    if (server) {self.contentSize = CGSizeMake(320, _viewOffset+815+_viewContentOffset);}
-    else {self.contentSize = CGSizeMake(320, _viewOffset+815);}
+    if (server) {self.contentSize = CGSizeMake(320, _viewOffset+1020+_viewContentOffset);}
+    else {self.contentSize = CGSizeMake(320, _viewOffset+1020);}
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
@@ -314,6 +320,13 @@
             imageView.images = _tourImages;
             
             [_imageViewContainer addSubview:imageView.view];
+            
+            XTGraphPageViewController *graphPageController = [[XTGraphPageViewController alloc] initWithNibName:nil bundle:nil andTourInfo:tourInfo];
+            
+            graphPageController.view.frame = CGRectMake(5, 5, boxWidth-10, 190);
+            graphPageController.pageController.view.frame = CGRectMake(0, 0, boxWidth-10, 190);
+            
+            [_graphViewContainer addSubview:graphPageController.view];
         });
     });
 }
