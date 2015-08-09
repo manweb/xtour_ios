@@ -26,8 +26,9 @@
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
 @property (retain, nonatomic) IBOutlet UIView *header;
 @property (retain, nonatomic) IBOutlet UIView *header_shadow;
-@property(nonatomic,retain) NSMutableArray *listOfFiles;
-@property(nonatomic,retain) NSMutableArray *listOfIcons;
+@property(nonatomic,retain) NSDictionary *listOfFiles;
+@property(nonatomic,retain) NSDictionary *listOfIcons;
+@property(nonatomic,retain) NSArray *sectionTitles;
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;
 @property(nonatomic,retain) UIView *detailView;
 @property (retain, nonatomic) IBOutlet UIButton *backButton;

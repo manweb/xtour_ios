@@ -71,7 +71,21 @@
     [_totalDistanceLabel setHidden:YES];
     [_totalAltitudeLabel setHidden:YES];
     
+    _GPSSignalLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, 200, 20)];
+    
+    _GPSSignalLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
+    _GPSSignalLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _GPSSignalLabel.text = @"Suche GPS Signal...";
+    
+    [_GPSSignal setHidden:NO];
+    
     [_altitudeRateIcon setHidden:YES];
+    
+    [_longLabel setHidden:YES];
+    [_latLabel setHidden:YES];
+    [_elevationLabel setHidden:YES];
+    
+    [_locationSection addSubview:_GPSSignalLabel];
     
     data = [XTDataSingleton singleObj];
     data.timer = 0;
@@ -256,7 +270,9 @@
 }
 
 - (IBAction)startUpTour:(id)sender {
-    if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
+    if (_didReachInitialAccuracy) {
+        if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
+    }
     
     [_locationManager startUpdatingLocation];
     
@@ -272,6 +288,16 @@
     }
     
     if (_runStatus == 0) {
+        if (!_didReachInitialAccuracy) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achtung" message:@"Das GPS Signal ist noch etwas schwach. Möchtest du die Tour trotzdem starten?" delegate:self cancelButtonTitle:@"Nein" otherButtonTitles:@"Ja", nil];
+            
+            [alert show];
+            [alert release];
+            
+            _runStatus = 1;
+            
+            return;
+        }
         data.startTime = [NSDate date];
         data.TotalStartTime = [NSDate date];
     
@@ -324,7 +350,9 @@
 }
 
 - (IBAction)startDownTour:(id)sender {
-    if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
+    if (_didReachInitialAccuracy) {
+        if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
+    }
     
     [_locationManager startUpdatingLocation];
     
@@ -340,6 +368,16 @@
     }
     
     if (_runStatus == 0) {
+        if (!_didReachInitialAccuracy) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achtung" message:@"Das GPS Signal ist noch etwas schwach. Möchtest du die Tour trotzdem starten?" delegate:self cancelButtonTitle:@"Nein" otherButtonTitles:@"Ja", nil];
+            
+            [alert show];
+            [alert release];
+            
+            _runStatus = 3;
+            
+            return;
+        }
         data.startTime = [NSDate date];
         data.TotalStartTime = [NSDate date];
         
@@ -389,6 +427,38 @@
         [_totalDistanceLabel setHidden:NO];
         [_totalAltitudeLabel setHidden:NO];
     }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        _didReachInitialAccuracy = true;
+        
+        if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
+        
+        data.startTime = [NSDate date];
+        data.TotalStartTime = [NSDate date];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyyLLddHHmmss"];
+        
+        NSString *tourID = [[NSString alloc] initWithFormat:@"%@%@", [formatter stringFromDate:[NSDate date]], data.userID];
+        
+        data.tourID = tourID;
+        
+        if (_runStatus == 1) {data.upCount++;}
+        else {data.downCount++;}
+        
+        [formatter release];
+        [tourID release];
+        
+        [_GPSSignalLabel setHidden:YES];
+        
+        [_longLabel setHidden:NO];
+        [_latLabel setHidden:NO];
+        [_elevationLabel setHidden:NO];
+    }
+    else {_runStatus = 0;}
 }
 
 - (void)LoadLogin:(id)sender {
@@ -457,6 +527,12 @@
             if (!_didReachInitialAccuracy) {
                 _didReachInitialAccuracy = true;
                 [_locationManager stopUpdatingLocation];
+                
+                [_GPSSignalLabel setHidden:YES];
+                
+                [_longLabel setHidden:NO];
+                [_latLabel setHidden:NO];
+                [_elevationLabel setHidden:NO];
             }
         }
     }

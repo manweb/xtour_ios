@@ -37,14 +37,32 @@
     float boxMarginTop = 75.0f;
     UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
     
+    float boxYPosition = 5;
+    
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
     if (!mapView) {mapView = [GMSMapView mapWithFrame:CGRectMake(5, 5, boxWidth - 10, 240) camera:camera];}
     
-    _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+5, boxWidth, 140)];
-    _mapViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+150, boxWidth, 250)];
-    _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+405, boxWidth, 200)];
-    _descriptionViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+610, boxWidth, 200)];
-    _graphViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+815, boxWidth, 200)];
+    _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 140)];
+    
+    boxYPosition += 145;
+    
+    _mapViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 250)];
+    
+    boxYPosition += 255;
+    
+    if (server) {
+        _graphViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 200)];
+        
+        boxYPosition += 205;
+    }
+    
+    _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 200)];
+    
+    boxYPosition += 205;
+    
+    _descriptionViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 200)];
+    
+    boxYPosition += 205;
     
     _mapViewContainer.backgroundColor = [UIColor whiteColor];
     _summaryViewContainer.backgroundColor = [UIColor whiteColor];
@@ -85,12 +103,12 @@
     }
     
     _TimeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 17, 94, 21)];
-    _DistanceTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 55, 100, 15)];
-    _SpeedTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(105, 55, 100, 15)];
-    _UpTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(205, 55, 100, 15)];
-    _DownTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 97, 100, 15)];
-    _HighestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(105, 97, 100, 15)];
-    _LowestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(205, 97, 100, 15)];
+    _DistanceTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 58, 100, 15)];
+    _SpeedTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(105, 58, 100, 15)];
+    _UpTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(205, 58, 100, 15)];
+    _DownTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 100, 100, 15)];
+    _HighestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(105, 100, 100, 15)];
+    _LowestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(205, 100, 100, 15)];
     
     _TimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 15, 200, 30)];
     _DistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 72, 100, 20)];
@@ -108,13 +126,13 @@
     _HighestPointTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     _LowestPointTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     
-    _TimeTitleLabel.textColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
-    _DistanceTitleLabel.textColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
-    _SpeedTitleLabel.textColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
-    _UpTitleLabel.textColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
-    _DownTitleLabel.textColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
-    _HighestPointTitleLabel.textColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
-    _LowestPointTitleLabel.textColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
+    _TimeTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _DistanceTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _SpeedTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _UpTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _DownTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _HighestPointTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _LowestPointTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     
     _TimeLabel.font = [UIFont fontWithName:@"Helvetica" size:32.0f];
     _DistanceLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
@@ -166,11 +184,11 @@
     
     _descriptionView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, boxWidth-10, 190)];
     
-    _descriptionView.layer.borderColor = [[UIColor blackColor] CGColor];
-    _descriptionView.layer.borderWidth = 1.0f;
-    _descriptionView.layer.cornerRadius = boxRadius;
+    _descriptionView.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _descriptionView.font = [UIFont fontWithName:@"Helvetica" size:16];
     
-    _descriptionView.text = tourInfo.tourDescription;
+    if ([tourInfo.tourDescription isEqualToString:@""]) {_descriptionView.text = @"Keine Bechreibung zu dieser Tour vorhanden.";}
+    else {_descriptionView.text = tourInfo.tourDescription;}
     
     if (server) {_descriptionView.editable = NO;}
     else {_descriptionView.editable = YES;}
@@ -213,10 +231,10 @@
     [self addSubview:_summaryViewContainer];
     [self addSubview:_imageViewContainer];
     [self addSubview:_descriptionViewContainer];
-    [self addSubview:_graphViewContainer];
+    if (server) {[self addSubview:_graphViewContainer];}
     
-    if (server) {self.contentSize = CGSizeMake(320, _viewOffset+1020+_viewContentOffset);}
-    else {self.contentSize = CGSizeMake(320, _viewOffset+1020);}
+    if (server) {self.contentSize = CGSizeMake(width, _viewOffset+boxYPosition+_viewContentOffset);}
+    else {self.contentSize = CGSizeMake(width, _viewOffset+boxYPosition);}
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)

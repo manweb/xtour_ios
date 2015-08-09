@@ -15,7 +15,7 @@
 #import "XTLoginViewController.h"
 #import "XTSummaryViewController.h"
 
-@interface XTHomeViewController : UIViewController <UIActionSheetDelegate, CLLocationManagerDelegate>
+@interface XTHomeViewController : UIViewController <UIAlertViewDelegate, UIActionSheetDelegate, CLLocationManagerDelegate>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
@@ -40,6 +40,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *totalDistanceLabel;
 @property (retain, nonatomic) IBOutlet UILabel *totalAltitudeLabel;
 @property (retain, nonatomic) IBOutlet UIImageView *altitudeRateIcon;
+@property (retain, nonatomic) UILabel *GPSSignalLabel;
 @property (retain, nonatomic) CLLocationManager *locationManager;
 @property (retain, nonatomic) CLGeocoder *geocoder;
 @property (retain, nonatomic) CLPlacemark *placemark;

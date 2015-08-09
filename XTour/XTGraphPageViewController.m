@@ -19,8 +19,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        _tourID = tourInfo.tourID;
-        _graphPath = [NSString stringWithFormat:@"users/%@/tours/%@", tourInfo.userID, tourInfo.tourID];
+        _tourID = [[NSString alloc] initWithString:tourInfo.tourID];
+        _graphPath = [[NSString alloc] initWithFormat:@"users/%@/tours/%@", tourInfo.userID, tourInfo.tourID];
     }
     return self;
 }

@@ -31,13 +31,24 @@
     _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
     
-    [_tableView setContentInset:UIEdgeInsetsMake(75, 0, 0, 0)];
+    [_tableView setContentInset:UIEdgeInsetsMake(70, 0, 0, 0)];
     
     data = [XTDataSingleton singleObj];
     
     //_listOfFiles = [data GetAllImages];
     
-    _listOfFiles = [[NSMutableArray alloc] init];
+    NSArray *tableItems1 = [NSArray arrayWithObjects:@"Profil", @"Einstellungen", @"News feed", @"Wunschliste", @"Ausloggen", nil];
+    NSArray *tableItems2 = [NSArray arrayWithObjects:@"Dateien hochladen", @"Aufräumen", nil];
+    NSArray *tableIcons1 = [NSArray arrayWithObjects:@"profile_icon_small@3x.png", @"settings_icon@3x.png", @"news_feed_icon@3x.png", @"wishlist_icon@3x.png", @"logout@3x.png", nil];
+    NSArray *tableIcons2 = [NSArray arrayWithObjects:@"upload_icon@3x.png", @"cleanup_icon@3x.png", nil];
+    
+    _listOfFiles = [[NSDictionary alloc] initWithObjectsAndKeys:tableItems1, @"Allgemein", tableItems2, @"Beta testing", nil];
+    
+    _listOfIcons = [[NSDictionary alloc] initWithObjectsAndKeys:tableIcons1, @"Allgemein", tableIcons2, @"Beta testing", nil];
+    
+    _sectionTitles = [[NSArray alloc] initWithObjects:@"Allgemein", @"Beta testing", nil];
+    
+    /*_listOfFiles = [[NSMutableArray alloc] init];
     [_listOfFiles addObject:@"Profil"];
     [_listOfFiles addObject:@"Einstellungen"];
     [_listOfFiles addObject:@"News feed"];
@@ -51,7 +62,7 @@
     [_listOfIcons addObject:@"news_feed_icon@3x.png"];
     [_listOfIcons addObject:@"upload_icon@3x.png"];
     [_listOfIcons addObject:@"cleanup_icon@3x.png"];
-    [_listOfIcons addObject:@"wishlist_icon@3x.png"];
+    [_listOfIcons addObject:@"wishlist_icon@3x.png"];*/
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
@@ -66,6 +77,8 @@
     [self.view addSubview:_detailView];
     
     [_backButton setHidden:YES];
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -81,9 +94,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [_sectionTitles count];
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [_sectionTitles objectAtIndex:section];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_listOfFiles count];
+    NSString *sectionTitle = [_sectionTitles objectAtIndex:section];
+    NSArray *sectionItems = [_listOfFiles objectForKey:sectionTitle];
+    
+    return [sectionItems count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -94,8 +120,18 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TableCell"];
     }
     
-    cell.textLabel.text = [_listOfFiles objectAtIndex:indexPath.row];
-    cell.imageView.image = [UIImage imageNamed:[_listOfIcons objectAtIndex:indexPath.row]];
+    NSString *sectionTitle = [_sectionTitles objectAtIndex:indexPath.section];
+    NSArray *sectionItems = [_listOfFiles objectForKey:sectionTitle];
+    NSArray *sectionIcons = [_listOfIcons objectForKey:sectionTitle];
+    
+    cell.textLabel.text = [sectionItems objectAtIndex:indexPath.row];
+    cell.imageView.image = [UIImage imageNamed:[sectionIcons objectAtIndex:indexPath.row]];
+    
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 2) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+    }
     
     return cell;
 }
@@ -111,93 +147,125 @@
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
-    switch (indexPath.row) {
+    switch (indexPath.section) {
         case 0:
-        {
-            navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
-            navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
-            
-            [self.view addSubview:navigationView.view];
-            
-            [self.view bringSubviewToFront:_header];
-            [self.view bringSubviewToFront:_header_shadow];
-            
-            XTProfileViewController *settings = [[XTProfileViewController alloc] initWithNibName:nil bundle:nil];
-            
-            settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
-            
-            [navigationView.view addSubview:settings.view];
-            
-            [settings release];
-            
-            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
-        }
-            
+            switch (indexPath.row) {
+                case 0:
+                {
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
+                    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
+                    
+                    [self.view addSubview:navigationView.view];
+                    
+                    [self.view bringSubviewToFront:_header];
+                    [self.view bringSubviewToFront:_header_shadow];
+                    
+                    XTProfileViewController *settings = [[XTProfileViewController alloc] initWithNibName:nil bundle:nil];
+                    
+                    settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
+                    
+                    [navigationView.view addSubview:settings.view];
+                    
+                    [settings release];
+                    
+                    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
+                }
+                    
+                    break;
+                case 1:
+                {
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
+                    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
+                    
+                    [self.view addSubview:navigationView.view];
+                    
+                    [self.view bringSubviewToFront:_header];
+                    [self.view bringSubviewToFront:_header_shadow];
+                    
+                    XTSettingsViewController *settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
+                    
+                    settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
+                    
+                    [navigationView.view addSubview:settings.view];
+                    
+                    [settings release];
+                    
+                    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
+                }
+                    
+                    break;
+                case 2:
+                {
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
+                    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
+                    
+                    //[[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
+                    [self.view addSubview:navigationView.view];
+                    
+                    [self.view bringSubviewToFront:_header];
+                    [self.view bringSubviewToFront:_header_shadow];
+                    
+                    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+                    [layout setItemSize:CGSizeMake(300, 100)];
+                    collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
+                    collection.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
+                    
+                    [navigationView.view addSubview:collection.view];
+                    
+                    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
+                    
+                    [layout release];
+                }
+                    break;
+                case 3:
+                    
+                    break;
+                case 4:
+                    [data Logout];
+                    break;
+            }
             break;
         case 1:
-        {
-            navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
-            navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
-            
-            [self.view addSubview:navigationView.view];
-            
-            [self.view bringSubviewToFront:_header];
-            [self.view bringSubviewToFront:_header_shadow];
-            
-            XTSettingsViewController *settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
-            
-            settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
-            
-            [navigationView.view addSubview:settings.view];
-            
-            [settings release];
-            
-            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
-        }
-            
+            switch (indexPath.row) {
+                case 0:
+                {
+                    XTFileUploader *uploader = [[XTFileUploader alloc] init];
+                    
+                    [uploader UploadGPXFiles];
+                    [uploader UploadImages];
+                    [uploader UploadImageInfo];
+                }
+                    break;
+                case 1:
+                {
+                    [data CleanUpTourDirectory];
+                }
+                    break;
+            }
             break;
-        case 2:
-        {
-            navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
-            navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
-            
-            //[[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
-            [self.view addSubview:navigationView.view];
-            
-            [self.view bringSubviewToFront:_header];
-            [self.view bringSubviewToFront:_header_shadow];
-            
-            UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-            [layout setItemSize:CGSizeMake(300, 100)];
-            collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
-            collection.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
-            
-            [navigationView.view addSubview:collection.view];
-            
-            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
-            
-            [layout release];
-        }
-            break;
-        case 3:
-        {
-            XTFileUploader *uploader = [[XTFileUploader alloc] init];
-            
-            [uploader UploadGPXFiles];
-            [uploader UploadImages];
-            [uploader UploadImageInfo];
-            
-            break;
-        }
-        case 4:
-        {
-            [data CleanUpTourDirectory];
-            
-            break;
-        }
     }
     
     //[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_detailView.frame = CGRectMake(0, 70, width, height-70-tabBarHeight);} completion:^(bool finished) {[_backButton setHidden:NO];}];
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *viewHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 15, 100, 20)];
+    
+    lblTitle.font = [UIFont fontWithName:@"Helvetica" size:16];
+    lblTitle.textColor = [UIColor colorWithRed:150.0F/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    lblTitle.backgroundColor = [UIColor clearColor];
+    lblTitle.text = [_sectionTitles objectAtIndex:section];
+    
+    [viewHeader addSubview:lblTitle];
+    
+    return viewHeader;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 40.0;
 }
 
 - (void)dealloc {
