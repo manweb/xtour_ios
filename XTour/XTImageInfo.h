@@ -10,6 +10,8 @@
 
 @interface XTImageInfo : NSObject
 
+@property (retain,nonatomic) NSString *userID;
+@property (retain,nonatomic) NSString *tourID;
 @property (retain,nonatomic) NSString *Filename;
 @property (nonatomic) float Longitude;
 @property (nonatomic) float Latitude;

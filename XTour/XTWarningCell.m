@@ -47,4 +47,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [_warningTitle release];
+    [_warningDescription release];
+    [super dealloc];
+}
+
 @end

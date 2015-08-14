@@ -78,7 +78,7 @@
     
     [_backButton setHidden:YES];
     
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -259,6 +259,8 @@
     lblTitle.text = [_sectionTitles objectAtIndex:section];
     
     [viewHeader addSubview:lblTitle];
+    
+    [lblTitle release];
     
     return viewHeader;
 }

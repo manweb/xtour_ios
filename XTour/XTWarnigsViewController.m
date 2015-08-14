@@ -153,7 +153,12 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)dealloc {
+    [_header release];
+    [_header_shadow release];
+    [_background release];
+    [_emptyLabel release];
     [_loginButton release];
+    [_warningsArray release];
     [super dealloc];
 }
 

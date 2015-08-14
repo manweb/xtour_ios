@@ -83,6 +83,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    [_profileSummary release];
+    [_profilePicture release];
+    [_userName release];
+    [super dealloc];
+}
+
 /*
 #pragma mark - Navigation
 

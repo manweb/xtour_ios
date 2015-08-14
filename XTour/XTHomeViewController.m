@@ -47,8 +47,64 @@
 {
     [super viewDidLoad];
     
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
+    double dy = 10;
+    double yOffset = 10;
+    double _timerSectionHeight = 80.0;
+    double _sectionHeight = 60.0;
+    double iconScale = 1.0;
+    
+    if (height == 480) {
+        dy = 3;
+        yOffset = 73;
+        _timerSectionHeight = 80.0;
+        _sectionHeight = 60.0;
+        iconScale = 1.0;
+    }
+    if (height == 568) {
+        dy = 20;
+        yOffset = 80;
+        _timerSectionHeight = 80.0;
+        _sectionHeight = 60.0;
+        iconScale = 1.0;
+    }
+    
     _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
+    _header.frame = CGRectMake(0, 0, width, 69);
+    _header_shadow.frame = CGRectMake(0, 69, width, 1);
+    
+    _timerSection.frame = CGRectMake(10, yOffset, width-20, _timerSectionHeight);
+    
+    yOffset += _timerSectionHeight + dy;
+    
+    _distanceSection.frame = CGRectMake(10, yOffset, width-20, _sectionHeight);
+    
+    yOffset += _sectionHeight + dy;
+    
+    _altitudeSection.frame = CGRectMake(10, yOffset, width-20, _sectionHeight);
+    
+    yOffset += _sectionHeight + dy;
+    
+    _locationSection.frame = CGRectMake(10, yOffset, width-20, _sectionHeight);
+    
+    yOffset += _sectionHeight + dy;
+    
+    _StartButton.frame = CGRectMake(20, yOffset, 80, 80);
+    _PauseButton.frame = CGRectMake(width/2-20, yOffset+20, 40, 40);
+    _StopButton.frame = CGRectMake(width-100, yOffset, 80, 80);
+    
+    _timerIcon.frame = CGRectMake(5, (_timerSectionHeight-iconScale*60)/2, iconScale*60, iconScale*60);
+    _distanceIcon.frame = CGRectMake(10, (_sectionHeight-iconScale*40)/2, iconScale*40, iconScale*40);
+    _altitudeIcon.frame = CGRectMake(10, (_sectionHeight-iconScale*40)/2, iconScale*40, iconScale*40);
+    _locationIcon.frame = CGRectMake(10, (_sectionHeight-iconScale*40)/2, iconScale*40, iconScale*40);
+    
+    _distanceSectionSeparator.frame = CGRectMake((width-20)/2, 5, 2, _sectionHeight-10);
+    _altitudeSectionSeparator.frame = CGRectMake((width-20)/2, 5, 2, _sectionHeight-10);
     
     _timerSection.layer.cornerRadius = 12.0f;
     _distanceSection.layer.cornerRadius = 12.0f;
@@ -98,7 +154,7 @@
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     _locationManager.distanceFilter = 10;
     
-    _runStatus = 0;
+    data.runStatus = 0;
     
     [_locationManager requestWhenInUseAuthorization];
     [_locationManager requestAlwaysAuthorization];
@@ -161,6 +217,11 @@
 
 - (void)dealloc
 {
+    [_timerSection release];
+    [_distanceSection release];
+    [_altitudeSection release];
+    [_locationSection release];
+    [_timerLabel release];
     [_longLabel release];
     [_latLabel release];
     [_distanceLabel release];
@@ -187,6 +248,17 @@
     [_altitudeRateIcon release];
     [_header release];
     [_header_shadow release];
+    [_GPSSignalLabel release];
+    [_locationManager release];
+    [_geocoder release];
+    [_placemark release];
+    [_pollingTimer release];
+    [_distanceSectionSeparator release];
+    [_altitudeSectionSeparator release];
+    [_timerIcon release];
+    [_distanceIcon release];
+    [_altitudeIcon release];
+    [_locationIcon release];
     [super dealloc];
 }
 
@@ -201,6 +273,8 @@
     [super viewWillAppear:nil];
     
     [self LoginViewDidClose:nil];
+    
+    if (data.runStatus == 5) {[self ResetTour];}
 }
 
 - (IBAction)pauseTour:(id)sender {
@@ -216,19 +290,19 @@
         [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
         [_PauseButton setImage:[UIImage imageNamed:@"stop_button.png"] forState:UIControlStateNormal];
         
-        _runStatus = 2;
+        data.runStatus = 2;
         
         return;
     }
     
-    if (_runStatus == 0) {
+    if (data.runStatus == 0) {
     
     }
-    else if (_runStatus == 1) {
+    else if (data.runStatus == 1) {
         [_PauseButton setImage:[UIImage imageNamed:@"stop_button.png"] forState:UIControlStateNormal];
-        _runStatus = 2;
+        data.runStatus = 2;
     }
-    else if (_runStatus == 2) {
+    else if (data.runStatus == 2) {
         data.endTime = [NSDate date];
         data.TotalEndTime = [NSDate date];
         [data CreateXMLForCategory:@"up"];
@@ -238,14 +312,12 @@
         
         [summary release];
         summary = nil;
-        
-        _runStatus = 0;
     }
-    else if (_runStatus == 3) {
+    else if (data.runStatus == 3) {
         [_PauseButton setImage:[UIImage imageNamed:@"stop_button.png"] forState:UIControlStateNormal];
-        _runStatus = 4;
+        data.runStatus = 4;
     }
-    else if (_runStatus == 4) {
+    else if (data.runStatus == 4) {
         data.endTime = [NSDate date];
         data.TotalEndTime = [NSDate date];
         [data CreateXMLForCategory:@"down"];
@@ -255,8 +327,6 @@
         
         [summary release];
         summary = nil;
-        
-        _runStatus = 0;
     }
     
     [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
@@ -283,18 +353,18 @@
         [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
         
-        _runStatus = 1;
+        data.runStatus = 1;
         return;
     }
     
-    if (_runStatus == 0) {
+    if (data.runStatus == 0) {
         if (!_didReachInitialAccuracy) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achtung" message:@"Das GPS Signal ist noch etwas schwach. Möchtest du die Tour trotzdem starten?" delegate:self cancelButtonTitle:@"Nein" otherButtonTitles:@"Ja", nil];
             
             [alert show];
             [alert release];
             
-            _runStatus = 1;
+            data.runStatus = 1;
             
             return;
         }
@@ -312,13 +382,13 @@
         [formatter release];
         [tourID release];
     }
-    else if (_runStatus == 1) {
+    else if (data.runStatus == 1) {
     
     }
-    else if (_runStatus == 2) {
+    else if (data.runStatus == 2) {
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
     }
-    else if (_runStatus == 3) {
+    else if (data.runStatus == 3) {
         data.endTime = [NSDate date];
         [data CreateXMLForCategory:@"down"];
         
@@ -326,7 +396,7 @@
         [data ResetDataForNewRun];
         data.startTime = [NSDate date];
     }
-    else if (_runStatus == 4) {
+    else if (data.runStatus == 4) {
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
         
         data.endTime = [NSDate date];
@@ -340,7 +410,7 @@
     [_StartButton setImage:[UIImage imageNamed:@"skier_up_button_inactive.png"] forState:UIControlStateNormal];
     [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
     
-    _runStatus = 1;
+    data.runStatus = 1;
     
     if (data.upCount > 0 && data.downCount > 0 && [_totalTimeLabel isHidden]) {
         [_totalTimeLabel setHidden:NO];
@@ -363,18 +433,18 @@
         [_StopButton setImage:[UIImage imageNamed:@"skier_down_button_inactive.png"] forState:UIControlStateNormal];
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
         
-        _runStatus = 3;
+        data.runStatus = 3;
         return;
     }
     
-    if (_runStatus == 0) {
+    if (data.runStatus == 0) {
         if (!_didReachInitialAccuracy) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achtung" message:@"Das GPS Signal ist noch etwas schwach. Möchtest du die Tour trotzdem starten?" delegate:self cancelButtonTitle:@"Nein" otherButtonTitles:@"Ja", nil];
             
             [alert show];
             [alert release];
             
-            _runStatus = 3;
+            data.runStatus = 3;
             
             return;
         }
@@ -392,7 +462,7 @@
         [formatter release];
         [tourID release];
     }
-    else if (_runStatus == 1) {
+    else if (data.runStatus == 1) {
         data.endTime = [NSDate date];
         [data CreateXMLForCategory:@"up"];
         
@@ -400,7 +470,7 @@
         [data ResetDataForNewRun];
         data.startTime = [NSDate date];
     }
-    else if (_runStatus == 2) {
+    else if (data.runStatus == 2) {
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
         
         data.endTime = [NSDate date];
@@ -410,23 +480,40 @@
         [data ResetDataForNewRun];
         data.startTime = [NSDate date];
     }
-    else if (_runStatus == 3) {
+    else if (data.runStatus == 3) {
     
     }
-    else if (_runStatus == 4) {
+    else if (data.runStatus == 4) {
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
     }
     
     [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
     [_StopButton setImage:[UIImage imageNamed:@"skier_down_button_inactive.png"] forState:UIControlStateNormal];
     
-    _runStatus = 3;
+    data.runStatus = 3;
     
     if (data.upCount > 0 && data.downCount > 0 && [_totalTimeLabel isHidden]) {
         [_totalTimeLabel setHidden:NO];
         [_totalDistanceLabel setHidden:NO];
         [_totalAltitudeLabel setHidden:NO];
     }
+}
+
+- (void) ResetTour
+{
+    _timerLabel.text = @"00h 00m 00s";
+    _distanceLabel.text = @"-- km";
+    _altitudeLabel.text = @"-- m";
+    _distanceRateLabel.text = @"-- km/h";
+    _altitudeRateLabel.text = @"-- m/h";
+    
+    [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
+    
+    [_totalTimeLabel setHidden:YES];
+    [_totalDistanceLabel setHidden:YES];
+    [_totalAltitudeLabel setHidden:YES];
+    
+    data.runStatus = 0;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -446,8 +533,16 @@
         
         data.tourID = tourID;
         
-        if (_runStatus == 1) {data.upCount++;}
-        else {data.downCount++;}
+        if (data.runStatus == 1) {
+            data.upCount++;
+            
+            [_StartButton setImage:[UIImage imageNamed:@"skier_up_button_inactive.png"] forState:UIControlStateNormal];
+        }
+        else {
+            data.downCount++;
+            
+            [_StopButton setImage:[UIImage imageNamed:@"skier_down_button_inactive.png"] forState:UIControlStateNormal];
+        }
         
         [formatter release];
         [tourID release];
@@ -458,7 +553,7 @@
         [_latLabel setHidden:NO];
         [_elevationLabel setHidden:NO];
     }
-    else {_runStatus = 0;}
+    else {data.runStatus = 0;}
 }
 
 - (void)LoadLogin:(id)sender {
@@ -563,7 +658,7 @@
     _latLabel.text = latString;
     _elevationLabel.text = altString;
     
-    if (_runStatus == 0 || _runStatus == 2 || _runStatus == 4) {return;}
+    if (data.runStatus == 0 || data.runStatus == 2 || data.runStatus == 4) {return;}
     
     if (data.StartLocation == 0) {
         data.StartLocation = Location;

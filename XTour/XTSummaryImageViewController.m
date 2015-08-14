@@ -56,6 +56,19 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    [_images release];
+    [_selectedImageView release];
+    [_background release];
+    [_imgLongitudeLabel release];
+    [_imgLatitudeLabel release];
+    [_imgElevationLabel release];
+    [_imgCommentLabel release];
+    [_compassImage release];
+    [_selectedIndexPath release];
+    [super dealloc];
+}
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [_images count];
@@ -77,6 +90,8 @@
     }
     
     [cell addSubview:imageView];
+    
+    [imageView release];
     
     return cell;
 }
@@ -100,6 +115,8 @@
     [[[UIApplication sharedApplication] keyWindow] addSubview:imageDetailView];
     
     [imageDetailView animate];
+    
+    [imageDetailView release];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

@@ -165,16 +165,20 @@
             
             NSArray *imageInfoArray = [currentImage componentsSeparatedByString:@","];
             
-            if ([imageInfoArray count] < 6) {continue;}
+            if ([imageInfoArray count] < 8) {continue;}
             
-            imageInfo.Filename = [imageInfoArray objectAtIndex:0];
-            imageInfo.Date = [imageInfoArray objectAtIndex:1];
-            imageInfo.Longitude = [[imageInfoArray objectAtIndex:2] floatValue];
-            imageInfo.Latitude = [[imageInfoArray objectAtIndex:3] floatValue];
-            imageInfo.Elevation = [[imageInfoArray objectAtIndex:4] floatValue];
-            imageInfo.Comment = [imageInfoArray objectAtIndex:5];
+            imageInfo.userID = [imageInfoArray objectAtIndex:0];
+            imageInfo.tourID = [imageInfoArray objectAtIndex:1];
+            imageInfo.Filename = [imageInfoArray objectAtIndex:2];
+            imageInfo.Date = [imageInfoArray objectAtIndex:3];
+            imageInfo.Longitude = [[imageInfoArray objectAtIndex:4] floatValue];
+            imageInfo.Latitude = [[imageInfoArray objectAtIndex:5] floatValue];
+            imageInfo.Elevation = [[imageInfoArray objectAtIndex:6] floatValue];
+            imageInfo.Comment = [imageInfoArray objectAtIndex:7];
             
             [tour_images addObject:imageInfo];
+            
+            [imageInfo release];
         }
     }
     else {
@@ -226,6 +230,8 @@
             warningsInfo.distance = [[warningsInfoArray objectAtIndex:8] floatValue];
             
             [warnings addObject:warningsInfo];
+            
+            [warningsInfo release];
         }
     }
     else {
@@ -325,6 +331,17 @@
         else {NSLog(@"There was a problem downloading the user info file.");}
         
         return success;
+}
+
+- (void) CheckGraphsForTour:(NSString*)tourID
+{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/create_graphs.php?tid=%@", tourID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request startSynchronous];
+    NSLog(@"%@",requestString);
+    [requestString release];
 }
 
 @end

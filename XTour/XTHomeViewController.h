@@ -28,6 +28,12 @@
 @property (retain, nonatomic) IBOutlet UIView *distanceSection;
 @property (retain, nonatomic) IBOutlet UIView *altitudeSection;
 @property (retain, nonatomic) IBOutlet UIView *locationSection;
+@property (retain, nonatomic) IBOutlet UIView *distanceSectionSeparator;
+@property (retain, nonatomic) IBOutlet UIView *altitudeSectionSeparator;
+@property (retain, nonatomic) IBOutlet UIImageView *timerIcon;
+@property (retain, nonatomic) IBOutlet UIImageView *distanceIcon;
+@property (retain, nonatomic) IBOutlet UIImageView *altitudeIcon;
+@property (retain, nonatomic) IBOutlet UIImageView *locationIcon;
 @property (retain, nonatomic) IBOutlet UILabel *timerLabel;
 @property (retain, nonatomic) IBOutlet UILabel *longLabel;
 @property (retain, nonatomic) IBOutlet UILabel *latLabel;
@@ -62,5 +68,6 @@
 - (void)LoadLogin:(id)sender;
 - (void)ShowLoginOptions:(id)sender;
 - (void)LoginViewDidClose:(id)sender;
+- (void)ResetTour;
 
 @end

@@ -33,6 +33,7 @@
 @property(retain, nonatomic) UIImageView *compassImage;
 @property(nonatomic) CGRect cellRect;
 @property(retain, nonatomic) NSIndexPath *selectedIndexPath;
+@property(nonatomic) BOOL didPickImage;
 
 - (void) LoadCamera:(id)sender;
 - (void) LoadLogin:(id)sender;

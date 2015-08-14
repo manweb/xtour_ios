@@ -13,4 +13,6 @@
     
 }
 
+@property (nonatomic,retain) UITextView *info;
+
 @end

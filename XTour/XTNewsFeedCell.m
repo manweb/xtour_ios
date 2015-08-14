@@ -82,4 +82,18 @@
     return self;
 }
 
+- (void)dealloc {
+    [_title release];
+    [_time release];
+    [_altitude release];
+    [_distance release];
+    [_profilePicture release];
+    [_timeIcon release];
+    [_altitudeIcon release];
+    [_distanceIcon release];
+    [_tourDescription release];
+    [_gradientOverlay release];
+    [super dealloc];
+}
+
 @end

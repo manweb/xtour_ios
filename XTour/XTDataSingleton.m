@@ -64,6 +64,7 @@
     _downCount = 0;
     _photoCount = 0;
     _lastRunIndex = 0;
+    _runStatus = 0;
 }
 
 - (void) ResetDataForNewRun
@@ -284,7 +285,7 @@
 
 - (void) CreateXMLForCategory:(NSString *)category
 {
-    XTXMLParser *xml = [[XTXMLParser alloc] init];
+    XTXMLParser *xml = [[[XTXMLParser alloc] init] autorelease];
     
     NSMutableArray *bounds = [self GetMinMaxCoordinates];
     //CLLocation *firstEntry = [_locationData objectAtIndex:0];
@@ -376,6 +377,8 @@
     }
     
     [xml SaveRecoveryFile:@"/recovery.xml"];
+    
+    [dateFormatter release];
 }
 
 - (void) RecoverTour
@@ -553,6 +556,7 @@
 {
     NSMutableArray *GPXFiles = [self GetAllGPXFiles];
     NSMutableArray *imageFiles = [self GetAllImages];
+    NSMutableArray *imageInfoFiles = [self GetAllImageInfoFiles];
     
     for (int i = 0; i < [GPXFiles count]; i++) {
         [[NSFileManager defaultManager] removeItemAtPath:[GPXFiles objectAtIndex:i] error:nil];
@@ -560,6 +564,10 @@
     
     for (int i = 0; i < [imageFiles count]; i++) {
         [[NSFileManager defaultManager] removeItemAtPath:[imageFiles objectAtIndex:i] error:nil];
+    }
+    
+    for (int i = 0; i < [imageInfoFiles count]; i++) {
+        [[NSFileManager defaultManager] removeItemAtPath:[imageInfoFiles objectAtIndex:i] error:nil];
     }
     
     [self RemoveRecoveryFile];
@@ -743,6 +751,21 @@
     [fileManager removeItemAtPath:userInfo error:nil];
     
     self.loggedIn = false;
+    self.userID = @"0000";
+}
+
+- (void) DeleteImageAtIndex:(NSUInteger)index
+{
+    XTImageInfo *image = [_imageInfo objectAtIndex:index];
+    
+    NSString *file = image.Filename;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *fileOriginal = [file stringByReplacingOccurrencesOfString:@"_original.jpg" withString:@".jpg"];
+    
+    BOOL result = [fileManager removeItemAtPath:file error:nil];
+    if (result) {result = [fileManager removeItemAtPath:fileOriginal error:nil];}
+    if (result) {[_imageInfo removeObjectAtIndex:index];}
 }
 
 - (void)dealloc

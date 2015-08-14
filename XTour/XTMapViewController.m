@@ -246,6 +246,8 @@
     [_addWarningBackground release];
     [_addWarningText release];
     [_addWarningButton release];
+    [_editWarningText release];
+    [_enterWarning release];
     [super dealloc];
 }
 
@@ -277,6 +279,8 @@
         UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
         [_loginButton setImage:img forState:UIControlStateNormal];
         [_loginButton addTarget:self action:@selector(ShowLoginOptions:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [img release];
     }
     else {
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];

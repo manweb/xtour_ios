@@ -62,6 +62,12 @@ static NSString * const reuseIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    [_news_feed release];
+    [_profile_pictures release];
+    [super dealloc];
+}
+
 /*
 #pragma mark - Navigation
 

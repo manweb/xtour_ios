@@ -15,6 +15,12 @@
 {
     [GMSServices provideAPIKey:@"AIzaSyBTotBqCH0bt2CpMDDfkmAt2JPbVTszj7M"];
     // Override point for customization after application launch.
+    
+    UIPageControl *pageControl = [UIPageControl appearance];
+    pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:1.0f];
+    pageControl.backgroundColor = [UIColor clearColor];
+    
     return YES;
 }
 							

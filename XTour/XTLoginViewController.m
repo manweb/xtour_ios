@@ -94,6 +94,7 @@
 }
 
 - (void)dealloc {
+    [_loginView release];
     [_username release];
     [_password release];
     [_loginButton release];
@@ -125,13 +126,22 @@
 
 - (void) ShowView
 {
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
+    double yOffset;
+    
+    if (height == 480) {yOffset = 50;}
+    if (height == 568) {yOffset = 80;}
+    
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
-        _loginView.frame = CGRectMake(0, 70, 320, 220);
+        _loginView.frame = CGRectMake(0, yOffset-10, width, 220);
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_loginView.frame = CGRectMake(15, 85, 290, 190);} completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_loginView.frame = CGRectMake(15, yOffset+5, width-30, 190);} completion:^(BOOL finished) {
             [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-                _loginView.frame = CGRectMake(10, 80, 300, 200);
+                _loginView.frame = CGRectMake(10, yOffset, width-20, 200);
                 
                 [_username setAlpha:1.0f];
                 [_password setAlpha:1.0f];

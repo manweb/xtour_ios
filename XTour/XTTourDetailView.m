@@ -51,9 +51,9 @@
     boxYPosition += 255;
     
     if (server) {
-        _graphViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 200)];
+        _graphViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 210)];
         
-        boxYPosition += 205;
+        boxYPosition += 215;
     }
     
     _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 200)];
@@ -187,8 +187,10 @@
     _descriptionView.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     _descriptionView.font = [UIFont fontWithName:@"Helvetica" size:16];
     
-    if ([tourInfo.tourDescription isEqualToString:@""]) {_descriptionView.text = @"Keine Bechreibung zu dieser Tour vorhanden.";}
-    else {_descriptionView.text = tourInfo.tourDescription;}
+    _hasDescription = false;
+    if ([tourInfo.tourDescription isEqualToString:@""] && server) {_descriptionView.text = @"Keine Bechreibung zu dieser Tour vorhanden.";}
+    else if ([tourInfo.tourDescription isEqualToString:@""]) {_descriptionView.text = @"Kurze Beschreibung zur Tour";}
+    else {_descriptionView.text = tourInfo.tourDescription; _hasDescription = true;}
     
     if (server) {_descriptionView.editable = NO;}
     else {_descriptionView.editable = YES;}
@@ -247,6 +249,40 @@
                                                object:nil];
 }
 
+- (void)dealloc {
+    [_coordinateArray release];
+    [_tourImages release];
+    [_tourFiles release];
+    [_loadingView release];
+    [_activityView release];
+    [_mapViewContainer release];
+    [_summaryViewContainer release];
+    [_imageViewContainer release];
+    [_descriptionViewContainer release];
+    [_graphViewContainer release];
+    [_descriptionView release];
+    [_profilePicture release];
+    [_TimeTitleLabel release];
+    [_DistanceTitleLabel release];
+    [_SpeedTitleLabel release];
+    [_UpTitleLabel release];
+    [_DownTitleLabel release];
+    [_HighestPointTitleLabel release];
+    [_LowestPointTitleLabel release];
+    [_UpRateTitleLabel release];
+    [_DownRateTitleLabel release];
+    [_TimeLabel release];
+    [_DistanceLabel release];
+    [_SpeedLabel release];
+    [_UpLabel release];
+    [_DownLabel release];
+    [_HighestPointLabel release];
+    [_LowestPointLabel release];
+    [_UpRateLabel release];
+    [_DownRateLabel release];
+    [super dealloc];
+}
+
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server
 {
     CGRect screenBound = [[UIScreen mainScreen] bounds];
@@ -271,6 +307,8 @@
             }
             
             _tourImages = [request GetImagesForTour:tourInfo.tourID];
+            
+            [request CheckGraphsForTour:tourInfo.tourID];
         }
         else {
             data = [XTDataSingleton singleObj];
@@ -341,8 +379,8 @@
             
             XTGraphPageViewController *graphPageController = [[XTGraphPageViewController alloc] initWithNibName:nil bundle:nil andTourInfo:tourInfo];
             
-            graphPageController.view.frame = CGRectMake(5, 5, boxWidth-10, 190);
-            graphPageController.pageController.view.frame = CGRectMake(0, 0, boxWidth-10, 190);
+            graphPageController.view.frame = CGRectMake(5, 5, boxWidth-10, 200);
+            graphPageController.pageController.view.frame = CGRectMake(0, 0, boxWidth-10, 200);
             
             [_graphViewContainer addSubview:graphPageController.view];
         });
@@ -361,6 +399,8 @@
     self.scrollIndicatorInsets = contentInsets;
     
     [self setContentOffset:CGPointMake(0, self.contentSize.height - self.bounds.size.height + self.contentInset.bottom) animated:YES];
+    
+    if (!_hasDescription) {_descriptionView.text = @"";}
 }
 
 - (void) keyboardWillHide:(NSNotification *)notification {
@@ -368,6 +408,9 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.contentInset = contentInsets;
     self.scrollIndicatorInsets = contentInsets;
+    
+    if ([_descriptionView.text isEqualToString:@""]) {_descriptionView.text = @"Kurze Beschreibung zur Tour"; _hasDescription = false;}
+    else {_hasDescription = true;}
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

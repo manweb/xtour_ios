@@ -29,5 +29,6 @@
 - (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo;
 - (BOOL) DownloadProfilePicture:(NSString*)userID;
 - (BOOL) DownloadUserInfo:(NSString*)userID;
+- (void) CheckGraphsForTour:(NSString*)tourID;
 
 @end

@@ -63,6 +63,8 @@
     _imageInfoComment.layer.borderWidth = 1.0f;
     _imageInfoComment.layer.borderColor = [[UIColor grayColor] CGColor];
     
+    _imageInfoComment.font = [UIFont fontWithName:@"Helvetica" size:16];
+    
     _imageInfoComment.text = imageInfo.Comment;
     
     _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -116,13 +118,22 @@
 
 - (void) ShowView
 {
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
+    double yOffset;
+    
+    if (height == 480) {yOffset = 40;}
+    if (height == 568) {yOffset = 80;}
+    
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
-        _imageEditView.frame = CGRectMake(0, 70, 320, 220);
+        _imageEditView.frame = CGRectMake(0, yOffset-10, width, 220);
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_imageEditView.frame = CGRectMake(15, 85, 290, 190);} completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_imageEditView.frame = CGRectMake(15, yOffset+5, width-30, 190);} completion:^(BOOL finished) {
             [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-                _imageEditView.frame = CGRectMake(10, 80, 300, 200);
+                _imageEditView.frame = CGRectMake(10, yOffset, width-20, 200);
                 
                 [_imageInfoComment setAlpha:1.0f];
                 [_loginButton setAlpha:1.0f];
@@ -150,6 +161,14 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+    [_imageEditView release];
+    [_imageInfoComment release];
+    [_loginButton release];
+    [_cancelButton release];
+    [super dealloc];
 }
 
 /*

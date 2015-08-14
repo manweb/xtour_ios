@@ -55,6 +55,7 @@
 @property (retain, nonatomic) UILabel *DownRateLabel;
 @property (nonatomic) NSInteger viewOffset;
 @property (nonatomic) NSInteger viewContentOffset;
+@property (nonatomic) BOOL hasDescription;
 
 - (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset andContentOffset:(NSInteger)offsetContent;
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server;

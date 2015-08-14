@@ -32,7 +32,7 @@
     _graphLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
     _graphLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     
-    _graph = [[UIImageView alloc] initWithFrame:CGRectMake(0, 25, self.view.frame.size.width, 140)];
+    _graph = [[UIImageView alloc] initWithFrame:CGRectMake(0, 25, self.view.frame.size.width-40, (self.view.frame.size.width-40)/2)];
     
     [self.view addSubview:_graphLabel];
     [self.view addSubview:_graph];
@@ -41,6 +41,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+    [_graphLabel release];
+    [_graph release];
+    [super dealloc];
 }
 
 /*

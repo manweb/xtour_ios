@@ -220,6 +220,8 @@
     NSArray *fnameString = [imageInfo.Filename componentsSeparatedByString:@"/"];
     NSString *fnameOriginal = [fnameString lastObject];
     NSString *fname = [fnameOriginal stringByReplacingOccurrencesOfString:@"_original.jpg" withString:@".jpg"];
+    GDataXMLElement *userID = [GDataXMLElement elementWithName:@"userID" stringValue:imageInfo.userID];
+    GDataXMLElement *tourID = [GDataXMLElement elementWithName:@"tourID" stringValue:imageInfo.tourID];
     GDataXMLElement *filename = [GDataXMLElement elementWithName:@"filename" stringValue:fname];
     GDataXMLElement *longitude = [GDataXMLElement elementWithName:@"longitude" stringValue:[NSString stringWithFormat:@"%f",imageInfo.Longitude]];
     GDataXMLElement *latitude = [GDataXMLElement elementWithName:@"latitude" stringValue:[NSString stringWithFormat:@"%f",imageInfo.Latitude]];
@@ -227,6 +229,8 @@
     GDataXMLElement *comment = [GDataXMLElement elementWithName:@"comment" stringValue:imageInfo.Comment];
     GDataXMLElement *date = [GDataXMLElement elementWithName:@"date" stringValue:[formatter stringFromDate:imageInfo.Date]];
     
+    [image addChild:userID];
+    [image addChild:tourID];
     [image addChild:filename];
     [image addChild:longitude];
     [image addChild:latitude];
@@ -271,6 +275,7 @@
     info.home = [[[userInfo elementsForName:@"home"]objectAtIndex:0] stringValue];
     
     [xmlData release];
+    [userInfoFile release];
     
     return info;
 }

@@ -28,6 +28,8 @@
         image = imageInfo;
         _imageID = ID;
         
+        data = [XTDataSingleton singleObj];
+        
         if (!_imageView) {_imageView = [[UIImageView alloc] initWithFrame:originRect];}
         UIImageView *selectedImage = [[UIImageView alloc] init];
         
@@ -106,6 +108,12 @@
             [_editIcon addTarget:self action:@selector(EditImageInfo:) forControlEvents:UIControlEventTouchUpInside];
         }
         
+        if (!_deleteIcon) {
+            _deleteIcon = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth-25, 15, 20, 20)];
+            [_deleteIcon setBackgroundImage:[UIImage imageNamed:@"delete_icon.png"] forState:UIControlStateNormal];
+            [_deleteIcon addTarget:self action:@selector(DeleteImage:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
         [_coordinatesBackground setHidden:YES];
         [_commentBackground setHidden:YES];
         
@@ -113,8 +121,9 @@
         [_coordinatesBackground addSubview:_imgLongitudeLabel];
         [_coordinatesBackground addSubview:_imgLatitudeLabel];
         [_coordinatesBackground addSubview:_imgElevationLabel];
+        if ([imageInfo.userID isEqualToString:data.userID]) {[_coordinatesBackground addSubview:_deleteIcon];}
         [_commentBackground addSubview:_imgCommentLabel];
-        [_commentBackground addSubview:_editIcon];
+        if ([imageInfo.userID isEqualToString:data.userID]) {[_commentBackground addSubview:_editIcon];}
         
         [self addSubview:_imageView];
         [self addSubview:_coordinatesBackground];
@@ -124,6 +133,20 @@
     }
     
     return self;
+}
+
+- (void)dealloc {
+    [_imageView release];
+    [_coordinatesBackground release];
+    [_commentBackground release];
+    [_imgLongitudeLabel release];
+    [_imgLatitudeLabel release];
+    [_imgElevationLabel release];
+    [_imgCommentLabel release];
+    [_compassImage release];
+    [_editIcon release];
+    [_deleteIcon release];
+    [super dealloc];
 }
 
 - (void)animate
@@ -174,6 +197,24 @@
     
     [[[UIApplication sharedApplication] keyWindow] addSubview:imageEdit.view];
     [imageEdit animate];
+}
+
+- (void)DeleteImage:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Möchtest du dieses Foto wirklich löschen?" delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Löschen" otherButtonTitles:nil, nil];
+    
+    [actionSheet showInView:self];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if ([buttonTitle isEqualToString:@"Löschen"]) {
+        //[data DeleteImageAtIndex:_imageID];
+        
+        [self close:nil];
+    }
 }
 
 - (NSString*)GetFormattedLongitude:(float)longitude

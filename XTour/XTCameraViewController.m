@@ -52,6 +52,8 @@
     
     [header release];
     [header_shadow release];
+    
+    _didPickImage = false;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -60,7 +62,7 @@
     
     [self LoginViewDidClose:nil];
     
-    //[self.collectionView reloadData];
+    if (!_didPickImage) {[self.collectionView reloadData];}
 }
 
 - (void) LoadCamera:(id)sender
@@ -119,6 +121,8 @@
         UIImage *img = [[UIImage alloc] initWithContentsOfFile:tempPath];
         [_loginButton setImage:img forState:UIControlStateNormal];
         [_loginButton addTarget:self action:@selector(ShowLoginOptions:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [img release];
     }
     else {
         [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
@@ -176,6 +180,8 @@
     _cellRect.origin.y = p.y;
     
     XTImageInfo *imageInfo = [[XTImageInfo alloc] init];
+    imageInfo.userID = data.userID;
+    imageInfo.tourID = data.tourID;
     imageInfo.Filename = [data GetImageFilenameAt:indexPath.row];
     imageInfo.Longitude = [data GetImageLongitudeAt:indexPath.row];
     imageInfo.Latitude = [data GetImageLatitudeAt:indexPath.row];
@@ -190,6 +196,8 @@
     [[[UIApplication sharedApplication] keyWindow] addSubview:imageDetailView];
     
     [imageDetailView animate];
+    
+    [imageDetailView release];
 }
 
 - (UIImage *) GetSquareSubImage:(UIImage *)image
@@ -248,6 +256,8 @@
     
     if (!pickedImage) {return;}
     
+    _didPickImage = true;
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         float imgHeight = pickedImage.size.height;
         float imgWidth = pickedImage.size.width;
@@ -293,6 +303,8 @@
             [data AddImage:imageInfo];
             [self.collectionView reloadData];
             [imageInfo release];
+            
+            _didPickImage = false;
         });
     });
 }
@@ -325,6 +337,14 @@
     [_CameraIcon release];
     [_loginButton release];
     [_ImagePicker release];
+    [_selectedImageView release];
+    [_background release];
+    [_imgLongitudeLabel release];
+    [_imgLatitudeLabel release];
+    [_imgElevationLabel release];
+    [_imgCommentLabel release];
+    [_compassImage release];
+    [_selectedIndexPath release];
     [login release];
     [super dealloc];
 }

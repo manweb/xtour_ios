@@ -49,6 +49,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    [_pageController release];
+    [_graphPath release];
+    [_tourID release];
+    [super dealloc];
+}
+
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     
     NSUInteger index = [(XTGraphViewController *)viewController index];

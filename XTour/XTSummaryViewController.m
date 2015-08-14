@@ -92,9 +92,11 @@
 
 - (IBAction)Close {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        data.tourDescription = detailView.descriptionView.text;
+        if (detailView.hasDescription) {data.tourDescription = detailView.descriptionView.text;}
         [data CreateXMLForCategory:@"sum"];
         [data WriteImageInfo];
+        
+        data.runStatus = 5;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [data ResetAll];

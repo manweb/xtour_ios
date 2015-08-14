@@ -10,11 +10,13 @@
 #import "XTImageInfo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "XTImageEditViewController.h"
+#import "XTDataSingleton.h"
 
-@interface XTImageDetailView : UIView
+@interface XTImageDetailView : UIView <UIActionSheetDelegate>
 {
     XTImageEditViewController *imageEdit;
     XTImageInfo *image;
+    XTDataSingleton *data;
 }
 
 @property (retain,nonatomic) UIImageView *imageView;
@@ -26,6 +28,7 @@
 @property(retain, nonatomic) UILabel *imgCommentLabel;
 @property(retain, nonatomic) UIImageView *compassImage;
 @property(retain, nonatomic) UIButton *editIcon;
+@property(retain, nonatomic) UIButton *deleteIcon;
 @property (nonatomic) CGRect cellRect;
 @property (nonatomic) CGFloat fullWidth;
 @property (nonatomic) CGFloat fullHeight;
