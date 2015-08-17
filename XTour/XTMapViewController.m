@@ -29,13 +29,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
+    UITabBarController *tabBarController = [super tabBarController];
+    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+    
     data = [XTDataSingleton singleObj];
     _pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];
     
     _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:10];
+    double zoom = 10.0;
+    if (data.runStatus != 0) {zoom = 15.0;}
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:zoom];
     _mapView = [GMSMapView mapWithFrame:self.view.bounds camera:camera];
     _mapView.myLocationEnabled = YES;
     
@@ -57,6 +68,7 @@
     [_centerButton setHidden:YES];
     _centerButton.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6];
     _centerButton.layer.cornerRadius = 5.0f;
+    _centerButton.frame = CGRectMake(width/2-60, height-tabBarHeight-40, 120, 30);
     
     _addWarningBackground = [[UIView alloc] initWithFrame:CGRectMake(270, 80, 40, 40)];
     
@@ -331,7 +343,6 @@
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
             [_addWarningText setHidden:NO];
-            [_enterWarning setHidden:NO];
         } completion:nil];
     }];
     
@@ -363,6 +374,7 @@
         [_addWarningText setHidden:YES];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            [_enterWarning setHidden:NO];
             [_editWarningText setHidden:NO];
             [_editWarningText becomeFirstResponder];
         } completion:nil];

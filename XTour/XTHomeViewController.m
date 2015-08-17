@@ -358,6 +358,15 @@
     }
     
     if (data.runStatus == 0) {
+        if (!data.loggedIn) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:@"Du musst dich einloggen um eine Tour zu starten. Klicke auf das Profil-Icon." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            
+            [alert show];
+            [alert release];
+            
+            return;
+        }
+        
         if (!_didReachInitialAccuracy) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achtung" message:@"Das GPS Signal ist noch etwas schwach. Möchtest du die Tour trotzdem starten?" delegate:self cancelButtonTitle:@"Nein" otherButtonTitles:@"Ja", nil];
             
@@ -438,6 +447,15 @@
     }
     
     if (data.runStatus == 0) {
+        if (!data.loggedIn) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:@"Du musst dich einloggen um eine Tour zu starten. Klicke auf das Profil-Icon." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            
+            [alert show];
+            [alert release];
+            
+            return;
+        }
+        
         if (!_didReachInitialAccuracy) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achtung" message:@"Das GPS Signal ist noch etwas schwach. Möchtest du die Tour trotzdem starten?" delegate:self cancelButtonTitle:@"Nein" otherButtonTitles:@"Ja", nil];
             
