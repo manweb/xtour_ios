@@ -28,13 +28,19 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
     data = [XTDataSingleton singleObj];
     
-    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 69)];
-    UIView *header_shadow = [[UIView alloc] initWithFrame:CGRectMake(0, 69, 320, 1)];
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 69)];
+    UIView *header_shadow = [[UIView alloc] initWithFrame:CGRectMake(0, 69, width, 1)];
     
     header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
+    _loginButton.frame = CGRectMake(width-50, 25, 40, 40);
     
     _loginButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 25, 40, 40)];
     [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];

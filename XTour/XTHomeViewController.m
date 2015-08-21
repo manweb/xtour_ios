@@ -57,6 +57,7 @@
     double _sectionHeight = 60.0;
     double iconScale = 1.0;
     
+    // iPhone 4
     if (height == 480) {
         dy = 3;
         yOffset = 73;
@@ -64,7 +65,27 @@
         _sectionHeight = 60.0;
         iconScale = 1.0;
     }
+    
+    // iPhone 5
     if (height == 568) {
+        dy = 20;
+        yOffset = 80;
+        _timerSectionHeight = 80.0;
+        _sectionHeight = 60.0;
+        iconScale = 1.0;
+    }
+    
+    // iPhone 6
+    if (height == 667) {
+        dy = 20;
+        yOffset = 80;
+        _timerSectionHeight = 100.0;
+        _sectionHeight = 80.0;
+        iconScale = 1.2;
+    }
+    
+    // iPhone 6 Plus
+    if (height == 736) {
         dy = 20;
         yOffset = 80;
         _timerSectionHeight = 80.0;
@@ -77,6 +98,8 @@
     
     _header.frame = CGRectMake(0, 0, width, 69);
     _header_shadow.frame = CGRectMake(0, 69, width, 1);
+    
+    _loginButton.frame = CGRectMake(width-50, 25, 40, 40);
     
     _timerSection.frame = CGRectMake(10, yOffset, width-20, _timerSectionHeight);
     
@@ -94,9 +117,9 @@
     
     yOffset += _sectionHeight + dy;
     
-    _StartButton.frame = CGRectMake(20, yOffset, 80, 80);
-    _PauseButton.frame = CGRectMake(width/2-20, yOffset+20, 40, 40);
-    _StopButton.frame = CGRectMake(width-100, yOffset, 80, 80);
+    _StartButton.frame = CGRectMake(20, yOffset, iconScale*80, iconScale*80);
+    _PauseButton.frame = CGRectMake(width/2-iconScale*20, yOffset+iconScale*20, iconScale*40, iconScale*40);
+    _StopButton.frame = CGRectMake(width-iconScale*100, yOffset, iconScale*80, iconScale*80);
     
     _timerIcon.frame = CGRectMake(5, (_timerSectionHeight-iconScale*60)/2, iconScale*60, iconScale*60);
     _distanceIcon.frame = CGRectMake(10, (_sectionHeight-iconScale*40)/2, iconScale*40, iconScale*40);
@@ -122,6 +145,39 @@
     _distanceSection.layer.borderColor = boxBorderColor.CGColor;
     _altitudeSection.layer.borderColor = boxBorderColor.CGColor;
     _locationSection.layer.borderColor = boxBorderColor.CGColor;
+    
+    _timerLabel.frame = CGRectMake(iconScale*85, _timerSectionHeight/2-iconScale*30, width-25-iconScale*85, iconScale*60);
+    _timerLabel.font = [UIFont fontWithName:@"Helvetica" size:35*iconScale];
+    
+    _distanceLabel.frame = CGRectMake(iconScale*65, _sectionHeight/2-iconScale*10, width/2-70, iconScale*20);
+    _distanceLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
+    
+    _distanceRateLabel.frame = CGRectMake(width/2+iconScale*10, _sectionHeight/2-iconScale*10, width/2-15-iconScale*10, iconScale*20);
+    _distanceRateLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
+    
+    _altitudeLabel.frame = CGRectMake(iconScale*65, _sectionHeight/2-iconScale*10, width/2-70, iconScale*20);
+    _altitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
+    
+    _altitudeRateLabel.frame = CGRectMake(width/2+iconScale*10, _sectionHeight/2-iconScale*10, width/2-15-iconScale*10, iconScale*20);
+    _altitudeRateLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
+    
+    _longLabel.frame = CGRectMake(iconScale*65, _sectionHeight/2-iconScale*15-5, width/2-iconScale*65+10, iconScale*15);
+    _longLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
+    
+    _latLabel.frame = CGRectMake(iconScale*65, _sectionHeight/2+5, width/2-iconScale*65+10, iconScale*15);
+    _latLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
+    
+    _elevationLabel.frame = CGRectMake(width/2, _sectionHeight/2-iconScale*10, width/2-35, iconScale*20);
+    _elevationLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
+    
+    _totalTimeLabel.frame = CGRectMake(width-30-width/3, _timerSectionHeight-iconScale*20, width/3, iconScale*20);
+    _totalTimeLabel.font = [UIFont fontWithName:@"Helvetica" size:12*iconScale];
+    
+    _totalDistanceLabel.frame = CGRectMake(width/4, _sectionHeight-iconScale*20, width/2-20-width/4, iconScale*20);
+    _totalDistanceLabel.font = [UIFont fontWithName:@"Helvetica" size:12*iconScale];
+    
+    _totalAltitudeLabel.frame = CGRectMake(width/4, _sectionHeight-iconScale*20, width/2-20-width/4, iconScale*20);
+    _totalAltitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12*iconScale];
     
     [_totalTimeLabel setHidden:YES];
     [_totalDistanceLabel setHidden:YES];

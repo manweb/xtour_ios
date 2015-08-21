@@ -27,8 +27,17 @@
 {
     [super viewDidLoad];
     
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
     _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
+    _header.frame = CGRectMake(0, 0, width, 69);
+    _header_shadow.frame = CGRectMake(0, 69, width, 1);
+    
+    _closeButton.frame = CGRectMake(width-65, 30, 45, 30);
     
     data = [XTDataSingleton singleObj];
     
@@ -48,10 +57,6 @@
     tourInfo.lowestPoint = data.sumlowestPoint;
     tourInfo.tourDescription = @"";
     
-    CGRect screenBound = [[UIScreen mainScreen] bounds];
-    float width = screenBound.size.width;
-    float height = screenBound.size.height;
-    
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
@@ -61,7 +66,7 @@
     UIView *ratingViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0, height-tabBarHeight-70, width, 50)];
     ratingViewContainer.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.4f];
     
-    ratingView = [[DXStarRatingView alloc] initWithFrame:CGRectMake(20, 5, 320, 40)];
+    ratingView = [[DXStarRatingView alloc] initWithFrame:CGRectMake(20, 5, width, 40)];
     [ratingView setStars:0 callbackBlock:^(NSNumber *newRating) {
         data.tourRating = [newRating integerValue];
     }];
@@ -130,6 +135,7 @@
     [_imageViewContainer release];
     [_header release];
     [_header_shadow release];
+    [_closeButton release];
     [super dealloc];
 }
 @end

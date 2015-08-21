@@ -39,6 +39,8 @@
 @property (retain, nonatomic) GMSCameraUpdate *cameraUpdate;
 @property (nonatomic) bool mapHasMoved;
 @property (nonatomic) bool addWarning;
+@property (nonatomic) float width;
+@property (nonatomic) float height;
 
 - (void)LoadLogin:(id)sender;
 - (void)ShowLoginOptions:(id)sender;

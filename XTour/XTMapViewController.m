@@ -31,8 +31,8 @@
     [super viewDidLoad];
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
-    float width = screenBound.size.width;
-    float height = screenBound.size.height;
+    _width = screenBound.size.width;
+    _height = screenBound.size.height;
     
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
@@ -42,6 +42,11 @@
     
     _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
+    _header.frame = CGRectMake(0, 0, _width, 69);
+    _header_shadow.frame = CGRectMake(0, 69, _width, 1);
+    
+    _loginButton.frame = CGRectMake(_width-50, 25, 40, 40);
     
     double zoom = 10.0;
     if (data.runStatus != 0) {zoom = 15.0;}
@@ -68,9 +73,9 @@
     [_centerButton setHidden:YES];
     _centerButton.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6];
     _centerButton.layer.cornerRadius = 5.0f;
-    _centerButton.frame = CGRectMake(width/2-60, height-tabBarHeight-40, 120, 30);
+    _centerButton.frame = CGRectMake(_width/2-60, _height-tabBarHeight-40, 120, 30);
     
-    _addWarningBackground = [[UIView alloc] initWithFrame:CGRectMake(270, 80, 40, 40)];
+    _addWarningBackground = [[UIView alloc] initWithFrame:CGRectMake(_width-50, 80, 40, 40)];
     
     _addWarningBackground.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6];
     _addWarningBackground.layer.cornerRadius = 5.0f;
@@ -98,7 +103,7 @@
     _editWarningText.font = [UIFont fontWithName:@"Helvetica" size:12];
     _editWarningText.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f];
     
-    _enterWarning = [[UIButton alloc] initWithFrame:CGRectMake(265, 75, 30, 30)];
+    _enterWarning = [[UIButton alloc] initWithFrame:CGRectMake(_width-55, 75, 30, 30)];
     
     [_enterWarning setImage:[UIImage imageNamed:@"check_icon@3x.png"] forState:UIControlStateNormal];
     [_enterWarning addTarget:self action:@selector(EnterWarning:) forControlEvents:UIControlEventTouchUpInside];
@@ -337,8 +342,8 @@
 - (void) ShowAddWarning
 {
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _addWarningBackground.frame = CGRectMake(10, 80, 300, 40);
-        _addWarningButton.frame = CGRectMake(265, 5, 30, 30);
+        _addWarningBackground.frame = CGRectMake(10, 80, _width-20, 40);
+        _addWarningButton.frame = CGRectMake(_width-55, 5, 30, 30);
         [_addWarningButton setImage:[UIImage imageNamed:@"cancel_icon@3x.png"] forState:UIControlStateNormal];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
@@ -358,7 +363,7 @@
         [_editWarningText resignFirstResponder];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-            _addWarningBackground.frame = CGRectMake(270, 80, 40, 40);
+            _addWarningBackground.frame = CGRectMake(_width-50, 80, 40, 40);
             _addWarningButton.frame = CGRectMake(5, 5, 30, 30);
             [_addWarningButton setImage:[UIImage imageNamed:@"add_warning_icon@3x.png"] forState:UIControlStateNormal];
         } completion:nil];
@@ -370,7 +375,7 @@
 - (void) ShowEditWarning
 {
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _addWarningBackground.frame = CGRectMake(10, 80, 300, 110);
+        _addWarningBackground.frame = CGRectMake(10, 80, _width-20, 110);
         [_addWarningText setHidden:YES];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {

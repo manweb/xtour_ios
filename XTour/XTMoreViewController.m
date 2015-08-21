@@ -28,8 +28,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
     _header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     _header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
+    
+    _header.frame = CGRectMake(0, 0, width, 69);
+    _header_shadow.frame = CGRectMake(0, 69, width, 1);
+    
+    _loginButton.frame = CGRectMake(width-50, 25, 40, 40);
     
     [_tableView setContentInset:UIEdgeInsetsMake(70, 0, 0, 0)];
     
@@ -64,10 +73,6 @@
     [_listOfIcons addObject:@"cleanup_icon@3x.png"];
     [_listOfIcons addObject:@"wishlist_icon@3x.png"];*/
     
-    CGRect screenBound = [[UIScreen mainScreen] bounds];
-    float width = screenBound.size.width;
-    float height = screenBound.size.height;
-    
     UITabBarController *tabBarController = [super tabBarController];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
@@ -77,6 +82,8 @@
     [self.view addSubview:_detailView];
     
     [_backButton setHidden:YES];
+    
+    self.tableView.frame = CGRectMake(0, 0, width, height);
     
     self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 }

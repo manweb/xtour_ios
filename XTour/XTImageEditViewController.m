@@ -51,13 +51,13 @@
     self.view.frame = CGRectMake(0, 0, width, height+tabBarHeight);
     self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
     
-    _imageEditView = [[UIView alloc] initWithFrame:CGRectMake(280, 30, 0, 0)];
+    _imageEditView = [[UIView alloc] initWithFrame:CGRectMake(width-50, 30, 0, 0)];
     _imageEditView.layer.cornerRadius = 10.0f;
     _imageEditView.layer.borderWidth = 5.0f;
     _imageEditView.layer.borderColor = [UIColor grayColor].CGColor;
     _imageEditView.backgroundColor = [UIColor whiteColor];
     
-    _imageInfoComment = [[UITextView alloc] initWithFrame:CGRectMake(20, 35, 260, 120)];
+    _imageInfoComment = [[UITextView alloc] initWithFrame:CGRectMake(20, 35, width-60, 120)];
     [_imageInfoComment setAlpha:0.0f];
     
     _imageInfoComment.layer.borderWidth = 1.0f;
@@ -68,10 +68,10 @@
     _imageInfoComment.text = imageInfo.Comment;
     
     _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _loginButton.frame = CGRectMake(100, 170, 100, 20);
+    _loginButton.frame = CGRectMake((width-20)/2-50, 170, 100, 20);
     
     _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _cancelButton.frame = CGRectMake(220, 10, 80, 20);
+    _cancelButton.frame = CGRectMake(width-100, 10, 80, 20);
     
     [_loginButton setTitle:@"Eintragen" forState:UIControlStateNormal];
     [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
@@ -125,7 +125,7 @@
     double yOffset;
     
     if (height == 480) {yOffset = 40;}
-    if (height == 568) {yOffset = 80;}
+    else {yOffset = 80;}
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];

@@ -51,9 +51,9 @@
     boxYPosition += 255;
     
     if (server) {
-        _graphViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 210)];
+        _graphViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, width/320*200+10)];
         
-        boxYPosition += 215;
+        boxYPosition += width/320*200+15;
     }
     
     _imageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 200)];
@@ -102,21 +102,25 @@
         _profilePicture.image = [UIImage imageNamed:tourInfo.profilePicture];
     }
     
-    _TimeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 17, 94, 21)];
-    _DistanceTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 58, 100, 15)];
-    _SpeedTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(105, 58, 100, 15)];
-    _UpTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(205, 58, 100, 15)];
-    _DownTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 100, 100, 15)];
-    _HighestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(105, 100, 100, 15)];
-    _LowestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(205, 100, 100, 15)];
+    float labelX1 = 5;
+    float labelX2 = (boxWidth-10)/3;
+    float labelX3 = (boxWidth-10)*2/3;
     
-    _TimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 15, 200, 30)];
-    _DistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 72, 100, 20)];
-    _SpeedLabel = [[UILabel alloc] initWithFrame:CGRectMake(105, 72, 100, 20)];
-    _UpLabel = [[UILabel alloc] initWithFrame:CGRectMake(205, 72, 100, 20)];
-    _DownLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 114, 100, 20)];
-    _HighestPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(105, 114, 100, 20)];
-    _LowestPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(205, 114, 100, 20)];
+    _TimeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 17, 94, 21)];
+    _DistanceTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX1, 58, 100, 15)];
+    _SpeedTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX2, 58, 100, 15)];
+    _UpTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX3, 58, 100, 15)];
+    _DownTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX1, 100, 100, 15)];
+    _HighestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX2, 100, 100, 15)];
+    _LowestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX3, 100, 100, 15)];
+    
+    _TimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3-10, 15, boxWidth*2/3-10, 30)];
+    _DistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX1, 72, 100, 20)];
+    _SpeedLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX2, 72, 100, 20)];
+    _UpLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX3, 72, 100, 20)];
+    _DownLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX1, 114, 100, 20)];
+    _HighestPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX2, 114, 100, 20)];
+    _LowestPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX3, 114, 100, 20)];
     
     _TimeTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     _DistanceTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
@@ -126,6 +130,8 @@
     _HighestPointTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     _LowestPointTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     
+    _TimeLabel.textAlignment = NSTextAlignmentRight;
+    
     _TimeTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     _DistanceTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     _SpeedTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
@@ -134,13 +140,13 @@
     _HighestPointTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     _LowestPointTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     
-    _TimeLabel.font = [UIFont fontWithName:@"Helvetica" size:32.0f];
-    _DistanceLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
-    _SpeedLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
-    _UpLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
-    _DownLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
-    _HighestPointLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
-    _LowestPointLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
+    _TimeLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*32.0f];
+    _DistanceLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _SpeedLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _UpLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _DownLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _HighestPointLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _LowestPointLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
     
     _TimeTitleLabel.text = @"Time";
     _DistanceTitleLabel.text = @"Distanz";
@@ -379,8 +385,8 @@
             
             XTGraphPageViewController *graphPageController = [[XTGraphPageViewController alloc] initWithNibName:nil bundle:nil andTourInfo:tourInfo];
             
-            graphPageController.view.frame = CGRectMake(5, 5, boxWidth-10, 200);
-            graphPageController.pageController.view.frame = CGRectMake(0, 0, boxWidth-10, 200);
+            graphPageController.view.frame = CGRectMake(5, 5, boxWidth-10, width/320*200);
+            graphPageController.pageController.view.frame = CGRectMake(0, 0, boxWidth-10, width/320*200);
             
             [_graphViewContainer addSubview:graphPageController.view];
         });
