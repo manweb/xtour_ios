@@ -396,7 +396,7 @@
 }
 
 - (IBAction)startUpTour:(id)sender {
-    if (_didReachInitialAccuracy) {
+    if (_didReachInitialAccuracy && data.loggedIn) {
         if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     }
     
@@ -485,7 +485,7 @@
 }
 
 - (IBAction)startDownTour:(id)sender {
-    if (_didReachInitialAccuracy) {
+    if (_didReachInitialAccuracy && data.loggedIn) {
         if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     }
     
