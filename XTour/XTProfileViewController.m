@@ -14,22 +14,11 @@
 
 @implementation XTProfileViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+- (void)initialize {
     
     data = [XTDataSingleton singleObj];
     
-    self.view.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
+    self.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
@@ -41,9 +30,6 @@
     float boxMarginLeft = 10.0f;
     float boxMarginTop = 75.0f;
     UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
-    
-    UITabBarController *tabBarController = [super tabBarController];
-    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
     _profileSummary = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, boxMarginTop, boxWidth, 140)];
     
@@ -73,14 +59,11 @@
         _userName.text = @"Nicht eingelogged";
     }
     
+    [self setContentSize:CGSizeMake(width, height)];
+    
     [_profileSummary addSubview:_profilePicture];
     [_profileSummary addSubview:_userName];
-    [self.view addSubview:_profileSummary];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self addSubview:_profileSummary];
 }
 
 - (void)dealloc {

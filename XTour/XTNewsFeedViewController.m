@@ -19,16 +19,61 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
+    
+    data = [XTDataSingleton singleObj];
     
     // Register cell classes
     [self.collectionView registerClass:[XTNewsFeedCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
-    [self.collectionView setContentInset:UIEdgeInsetsMake(70, 0, 0, 0)];
+    [self.collectionView setContentInset:UIEdgeInsetsMake(110, 0, 0, 0)];
     
     // Do any additional setup after loading the view.
     [self.collectionView setBackgroundColor:[UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f]];
+    
+    UIView *filterView = [[UIView alloc] initWithFrame:CGRectMake(0, 70, width, 40)];
+    
+    filterView.backgroundColor = [UIColor whiteColor];
+    filterView.alpha = 0.9f;
+    
+    _filterTab = [[UIView alloc] initWithFrame:CGRectMake(5, 28, 100, 2)];
+    
+    _filterTab.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    
+    _filterAll = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    _filterAll.frame = CGRectMake(5, 10, 100, 16);
+    [_filterAll setTitle:@"Alle" forState:UIControlStateNormal];
+    [_filterAll setTitleColor:[UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f] forState:UIControlStateNormal];
+    [_filterAll addTarget:self action:@selector(SelectAll:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _filterMine = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    _filterMine.frame = CGRectMake(width/2-50, 10, 100, 16);
+    [_filterMine setTitle:@"Meine" forState:UIControlStateNormal];
+    [_filterMine setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    [_filterMine addTarget:self action:@selector(SelectMine:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _filterBest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    _filterBest.frame = CGRectMake(width-105, 10, 100, 16);
+    [_filterBest setTitle:@"Beste" forState:UIControlStateNormal];
+    [_filterBest setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    [_filterBest addTarget:self action:@selector(SelectBest:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [filterView addSubview:_filterAll];
+    [filterView addSubview:_filterMine];
+    [filterView addSubview:_filterBest];
+    [filterView addSubview:_filterTab];
+    [self.view addSubview:filterView];
+    
+    _UID = @"0";
+    _filter = 0;
     
     ServerHandler = [[XTServerRequestHandler alloc] init];
     
@@ -45,7 +90,7 @@ static NSString * const reuseIdentifier = @"Cell";
     dispatch_queue_t fetch = dispatch_queue_create("fetchQueue", NULL);
     
     dispatch_async(fetch, ^{
-        self.news_feed = [ServerHandler GetNewsFeedString:10];
+        self.news_feed = [ServerHandler GetNewsFeedString:10 forUID:@"0" filterBest:0];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
@@ -195,7 +240,7 @@ static NSString * const reuseIdentifier = @"Cell";
     dispatch_queue_t fetch = dispatch_queue_create("fetchQueue", NULL);
     
     dispatch_async(fetch, ^{
-        self.news_feed = [ServerHandler GetNewsFeedString:10];
+        self.news_feed = [ServerHandler GetNewsFeedString:10 forUID:_UID filterBest:_filter];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
@@ -205,6 +250,72 @@ static NSString * const reuseIdentifier = @"Cell";
     });
     
     dispatch_release(fetch);
+}
+
+- (void)SelectAll:(id)sender
+{
+    float position = _filterAll.frame.origin.x;
+    
+    [self MoveTabTo:position];
+    
+    [_filterAll setTitleColor:[UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f] forState:UIControlStateNormal];
+    [_filterMine setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    [_filterBest setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    
+    _UID = @"0";
+    _filter = 0;
+    
+    [self refreshNewsFeed];
+}
+
+- (void)SelectMine:(id)sender
+{
+    if (!data.loggedIn) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:@"Du musst dich einloggen um deine Touren anzuzeigen. Klicke auf das Profil-Icon." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [alert show];
+        [alert release];
+        
+        return;
+    }
+    
+    float position = _filterMine.frame.origin.x;
+    
+    [self MoveTabTo:position];
+    
+    [_filterAll setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    [_filterMine setTitleColor:[UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f] forState:UIControlStateNormal];
+    [_filterBest setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    
+    _UID = data.userID;
+    _filter = 0;
+    
+    [self refreshNewsFeed];
+}
+
+- (void)SelectBest:(id)sender
+{
+    float position = _filterBest.frame.origin.x;
+    
+    [self MoveTabTo:position];
+    
+    [_filterAll setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    [_filterMine setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    [_filterBest setTitleColor:[UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f] forState:UIControlStateNormal];
+    
+    _UID = @"0";
+    _filter = 1;
+    
+    [self refreshNewsFeed];
+}
+
+- (void)MoveTabTo:(float)position
+{
+    CGRect frame = _filterTab.frame;
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        _filterTab.frame = CGRectMake(position, frame.origin.y, frame.size.width, frame.size.height);
+    } completion:nil];
 }
 
 #pragma mark <UICollectionViewDelegate>

@@ -10,9 +10,9 @@
 
 @implementation XTServerRequestHandler
 
-- (NSMutableArray *) GetNewsFeedString:(int)numberOfNewsFeeds
+- (NSMutableArray *) GetNewsFeedString:(int)numberOfNewsFeeds forUID:(NSString *)uid filterBest:(int)filter
 {
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_news_feed_string.php?num=%i", numberOfNewsFeeds];
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_news_feed_string.php?num=%i&uid=%@&filter=%i", numberOfNewsFeeds, uid, filter];
     NSURL *url = [NSURL URLWithString:requestString];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];

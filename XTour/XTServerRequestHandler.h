@@ -20,7 +20,7 @@
     XTDataSingleton *data;
 }
 
-- (NSMutableArray *) GetNewsFeedString:(int)numberOfNewsFeeds;
+- (NSMutableArray *) GetNewsFeedString:(int)numberOfNewsFeeds forUID:(NSString *)uid filterBest:(int)filter;
 - (NSMutableArray *) GetTourFilesForTour:(NSString *)tourID andType:(NSString *)type;
 - (NSMutableArray *) GetCoordinatesForFile:(NSString *)file;
 - (NSMutableArray *) GetImagesForTour:(NSString *)tourID;

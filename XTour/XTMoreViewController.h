@@ -20,6 +20,8 @@
     XTDataSingleton *data;
     XTLoginViewController *login;
     XTNewsFeedViewController *collection;
+    XTSettingsViewController *settings;
+    XTProfileViewController *profile;
     XTNavigationViewContainer *navigationView;
 }
 

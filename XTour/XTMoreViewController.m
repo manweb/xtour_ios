@@ -93,12 +93,19 @@
     [super viewWillAppear:nil];
     
     [self LoginViewDidClose:nil];
+    
+    if (navigationView.view.frame.origin.x == 0) {[navigationView.backButton setHidden:NO];}
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    if (navigationView.view.frame.origin.x == 0) {[navigationView.backButton setHidden:YES];}
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -167,13 +174,11 @@
                     [self.view bringSubviewToFront:_header];
                     [self.view bringSubviewToFront:_header_shadow];
                     
-                    XTProfileViewController *settings = [[XTProfileViewController alloc] initWithNibName:nil bundle:nil];
+                    profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height-tabBarHeight)];
                     
-                    settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
+                    [profile initialize];
                     
-                    [navigationView.view addSubview:settings.view];
-                    
-                    [settings release];
+                    [navigationView.view addSubview:profile];
                     
                     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
                 }
@@ -189,13 +194,11 @@
                     [self.view bringSubviewToFront:_header];
                     [self.view bringSubviewToFront:_header_shadow];
                     
-                    XTSettingsViewController *settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
+                    settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
                     
                     settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
-                    
+                
                     [navigationView.view addSubview:settings.view];
-                    
-                    [settings release];
                     
                     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
                 }

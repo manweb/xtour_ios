@@ -161,10 +161,10 @@
     _altitudeRateLabel.frame = CGRectMake(width/2+iconScale*10, _sectionHeight/2-iconScale*10, width/2-15-iconScale*10, iconScale*20);
     _altitudeRateLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
     
-    _longLabel.frame = CGRectMake(iconScale*65, _sectionHeight/2-iconScale*15-5, width/2-iconScale*65+10, iconScale*15);
+    _longLabel.frame = CGRectMake(iconScale*65-10, _sectionHeight/2-iconScale*15-5, width/2-iconScale*65+25, iconScale*15);
     _longLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
     
-    _latLabel.frame = CGRectMake(iconScale*65, _sectionHeight/2+5, width/2-iconScale*65+10, iconScale*15);
+    _latLabel.frame = CGRectMake(iconScale*65-10, _sectionHeight/2+5, width/2-iconScale*65+25, iconScale*15);
     _latLabel.font = [UIFont fontWithName:@"Helvetica" size:16*iconScale];
     
     _elevationLabel.frame = CGRectMake(width/2, _sectionHeight/2-iconScale*10, width/2-35, iconScale*20);

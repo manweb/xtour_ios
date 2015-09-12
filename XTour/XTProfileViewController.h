@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "XTDataSingleton.h"
 
-@interface XTProfileViewController : UIViewController
+@interface XTProfileViewController : UIScrollView
 {
     XTDataSingleton *data;
 }
@@ -17,5 +17,7 @@
 @property (retain, nonatomic) UIView *profileSummary;
 @property (retain, nonatomic) UIImageView *profilePicture;
 @property (retain, nonatomic) UILabel *userName;
+
+- (void)initialize;
 
 @end

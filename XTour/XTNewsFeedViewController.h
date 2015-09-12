@@ -16,6 +16,7 @@
 
 @interface XTNewsFeedViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 {
+    XTDataSingleton *data;
     XTServerRequestHandler *ServerHandler;
     UIRefreshControl *refreshControl;
     XTNavigationViewContainer *navigationView;
@@ -23,7 +24,17 @@
 
 @property (nonatomic,retain) NSMutableArray *news_feed;
 @property (nonatomic,retain) NSMutableArray *profile_pictures;
+@property (nonatomic,retain) UIView *filterTab;
+@property (nonatomic,retain) UIButton *filterAll;
+@property (nonatomic,retain) UIButton *filterMine;
+@property (nonatomic,retain) UIButton *filterBest;
+@property (nonatomic,retain) NSString *UID;
+@property (nonatomic) int filter;
 
 - (void) refreshNewsFeed;
+- (void) SelectAll:(id)sender;
+- (void) SelectMine:(id)sender;
+- (void) SelectBest:(id)sender;
+- (void) MoveTabTo:(float)position;
 
 @end
