@@ -12,6 +12,7 @@
 #import "XTImageInfo.h"
 #import "XTUserInfo.h"
 #import "XTWarningsInfo.h"
+#import "XTSettings.h"
 
 @interface XTDataSingleton : NSObject
 
@@ -54,6 +55,7 @@
 @property(nonatomic,retain) XTUserInfo *userInfo;
 @property(nonatomic,retain) NSMutableArray *warningInfo;
 @property(nonatomic) NSInteger runStatus;
+@property(nonatomic,retain) XTSettings *profileSettings;
 
 + (XTDataSingleton *) singleObj;
 

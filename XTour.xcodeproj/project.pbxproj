@@ -69,6 +69,7 @@
 		6434706F1ACB703C00C8F916 /* skier_down_icon_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6434706E1ACB703C00C8F916 /* skier_down_icon_2.png */; };
 		643470781AE0D049003DDA13 /* XTNewsFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643470771AE0D049003DDA13 /* XTNewsFeedViewController.m */; };
 		6434707B1AE0E332003DDA13 /* XTNewsFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6434707A1AE0E332003DDA13 /* XTNewsFeedCell.m */; };
+		6443BC871BA4E39200FA3E83 /* XTSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6443BC861BA4E39200FA3E83 /* XTSettings.m */; };
 		645181181A27BBE100D887CA /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 645181171A27BBE100D887CA /* GoogleMaps.framework */; };
 		6451811A1A27BCFC00D887CA /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 645181191A27BCFC00D887CA /* GoogleMaps.bundle */; };
 		645181291A27CC2500D887CA /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = 6451811E1A27CC2500D887CA /* Contents.json */; };
@@ -270,6 +271,8 @@
 		643470771AE0D049003DDA13 /* XTNewsFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTNewsFeedViewController.m; sourceTree = "<group>"; };
 		643470791AE0E332003DDA13 /* XTNewsFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTNewsFeedCell.h; sourceTree = "<group>"; };
 		6434707A1AE0E332003DDA13 /* XTNewsFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTNewsFeedCell.m; sourceTree = "<group>"; };
+		6443BC851BA4E39200FA3E83 /* XTSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSettings.h; sourceTree = "<group>"; };
+		6443BC861BA4E39200FA3E83 /* XTSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSettings.m; sourceTree = "<group>"; };
 		645181171A27BBE100D887CA /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "GoogleMaps-iOS-1.9.0/GoogleMaps.framework"; sourceTree = "<group>"; };
 		645181191A27BCFC00D887CA /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "GoogleMaps-iOS-1.9.0/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		6451811E1A27CC2500D887CA /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
@@ -496,6 +499,8 @@
 				640BBE7B1887B1A30029327F /* Main.storyboard */,
 				640BBE7E1887B1A30029327F /* XTHomeViewController.h */,
 				640BBE7F1887B1A30029327F /* XTHomeViewController.m */,
+				6443BC851BA4E39200FA3E83 /* XTSettings.h */,
+				6443BC861BA4E39200FA3E83 /* XTSettings.m */,
 				648FE0901B72F59C00FC20F7 /* XTGraphPageViewController.h */,
 				648FE0911B72F59C00FC20F7 /* XTGraphPageViewController.m */,
 				648FE08D1B72F4A400FC20F7 /* XTGraphViewController.h */,
@@ -949,6 +954,7 @@
 				647FEF0B1A5169E700D7F2E7 /* XTFileBrowser.m in Sources */,
 				64A4A00D18B953D2007B4E54 /* XTWarnigsViewController.m in Sources */,
 				64251D19188FB45B004F1675 /* ASIDataDecompressor.m in Sources */,
+				6443BC871BA4E39200FA3E83 /* XTSettings.m in Sources */,
 				6463C3261B0519C0000ACB6E /* XTSummaryImageViewController.m in Sources */,
 				648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */,
 				64DCB3511B31D85F009D61B8 /* XTWarningsInfo.m in Sources */,

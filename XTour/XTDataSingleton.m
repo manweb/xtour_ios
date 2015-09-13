@@ -32,6 +32,7 @@
     if (!_imageInfo) {_imageInfo = [[NSMutableArray alloc] init];}
     if (!_userInfo) {_userInfo = [[XTUserInfo alloc] init];}
     if (!_warningInfo) {_warningInfo = [[NSMutableArray alloc] init];}
+    if (!_profileSettings) {_profileSettings = [[XTSettings alloc] init];}
     [_locationData removeAllObjects];
     _StartLocation = 0;
     _CurrentLocation = 0;
