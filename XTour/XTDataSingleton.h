@@ -19,6 +19,7 @@
 @property(nonatomic) NSInteger timer;
 @property(nonatomic) NSInteger rateTimer;
 @property(nonatomic,retain) NSMutableArray *locationData;
+@property(nonatomic,retain) NSMutableArray *batteryLevel;
 @property(nonatomic,retain) CLLocation *StartLocation;
 @property(nonatomic,retain) CLLocation *CurrentLocation;
 @property(nonatomic) int totalTime;
@@ -103,6 +104,8 @@
 - (NSString *) GetImageCoordinateStringAt:(NSUInteger)index;
 - (void) WriteImageInfo;
 - (XTUserInfo*) GetUserInfo;
+- (void) WriteUserSettings;
+- (void) GetUserSettings;
 - (void) AddWarningInfo:(XTWarningsInfo *)warningInfo;
 - (void) CheckLogin;
 - (void) Logout;

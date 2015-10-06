@@ -26,6 +26,8 @@
         self.tableView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
         
         [self.view addSubview:_tableView];
+        
+        data = [XTDataSingleton singleObj];
     }
     return self;
 }
@@ -35,14 +37,22 @@
     NSArray *tableItems1 = [NSArray arrayWithObjects:@"Ski",@"Snowboard",@"Splitboard", nil];
     NSArray *tableItems2 = [NSArray arrayWithObjects:@"Originalbild speichern",@"Anonym aufzeichnen", nil];
     NSArray *tableItems3 = [NSArray arrayWithObjects:@"Safety Modus", nil];
+    NSArray *tableItems4 = [NSArray arrayWithObjects:@"Warnungen",@"Touren", nil];
     
-    _tableArrays = [[NSDictionary alloc] initWithObjectsAndKeys:tableItems1, @"Mein Sportgerät", tableItems2, @"Diverses", tableItems3, @"Safety", nil];
+    _tableArrays = [[NSDictionary alloc] initWithObjectsAndKeys:tableItems1, @"Mein Sportgerät", tableItems2, @"Diverses", tableItems3, @"Safety", tableItems4, @"Suchradien", nil];
     
-    _sectionTitles = [[NSArray alloc] initWithObjects:@"Mein Sportgerät",@"Diverses", @"Safety", nil];
+    _sectionTitles = [[NSArray alloc] initWithObjects:@"Mein Sportgerät",@"Diverses", @"Safety", @"Suchradien", nil];
     
-    _sectionFooter = [[NSArray alloc] initWithObjects:@"",@"",@"Bei Aktivierung stoppt die App automatisch das Aufzeichnen der GPS Daten wenn die Batterie unter 20% fällt.", nil];
+    _sectionFooter = [[NSArray alloc] initWithObjects:@"",@"",@"Bei Aktivierung stoppt die App automatisch das Aufzeichnen der GPS Daten wenn die Batterie unter 20% fällt.", @"", nil];
     
     _selectedIndex = 0;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.tableView reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -79,7 +89,7 @@
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
             
-            if (indexPath.row == _selectedIndex) {
+            if (indexPath.row == data.profileSettings.equipment) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
         }
@@ -87,18 +97,19 @@
             
         case 1:
         {
-            UISwitch *safetySwitch = [[[UISwitch alloc] init] autorelease];
+            UISwitch *switchGeneral = [[[UISwitch alloc] init] autorelease];
             
-            safetySwitch.frame = CGRectMake(cell.frame.size.width-safetySwitch.frame.size.width-10, (cell.frame.size.height - safetySwitch.frame.size.height)/2, 50, safetySwitch.frame.size.height);
-            //[safetySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-            [cell.contentView addSubview:safetySwitch];
+            switchGeneral.frame = CGRectMake(cell.frame.size.width-switchGeneral.frame.size.width-10, (cell.frame.size.height - switchGeneral.frame.size.height)/2, 50, switchGeneral.frame.size.height);
+            [cell.contentView addSubview:switchGeneral];
             
             switch (indexPath.row) {
                 case 0:
-                    safetySwitch.on = true;
+                    switchGeneral.on = data.profileSettings.saveOriginalImage;
+                    [switchGeneral addTarget:self action:@selector(switchSaveImagesChanged:) forControlEvents:UIControlEventValueChanged];
                     break;
                 case 1:
-                    safetySwitch.on = false;
+                    switchGeneral.on = data.profileSettings.anonymousTracking;
+                    [switchGeneral addTarget:self action:@selector(switchAnonymousChanged:) forControlEvents:UIControlEventValueChanged];
                     break;
             }
         }
@@ -107,13 +118,58 @@
         case 2:
         {
             if (indexPath.row == 0) {
-                UISwitch *safetySwitch = [[[UISwitch alloc] init] autorelease];
+                UISwitch *switchSafety = [[[UISwitch alloc] init] autorelease];
                 
-                safetySwitch.frame = CGRectMake(cell.frame.size.width-safetySwitch.frame.size.width-10, (cell.frame.size.height - safetySwitch.frame.size.height)/2, 50, safetySwitch.frame.size.height);
-                //[safetySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-                [cell.contentView addSubview:safetySwitch];
+                switchSafety.frame = CGRectMake(cell.frame.size.width-switchSafety.frame.size.width-10, (cell.frame.size.height - switchSafety.frame.size.height)/2, 50, switchSafety.frame.size.height);
+                [switchSafety addTarget:self action:@selector(switchSafetyChanged:) forControlEvents:UIControlEventValueChanged];
+                [cell.contentView addSubview:switchSafety];
+                
+                switchSafety.on = data.profileSettings.safetyModus;
             }
         }
+            break;
+        case 3:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    if (!_sliderWarning) {_sliderWarning = [[UISlider alloc] initWithFrame:CGRectMake(120, 0, 130, cell.frame.size.height)];}
+                    
+                    _sliderWarning.minimumValue = 1.0f;
+                    _sliderWarning.maximumValue = 100.0f;
+                    _sliderWarning.value = data.profileSettings.warningRadius;
+                    
+                    [_sliderWarning addTarget:self action:@selector(WarningRadiusChanged:) forControlEvents:UIControlEventValueChanged];
+                    
+                    if (!_WarningValue) {_WarningValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 5, 60, 30)];}
+                    
+                    _WarningValue.text = [NSString stringWithFormat:@"%.0f km",data.profileSettings.warningRadius];
+                    
+                    [cell.contentView addSubview:_sliderWarning];
+                    [cell.contentView addSubview:_WarningValue];
+                }
+                    break;
+                case 1:
+                {
+                    if (!_sliderTours) {_sliderTours = [[UISlider alloc] initWithFrame:CGRectMake(120, 0, 130, cell.frame.size.height)];}
+                    
+                    _sliderTours.minimumValue = 1.0f;
+                    _sliderTours.maximumValue = 100.0f;
+                    _sliderTours.value = data.profileSettings.toursRadius;
+                    
+                    [_sliderTours addTarget:self action:@selector(ToursRadiusChanged:) forControlEvents:UIControlEventValueChanged];
+                    
+                    if (!_ToursValue) {_ToursValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 5, 60, 30)];}
+                    
+                    _ToursValue.text = [NSString stringWithFormat:@"%.0f km",data.profileSettings.toursRadius];
+                    
+                    [cell.contentView addSubview:_sliderTours];
+                    [cell.contentView addSubview:_ToursValue];
+                }
+                    break;
+            }
+        }
+            break;
     }
     
     return cell;
@@ -125,9 +181,13 @@
     
     switch (indexPath.section) {
         case 0:
-            _selectedIndex = indexPath.row;
+            data.profileSettings.equipment = indexPath.row;
             break;
         case 1:
+            break;
+        case 2:
+            break;
+        case 3:
             break;
     }
     
@@ -179,6 +239,41 @@
 {
     if (section == 2) {return 70.0;}
     else {return 0;}
+}
+
+- (void)switchSaveImagesChanged:(id)sender
+{
+    bool currentStatus = data.profileSettings.saveOriginalImage;
+    
+    data.profileSettings.saveOriginalImage = !currentStatus;
+}
+
+- (void)switchAnonymousChanged:(id)sender
+{
+    bool currentStatus = data.profileSettings.anonymousTracking;
+    
+    data.profileSettings.anonymousTracking = !currentStatus;
+}
+
+- (void)switchSafetyChanged:(id)sender
+{
+    bool currentStatus = data.profileSettings.safetyModus;
+    
+    data.profileSettings.safetyModus = !currentStatus;
+}
+
+- (void)WarningRadiusChanged:(id)sender
+{
+    _WarningValue.text = [NSString stringWithFormat:@"%.0f km",_sliderWarning.value];
+    
+    data.profileSettings.warningRadius = _sliderWarning.value;
+}
+
+- (void)ToursRadiusChanged:(id)sender
+{
+    _ToursValue.text = [NSString stringWithFormat:@"%.0f km",_sliderTours.value];
+    
+    data.profileSettings.toursRadius = _sliderTours.value;
 }
 
 - (IBAction)LoadLogin:(id)sender {

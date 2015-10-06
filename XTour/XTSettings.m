@@ -10,4 +10,16 @@
 
 @implementation XTSettings
 
+- (id) init
+{
+    _equipment = 0;
+    _saveOriginalImage = true;
+    _anonymousTracking = false;
+    _safetyModus = false;
+    _warningRadius = 20.0f;
+    _toursRadius = 20.0f;
+    
+    return [super init];
+}
+
 @end

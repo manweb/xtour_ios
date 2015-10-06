@@ -56,18 +56,23 @@
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;
 @property (retain, nonatomic) IBOutlet UIImageView *GPSSignal;
 @property (retain, nonatomic) NSTimer *pollingTimer;
+@property (retain, nonatomic) NSTimer *locationStartTimer;
+@property (retain, nonatomic) NSTimer *locationStopTimer;
 @property (nonatomic) NSInteger runStatus;
 @property (nonatomic) double oldAccuracy;
 @property (nonatomic) NSInteger recoveryTimer;
 @property (nonatomic) bool didReachInitialAccuracy;
 @property (nonatomic) bool didRecoverTour;
 @property (nonatomic) bool writeRecoveryFile;
+@property (retain, nonatomic) CLLocation *bestLocation;
 - (IBAction)startUpTour:(id)sender;
 - (IBAction)startDownTour:(id)sender;
 - (IBAction)pauseTour:(id)sender;
 - (void)LoadLogin:(id)sender;
 - (void)ShowLoginOptions:(id)sender;
 - (void)LoginViewDidClose:(id)sender;
+- (void)UpdateDisplay:(CLLocation*)location;
+- (void)SaveCurrentLocation:(CLLocation*)location;
 - (void)ResetTour;
 
 @end

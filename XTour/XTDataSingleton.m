@@ -29,6 +29,7 @@
 - (void) ClearData
 {
     if (!_locationData) {_locationData = [[NSMutableArray alloc] init];}
+    if (!_batteryLevel) {_batteryLevel = [[NSMutableArray alloc] init];}
     if (!_imageInfo) {_imageInfo = [[NSMutableArray alloc] init];}
     if (!_userInfo) {_userInfo = [[XTUserInfo alloc] init];}
     if (!_warningInfo) {_warningInfo = [[NSMutableArray alloc] init];}
@@ -85,6 +86,7 @@
 - (void) ResetAll
 {
     [_locationData removeAllObjects];
+    [_batteryLevel removeAllObjects];
     [_imageInfo removeAllObjects];
     [_warningInfo removeAllObjects];
     _StartLocation = 0;
@@ -161,6 +163,9 @@
     if ([_locationData count] < 2) {NSLog(@"Not enough coordinates to calculate haversine distance."); return 0;}
     
     NSUInteger nCoordinates = [_locationData count];
+    
+    if (nCoordinates == _lastRunIndex+1) {return 0;}
+    
     CLLocation *p1 = [self GetCoordinatesAtIndex:(nCoordinates - 1)];
     CLLocation *p2 = [self GetCoordinatesAtIndex:(nCoordinates - 2)];
     
@@ -324,7 +329,8 @@
     [xml SetMetadataDouble:(double)_tourRating forKey:@"Rating" withPrecision:0];
     
     for (int i = _lastRunIndex; i < [_locationData count]; i++) {
-        [xml AddTrackpoint:[_locationData objectAtIndex:i]];
+        if (i < [_batteryLevel count]) {[xml AddTrackpoint:[_locationData objectAtIndex:i] batteryLevel:[[_batteryLevel objectAtIndex:i] floatValue]];}
+        else {[xml AddTrackpoint:[_locationData objectAtIndex:i]];}
     }
     
     /*if ([category isEqualToString:@"sum"]) {
@@ -718,6 +724,35 @@
     return info;
 }
 
+- (void) WriteUserSettings
+{
+    NSString *userSettingsFile = [self GetDocumentFilePathForFile:@"/UserSettings.xml" CheckIfExist:NO];
+    
+    XTXMLParser *parser = [[XTXMLParser alloc] init];
+    
+    bool success = [parser WriteUserSettings:_profileSettings toFile:userSettingsFile];
+    
+    if (success) {NSLog(@"done");}
+    else {NSLog(@"Could not write settings file");}
+}
+
+- (void) GetUserSettings
+{
+    NSString *userSettingsFile = [self GetDocumentFilePathForFile:@"/UserSettings.xml" CheckIfExist:YES];
+    
+    XTSettings *settings = nil;
+    if (userSettingsFile) {
+        XTXMLParser *parser = [[XTXMLParser alloc] init];
+        
+        settings = [parser GetUserSettings:userSettingsFile];
+        
+        _profileSettings.equipment = settings.equipment;
+        _profileSettings.saveOriginalImage = settings.saveOriginalImage;
+        _profileSettings.anonymousTracking = settings.anonymousTracking;
+        _profileSettings.safetyModus = settings.safetyModus;
+    }
+}
+
 - (void) AddWarningInfo:(XTWarningsInfo *)warningInfo
 {
     [self.warningInfo addObject:warningInfo];
@@ -773,6 +808,7 @@
 {
     [super dealloc];
     [_locationData release];
+    [_batteryLevel release];
     [_startTime release];
     [_endTime release];
     [_userID release];

@@ -46,9 +46,9 @@
     
     //_listOfFiles = [data GetAllImages];
     
-    NSArray *tableItems1 = [NSArray arrayWithObjects:@"Profil", @"Einstellungen", @"News feed", @"Wunschliste", @"Ausloggen", nil];
+    NSArray *tableItems1 = [NSArray arrayWithObjects:@"Profil", @"Einstellungen", @"News feed", @"Wunschliste", @"Ausloggen", @"Einstellungen speichern", @"Einstellungen laden", nil];
     NSArray *tableItems2 = [NSArray arrayWithObjects:@"Dateien hochladen", @"Aufräumen", nil];
-    NSArray *tableIcons1 = [NSArray arrayWithObjects:@"profile_icon_small@3x.png", @"settings_icon@3x.png", @"news_feed_icon@3x.png", @"wishlist_icon@3x.png", @"logout@3x.png", nil];
+    NSArray *tableIcons1 = [NSArray arrayWithObjects:@"profile_icon_small@3x.png", @"settings_icon@3x.png", @"news_feed_icon@3x.png", @"wishlist_icon@3x.png", @"logout@3x.png", @"", @"", nil];
     NSArray *tableIcons2 = [NSArray arrayWithObjects:@"upload_icon@3x.png", @"cleanup_icon@3x.png", nil];
     
     _listOfFiles = [[NSDictionary alloc] initWithObjectsAndKeys:tableItems1, @"Allgemein", tableItems2, @"Beta testing", nil];
@@ -233,6 +233,11 @@
                 case 4:
                     [data Logout];
                     break;
+                case 5:
+                    [data WriteUserSettings];
+                    break;
+                case 6:
+                    [data GetUserSettings];
             }
             break;
         case 1:

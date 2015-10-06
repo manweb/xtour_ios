@@ -72,7 +72,7 @@
     [Metadata addChild:Bounds];
 }
 
-- (void) AddTrackpoint:(CLLocation *)coordinate
+- (void) AddTrackpoint:(CLLocation *)coordinate batteryLevel:(float)level
 {
     if (!TrackSegment) {return;}
     if (!formatter) {return;}
@@ -85,6 +85,7 @@
     NSString *latitude = [[NSString alloc] initWithFormat:@"%f", lat];
     NSString *longitude = [[NSString alloc] initWithFormat:@"%f", lon];
     NSString *elevation = [[NSString alloc] initWithFormat:@"%f", ele];
+    NSString *batteryLevel = [[NSString alloc] initWithFormat:@"%f", level];
     
     NSString *timestamp = [formatter stringFromDate:time];
     
@@ -94,14 +95,21 @@
     
     GDataXMLElement *Elevation = [GDataXMLElement elementWithName:@"ele" stringValue:elevation];
     GDataXMLElement *Time = [GDataXMLElement elementWithName:@"time" stringValue:timestamp];
+    GDataXMLElement *Battery = [GDataXMLElement elementWithName:@"battery" stringValue:batteryLevel];
     
     [TrackPoint addChild:Elevation];
     [TrackPoint addChild:Time];
+    [TrackPoint addChild:Battery];
     [TrackSegment addChild:TrackPoint];
     
     [latitude release];
     [longitude release];
     [elevation release];
+}
+
+- (void) AddTrackpoint:(CLLocation *)coordinate
+{
+    [self AddTrackpoint:coordinate batteryLevel:-1.0];
 }
 
 - (void) SaveXML:(NSString *)filename
@@ -278,6 +286,86 @@
     [userInfoFile release];
     
     return info;
+}
+
+- (bool) WriteUserSettings:(XTSettings*)settings toFile:(NSString*)filename
+{
+    GDataXMLElement *XMLElement = [GDataXMLNode elementWithName:@"xml"];
+    
+    GDataXMLElement *userSettings = [GDataXMLElement elementWithName:@"userSettings"];
+    
+    NSString *equipment;
+    NSString *saveOriginalImage = @"0";
+    NSString *anonymousTracking = @"0";
+    NSString *safetyModus = @"0";
+    
+    switch (settings.equipment) {
+        case 0:
+            equipment = @"0";
+            break;
+        case 1:
+            equipment = @"1";
+            break;
+        case 2:
+            equipment = @"2";
+            break;
+    }
+    
+    if (settings.saveOriginalImage) {saveOriginalImage = @"1";}
+    if (settings.anonymousTracking) {anonymousTracking = @"1";}
+    if (settings.safetyModus) {safetyModus = @"1";}
+    
+    GDataXMLElement *elementEquipment = [GDataXMLElement elementWithName:@"equipment" stringValue:equipment];
+    GDataXMLElement *elementSaveOriginalImage = [GDataXMLElement elementWithName:@"saveOriginalImage" stringValue:saveOriginalImage];
+    GDataXMLElement *elementAnonymousTracking = [GDataXMLElement elementWithName:@"anonymousTracking" stringValue:anonymousTracking];
+    GDataXMLElement *elementSafetyModus = [GDataXMLElement elementWithName:@"safetyModus" stringValue:safetyModus];
+    
+    [userSettings addChild:elementEquipment];
+    [userSettings addChild:elementSaveOriginalImage];
+    [userSettings addChild:elementAnonymousTracking];
+    [userSettings addChild:elementSafetyModus];
+    
+    [XMLElement addChild:userSettings];
+    
+    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:XMLElement];
+    
+    NSData *xmlData = doc.XMLData;
+    
+    bool success = [xmlData writeToFile:filename atomically:YES];
+    
+    [doc release];
+    
+    NSLog(@"Writing settings file: %@ %@ %@ %@",equipment,saveOriginalImage,anonymousTracking,safetyModus);
+    return success;
+}
+
+- (XTSettings*) GetUserSettings:(NSString*)filename
+{
+    NSData *xmlData = [[NSData alloc] initWithContentsOfFile:filename];
+    GDataXMLDocument *userSettingsFile = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:nil];
+    
+    GDataXMLElement *userSettings = [[userSettingsFile.rootElement elementsForName:@"userSettings"] objectAtIndex:0];
+    
+    XTSettings *settings = [[[XTSettings alloc] init] autorelease];
+    
+    GDataXMLElement *equipment = [[userSettings elementsForName:@"equipment"] objectAtIndex:0];
+    GDataXMLElement *saveOriginalImage = [[userSettings elementsForName:@"saveOriginalImage"] objectAtIndex:0];
+    GDataXMLElement *anonymousTracking = [[userSettings elementsForName:@"anonymousTracking"] objectAtIndex:0];
+    GDataXMLElement *safetyModus = [[userSettings elementsForName:@"safetyModus"] objectAtIndex:0];
+    
+    settings.equipment = [equipment.stringValue integerValue];
+    
+    settings.saveOriginalImage = false;
+    if ([saveOriginalImage.stringValue isEqualToString:@"1"]) {settings.saveOriginalImage = true;}
+    
+    settings.anonymousTracking = false;
+    if ([anonymousTracking.stringValue isEqualToString:@"1"]) {settings.anonymousTracking = true;}
+    
+    settings.safetyModus = false;
+    if ([safetyModus.stringValue isEqualToString:@"1"]) {settings.safetyModus = true;}
+    
+    NSLog(@"Getting user settings: %li %@ %@ %@",(long)settings.equipment,saveOriginalImage.stringValue,anonymousTracking.stringValue,safetyModus.stringValue);
+    return settings;
 }
 
 @end

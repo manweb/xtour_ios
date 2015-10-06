@@ -11,6 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "XTImageInfo.h"
 #import "XTUserInfo.h"
+#import "XTSettings.h"
 
 @interface XTXMLParser : NSObject {
     
@@ -27,6 +28,7 @@
 - (void) SetMetadataDouble:(double)value forKey:(NSString *)key withPrecision:(int)precision;
 - (void) SetMetadataDate:(NSDate *)date forKey:(NSString *)key;
 - (void) SetMetadataBounds:(NSArray *)bounds;
+- (void) AddTrackpoint:(CLLocation *)coordinate batteryLevel:(float)level;
 - (void) AddTrackpoint:(CLLocation *)coordinate;
 - (void) SaveXML:(NSString *)filename;
 - (void) SaveRecoveryFile:(NSString *)filename;
@@ -36,5 +38,7 @@
 - (void) AddImageInfo:(XTImageInfo *)imageInfo;
 - (void) SaveImageInfo:(NSString *)filename;
 - (XTUserInfo*) GetUserInfo:(NSString*)filename;
+- (bool) WriteUserSettings:(XTSettings*)settings toFile:(NSString*)filename;
+- (XTSettings*) GetUserSettings:(NSString*)filename;
 
 @end

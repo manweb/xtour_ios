@@ -10,9 +10,11 @@
 
 @interface XTSettings : NSObject
 
-@property (nonatomic) int equipment;
+@property (nonatomic) NSInteger equipment;
 @property (nonatomic) bool saveOriginalImage;
 @property (nonatomic) bool anonymousTracking;
 @property (nonatomic) bool safetyModus;
+@property (nonatomic) float warningRadius;
+@property (nonatomic) float toursRadius;
 
 @end

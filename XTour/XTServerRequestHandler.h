@@ -14,6 +14,7 @@
 #import "XTImageInfo.h"
 #import "XTDataSingleton.h"
 #import "XTWarningsInfo.h"
+#import "XTUserStatistics.h"
 
 @interface XTServerRequestHandler : NSObject
 {
@@ -30,5 +31,6 @@
 - (BOOL) DownloadProfilePicture:(NSString*)userID;
 - (BOOL) DownloadUserInfo:(NSString*)userID;
 - (void) CheckGraphsForTour:(NSString*)tourID;
+- (XTUserStatistics*) GetUserStatistics:(NSString*)userID;
 
 @end

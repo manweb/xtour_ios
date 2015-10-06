@@ -43,6 +43,32 @@
     }
 }
 
+- (void) startLocationUpdate
+{
+    NSLog(@"Starting location service");
+    
+    [_locationStartTimer invalidate];
+    _locationStartTimer = nil;
+    
+    [_locationManager startUpdatingLocation];
+}
+
+- (void) stopLocationUpdate
+{
+    NSLog(@"Stopping location service");
+    
+    [_locationStopTimer invalidate];
+    _locationStopTimer = nil;
+    
+    [_locationManager stopUpdatingLocation];
+    
+    [self UpdateDisplayWithLocation:_bestLocation];
+    
+    [self SaveCurrentLocation:_bestLocation];
+    
+    _oldAccuracy = 10000.0;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -212,8 +238,18 @@
     
     data.runStatus = 0;
     
-    [_locationManager requestWhenInUseAuthorization];
-    [_locationManager requestAlwaysAuthorization];
+    //[_locationManager requestWhenInUseAuthorization];
+    //[_locationManager requestAlwaysAuthorization];
+    
+    if ([_locationManager respondsToSelector:@selector(requestAlwaysAuthorization)])
+    {
+        [_locationManager requestAlwaysAuthorization];
+    }
+    
+    _bestLocation = nil;
+    
+    _locationStartTimer = nil;
+    _locationStopTimer = nil;
     
     _geocoder = [[CLGeocoder alloc] init];
     _placemark = [[CLPlacemark alloc] init];
@@ -573,6 +609,115 @@
     }
 }
 
+- (void) UpdateDisplayWithLocation:(CLLocation*)location
+{
+    CLLocationDegrees lon = location.coordinate.longitude;
+    CLLocationDegrees lat = location.coordinate.latitude;
+    CLLocationDistance alt = location.altitude;
+    
+    double longitude = (double)lon;
+    NSString *lonEW;
+    if (longitude < 0) {lonEW = @"W"; longitude = fabs(longitude);}
+    else {lonEW = @"E";}
+    
+    double latitude = (double)lat;
+    NSString *latNS;
+    if (latitude < 0) {latNS = @"S"; latitude = fabs(latitude);}
+    else {latNS = @"N";}
+    
+    NSString *lonString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
+                           floor(longitude),
+                           floor((longitude - floor(longitude)) * 60),
+                           ((longitude - floor(longitude)) * 60 - floor((longitude - floor(longitude)) * 60)) * 60, [lonEW UTF8String]];
+    NSString *latString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
+                           floor(latitude),
+                           floor((latitude - floor(latitude)) * 60),
+                           ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];
+    NSString *altString = [NSString stringWithFormat:@"%.0f müm", alt];
+    
+    _longLabel.text = lonString;
+    _latLabel.text = latString;
+    _elevationLabel.text = altString;
+    
+    NSString *distTotal;
+    if (data.totalDistance < 0.1) {distTotal = [[NSString alloc] initWithFormat:@"%.0f m", (data.totalDistance)*1000];}
+    else {distTotal = [[NSString alloc] initWithFormat:@"%.1f km", data.totalDistance];}
+    NSString *altTotal = [[NSString alloc] initWithFormat:@"%.0f m", data.totalAltitude];
+    
+    _distanceLabel.text = distTotal;
+    _altitudeLabel.text = altTotal;
+    
+    _totalDistanceLabel.text = [NSString stringWithFormat:@"%.1f km",data.sumDistance];
+    _totalAltitudeLabel.text = [NSString stringWithFormat:@"%.1f m",data.sumAltitude];
+    
+    if (data.rateTimer > 10) {
+        double diffDistance = data.totalDistance - data.rateLastDistance;
+        double diffAltitude = data.totalAltitude - data.rateLastAltitude;
+        data.DistanceRate = diffDistance/data.rateTimer * 3600.0;
+        data.AltitudeRate = diffAltitude/data.rateTimer * 3600.0;
+        
+        NSString *r_dist_str = [NSString stringWithFormat:@"%.1f km/h", data.DistanceRate];
+        NSString *r_alt_str = [NSString stringWithFormat:@"%.1f m/h", data.AltitudeRate];
+        
+        _distanceRateLabel.text = r_dist_str;
+        _altitudeRateLabel.text = r_alt_str;
+        
+        if (data.AltitudeRate > 0) {_altitudeRateIcon.image = [UIImage imageNamed:@"arrow_up@3x.png"]; [_altitudeRateIcon setHidden:NO];}
+        else if (data.AltitudeRate < 0) {_altitudeRateIcon.image = [UIImage imageNamed:@"arrow_down@3x.png"]; [_altitudeRateIcon setHidden:NO];}
+        else {[_altitudeRateIcon setHidden:YES];}
+        
+        data.rateTimer = 0;
+        data.rateLastDistance = data.totalDistance;
+        data.rateLastAltitude = data.totalAltitude;
+    }
+    
+    [lonEW release];
+    [latNS release];
+    [distTotal release];
+    [altTotal release];
+}
+
+- (void) SaveCurrentLocation:(CLLocation*)location
+{
+    CLLocationDistance alt = location.altitude;
+    
+    if (data.StartLocation == 0) {
+        data.StartLocation = location;
+        
+        [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+            if (error == nil && [placemarks count] > 0) {
+                _placemark = [placemarks lastObject];
+                data.country = _placemark.country;
+                data.province = _placemark.administrativeArea;
+            }
+            else {
+                NSLog(@"%@", error.debugDescription);
+            }
+        }];
+    }
+    NSLog(@"Calculating haversine distance...");
+    [data AddCoordinate:location];
+    double d = [data CalculateHaversineForCurrentCoordinate];
+    
+    if (d == -1) {[data RemoveLastCoordinate]; return;}
+    
+    double altitudeDiff = [data CalculateAltitudeDiffForCurrentCoordinate];
+    [data AddDistance:d andHeight:altitudeDiff];
+    
+    UIDevice *device = [UIDevice currentDevice];
+    [device setBatteryMonitoringEnabled:YES];
+    float level = [device batteryLevel];
+    
+    [data.batteryLevel addObject:[NSNumber numberWithFloat:level]];
+    
+    if (alt < data.lowestPoint) {data.lowestPoint = alt;}
+    if (alt > data.highestPoint) {data.highestPoint = alt;}
+    if (alt < data.sumlowestPoint) {data.sumlowestPoint = alt;}
+    if (alt > data.sumhighestPoint) {data.sumhighestPoint = alt;}
+    
+    NSLog(@"Haversine distance: %f", d);
+}
+
 - (void) ResetTour
 {
     _timerLabel.text = @"00h 00m 00s";
@@ -678,128 +823,46 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     CLLocation* Location = [locations lastObject];
-    CLLocationDegrees lon = Location.coordinate.longitude;
-    CLLocationDegrees lat = Location.coordinate.latitude;
-    CLLocationDistance alt = Location.altitude;
     
     data.CurrentLocation = Location;
     
     NSLog(@"Accuracy: %.1f",Location.horizontalAccuracy);
     
     double accuracy = Location.horizontalAccuracy;
-    if (accuracy != _oldAccuracy) {
-        if (accuracy >= 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_none.png"]]; if (!_didReachInitialAccuracy) {return;}}
-        if (accuracy >= 100.0 && accuracy < 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_weak.png"]]; if (!_didReachInitialAccuracy) {return;}}
-        if (accuracy > 10.0 && accuracy < 100.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_medium.png"]]; if (!_didReachInitialAccuracy) {return;}}
-        if (accuracy <= 10.0) {
-            [_GPSSignal setImage:[UIImage imageNamed:@"GPS_strong.png"]];
-            if (!_didReachInitialAccuracy) {
-                _didReachInitialAccuracy = true;
-                [_locationManager stopUpdatingLocation];
-                
-                [_GPSSignalLabel setHidden:YES];
-                
-                [_longLabel setHidden:NO];
-                [_latLabel setHidden:NO];
-                [_elevationLabel setHidden:NO];
-            }
+    if (accuracy >= 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_none.png"]]; if (!_didReachInitialAccuracy) {return;}}
+    if (accuracy >= 100.0 && accuracy < 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_weak.png"]]; if (!_didReachInitialAccuracy) {return;}}
+    if (accuracy > 10.0 && accuracy < 100.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_medium.png"]]; if (!_didReachInitialAccuracy) {return;}}
+    if (accuracy <= 10.0) {
+        [_GPSSignal setImage:[UIImage imageNamed:@"GPS_strong.png"]];
+        if (!_didReachInitialAccuracy) {
+            _didReachInitialAccuracy = true;
+            [_locationManager stopUpdatingLocation];
+            
+            [_GPSSignalLabel setHidden:YES];
+            
+            [_longLabel setHidden:NO];
+            [_latLabel setHidden:NO];
+            [_elevationLabel setHidden:NO];
+            
+            [self UpdateDisplayWithLocation:Location];
+            
+            return;
         }
     }
-    //else if (accuracy > 10.0 && _didReachInitialAccuracy == false) {return;}
-    if (!_didReachInitialAccuracy) {return;}
-    
-    double longitude = (double)lon;
-    NSString *lonEW;
-    if (longitude < 0) {lonEW = @"W"; longitude = fabs(longitude);}
-    else {lonEW = @"E";}
-    
-    double latitude = (double)lat;
-    NSString *latNS;
-    if (latitude < 0) {latNS = @"S"; latitude = fabs(latitude);}
-    else {latNS = @"N";}
-    
-    NSString *lonString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
-                           floor(longitude),
-                           floor((longitude - floor(longitude)) * 60),
-                           ((longitude - floor(longitude)) * 60 - floor((longitude - floor(longitude)) * 60)) * 60, [lonEW UTF8String]];
-    NSString *latString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
-                           floor(latitude),
-                           floor((latitude - floor(latitude)) * 60),
-                           ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];
-    NSString *altString = [NSString stringWithFormat:@"%.0f müm", alt];
-    
-    _longLabel.text = lonString;
-    _latLabel.text = latString;
-    _elevationLabel.text = altString;
     
     if (data.runStatus == 0 || data.runStatus == 2 || data.runStatus == 4) {return;}
     
-    if (data.StartLocation == 0) {
-        data.StartLocation = Location;
-        
-        [_geocoder reverseGeocodeLocation:Location completionHandler:^(NSArray *placemarks, NSError *error) {
-            if (error == nil && [placemarks count] > 0) {
-                _placemark = [placemarks lastObject];
-                data.country = _placemark.country;
-                data.province = _placemark.administrativeArea;
-            }
-            else {
-                NSLog(@"%@", error.debugDescription);
-            }
-        }];
-    }
-    NSLog(@"Calculating haversine distance...");
-    [data AddCoordinate:Location];
-    double d = [data CalculateHaversineForCurrentCoordinate];
+    if (accuracy < _oldAccuracy) {self.bestLocation = Location; self.oldAccuracy = accuracy;}
     
-    if (d == -1) {[data RemoveLastCoordinate]; return;}
+    UIBackgroundTaskIdentifier bgTask = 0;
+    UIApplication  *app = [UIApplication sharedApplication];
+    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        [app endBackgroundTask:bgTask];
+    }];
     
-    double altitudeDiff = [data CalculateAltitudeDiffForCurrentCoordinate];
-    [data AddDistance:d andHeight:altitudeDiff];
+    if (!_locationStartTimer) {_locationStartTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(startLocationUpdate) userInfo:nil repeats:NO];}
     
-    if (alt < data.lowestPoint) {data.lowestPoint = alt;}
-    if (alt > data.highestPoint) {data.highestPoint = alt;}
-    if (alt < data.sumlowestPoint) {data.sumlowestPoint = alt;}
-    if (alt > data.sumhighestPoint) {data.sumhighestPoint = alt;}
-    
-    NSString *distTotal;
-    if (data.totalDistance < 0.1) {distTotal = [[NSString alloc] initWithFormat:@"%.0f m", (data.totalDistance)*1000];}
-    else {distTotal = [[NSString alloc] initWithFormat:@"%.1f km", data.totalDistance];}
-    NSString *altTotal = [[NSString alloc] initWithFormat:@"%.0f m", data.totalAltitude];
-    
-    _distanceLabel.text = distTotal;
-    _altitudeLabel.text = altTotal;
-    
-    _totalDistanceLabel.text = [NSString stringWithFormat:@"%.1f km",data.sumDistance];
-    _totalAltitudeLabel.text = [NSString stringWithFormat:@"%.1f m",data.sumAltitude];
-    
-    if (data.rateTimer > 10) {
-        double diffDistance = data.totalDistance - data.rateLastDistance;
-        double diffAltitude = data.totalAltitude - data.rateLastAltitude;
-        data.DistanceRate = diffDistance/data.rateTimer * 3600.0;
-        data.AltitudeRate = diffAltitude/data.rateTimer * 3600.0;
-        
-        NSString *r_dist_str = [NSString stringWithFormat:@"%.1f km/h", data.DistanceRate];
-        NSString *r_alt_str = [NSString stringWithFormat:@"%.1f m/h", data.AltitudeRate];
-        
-        _distanceRateLabel.text = r_dist_str;
-        _altitudeRateLabel.text = r_alt_str;
-        
-        if (data.AltitudeRate > 0) {_altitudeRateIcon.image = [UIImage imageNamed:@"arrow_up@3x.png"]; [_altitudeRateIcon setHidden:NO];}
-        else if (data.AltitudeRate < 0) {_altitudeRateIcon.image = [UIImage imageNamed:@"arrow_down@3x.png"]; [_altitudeRateIcon setHidden:NO];}
-        else {[_altitudeRateIcon setHidden:YES];}
-        
-        data.rateTimer = 0;
-        data.rateLastDistance = data.totalDistance;
-        data.rateLastAltitude = data.totalAltitude;
-    }
-    
-    NSLog(@"Haversine distance: %f", d);
-    
-    [lonEW release];
-    [latNS release];
-    [distTotal release];
-    [altTotal release];
+    if (!_locationStopTimer) {_locationStopTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(stopLocationUpdate) userInfo:nil repeats:NO];}
 }
 
 @end

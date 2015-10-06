@@ -243,6 +243,50 @@
     return warnings;
 }
 
+- (XTUserStatistics*) GetUserStatistics:(NSString*)userID
+{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_user_statistics.php?uid=%@", userID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request startSynchronous];
+    
+    XTUserStatistics *userStatistics = [[XTUserStatistics alloc] init];
+    
+    NSError *error = [request error];
+    if (!error) {
+        NSString *response = [request responseString];
+        
+        NSArray *userStatistics_array = [response componentsSeparatedByString:@";"];
+        
+        for (int i = 0; i < [userStatistics_array count]; i++) {
+            if ([userStatistics_array count] > 12) {return nil;}
+            
+            userStatistics.monthlyNumberOfTours = [[userStatistics_array objectAtIndex:0] integerValue];
+            userStatistics.monthlyTime = [[userStatistics_array objectAtIndex:1] integerValue];
+            userStatistics.monthlyDistance = [[userStatistics_array objectAtIndex:2] floatValue];
+            userStatistics.monthlyAltitude = [[userStatistics_array objectAtIndex:3] floatValue];
+            userStatistics.seasonalNumberOfTours = [[userStatistics_array objectAtIndex:4] integerValue];
+            userStatistics.seasonalTime = [[userStatistics_array objectAtIndex:5] integerValue];
+            userStatistics.seasonalDistance = [[userStatistics_array objectAtIndex:6] floatValue];
+            userStatistics.seasonalAltitude = [[userStatistics_array objectAtIndex:7] floatValue];
+            userStatistics.totalNumberOfTours = [[userStatistics_array objectAtIndex:8] integerValue];
+            userStatistics.totalTime = [[userStatistics_array objectAtIndex:9] integerValue];
+            userStatistics.totalDistance = [[userStatistics_array objectAtIndex:10] floatValue];
+            userStatistics.totalAltitude = [[userStatistics_array objectAtIndex:11] floatValue];
+        }
+    }
+    else {
+        NSLog(@"There was a problem retrieving the user statistics");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    [requestString release];
+    
+    return userStatistics;
+}
+
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID
 {
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/insert_image_comment.php?image=%@&comment=%@", imageID, [comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
