@@ -36,14 +36,14 @@
 {
     NSArray *tableItems1 = [NSArray arrayWithObjects:@"Ski",@"Snowboard",@"Splitboard", nil];
     NSArray *tableItems2 = [NSArray arrayWithObjects:@"Originalbild speichern",@"Anonym aufzeichnen", nil];
-    NSArray *tableItems3 = [NSArray arrayWithObjects:@"Safety Modus", nil];
+    NSArray *tableItems3 = [NSArray arrayWithObjects:@"Safety Modus",@"Batterie Sparmodus", nil];
     NSArray *tableItems4 = [NSArray arrayWithObjects:@"Warnungen",@"Touren", nil];
     
     _tableArrays = [[NSDictionary alloc] initWithObjectsAndKeys:tableItems1, @"Mein Sportgerät", tableItems2, @"Diverses", tableItems3, @"Safety", tableItems4, @"Suchradien", nil];
     
     _sectionTitles = [[NSArray alloc] initWithObjects:@"Mein Sportgerät",@"Diverses", @"Safety", @"Suchradien", nil];
     
-    _sectionFooter = [[NSArray alloc] initWithObjects:@"",@"",@"Bei Aktivierung stoppt die App automatisch das Aufzeichnen der GPS Daten wenn die Batterie unter 20% fällt.", @"", nil];
+    _sectionFooter = [[NSArray alloc] initWithObjects:@"",@"",@"Bei Aktivierung des Safety Modus stoppt die App automatisch das Aufzeichnen der GPS Daten wenn die Batterie unter 20% fällt.", @"", nil];
     
     _selectedIndex = 0;
 }
@@ -117,14 +117,21 @@
             
         case 2:
         {
-            if (indexPath.row == 0) {
-                UISwitch *switchSafety = [[[UISwitch alloc] init] autorelease];
-                
-                switchSafety.frame = CGRectMake(cell.frame.size.width-switchSafety.frame.size.width-10, (cell.frame.size.height - switchSafety.frame.size.height)/2, 50, switchSafety.frame.size.height);
-                [switchSafety addTarget:self action:@selector(switchSafetyChanged:) forControlEvents:UIControlEventValueChanged];
-                [cell.contentView addSubview:switchSafety];
-                
-                switchSafety.on = data.profileSettings.safetyModus;
+            UISwitch *switchSafety = [[[UISwitch alloc] init] autorelease];
+            
+            switchSafety.frame = CGRectMake(cell.frame.size.width-switchSafety.frame.size.width-10, (cell.frame.size.height - switchSafety.frame.size.height)/2, 50, switchSafety.frame.size.height);
+            [cell.contentView addSubview:switchSafety];
+            
+            switch (indexPath.row) {
+                case 0:
+                    switchSafety.on = data.profileSettings.safetyModus;
+                    [switchSafety addTarget:self action:@selector(switchSafetyChanged:) forControlEvents:UIControlEventValueChanged];
+                    break;
+                case 1:
+                    switchSafety.on = data.profileSettings.batterySafeMode;
+                    [switchSafety addTarget:self action:@selector(switchBatterySafeModusChanged:) forControlEvents:UIControlEventValueChanged];
+                    break;
+                    
             }
         }
             break;
@@ -223,6 +230,8 @@
     
     textView.scrollEnabled = false;
     
+    textView.editable = false;
+    
     [viewFooter addSubview:textView];
     
     [textView release];
@@ -260,6 +269,13 @@
     bool currentStatus = data.profileSettings.safetyModus;
     
     data.profileSettings.safetyModus = !currentStatus;
+}
+
+- (void)switchBatterySafeModusChanged:(id)sender
+{
+    bool currentStatus = data.profileSettings.batterySafeMode;
+    
+    data.profileSettings.batterySafeMode = !currentStatus;
 }
 
 - (void)WarningRadiusChanged:(id)sender

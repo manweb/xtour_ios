@@ -31,7 +31,7 @@
     float boxMarginTop = 75.0f;
     UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
     
-    _profileSummary = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, boxMarginTop+30, boxWidth, 230)];
+    _profileSummary = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, boxMarginTop+30, boxWidth, 300)];
     
     _profileSummary.backgroundColor = [UIColor whiteColor];
     _profileSummary.layer.cornerRadius = boxRadius;
@@ -54,23 +54,11 @@
     profilePictureBackground.layer.borderColor = [[UIColor whiteColor] CGColor];
     profilePictureBackground.layer.cornerRadius = 31.0f;
     
-    _userName = [[UILabel alloc] initWithFrame:CGRectMake(55, 15, 255, 20)];
-    
-    _userName.font = [UIFont fontWithName:@"Helvetica-BoldMT" size:12];
-    _userName.textColor = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:1.0];
-    
-    if (data.loggedIn) {
-        _userName.text = data.userInfo.userName;
-    }
-    else {
-        _userName.text = @"Nicht eingelogged";
-    }
-    
     UIView *line = [[[UIView alloc] initWithFrame:CGRectMake(5, 50, boxWidth-10, 1)] autorelease];
     
     line.backgroundColor = [UIColor colorWithRed:220.0f/255.0f green:220.0f/255.0f blue:220.0f/255.0f alpha:1.0f];
     
-    UILabel *statsLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 55, 200, 15)];
+    UILabel *statsLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 35, 200, 15)];
     
     statsLabel.text = @"Statistik";
     statsLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
@@ -78,7 +66,7 @@
     
     _month = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
-    _month.frame = CGRectMake(5, 75, (boxWidth-10)/3, 20);
+    _month.frame = CGRectMake(5, 60, (boxWidth-10)/3, 20);
     [_month setTitle:@"Diesen Monat" forState:UIControlStateNormal];
     _month.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     [_month setTitleColor:[UIColor colorWithRed:41.0f/255.0f green:127.0f/255.0f blue:199.0f/255.0f alpha:0.9f] forState:UIControlStateNormal];
@@ -86,7 +74,7 @@
     
     _season = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
-    _season.frame = CGRectMake(5+(boxWidth-10)/3, 75, (boxWidth-10)/3, 20);
+    _season.frame = CGRectMake(5+(boxWidth-10)/3, 60, (boxWidth-10)/3, 20);
     [_season setTitle:@"Diese Saison" forState:UIControlStateNormal];
     _season.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     [_season setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
@@ -94,79 +82,85 @@
     
     _total = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
-    _total.frame = CGRectMake(5+2*(boxWidth-10)/3, 75, (boxWidth-10)/3, 20);
+    _total.frame = CGRectMake(5+2*(boxWidth-10)/3, 60, (boxWidth-10)/3, 20);
     [_total setTitle:@"Seit Beginn" forState:UIControlStateNormal];
     _total.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     [_total setTitleColor:[UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
     [_total addTarget:self action:@selector(ShowTotalStatistics:) forControlEvents:UIControlEventTouchUpInside];
     
-    _tab = [[UIView alloc] initWithFrame:CGRectMake(5, 100, (boxWidth-10)/3, 2)];
+    _tab = [[UIView alloc] initWithFrame:CGRectMake(5, 85, (boxWidth-10)/3, 2)];
     
     _tab.backgroundColor = [UIColor colorWithRed:41.0f/255.0f green:127.0f/255.0f blue:199.0f/255.0f alpha:0.9f];
     
     float iconSize = 40.0;
     
-    UILabel *timeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+10, 120, 150, 15)];
+    UILabel *timeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+10, 105, 150, 15)];
     
     timeTitleLabel.text = @"Gesamtzeit";
     timeTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     timeTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     
-    UILabel *toursTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 150, 15)];
+    UILabel *toursTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 105, 150, 15)];
     
     toursTitleLabel.text = @"Anzahl Touren";
     toursTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     toursTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     
-    UILabel *distanceTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 130+iconSize, 150, 15)];
+    UILabel *distanceTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 115+iconSize, 150, 15)];
     
     distanceTitleLabel.text = @"Distanz";
     distanceTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     distanceTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     
-    UILabel *altitudeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+10, 130+iconSize, 150, 15)];
+    UILabel *altitudeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+10, 115+iconSize, 150, 15)];
     
     altitudeTitleLabel.text = @"Höhenmeter";
     altitudeTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     altitudeTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     
-    UIImageView *timeImage = [[UIImageView alloc] initWithFrame:CGRectMake(boxWidth/2+5, 120, iconSize, iconSize)];
+    UIImageView *timeImage = [[UIImageView alloc] initWithFrame:CGRectMake(boxWidth/2+5, 105, iconSize, iconSize)];
     
     timeImage.image = [UIImage imageNamed:@"clock_icon.png"];
     
-    UIImageView *numberOfToursImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 120, iconSize, iconSize)];
+    UIImageView *numberOfToursImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 105, iconSize, iconSize)];
     
     numberOfToursImage.image = [UIImage imageNamed:@"clock_icon.png"];
     
-    UIImageView *distanceImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 130+iconSize, iconSize, iconSize)];
+    UIImageView *distanceImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 115+iconSize, iconSize, iconSize)];
     
     distanceImage.image = [UIImage imageNamed:@"skier_up_icon.png"];
     
-    UIImageView *altitudeImage = [[UIImageView alloc] initWithFrame:CGRectMake(boxWidth/2+5, 130+iconSize, iconSize, iconSize)];
+    UIImageView *altitudeImage = [[UIImageView alloc] initWithFrame:CGRectMake(boxWidth/2+5, 115+iconSize, iconSize, iconSize)];
     
     altitudeImage.image = [UIImage imageNamed:@"altitude_icon.png"];
     
-    _toursLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 130, boxWidth/2-10, iconSize)];
+    _toursLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 115, boxWidth/2-10, iconSize)];
     
     _toursLabel.text = @"2";
     _toursLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0f];
     
-    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+15, 130, boxWidth/2-10, iconSize)];
+    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+15, 115, boxWidth/2-10, iconSize)];
     
     _timeLabel.text = @"5h 45m";
     _timeLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0f];
     
-    _distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 140+iconSize, boxWidth/2-10, iconSize)];
+    _distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 125+iconSize, boxWidth/2-10, iconSize)];
     
     _distanceLabel.text = @"5.2 km";
     _distanceLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0f];
     
-    _altitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+15, 140+iconSize, boxWidth/2-10, iconSize)];
+    _altitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+15, 125+iconSize, boxWidth/2-10, iconSize)];
     
     _altitudeLabel.text = @"2.1 km";
     _altitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0f];
     
-    _calendarView = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, boxMarginTop+265, boxWidth, 1.05*boxWidth)];
+    yearlyStatistics = [[XTYearlyStatisticsViewController alloc] initWithNibName:nil bundle:nil];
+    
+    yearlyStatistics.view.frame = CGRectMake(0, 220, boxWidth, 70);
+    
+    [yearlyStatistics LoadData];
+    
+    _calendarView = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, boxMarginTop+335, boxWidth, 1.05*boxWidth)];
     
     _calendarView.backgroundColor = [UIColor whiteColor];
     _calendarView.layer.cornerRadius = boxRadius;
@@ -181,10 +175,9 @@
     
     [_calendarView addSubview:calendarPageView.view];
     
-    [self setContentSize:CGSizeMake(_width, boxMarginTop+240+1.05*boxWidth)];
+    [self setContentSize:CGSizeMake(_width, boxMarginTop+340+1.05*boxWidth)];
     
     //[_profileSummary addSubview:_profilePicture];
-    [_profileSummary addSubview:_userName];
     [_profileSummary addSubview:line];
     [_profileSummary addSubview:statsLabel];
     [_profileSummary addSubview:_month];
@@ -203,6 +196,7 @@
     [_profileSummary addSubview:_timeLabel];
     [_profileSummary addSubview:_distanceLabel];
     [_profileSummary addSubview:_altitudeLabel];
+    [_profileSummary addSubview:yearlyStatistics.view];
     [self addSubview:_profileSummary];
     [self addSubview:_calendarView];
     [self addSubview:_profilePicture];
@@ -227,7 +221,6 @@
 - (void)dealloc {
     [_profileSummary release];
     [_profilePicture release];
-    [_userName release];
     [super dealloc];
 }
 

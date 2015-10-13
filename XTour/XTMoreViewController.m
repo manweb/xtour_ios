@@ -94,7 +94,10 @@
     
     [self LoginViewDidClose:nil];
     
-    if (navigationView.view.frame.origin.x == 0) {[navigationView.backButton setHidden:NO];}
+    if (navigationView.view.frame.origin.x == 0) {
+        [navigationView.backButton setHidden:NO];
+        [navigationView.navigationTitle setHidden:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -105,7 +108,10 @@
 
 - (void) viewWillDisappear:(BOOL)animated
 {
-    if (navigationView.view.frame.origin.x == 0) {[navigationView.backButton setHidden:YES];}
+    if (navigationView.view.frame.origin.x == 0) {
+        [navigationView.backButton setHidden:YES];
+        [navigationView.navigationTitle setHidden:YES];
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -169,6 +175,8 @@
                     navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
                     navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
                     
+                    navigationView.navigationTitle.text = data.userInfo.userName;
+                    
                     [self.view addSubview:navigationView.view];
                     
                     [self.view bringSubviewToFront:_header];
@@ -180,7 +188,10 @@
                     
                     [navigationView.view addSubview:profile];
                     
-                    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
+                    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {
+                        [navigationView.backButton setHidden:NO];
+                        [navigationView.navigationTitle setHidden:NO];
+                    }];
                 }
                     
                     break;

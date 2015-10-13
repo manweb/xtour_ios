@@ -18,6 +18,7 @@
     _safetyModus = false;
     _warningRadius = 20.0f;
     _toursRadius = 20.0f;
+    _batterySafeMode = false;
     
     return [super init];
 }

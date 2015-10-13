@@ -28,6 +28,7 @@
 - (void)switchSaveImagesChanged:(id)sender;
 - (void)switchAnonymousChanged:(id)sender;
 - (void)switchSafetyChanged:(id)sender;
+- (void)switchBatterySafeModusChanged:(id)sender;
 - (void)WarningRadiusChanged:(id)sender;
 - (void)ToursRadiusChanged:(id)sender;
 

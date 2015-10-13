@@ -11,17 +11,18 @@
 #import "XTCalendarPageViewController.h"
 #import "XTUserStatistics.h"
 #import "XTServerRequestHandler.h"
+#import "XTYearlyStatisticsViewController.h"
 
 @interface XTProfileViewController : UIScrollView
 {
     XTDataSingleton *data;
+    XTYearlyStatisticsViewController *yearlyStatistics;
 }
 
 @property (nonatomic) float width;
 @property (retain, nonatomic) UIView *profileSummary;
 @property (retain, nonatomic) UIView *calendarView;
 @property (retain, nonatomic) UIImageView *profilePicture;
-@property (retain, nonatomic) UILabel *userName;
 @property (retain, nonatomic) UIButton *month;
 @property (retain, nonatomic) UIButton *season;
 @property (retain, nonatomic) UIButton *total;

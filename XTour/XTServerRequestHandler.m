@@ -287,6 +287,41 @@
     return userStatistics;
 }
 
+- (NSMutableArray *) GetYearlyStatistics:(NSString*)userID
+{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_yearly_statistics.php?uid=%@", userID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request startSynchronous];
+    
+    NSMutableArray *yearlyStatistics = nil;
+    
+    NSError *error = [request error];
+    if (!error) {
+        NSString *response = [request responseString];
+        
+        NSArray *userStatistics_array = [response componentsSeparatedByString:@";"];
+        
+        if ([userStatistics_array count] != 53) {return nil;}
+        
+        yearlyStatistics = [[NSMutableArray alloc] initWithArray:userStatistics_array];
+        
+        [yearlyStatistics removeLastObject];
+    }
+    else {
+        NSLog(@"There was a problem retrieving the user statistics");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    [requestString release];
+    
+    yearlyStatistics = [[[yearlyStatistics reverseObjectEnumerator] allObjects] mutableCopy];
+    
+    return yearlyStatistics;
+}
+
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID
 {
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/insert_image_comment.php?image=%@&comment=%@", imageID, [comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];

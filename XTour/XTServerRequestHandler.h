@@ -32,5 +32,6 @@
 - (BOOL) DownloadUserInfo:(NSString*)userID;
 - (void) CheckGraphsForTour:(NSString*)tourID;
 - (XTUserStatistics*) GetUserStatistics:(NSString*)userID;
+- (NSMutableArray*) GetYearlyStatistics:(NSString*)userID;
 
 @end

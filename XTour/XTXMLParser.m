@@ -298,6 +298,7 @@
     NSString *saveOriginalImage = @"0";
     NSString *anonymousTracking = @"0";
     NSString *safetyModus = @"0";
+    NSString *batterySafeModus = @"0";
     
     switch (settings.equipment) {
         case 0:
@@ -314,16 +315,19 @@
     if (settings.saveOriginalImage) {saveOriginalImage = @"1";}
     if (settings.anonymousTracking) {anonymousTracking = @"1";}
     if (settings.safetyModus) {safetyModus = @"1";}
+    if (settings.batterySafeMode) {batterySafeModus = @"1";}
     
     GDataXMLElement *elementEquipment = [GDataXMLElement elementWithName:@"equipment" stringValue:equipment];
     GDataXMLElement *elementSaveOriginalImage = [GDataXMLElement elementWithName:@"saveOriginalImage" stringValue:saveOriginalImage];
     GDataXMLElement *elementAnonymousTracking = [GDataXMLElement elementWithName:@"anonymousTracking" stringValue:anonymousTracking];
     GDataXMLElement *elementSafetyModus = [GDataXMLElement elementWithName:@"safetyModus" stringValue:safetyModus];
+    GDataXMLElement *elementBatterySafeModus = [GDataXMLElement elementWithName:@"batterySafeModus" stringValue:batterySafeModus];
     
     [userSettings addChild:elementEquipment];
     [userSettings addChild:elementSaveOriginalImage];
     [userSettings addChild:elementAnonymousTracking];
     [userSettings addChild:elementSafetyModus];
+    [userSettings addChild:elementBatterySafeModus];
     
     [XMLElement addChild:userSettings];
     
@@ -335,7 +339,7 @@
     
     [doc release];
     
-    NSLog(@"Writing settings file: %@ %@ %@ %@",equipment,saveOriginalImage,anonymousTracking,safetyModus);
+    NSLog(@"Writing settings file: %@ %@ %@ %@ %@",equipment,saveOriginalImage,anonymousTracking,safetyModus,batterySafeModus);
     return success;
 }
 
@@ -352,6 +356,7 @@
     GDataXMLElement *saveOriginalImage = [[userSettings elementsForName:@"saveOriginalImage"] objectAtIndex:0];
     GDataXMLElement *anonymousTracking = [[userSettings elementsForName:@"anonymousTracking"] objectAtIndex:0];
     GDataXMLElement *safetyModus = [[userSettings elementsForName:@"safetyModus"] objectAtIndex:0];
+    GDataXMLElement *batterySafeModus = [[userSettings elementsForName:@"batterySafeModus"] objectAtIndex:0];
     
     settings.equipment = [equipment.stringValue integerValue];
     
@@ -364,7 +369,10 @@
     settings.safetyModus = false;
     if ([safetyModus.stringValue isEqualToString:@"1"]) {settings.safetyModus = true;}
     
-    NSLog(@"Getting user settings: %li %@ %@ %@",(long)settings.equipment,saveOriginalImage.stringValue,anonymousTracking.stringValue,safetyModus.stringValue);
+    settings.batterySafeMode = false;
+    if ([batterySafeModus.stringValue isEqualToString:@"1"]) {settings.batterySafeMode = true;}
+    
+    NSLog(@"Getting user settings: %li %@ %@ %@ %@",(long)settings.equipment,saveOriginalImage.stringValue,anonymousTracking.stringValue,safetyModus.stringValue,batterySafeModus.stringValue);
     return settings;
 }
 

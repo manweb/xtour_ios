@@ -16,5 +16,6 @@
 @property (nonatomic) bool safetyModus;
 @property (nonatomic) float warningRadius;
 @property (nonatomic) float toursRadius;
+@property (nonatomic) bool batterySafeMode;
 
 @end

@@ -27,12 +27,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    
     _backButton = [[UIButton alloc] initWithFrame:CGRectMake(16, 30, 30, 30)];
     [_backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     [_backButton setImage:[UIImage imageNamed:@"arrow_back@3x.png"] forState:UIControlStateNormal];
     [_backButton setHidden:YES];
     
+    _navigationTitle = [[UILabel alloc] initWithFrame:CGRectMake(50, 30, width-100, 30)];
+    _navigationTitle.textColor = [UIColor whiteColor];
+    _navigationTitle.font = [UIFont fontWithName:@"Helvetica-BoldMT" size:14.0f];
+    _navigationTitle.textAlignment = NSTextAlignmentCenter;
+    [_navigationTitle setHidden:YES];
+    
     [[[UIApplication sharedApplication] keyWindow] addSubview:_backButton];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:_navigationTitle];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,6 +60,8 @@
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
     [_backButton setHidden:YES];
+    
+    [_navigationTitle setHidden:YES];
     
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {self.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[self.view removeFromSuperview];}];
 }

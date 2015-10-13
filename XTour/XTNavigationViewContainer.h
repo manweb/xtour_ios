@@ -11,6 +11,7 @@
 @interface XTNavigationViewContainer : UIViewController
 
 @property(nonatomic,retain) UIButton *backButton;
+@property(nonatomic,retain) UILabel *navigationTitle;
 
 - (void) back:(id)sender;
 

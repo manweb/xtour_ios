@@ -14,6 +14,18 @@
 
 @implementation XTHomeViewController
 
++ (CLLocationManager *)sharedLocationManager {
+    static CLLocationManager *_locationManager;
+    
+    @synchronized(self) {
+        if (_locationManager == nil) {
+            _locationManager = [[CLLocationManager alloc] init];
+            _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        }
+    }
+    return _locationManager;
+}
+
 - (void) pollTime
 {
     data.timer++;
@@ -47,26 +59,53 @@
 {
     NSLog(@"Starting location service");
     
-    [_locationStartTimer invalidate];
-    _locationStartTimer = nil;
+    if (_locationStartTimer) {
+        [_locationStartTimer invalidate];
+        _locationStartTimer = nil;
+    }
     
-    [_locationManager startUpdatingLocation];
+    //Create location manager
+    CLLocationManager *locationManager = [XTHomeViewController sharedLocationManager];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = 10;
+    
+    if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)])
+    {
+        [locationManager requestAlwaysAuthorization];
+    }
+    
+    [locationManager setAllowsBackgroundLocationUpdates:YES];
+    
+    [locationManager startUpdatingLocation];
 }
 
-- (void) stopLocationUpdate
+- (void) stopLocationUpdate:(bool)saveLocation
 {
     NSLog(@"Stopping location service");
     
-    [_locationStopTimer invalidate];
-    _locationStopTimer = nil;
+    if (_locationStopTimer) {
+        [_locationStopTimer invalidate];
+        _locationStopTimer = nil;
+    }
     
-    [_locationManager stopUpdatingLocation];
+    //Create location manager
+    CLLocationManager *locationManager = [XTHomeViewController sharedLocationManager];
+    
+    [locationManager stopUpdatingLocation];
+    
+    if (!saveLocation) {return;}
     
     [self UpdateDisplayWithLocation:_bestLocation];
     
     [self SaveCurrentLocation:_bestLocation];
     
     _oldAccuracy = 10000.0;
+}
+
+- (void) stopLocationUpdate
+{
+    [self stopLocationUpdate:YES];
 }
 
 - (void)viewDidLoad
@@ -230,21 +269,7 @@
     
     NSLog(@"%@",[data GetDocumentFilePathForFile:@"/" CheckIfExist:NO]);
     
-    //Create location manager
-    _locationManager = [[CLLocationManager alloc] init];
-    _locationManager.delegate = self;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    _locationManager.distanceFilter = 10;
-    
     data.runStatus = 0;
-    
-    //[_locationManager requestWhenInUseAuthorization];
-    //[_locationManager requestAlwaysAuthorization];
-    
-    if ([_locationManager respondsToSelector:@selector(requestAlwaysAuthorization)])
-    {
-        [_locationManager requestAlwaysAuthorization];
-    }
     
     _bestLocation = nil;
     
@@ -299,7 +324,11 @@
     NSArray *imagesInDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:nil];
     NSLog(@"Content of tour directory: %@",imagesInDirectory);
     
-    [_locationManager startUpdatingLocation];
+    [self startLocationUpdate];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)viewDidUnload
@@ -324,7 +353,6 @@
     [_PauseButton release];
     [_loginButton release];
     [_pollingTimer release];
-    [_locationManager release];
     [login release];
     [summary release];
     [_GPSSignal release];
@@ -341,7 +369,6 @@
     [_header release];
     [_header_shadow release];
     [_GPSSignalLabel release];
-    [_locationManager release];
     [_geocoder release];
     [_placemark release];
     [_pollingTimer release];
@@ -369,11 +396,35 @@
     if (data.runStatus == 5) {[self ResetTour];}
 }
 
+- (void)applicationEnterBackground
+{
+    //Create location manager
+    /*CLLocationManager *locationManager = [XTHomeViewController sharedLocationManager];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = 10;
+    
+    if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)])
+    {
+        [locationManager requestAlwaysAuthorization];
+    }
+    
+    [locationManager startUpdatingLocation];*/
+    
+    /*self.backgroundTaskManager = [XTBackgroundTaskManager sharedBackgroundTaskManager];
+    [self.backgroundTaskManager beginNewBackgroundTask];*/
+}
+
+- (void)applicationEnterForeground
+{
+    
+}
+
 - (IBAction)pauseTour:(id)sender {
     [_pollingTimer invalidate];
     _pollingTimer = nil;
     
-    [_locationManager stopUpdatingLocation];
+    [self stopLocationUpdate:NO];
     
     if (_didRecoverTour) {
         _didRecoverTour = false;
@@ -436,7 +487,7 @@
         if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     }
     
-    [_locationManager startUpdatingLocation];
+    [self startLocationUpdate];
     
     if (_didRecoverTour) {
         _didRecoverTour = false;
@@ -525,7 +576,7 @@
         if (!_pollingTimer) {_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pollTime) userInfo:nil repeats:YES];}
     }
     
-    [_locationManager startUpdatingLocation];
+    [self startLocationUpdate];
     
     if (_didRecoverTour) {
         _didRecoverTour = false;
@@ -611,6 +662,8 @@
 
 - (void) UpdateDisplayWithLocation:(CLLocation*)location
 {
+    if (!location) {return;}
+    
     CLLocationDegrees lon = location.coordinate.longitude;
     CLLocationDegrees lat = location.coordinate.latitude;
     CLLocationDistance alt = location.altitude;
@@ -679,6 +732,8 @@
 
 - (void) SaveCurrentLocation:(CLLocation*)location
 {
+    if (!location) {return;}
+    
     CLLocationDistance alt = location.altitude;
     
     if (data.StartLocation == 0) {
@@ -716,6 +771,16 @@
     if (alt > data.sumhighestPoint) {data.sumhighestPoint = alt;}
     
     NSLog(@"Haversine distance: %f", d);
+}
+
+- (void) SetBackgroundTimer
+{
+    self.backgroundTaskManager = [XTBackgroundTaskManager sharedBackgroundTaskManager];
+    [self.backgroundTaskManager beginNewBackgroundTask];
+    
+    if (!_locationStartTimer) {_locationStartTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(startLocationUpdate) userInfo:nil repeats:NO];}
+    
+    if (!_locationStopTimer) {_locationStopTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(stopLocationUpdate) userInfo:nil repeats:NO];}
 }
 
 - (void) ResetTour
@@ -771,6 +836,8 @@
         [_longLabel setHidden:NO];
         [_latLabel setHidden:NO];
         [_elevationLabel setHidden:NO];
+        
+        if (data.profileSettings.batterySafeMode) {[self SetBackgroundTimer];}
     }
     else {data.runStatus = 0;}
 }
@@ -829,6 +896,9 @@
     NSLog(@"Accuracy: %.1f",Location.horizontalAccuracy);
     
     double accuracy = Location.horizontalAccuracy;
+    
+    if (accuracy < _oldAccuracy) {self.bestLocation = Location; self.oldAccuracy = accuracy;}
+    
     if (accuracy >= 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_none.png"]]; if (!_didReachInitialAccuracy) {return;}}
     if (accuracy >= 100.0 && accuracy < 1000.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_weak.png"]]; if (!_didReachInitialAccuracy) {return;}}
     if (accuracy > 10.0 && accuracy < 100.0) {[_GPSSignal setImage:[UIImage imageNamed:@"GPS_medium.png"]]; if (!_didReachInitialAccuracy) {return;}}
@@ -836,7 +906,7 @@
         [_GPSSignal setImage:[UIImage imageNamed:@"GPS_strong.png"]];
         if (!_didReachInitialAccuracy) {
             _didReachInitialAccuracy = true;
-            [_locationManager stopUpdatingLocation];
+            [self stopLocationUpdate:NO];
             
             [_GPSSignalLabel setHidden:YES];
             
@@ -852,17 +922,16 @@
     
     if (data.runStatus == 0 || data.runStatus == 2 || data.runStatus == 4) {return;}
     
-    if (accuracy < _oldAccuracy) {self.bestLocation = Location; self.oldAccuracy = accuracy;}
-    
-    UIBackgroundTaskIdentifier bgTask = 0;
-    UIApplication  *app = [UIApplication sharedApplication];
-    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
-        [app endBackgroundTask:bgTask];
-    }];
-    
-    if (!_locationStartTimer) {_locationStartTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(startLocationUpdate) userInfo:nil repeats:NO];}
-    
-    if (!_locationStopTimer) {_locationStopTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(stopLocationUpdate) userInfo:nil repeats:NO];}
+    if (data.profileSettings.batterySafeMode) {
+        if (_locationStartTimer) {return;}
+        
+        [self SetBackgroundTimer];
+    }
+    else {
+        [self UpdateDisplayWithLocation:Location];
+        
+        [self SaveCurrentLocation:Location];
+    }
 }
 
 @end

@@ -14,6 +14,7 @@
 #include "XTXMLParser.h"
 #import "XTLoginViewController.h"
 #import "XTSummaryViewController.h"
+#import "XTBackgroundTaskManager.h"
 
 @interface XTHomeViewController : UIViewController <UIAlertViewDelegate, UIActionSheetDelegate, CLLocationManagerDelegate>
 {
@@ -47,7 +48,6 @@
 @property (retain, nonatomic) IBOutlet UILabel *totalAltitudeLabel;
 @property (retain, nonatomic) IBOutlet UIImageView *altitudeRateIcon;
 @property (retain, nonatomic) UILabel *GPSSignalLabel;
-@property (retain, nonatomic) CLLocationManager *locationManager;
 @property (retain, nonatomic) CLGeocoder *geocoder;
 @property (retain, nonatomic) CLPlacemark *placemark;
 @property (retain, nonatomic) IBOutlet UIButton *StartButton;
@@ -65,13 +65,17 @@
 @property (nonatomic) bool didRecoverTour;
 @property (nonatomic) bool writeRecoveryFile;
 @property (retain, nonatomic) CLLocation *bestLocation;
+@property (retain, nonatomic) XTBackgroundTaskManager *backgroundTaskManager;
 - (IBAction)startUpTour:(id)sender;
 - (IBAction)startDownTour:(id)sender;
 - (IBAction)pauseTour:(id)sender;
+- (void)startLocationUpdate;
+- (void)stopLocationUpdate:(bool)saveLocation;
+- (void)stopLocationUpdate;
 - (void)LoadLogin:(id)sender;
 - (void)ShowLoginOptions:(id)sender;
 - (void)LoginViewDidClose:(id)sender;
-- (void)UpdateDisplay:(CLLocation*)location;
+- (void)UpdateDisplayWithLocation:(CLLocation*)location;
 - (void)SaveCurrentLocation:(CLLocation*)location;
 - (void)ResetTour;
 
