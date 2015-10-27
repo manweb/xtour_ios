@@ -21,17 +21,21 @@
     XTDataSingleton *data;
 }
 
-- (NSMutableArray *) GetNewsFeedString:(int)numberOfNewsFeeds forUID:(NSString *)uid filterBest:(int)filter;
+@property (nonatomic,retain) NSMutableArray *tourFilesType;
+@property (nonatomic,retain) NSMutableArray *tourFilesCoordinates;
+
+- (NSMutableArray *) GetNewsFeedString:(NSData*)responseData;
 - (NSMutableArray *) GetTourFilesForTour:(NSString *)tourID andType:(NSString *)type;
 - (NSMutableArray *) GetCoordinatesForFile:(NSString *)file;
-- (NSMutableArray *) GetImagesForTour:(NSString *)tourID;
-- (NSMutableArray *) GetWarningsWithinRadius:(double)radius atLongitude:(double)longitude andLatitude:(double)latitude;
+- (void) ProcessTourCoordinates:(NSData*)responseData;
+- (NSMutableArray *) GetImagesForTour:(NSData*)responseData;
+- (NSMutableArray *) GetWarningsWithinRadius:(NSData*)responseData;
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID;
 - (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo;
 - (BOOL) DownloadProfilePicture:(NSString*)userID;
 - (BOOL) DownloadUserInfo:(NSString*)userID;
 - (void) CheckGraphsForTour:(NSString*)tourID;
-- (XTUserStatistics*) GetUserStatistics:(NSString*)userID;
-- (NSMutableArray*) GetYearlyStatistics:(NSString*)userID;
+- (XTUserStatistics*) GetUserStatistics:(NSData*)responseData;
+- (NSMutableArray*) GetYearlyStatistics:(NSData*)responseData;
 
 @end

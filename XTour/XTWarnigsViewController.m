@@ -212,11 +212,38 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void) UpdateWarnings:(id)sender
 {
-    XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
-    
     if (!data.CurrentLocation) {return;}
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_warnings_string.php?radius=%f&longitude=%f&latitude=%f", data.profileSettings.warningRadius, data.CurrentLocation.coordinate.longitude, data.CurrentLocation.coordinate.latitude];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
+        
+        self.warningsArray = [request GetWarningsWithinRadius:responseData];
+        
+        if ([_warningsArray count] > 0) {
+            [_background setHidden:YES];
+            [self.collectionView setHidden:NO];
+            [self.collectionView reloadData];
+            
+            [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", [_warningsArray count]];
+        }
+        else {
+            [_background setHidden:NO];
+            [self.collectionView setHidden:YES];
+            
+            [self tabBarItem].badgeValue = nil;
+        }
+        
+        [refreshControl endRefreshing];
+    }];
+    
+    [sessionTask resume];
+    
+    /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         self.warningsArray = [request GetWarningsWithinRadius:20 atLongitude:data.CurrentLocation.coordinate.longitude andLatitude:data.CurrentLocation.coordinate.latitude];
         
@@ -237,7 +264,7 @@ static NSString * const reuseIdentifier = @"Cell";
             
             [refreshControl endRefreshing];
         });
-    });
+    });*/
 }
 
 @end

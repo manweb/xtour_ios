@@ -49,6 +49,8 @@
     [self.view addSubview:_collectionView];
     
     [layout release];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDismissImageDetailView) name:@"ImageDetailViewDismissed" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,6 +69,11 @@
     [_compassImage release];
     [_selectedIndexPath release];
     [super dealloc];
+}
+
+- (void) didDismissImageDetailView
+{
+    [_collectionView reloadData];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section

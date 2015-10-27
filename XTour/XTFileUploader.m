@@ -111,6 +111,57 @@
     [request addFile:filename forKey:@"files"];
     
     [request startAsynchronous];
+    
+    /*NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+    
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];
+    [request setHTTPMethod:@"POST"];
+    
+    NSString *boundary = @"XTourFormBoundary";
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data, boundary=%@",boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    
+    NSMutableData *body = [NSMutableData data];
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Disposition: form-data; name=\"userID\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"%@\r\n",data.userID] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"files\"; filename=\"%@\"\r\n",filename] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    if ([[filename pathExtension] isEqualToString:@"jpg"]) {
+        [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:UIImageJPEGRepresentation([UIImage imageWithContentsOfFile:filename], 1)];
+    }
+    else {
+        [body appendData:[@"Content-Type: text/plain\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[NSData dataWithContentsOfFile:filename]];
+    }
+    
+    [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setHTTPBody:body];
+    
+    NSURLSessionTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        
+        if ([response isEqualToString:@"true"]) {
+            NSLog(@"Upload of file %@ was successful", filename);
+            
+            [[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
+        }
+        
+        NSLog(@"The response text is:\n%@", response);
+    }];
+    
+    [dataTask resume];*/
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
+    didReceiveData:(NSData *)responseData
+{
+    NSString * str = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSLog(@"Received String %@",str);
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request

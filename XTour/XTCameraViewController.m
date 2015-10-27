@@ -60,6 +60,8 @@
     [header_shadow release];
     
     _didPickImage = false;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDismissImageDetailView) name:@"ImageDetailViewDismissed" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -69,6 +71,11 @@
     [self LoginViewDidClose:nil];
     
     if (!_didPickImage) {[self.collectionView reloadData];}
+}
+
+- (void) didDismissImageDetailView
+{
+    [self.collectionView reloadData];
 }
 
 - (void) LoadCamera:(id)sender

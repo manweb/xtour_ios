@@ -87,7 +87,9 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [refreshControl beginRefreshing];
     
-    dispatch_queue_t fetch = dispatch_queue_create("fetchQueue", NULL);
+    [self refreshNewsFeed];
+    
+    /*dispatch_queue_t fetch = dispatch_queue_create("fetchQueue", NULL);
     
     dispatch_async(fetch, ^{
         self.news_feed = [ServerHandler GetNewsFeedString:10 forUID:@"0" filterBest:0];
@@ -99,7 +101,7 @@ static NSString * const reuseIdentifier = @"Cell";
         });
     });
     
-    dispatch_release(fetch);
+    dispatch_release(fetch);*/
 }
 
 - (void)didReceiveMemoryWarning {
@@ -237,7 +239,22 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void) refreshNewsFeed
 {
-    dispatch_queue_t fetch = dispatch_queue_create("fetchQueue", NULL);
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_news_feed_string.php?num=%i&uid=%@&filter=%i", 10, _UID, _filter];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        self.news_feed = [ServerHandler GetNewsFeedString:(NSData*)responseData];
+        
+        [self.collectionView reloadData];
+        
+        [refreshControl endRefreshing];
+    }];
+    
+    [sessionTask resume];
+    
+    /*dispatch_queue_t fetch = dispatch_queue_create("fetchQueue", NULL);
     
     dispatch_async(fetch, ^{
         self.news_feed = [ServerHandler GetNewsFeedString:10 forUID:_UID filterBest:_filter];
@@ -249,7 +266,7 @@ static NSString * const reuseIdentifier = @"Cell";
         });
     });
     
-    dispatch_release(fetch);
+    dispatch_release(fetch);*/
 }
 
 - (void)SelectAll:(id)sender

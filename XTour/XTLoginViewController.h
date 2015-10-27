@@ -23,12 +23,16 @@
 @property (retain, nonatomic) UITextField *password;
 @property (retain, nonatomic) UIButton *loginButton;
 @property (retain, nonatomic) UIButton *cancelButton;
+@property (retain, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (retain, nonatomic) UIVisualEffectView *blurEffectView;
 
 - (void)Login;
 - (void)Cancel;
 - (void) animate;
 - (void) ShowView;
 - (void) HideView;
-- (BOOL) ValidateLogin;
+- (void) ValidateLogin;
+- (void) DownloadProfilePicture;
+- (void) DownloadUserInfo;
 
 @end

@@ -295,9 +295,69 @@
     float width = screenBound.size.width;
     float boxWidth = width - 20;
     
+    _tourFiles = [[NSMutableArray alloc] init];
     _coordinateArray = [[NSMutableArray alloc] init];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    if (server) {
+        NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_tour_coordinates_string.php?tid=%@", tourInfo.tourID];
+        NSURL *url = [NSURL URLWithString:requestString];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+            XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
+            
+            [request ProcessTourCoordinates:(NSData*)responseData];
+            
+            _tourFiles = request.tourFilesType;
+            _coordinateArray = request.tourFilesCoordinates;
+            
+            NSString *requestString2 = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_tour_images_string.php?tid=%@", tourInfo.tourID];
+            NSURL *url2 = [NSURL URLWithString:requestString2];
+            
+            NSURLSession *session2 = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+            
+            NSURLSessionTask *sessionTask2 = [session2 dataTaskWithRequest:[NSURLRequest requestWithURL:url2] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+                XTServerRequestHandler *request2 = [[[XTServerRequestHandler alloc] init] autorelease];
+                
+                _tourImages = [request2 GetImagesForTour:(NSData*)responseData];
+                
+                [self UpdateView:tourInfo];
+            }];
+            
+            [sessionTask2 resume];
+            
+            [request CheckGraphsForTour:tourInfo.tourID];
+        }];
+        
+        [sessionTask resume];
+    }
+    else {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            data = [XTDataSingleton singleObj];
+            
+            _tourFiles = [data GetGPXFilesForCurrentTour];
+            
+            XTXMLParser *xml = [[[XTXMLParser alloc] init] autorelease];
+            
+            for (int i = 0; i < [_tourFiles count]; i++) {
+                NSString *currentFile = [_tourFiles objectAtIndex:i];
+                
+                [xml ReadGPXFile:currentFile];
+                
+                NSMutableArray *locationData = [xml GetLocationDataFromFile];
+                [_coordinateArray addObject:locationData];
+            }
+            
+            _tourImages = data.imageInfo;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self UpdateView:tourInfo];
+            });
+        });
+    }
+    
+    /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (server) {
             XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
             NSMutableArray *tourFilesUp = [request GetTourFilesForTour:tourInfo.tourID andType:@"up"];
@@ -390,7 +450,68 @@
             
             [_graphViewContainer addSubview:graphPageController.view];
         });
-    });
+    });*/
+}
+
+- (void) UpdateView:(XTTourInfo*)tourInfo
+{
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float boxWidth = width - 20;
+    
+    float minLon = 1e6;
+    float maxLon = -1e6;
+    float minLat = 1e6;
+    float maxLat = -1e6;
+    
+    GMSMutablePath *currentPath = [[GMSMutablePath alloc] init];
+    NSMutableArray *polylines = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [_coordinateArray count]; i++) {
+        [currentPath removeAllCoordinates];
+        
+        NSMutableArray *coordinate = [_coordinateArray objectAtIndex:i];
+        
+        for (int k = 0; k < [coordinate count]; k++) {
+            CLLocation *location = [coordinate objectAtIndex:k];
+            [currentPath addCoordinate:location.coordinate];
+            
+            if (location.coordinate.longitude < minLon) {minLon = location.coordinate.longitude;}
+            if (location.coordinate.longitude > maxLon) {maxLon = location.coordinate.longitude;}
+            if (location.coordinate.latitude < minLat) {minLat = location.coordinate.latitude;}
+            if (location.coordinate.latitude > maxLat) {maxLat = location.coordinate.latitude;}
+        }
+        
+        GMSPolyline *polyline = [[GMSPolyline alloc] init];
+        [polyline setPath:currentPath];
+        if ([[_tourFiles objectAtIndex:i] isEqualToString:@"up"]) {polyline.strokeColor = [UIColor blueColor];}
+        else {polyline.strokeColor = [UIColor redColor];}
+        polyline.strokeWidth = 5.f;
+        
+        [polylines addObject:polyline];
+        GMSPolyline *currentPolyline = [polylines objectAtIndex:i];
+        
+        currentPolyline.map = mapView;
+    }
+    
+    GMSCameraUpdate *cameraUpdate = [GMSCameraUpdate fitBounds:[[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(minLat, minLon) coordinate:CLLocationCoordinate2DMake(maxLat, maxLon)] withPadding:50.0f];
+    [mapView moveCamera:cameraUpdate];
+    
+    [_loadingView removeFromSuperview];
+    
+    XTSummaryImageViewController *imageView = [[XTSummaryImageViewController alloc] initWithNibName:nil bundle:nil];
+    
+    imageView.view.frame = CGRectMake(0, 0, boxWidth, 200);
+    imageView.images = _tourImages;
+    
+    [_imageViewContainer addSubview:imageView.view];
+    
+    XTGraphPageViewController *graphPageController = [[XTGraphPageViewController alloc] initWithNibName:nil bundle:nil andTourInfo:tourInfo];
+    
+    graphPageController.view.frame = CGRectMake(5, 5, boxWidth-10, width/320*200);
+    graphPageController.pageController.view.frame = CGRectMake(0, 0, boxWidth-10, width/320*200);
+    
+    [_graphViewContainer addSubview:graphPageController.view];
 }
 
 - (void)keyboardWasShown:(NSNotification *)notification

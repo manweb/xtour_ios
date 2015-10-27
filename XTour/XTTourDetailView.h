@@ -59,6 +59,7 @@
 
 - (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset andContentOffset:(NSInteger)offsetContent;
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server;
+- (void) UpdateView:(XTTourInfo*) tourInfo;
 - (void) keyboardWasShown:(NSNotification *) notification;
 - (void) keyboardWillHide:(NSNotification *) notification;
 

@@ -10,19 +10,21 @@
 
 @implementation XTServerRequestHandler
 
-- (NSMutableArray *) GetNewsFeedString:(int)numberOfNewsFeeds forUID:(NSString *)uid filterBest:(int)filter
+- (NSMutableArray *) GetNewsFeedString:(NSData*)responseData
 {
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_news_feed_string.php?num=%i&uid=%@&filter=%i", numberOfNewsFeeds, uid, filter];
+    /*NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_news_feed_string.php?num=%i&uid=%@&filter=%i", numberOfNewsFeeds, uid, filter];
     NSURL *url = [NSURL URLWithString:requestString];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request startSynchronous];
+    [request startSynchronous];*/
     
     NSMutableArray *news_feeds = [[[NSMutableArray alloc] init] autorelease];
     
-    NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
+    //NSError *error = [request error];
+    //if (!error) {
+        //NSString *response = [request responseString];
+    
+    NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         
         NSArray *news_feed_array = [response componentsSeparatedByString:@";"];
         
@@ -59,14 +61,14 @@
             
             [tourInfo release];
         }
-    }
+    /*}
     else {
         NSLog(@"There was a problem retrieving the news feed");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
     }
     
-    [requestString release];
+    [requestString release];*/
     
     return news_feeds;
 }
@@ -140,19 +142,62 @@
     return coordinates;
 }
 
-- (NSMutableArray *) GetImagesForTour:(NSString *)tourID
+- (void) ProcessTourCoordinates:(NSData*)responseData
 {
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_tour_images_string.php?tid=%@", tourID];
+    _tourFilesType = [[NSMutableArray alloc] init];
+    _tourFilesCoordinates = [[NSMutableArray alloc] init];
+    
+    NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+    NSArray *files_array = [response componentsSeparatedByString:@"/"];
+    NSMutableArray *files = [NSMutableArray arrayWithArray:files_array];
+    [files removeLastObject];
+    
+    for (int i = 0; i < [files count]; i++) {
+        NSString *currentFile = [files objectAtIndex:i];
+        
+        NSArray *coordinates_array = [currentFile componentsSeparatedByString:@";"];
+        NSMutableArray *coordinates = [NSMutableArray arrayWithArray:coordinates_array];
+        [coordinates removeLastObject];
+        
+        NSString *tourType = [coordinates objectAtIndex:0];
+        [_tourFilesType addObject:tourType];
+        
+        NSMutableArray *currentTourCoordinate = [[NSMutableArray alloc] init];
+        
+        for (int k = 1; k < [coordinates count]; k++) {
+            NSString *currentCoordinate = [coordinates objectAtIndex:k];
+            
+            NSArray *LatLon = [currentCoordinate componentsSeparatedByString:@":"];
+            float lon = [[LatLon objectAtIndex:0] floatValue];
+            float lat = [[LatLon objectAtIndex:1] floatValue];
+            
+            CLLocation *location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+            
+            [currentTourCoordinate addObject:location];
+        }
+        
+        [_tourFilesCoordinates addObject:currentTourCoordinate];
+        
+        [currentTourCoordinate release];
+    }
+}
+
+- (NSMutableArray *) GetImagesForTour:(NSData*)responseData
+{
+    /*NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_tour_images_string.php?tid=%@", tourID];
     NSURL *url = [NSURL URLWithString:requestString];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request startSynchronous];
+    [request startSynchronous];*/
     
     NSMutableArray *tour_images = [[NSMutableArray alloc] init];
     
-    NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
+    //NSError *error = [request error];
+    //if (!error) {
+        //NSString *response = [request responseString];
+    
+    NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         
         NSArray *tour_images_array = [response componentsSeparatedByString:@";"];
         NSMutableArray *tour_images_info = [NSMutableArray arrayWithArray:tour_images_array];
@@ -180,29 +225,31 @@
             
             [imageInfo release];
         }
-    }
+    /*}
     else {
         NSLog(@"There was a problem retrieving the tour images");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
-    }
+    }*/
     
     return tour_images;
 }
 
-- (NSMutableArray*) GetWarningsWithinRadius:(double)radius atLongitude:(double)longitude andLatitude:(double)latitude
+- (NSMutableArray*) GetWarningsWithinRadius:(NSData*)responseData
 {
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_warnings_string.php?radius=%f&longitude=%f&latitude=%f", radius, longitude, latitude];
+    /*NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_warnings_string.php?radius=%f&longitude=%f&latitude=%f", radius, longitude, latitude];
     NSURL *url = [NSURL URLWithString:requestString];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request startSynchronous];
+    [request startSynchronous];*/
     
     NSMutableArray *warnings = [[NSMutableArray alloc] init];
     
-    NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
+    //NSError *error = [request error];
+    //if (!error) {
+        //NSString *response = [request responseString];
+    
+    NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         
         if ([response isEqualToString:@"false"]) {return nil;}
         
@@ -233,29 +280,31 @@
             
             [warningsInfo release];
         }
-    }
+    /*}
     else {
         NSLog(@"There was a problem retrieving the warnings");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
-    }
+    }*/
     
     return warnings;
 }
 
-- (XTUserStatistics*) GetUserStatistics:(NSString*)userID
+- (XTUserStatistics*) GetUserStatistics:(NSData*)responseData
 {
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_user_statistics.php?uid=%@", userID];
+    /*NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_user_statistics.php?uid=%@", userID];
     NSURL *url = [NSURL URLWithString:requestString];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request startSynchronous];
+    [request startSynchronous];*/
     
     XTUserStatistics *userStatistics = [[XTUserStatistics alloc] init];
     
-    NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
+    //NSError *error = [request error];
+    //if (!error) {
+        //NSString *response = [request responseString];
+    
+    NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         
         NSArray *userStatistics_array = [response componentsSeparatedByString:@";"];
         
@@ -275,31 +324,33 @@
             userStatistics.totalDistance = [[userStatistics_array objectAtIndex:10] floatValue];
             userStatistics.totalAltitude = [[userStatistics_array objectAtIndex:11] floatValue];
         }
-    }
+    /*}
     else {
         NSLog(@"There was a problem retrieving the user statistics");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
     }
     
-    [requestString release];
+    [requestString release];*/
     
     return userStatistics;
 }
 
-- (NSMutableArray *) GetYearlyStatistics:(NSString*)userID
+- (NSMutableArray *) GetYearlyStatistics:(NSData*)responseData
 {
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_yearly_statistics.php?uid=%@", userID];
+    /*NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_yearly_statistics.php?uid=%@", userID];
     NSURL *url = [NSURL URLWithString:requestString];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request startSynchronous];
+    [request startSynchronous];*/
     
     NSMutableArray *yearlyStatistics = nil;
     
-    NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
+    //NSError *error = [request error];
+    //if (!error) {
+        //NSString *response = [request responseString];
+    
+    NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         
         NSArray *userStatistics_array = [response componentsSeparatedByString:@";"];
         
@@ -308,14 +359,14 @@
         yearlyStatistics = [[NSMutableArray alloc] initWithArray:userStatistics_array];
         
         [yearlyStatistics removeLastObject];
-    }
+    /*}
     else {
         NSLog(@"There was a problem retrieving the user statistics");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
     }
     
-    [requestString release];
+    [requestString release];*/
     
     yearlyStatistics = [[[yearlyStatistics reverseObjectEnumerator] allObjects] mutableCopy];
     
@@ -327,7 +378,7 @@
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/insert_image_comment.php?image=%@&comment=%@", imageID, [comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSURL *url = [NSURL URLWithString:requestString];
     
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    /*ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
     [request startSynchronous];
     
     NSError *error = [request error];
@@ -341,9 +392,15 @@
         NSLog(@"There was a problem submitting the image comment");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
-    }
+    }*/
     
-    return false;
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url]];
+    
+    [sessionTask resume];
+    
+    return true;
 }
 
 - (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo
@@ -351,7 +408,7 @@
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/insert_warning_info.php?userID=%@&tourID=%@&date=%@&longitude=%.5f&latitude=%.5f&elevation=%.5f&category=%lu&comment=%@", warningInfo.userID, warningInfo.tourID, warningInfo.submitDate, warningInfo.longitude, warningInfo.latitude, warningInfo.elevation, (unsigned long)warningInfo.category, [warningInfo.comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSURL *url = [NSURL URLWithString:requestString];
     
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    /*ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
     [request startSynchronous];
     
     NSError *error = [request error];
@@ -365,9 +422,15 @@
         NSLog(@"There was a problem submitting the warning info");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!!!" message:@"Verbindung zum Server ist fehlgeschlagen." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
-    }
+    }*/
     
-    return false;
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url]];
+    
+    [sessionTask resume];
+    
+    return true;
 }
 
 - (BOOL) DownloadProfilePicture:(NSString*)userID
@@ -414,13 +477,22 @@
 
 - (void) CheckGraphsForTour:(NSString*)tourID
 {
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/create_graphs.php?tid=%@", tourID];
+    /*NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/create_graphs.php?tid=%@", tourID];
     NSURL *url = [NSURL URLWithString:requestString];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
     [request startSynchronous];
     NSLog(@"%@",requestString);
-    [requestString release];
+    [requestString release];*/
+    
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/create_graphs.php?tid=%@", tourID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url]];
+    
+    [sessionTask resume];
 }
 
 @end

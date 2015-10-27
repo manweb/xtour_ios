@@ -46,7 +46,93 @@
     
     _weekViews = [[NSMutableArray alloc] init];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_yearly_statistics.php?uid=%@", data.userID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
+        
+        NSMutableArray *yearlyStatistics = [request GetYearlyStatistics:responseData];
+        
+        if ([yearlyStatistics count] < 52) {return;}
+        
+        for (int i = 0; i < 52; i++) {
+            float currentHeight = [[yearlyStatistics objectAtIndex:i] floatValue];
+            
+            UIView *currentView = [[UIView alloc] initWithFrame:CGRectMake(marginLeft+i*(viewWidth+spaceBetweenWeeks), (height-marginTop-marginBottom)*(1-currentHeight/5), viewWidth, (height-marginTop-marginBottom)/5*currentHeight)];
+            
+            currentView.backgroundColor = [UIColor grayColor];
+            
+            [_weekViews addObject:currentView];
+            
+            [self.view addSubview:currentView];
+            
+            [currentView release];
+        }
+        
+        UIView *xAxis = [[UIView alloc] initWithFrame:CGRectMake(marginLeft-2, height-marginBottom, width-marginLeft-marginRight+2, 1)];
+        
+        UIView *yAxis = [[UIView alloc] initWithFrame:CGRectMake(marginLeft-2, marginTop, 1, height-marginTop-marginBottom)];
+        
+        xAxis.backgroundColor = [UIColor colorWithRed:200.0f/255.0f green:200.0f/255.0f blue:200.0f/255.0f alpha:1.0f];
+        
+        yAxis.backgroundColor = [UIColor colorWithRed:200.0f/255.0f green:200.0f/255.0f blue:200.0f/255.0f alpha:1.0f];
+        
+        [self.view addSubview:xAxis];
+        [self.view addSubview:yAxis];
+        
+        [xAxis release];
+        [yAxis release];
+        
+        float monthLength = (width-marginLeft-marginRight)/12;
+        int k = (int)currentMonth-1;
+        for (int i = 0; i < 12; i++) {
+            NSString *monthString = [months objectAtIndex:k];
+            
+            UILabel *monthLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-marginRight-(i+1)*monthLength, height-marginBottom, monthLength, marginBottom)];
+            
+            monthLabel.text = monthString;
+            monthLabel.font = [UIFont fontWithName:@"Helvetica" size:10.0f];
+            monthLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+            monthLabel.textAlignment = NSTextAlignmentCenter;
+            
+            [self.view addSubview:monthLabel];
+            
+            [monthLabel release];
+            
+            k--;
+            
+            if (k < 0) {k = 12+k;}
+        }
+        
+        float max = [self GetMax:yearlyStatistics];
+        
+        int nDivisions = ceil(max/5)+1;
+        
+        float yAxisLength = (height-marginTop-marginBottom)/(nDivisions-1);
+        
+        for (int i = 0; i < nDivisions; i++) {
+            float yPosition = height-marginBottom-i*yAxisLength-5;
+            if (i == nDivisions-1) {yPosition += 5;}
+            
+            UILabel *yAxisLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, marginLeft-2, 10)];
+            
+            yAxisLabel.text = [NSString stringWithFormat:@"%.0f",i*5.0];
+            yAxisLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+            yAxisLabel.font = [UIFont fontWithName:@"Helvetica" size:10.0f];
+            yAxisLabel.textAlignment = NSTextAlignmentRight;
+            
+            [self.view addSubview:yAxisLabel];
+            
+            [yAxisLabel release];
+        }
+    }];
+    
+    [sessionTask resume];
+    
+    /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
         
         NSMutableArray *yearlyStatistics = [request GetYearlyStatistics:data.userID];
@@ -125,7 +211,7 @@
                 [yAxisLabel release];
             }
         });
-    });
+    });*/
 }
 
 - (float) GetMax:(NSMutableArray*)dataArray

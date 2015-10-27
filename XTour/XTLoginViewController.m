@@ -38,9 +38,20 @@
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
     self.view.frame = CGRectMake(0, 0, width, height+tabBarHeight);
-    self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
+    //self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
     
-    _loginView = [[UIView alloc] initWithFrame:CGRectMake(width-40, 30, 0, 0)];
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    _blurEffectView.frame = self.view.frame;
+    _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    [_blurEffectView setHidden:YES];
+    
+    [self.view addSubview:_blurEffectView];
+    
+    _loginView = [[UIView alloc] initWithFrame:CGRectMake(10, -200, width-20, 200)];
     _loginView.layer.cornerRadius = 10.0f;
     _loginView.layer.borderWidth = 5.0f;
     _loginView.layer.borderColor = [UIColor grayColor].CGColor;
@@ -61,10 +72,11 @@
     _loginButton.frame = CGRectMake((width-20)/2-50, 150, 100, 20);
     
     _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _cancelButton.frame = CGRectMake(width-100, 10, 80, 20);
+    _cancelButton.frame = CGRectMake(width-50, 10, 20, 20);
     
     [_loginButton setTitle:@"Login" forState:UIControlStateNormal];
-    [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cleanup_icon@3x.png"] forState:UIControlStateNormal];
     
     [_loginButton addTarget:self action:@selector(Login) forControlEvents:UIControlEventTouchUpInside];
     [_cancelButton addTarget:self action:@selector(Cancel) forControlEvents:UIControlEventTouchUpInside];
@@ -74,12 +86,17 @@
     [_loginButton setAlpha:0.0f];
     [_cancelButton setAlpha:0.0f];
     
+    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [_activityIndicator setCenter:CGPointMake((width-20)/2, 160)];
+    [_activityIndicator setHidden:YES];
+    
     [_loginView addSubview:_username];
     [_loginView addSubview:_password];
     [_loginView addSubview:_loginButton];
     [_loginView addSubview:_cancelButton];
+    [_loginView addSubview:_activityIndicator];
     
-    [self.view addSubview:_loginView];
+    [_blurEffectView addSubview:_loginView];
     
     [_username release];
     [_password release];
@@ -103,16 +120,13 @@
 }
 
 - (void)Login {
-    if (![self ValidateLogin]) {return;}
+    [_loginButton setHidden:YES];
     
-    if (!serverRequest) {serverRequest = [[XTServerRequestHandler alloc] init];}
+    [_activityIndicator setHidden:NO];
     
-    if (![serverRequest DownloadProfilePicture:data.userID]) {data.loggedIn = false; return;}
-    if (![serverRequest DownloadUserInfo:data.userID]) {data.loggedIn = false; return;}
+    [_activityIndicator startAnimating];
     
-    [data CheckLogin];
-    
-    [self HideView];
+    [self ValidateLogin];
 }
 
 - (void)Cancel {
@@ -136,12 +150,14 @@
     else {yOffset = 80;}
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
-        _loginView.frame = CGRectMake(0, yOffset-10, width, 220);
+        //self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+        _loginView.frame = CGRectMake(10, 50, width-20, 200);
+        
+        [_blurEffectView setHidden:NO];
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_loginView.frame = CGRectMake(15, yOffset+5, width-30, 190);} completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_loginView.frame = CGRectMake(10, 45, width-20, 200);} completion:^(BOOL finished) {
             [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-                _loginView.frame = CGRectMake(10, yOffset, width-20, 200);
+                _loginView.frame = CGRectMake(10, 50, width-20, 200);
                 
                 [_username setAlpha:1.0f];
                 [_password setAlpha:1.0f];
@@ -153,9 +169,9 @@
     }];
 }
 
-- (BOOL) ValidateLogin
+- (void) ValidateLogin
 {
-    BOOL success = false;
+    /*BOOL success = false;
     
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/validate_login.php?uid=%s&pwd=%s", [_username.text UTF8String], [_password.text UTF8String]];
     NSURL *url = [NSURL URLWithString:requestString];
@@ -181,9 +197,113 @@
         NSLog(@"There was a problem sending login information.");
     }
     
-    [requestString release];
+    [requestString release];*/
     
-    return success;
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/validate_login.php?uid=%s&pwd=%s", [_username.text UTF8String], [_password.text UTF8String]];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    sessionConfiguration.timeoutIntervalForRequest = 10.0;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData* responseData, NSURLResponse *responseURL, NSError *error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+        NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        
+        if ([response isEqualToString:@"false"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Die Login-Informationen sind falsch." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            data.loggedIn = false;
+        }
+        else {
+            data.loggedIn = true;
+            data.userID = response;
+            
+            [self DownloadProfilePicture];
+        }
+    }];
+    
+    [sessionTask resume];
+    
+    return;
+}
+
+- (void) DownloadProfilePicture
+{
+    NSString *requestString = [NSString stringWithFormat:@"http://www.xtour.ch/users/%@/profile.png",data.userID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    sessionConfiguration.timeoutIntervalForRequest = 10.0;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDownloadTask *sessionTask = [session downloadTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (error) {
+            [_activityIndicator stopAnimating];
+            
+            [_activityIndicator setHidden:YES];
+            
+            [_loginButton setHidden:NO];
+            
+            data.loggedIn = false;
+            return;
+        }
+        
+        NSData *profilePicture = [NSData dataWithContentsOfURL:location];
+        
+        NSString *filePath = [data GetDocumentFilePathForFile:@"/profile.png" CheckIfExist:NO];
+        
+        [profilePicture writeToFile:filePath atomically:YES];
+        
+        [self DownloadUserInfo];
+        
+    }];
+    
+    [sessionTask resume];
+}
+
+- (void) DownloadUserInfo
+{
+    NSString *requestString = [NSString stringWithFormat:@"http://www.xtour.ch/users/%@/UserInfo.xml",data.userID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    sessionConfiguration.timeoutIntervalForRequest = 10.0;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *response, NSError *error) {
+        if (error) {
+            [_activityIndicator stopAnimating];
+            
+            [_activityIndicator setHidden:YES];
+            
+            [_loginButton setHidden:NO];
+            
+            data.loggedIn = false;
+            return;
+        }
+        
+        NSString *filePath = [data GetDocumentFilePathForFile:@"/UserInfo.xml" CheckIfExist:NO];
+        
+        [responseData writeToFile:filePath atomically:YES];
+        
+        [data CheckLogin];
+        
+        [self HideView];
+    }];
+    
+    [sessionTask resume];
 }
 
 - (void) HideView
@@ -192,7 +312,7 @@
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
-        _loginView.frame = CGRectMake(280, 30, 0, 0);
+        _loginView.frame = CGRectMake(10, -200, self.view.frame.size.width-20, 200);
         
         [_username setAlpha:0.0f];
         [_password setAlpha:0.0f];

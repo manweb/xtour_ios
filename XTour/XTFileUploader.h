@@ -11,7 +11,7 @@
 #import "ASIFormDataRequest.h"
 #import "XTDataSingleton.h"
 
-@interface XTFileUploader : NSObject <ASIHTTPRequestDelegate>
+@interface XTFileUploader : NSObject <ASIHTTPRequestDelegate, NSURLSessionDelegate, NSURLSessionDataDelegate>
 {
     XTDataSingleton *data;
 }

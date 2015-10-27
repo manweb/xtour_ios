@@ -175,6 +175,8 @@
     
     [_calendarView addSubview:calendarPageView.view];
     
+    [calendarPageView SetDataForUser:data.userID];
+    
     [self setContentSize:CGSizeMake(_width, boxMarginTop+340+1.05*boxWidth)];
     
     //[_profileSummary addSubview:_profilePicture];
@@ -204,7 +206,25 @@
     
     _userStatistics = nil;
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_user_statistics.php?uid=%@", data.userID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
+        
+        _userStatistics = [request GetUserStatistics:responseData];
+        
+        _toursLabel.text = [NSString stringWithFormat:@"%li",(long)_userStatistics.monthlyNumberOfTours];
+        _timeLabel.text = [self GetFormattedTimeString:_userStatistics.monthlyTime];
+        _distanceLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.monthlyDistance];
+        _altitudeLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.monthlyAltitude/1000.0];
+    }];
+    
+    [sessionTask resume];
+    
+    /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
         
         _userStatistics = [request GetUserStatistics:data.userID];
@@ -215,7 +235,7 @@
             _distanceLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.monthlyDistance];
             _altitudeLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.monthlyAltitude/1000.0];
         });
-    });
+    });*/
 }
 
 - (void)dealloc {

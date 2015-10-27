@@ -185,6 +185,8 @@
         } completion:^(BOOL finished) {
             [_imageView removeFromSuperview];
             [self removeFromSuperview];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ImageDetailViewDismissed" object:nil userInfo:nil];
         }];
     }];
 }
@@ -211,7 +213,7 @@
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
     if ([buttonTitle isEqualToString:@"Löschen"]) {
-        //[data DeleteImageAtIndex:_imageID];
+        [data DeleteImageAtIndex:_imageID];
         
         [self close:nil];
     }
