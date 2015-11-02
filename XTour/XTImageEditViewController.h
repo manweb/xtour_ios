@@ -22,6 +22,7 @@
 @property (retain, nonatomic) UIButton *loginButton;
 @property (retain, nonatomic) UIButton *cancelButton;
 @property (nonatomic) NSUInteger imageID;
+@property (retain, nonatomic) UIVisualEffectView *blurEffectView;
 
 - (id) initWithImageInfo:(XTImageInfo*)imageInfo andID:(NSUInteger)ID;
 - (void)Cancel;

@@ -10,11 +10,19 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 #import "XTDataSingleton.h"
+#import "XTAppDelegate.h"
 
 @interface XTFileUploader : NSObject <ASIHTTPRequestDelegate, NSURLSessionDelegate, NSURLSessionDataDelegate>
 {
     XTDataSingleton *data;
 }
+
+@property (nonatomic,retain) NSURLSession *session;
+@property (nonatomic,retain) NSURLSessionConfiguration *sessionConfiguration;
+@property (nonatomic,retain) NSMutableURLRequest *request;
+@property (nonatomic,retain) NSMutableDictionary *backgroundTasks;
+@property (nonatomic) NSUInteger backgroundTaskStartTime;
+@property (nonatomic) bool sendNotification;
 
 - (NSArray *) GetTourDirList;
 - (NSArray *) GetFileList;

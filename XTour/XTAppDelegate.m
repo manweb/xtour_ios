@@ -55,4 +55,21 @@
     [data RemoveRecoveryFile];
 }
 
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier
+  completionHandler:(void (^)())completionHandler {
+    self.backgroundSessionCompletionHandler = completionHandler;
+    
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    
+    [notification setAlertAction:@"Launch"];
+    [notification setAlertBody:@"Die Touren-Daten sind nun auf dem Server gespeichert."];
+    [notification setHasAction:YES];
+    notification.applicationIconBadgeNumber = 1;
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    
+    [notification release];
+}
+
 @end

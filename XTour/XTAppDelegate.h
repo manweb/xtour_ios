@@ -19,5 +19,6 @@
 @property (nonatomic) int TimeWhenBackgroundEntered;
 @property (nonatomic) int TimeWhenBackgroundLeft;
 @property (nonatomic,retain) CLLocationManager *LocationManager;
+@property (copy) void (^backgroundSessionCompletionHandler)();
 
 @end

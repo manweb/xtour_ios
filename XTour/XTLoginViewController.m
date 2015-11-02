@@ -212,6 +212,14 @@
         if (error) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [alert show];
+            
+            [_activityIndicator stopAnimating];
+            
+            [_activityIndicator setHidden:YES];
+            
+            [_loginButton setHidden:NO];
+            
+            return;
         }
         
         NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
@@ -221,6 +229,12 @@
             [alert show];
             
             data.loggedIn = false;
+            
+            [_activityIndicator stopAnimating];
+            
+            [_activityIndicator setHidden:YES];
+            
+            [_loginButton setHidden:NO];
         }
         else {
             data.loggedIn = true;
@@ -311,7 +325,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
         _loginView.frame = CGRectMake(10, -200, self.view.frame.size.width-20, 200);
         
         [_username setAlpha:0.0f];

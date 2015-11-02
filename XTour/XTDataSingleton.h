@@ -90,6 +90,8 @@
 - (NSMutableArray *) GetImagesForCurrentTour;
 - (NSMutableArray *) GetAllImageInfoFiles;
 - (void) CleanUpTourDirectory;
+- (void) RemoveFile:(NSString*)filename;
+- (NSUInteger) GetNumberOfFilesInTourDirectory;
 - (void) AddImage:(XTImageInfo *)image;
 - (NSUInteger) GetNumImages;
 - (XTImageInfo *) GetImageInfoAt:(NSUInteger)index;

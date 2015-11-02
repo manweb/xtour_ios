@@ -23,6 +23,9 @@ static NSString * const reuseIdentifier = @"Cell";
     float width = screenBound.size.width;
     float height = screenBound.size.height;
     
+    UITabBarController *tabBarController = [UITabBarController new];
+    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+    
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -31,7 +34,7 @@ static NSString * const reuseIdentifier = @"Cell";
     // Register cell classes
     [self.collectionView registerClass:[XTNewsFeedCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
-    [self.collectionView setContentInset:UIEdgeInsetsMake(110, 0, 0, 0)];
+    [self.collectionView setContentInset:UIEdgeInsetsMake(110, 0, tabBarHeight, 0)];
     
     // Do any additional setup after loading the view.
     [self.collectionView setBackgroundColor:[UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f]];
@@ -102,6 +105,18 @@ static NSString * const reuseIdentifier = @"Cell";
     });
     
     dispatch_release(fetch);*/
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [navigationView.backButton setHidden:NO];
+    [navigationView.navigationTitle setHidden:NO];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [navigationView.backButton setHidden:YES];
+    [navigationView.navigationTitle setHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -187,34 +202,40 @@ static NSString * const reuseIdentifier = @"Cell";
     
     XTTourInfo *currentElement = [self.news_feed objectAtIndex:indexPath.row];
     
-    if (!navigationView) {navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];}
-    
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
     float height = screenBound.size.height;
     
-    UITabBarController *tabBarController = [super tabBarController];
+    UITabBarController *tabBarController = [UITabBarController new];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
-    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
-    //navigationView.view.alpha = 0.0f;
-    
-    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height-tabBarHeight)];
+    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
     
-    [detailView Initialize:currentElement fromServer:YES withOffset:70 andContentOffset:50];
+    [detailView Initialize:currentElement fromServer:YES withOffset:70 andContentOffset:tabBarHeight];
     
-    [navigationView.view addSubview:detailView];
+    if (!navigationView) {
+        navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:detailView title:nil];
+        
+        [navigationView.header removeFromSuperview];
+        [navigationView.header_shadow removeFromSuperview];
+        [navigationView.header_background removeFromSuperview];
+    }
+    else {
+        [navigationView ClearContentView];
+        
+        [navigationView.contentView addSubview:detailView];
+    }
+    
+    //[[UIApplication sharedApplication].keyWindow addSubview:navigationView.backButton];
+    
     [self.view addSubview:navigationView.view];
     
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
-    } completion:^(BOOL finished)
-     {
-         [navigationView.backButton setHidden:NO];
-         
-         [detailView LoadTourDetail:currentElement fromServer:YES];
-     }];
+    [navigationView ShowView];
+    
+    [detailView LoadTourDetail:currentElement fromServer:YES];
+    
+    [detailView release];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

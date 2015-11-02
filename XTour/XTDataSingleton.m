@@ -174,8 +174,6 @@
     double distance = [self CalculateHaversineForPoint:p1 andPoint:p2];
     double speed = distance/timeDiff;
     
-    if (speed > 50.0) {return -1;}
-    
     return distance;
 }
 
@@ -578,6 +576,39 @@
     }
     
     [self RemoveRecoveryFile];
+}
+
+- (void) RemoveFile:(NSString*)filename
+{
+    NSString *path;
+    
+    if ([[filename pathExtension] isEqualToString:@"jpg"]) {
+        path = [self GetTourImagePath];
+    }
+    else {
+        path = [self GetTourDocumentPath];
+    }
+    
+    NSString *filepath = [path stringByAppendingString:[NSString stringWithFormat:@"/%@",filename]];
+    
+    NSLog(@"Removing file %@",filepath);
+    
+    [[NSFileManager defaultManager] removeItemAtPath:filepath error:nil];
+}
+
+- (NSUInteger) GetNumberOfFilesInTourDirectory
+{
+    NSMutableArray *GPXFiles = [self GetAllGPXFiles];
+    NSMutableArray *imageFiles = [self GetAllImages];
+    NSMutableArray *imageInfoFiles = [self GetAllImageInfoFiles];
+    
+    NSUInteger numberOfFiles = [GPXFiles count] + [imageFiles count] + [imageInfoFiles count];
+    
+    [GPXFiles release];
+    [imageFiles release];
+    [imageInfoFiles release];
+    
+    return numberOfFiles;
 }
 
 - (void) AddImage:(XTImageInfo *)image

@@ -15,6 +15,8 @@
 #import "XTLoginViewController.h"
 #import "XTSummaryViewController.h"
 #import "XTBackgroundTaskManager.h"
+#import "XTNavigationViewContainer.h"
+#import "XTProfileViewController.h"
 
 @interface XTHomeViewController : UIViewController <UIAlertViewDelegate, UIActionSheetDelegate, CLLocationManagerDelegate>
 {

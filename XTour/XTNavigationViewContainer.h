@@ -7,12 +7,33 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XTDataSingleton.h"
+#import "XTLoginViewController.h"
 
-@interface XTNavigationViewContainer : UIViewController
+@interface XTNavigationViewContainer : UIViewController <UIActionSheetDelegate>
+{
+    XTDataSingleton *data;
+    XTLoginViewController *login;
+}
 
+@property (retain, nonatomic) UIView *header;
+@property (retain, nonatomic) UIView *header_shadow;
+@property (retain, nonatomic) UIView *header_background;
+@property (retain, nonatomic) UIButton *loginButton;
 @property(nonatomic,retain) UIButton *backButton;
 @property(nonatomic,retain) UILabel *navigationTitle;
+@property(nonatomic,retain) UIView *contentView;
+@property(nonatomic) float width;
+@property(nonatomic) float height;
+@property(nonatomic) float tabBarHeight;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil view:(UIView*)navigationView title:(NSString*)navigationTitle;
+- (void) LoadLogin:(id)sender;
+- (void) ShowLoginOptions:(id)sender;
+- (void) LoginViewDidClose:(id)sender;
+- (void) ShowView;
+- (void) HideView;
 - (void) back:(id)sender;
+- (void) ClearContentView;
 
 @end

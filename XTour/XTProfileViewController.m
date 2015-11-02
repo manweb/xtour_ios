@@ -24,6 +24,9 @@
     _width = screenBound.size.width;
     float height = screenBound.size.height;
     
+    UITabBarController *tabBarController = [UITabBarController new];
+    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+    
     float boxWidth = _width - 20;
     float boxRadius = 5.f;
     float boxBorderWidth = 1.0f;
@@ -177,7 +180,7 @@
     
     [calendarPageView SetDataForUser:data.userID];
     
-    [self setContentSize:CGSizeMake(_width, boxMarginTop+340+1.05*boxWidth)];
+    [self setContentSize:CGSizeMake(_width, boxMarginTop+340+1.05*boxWidth+tabBarHeight)];
     
     //[_profileSummary addSubview:_profilePicture];
     [_profileSummary addSubview:line];

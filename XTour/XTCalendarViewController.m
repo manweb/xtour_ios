@@ -96,7 +96,7 @@
     _tourDescription = [[UITextView alloc] initWithFrame:CGRectMake(5, 170, _detailView.frame.size.width-10, _detailView.frame.size.height-170-30)];
     
     _tourDescription.editable = NO;
-    _tourDescription.layer.borderColor = [[UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f] CGColor];
+    _tourDescription.layer.borderColor = [[UIColor colorWithRed:200.0f/255.0f green:200.0f/255.0f blue:200.0f/255.0f alpha:1.0f] CGColor];
     _tourDescription.layer.borderWidth = 1.0f;
     _tourDescription.layer.cornerRadius = 5.0f;
     _tourDescription.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
@@ -159,6 +159,10 @@
     
     NSDate *monthDate = [formatter dateFromString:time];
     
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSString *currentDate = [formatter stringFromDate:[NSDate date]];
+    
     NSCalendar *c = [NSCalendar currentCalendar];
     
     NSDateComponents *dateComponent = [c components:NSWeekdayCalendarUnit fromDate:monthDate];
@@ -199,12 +203,18 @@
             [dayButton setTag:buttonTag];
             [dayButton addTarget:self action:@selector(ShowTourDetail:) forControlEvents:UIControlEventTouchUpInside];
             
+            if ([dateString isEqualToString:currentDate]) {
+                dayButton.layer.borderColor = [[UIColor redColor] CGColor];
+                dayButton.layer.borderWidth = 2;
+            }
+            
             [self.view addSubview:dayButton];
         }
         else {
             UIView *dayLabelView = [[UIView alloc] initWithFrame:CGRectMake(dayLabelx, dayLabely+55, dayLabelwidth, dayLabelheight)];
             
             dayLabelView.backgroundColor = [UIColor clearColor];
+            dayLabelView.layer.cornerRadius = dayLabelwidth/2;
             
             UILabel *dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, dayLabelwidth, dayLabelheight)];
             
@@ -213,6 +223,11 @@
             dayLabel.textColor = [UIColor grayColor];
             
             dayLabel.textAlignment = NSTextAlignmentCenter;
+            
+            if ([dateString isEqualToString:currentDate]) {
+                dayLabelView.layer.borderColor = [[UIColor redColor] CGColor];
+                dayLabelView.layer.borderWidth = 2;
+            }
             
             [dayLabelView addSubview:dayLabel];
             
@@ -299,34 +314,29 @@
     
     if (!currentTour) {return;}
     
-    if (!navigationView) {navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];}
-    
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
     float height = screenBound.size.height;
     
-    UITabBarController *tabBarController = [super tabBarController];
-    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
-    
-    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
-    //navigationView.view.alpha = 0.0f;
-    
-    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height-tabBarHeight)];
+    XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
     
-    [detailView Initialize:currentTour fromServer:YES withOffset:70 andContentOffset:50];
+    [detailView Initialize:currentTour fromServer:YES withOffset:70 andContentOffset:0];
     
-    [navigationView.view addSubview:detailView];
-    [self.view addSubview:navigationView.view];
+    if (!navigationView) {navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:detailView title:nil];}
+    else {
+        [navigationView ClearContentView];
+        
+        [navigationView.contentView addSubview:detailView];
+    }
     
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
-    } completion:^(BOOL finished)
-     {
-         [navigationView.backButton setHidden:NO];
-         
-         [detailView LoadTourDetail:currentTour fromServer:YES];
-     }];
+    [[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
+    
+    [navigationView ShowView];
+    
+    [detailView LoadTourDetail:currentTour fromServer:YES];
+    
+    [detailView release];
 }
 
 - (void) CloseDetailView:(id)sender

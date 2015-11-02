@@ -103,13 +103,13 @@
         else {_imgCommentLabel.text = @"No comments";}
         
         if (!_editIcon) {
-            _editIcon = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth-25, 5, 20, 20)];
+            _editIcon = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth-30, 5, 25, 25)];
             [_editIcon setBackgroundImage:[UIImage imageNamed:@"edit_icon.png"] forState:UIControlStateNormal];
             [_editIcon addTarget:self action:@selector(EditImageInfo:) forControlEvents:UIControlEventTouchUpInside];
         }
         
         if (!_deleteIcon) {
-            _deleteIcon = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth-25, 15, 20, 20)];
+            _deleteIcon = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth-30, 15, 25, 25)];
             [_deleteIcon setBackgroundImage:[UIImage imageNamed:@"delete_icon.png"] forState:UIControlStateNormal];
             [_deleteIcon addTarget:self action:@selector(DeleteImage:) forControlEvents:UIControlEventTouchUpInside];
         }

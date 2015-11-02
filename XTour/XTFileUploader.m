@@ -14,6 +14,24 @@
 {
     if (self = [super init]) {
         data = [XTDataSingleton singleObj];
+        
+        NSInteger randomNumber = arc4random() % 1000000;
+        
+        _sessionConfiguration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"xtour.ch-BackgroundSession-%li",(long)randomNumber]];
+        
+        _session = [NSURLSession sessionWithConfiguration:_sessionConfiguration delegate:self delegateQueue:nil];
+        
+        NSURL *url = [NSURL URLWithString:@"http://www.xtour.ch/file_upload.php"];
+        
+        _request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];
+        [_request setHTTPMethod:@"POST"];
+        [_request addValue:@"multipart/form-data, boundary=XTourFormBoundary" forHTTPHeaderField: @"Content-Type"];
+        
+        _backgroundTaskStartTime = [[NSDate date] timeIntervalSince1970];
+        
+        _backgroundTasks = [[NSMutableDictionary alloc] init];
+        
+        _sendNotification = false;
     }
     
     return self;
@@ -102,24 +120,24 @@
 
 - (void) UploadFile:(NSString *) filename
 {
-    NSURL *url = [NSURL URLWithString:@"http://www.xtour.ch/file_upload.php"];
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    //NSURL *url = [NSURL URLWithString:@"http://www.xtour.ch/file_upload.php"];
+    /*ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
     
     [request setDelegate:self];
     [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:filename, @"file", nil]];
     [request setPostValue:data.userID forKey:@"userID"];
     [request addFile:filename forKey:@"files"];
     
-    [request startAsynchronous];
+    [request startAsynchronous];*/
     
-    /*NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+    /*NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"xtour.ch-BackgroundTask-%@",filename]] delegate:self delegateQueue:nil];
     
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];
-    [request setHTTPMethod:@"POST"];
+    [request setHTTPMethod:@"POST"];*/
     
     NSString *boundary = @"XTourFormBoundary";
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data, boundary=%@",boundary];
-    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    //NSString *contentType = [NSString stringWithFormat:@"multipart/form-data, boundary=%@",boundary];
+    //[request addValue:contentType forHTTPHeaderField: @"Content-Type"];
     
     NSMutableData *body = [NSMutableData data];
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -140,28 +158,69 @@
     [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     
-    [request setHTTPBody:body];
+    //[request setHTTPBody:body];
     
-    NSURLSessionTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
-        NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-        
-        if ([response isEqualToString:@"true"]) {
-            NSLog(@"Upload of file %@ was successful", filename);
-            
-            [[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
-        }
-        
-        NSLog(@"The response text is:\n%@", response);
-    }];
+    NSString *taskFileName = [filename stringByAppendingString:@".tmp"];
     
-    [dataTask resume];*/
+    [body writeToFile:taskFileName atomically:YES];
+    
+    //NSURLSessionTask *dataTask = [session dataTaskWithRequest:request];
+    NSURLSessionTask *dataTask = [_session uploadTaskWithRequest:_request fromFile:[NSURL fileURLWithPath:taskFileName]];
+    
+    NSLog(@"Starting background task %@",taskFileName);
+    
+    [dataTask resume];
+    
+    [_backgroundTasks setObject:taskFileName forKey:[NSString stringWithFormat:@"BackgroundTask-%lu",(unsigned long)dataTask.taskIdentifier]];
 }
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
     didReceiveData:(NSData *)responseData
 {
     NSString * str = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-    NSLog(@"Received String %@",str);
+    
+    if ([str isEqualToString:@"false"]) {NSLog(@"There was a problem uploading a file.");}
+    else {
+        NSLog(@"File %@ was uploaded to the server.",str);
+        
+        [data RemoveFile:str];
+        
+        if ([[str pathExtension] isEqualToString:@"jpg"]) {
+            NSString *imageOriginal = [str stringByReplacingOccurrencesOfString:@".jpg" withString:@"_original.jpg"];
+            
+            [data RemoveFile:imageOriginal];
+        }
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
+{
+    if (error) {NSLog(@"Task %@ failed.",task);}
+    else {
+        NSLog(@"Task %@ completed.",task);
+        
+        NSString *taskFileName = [_backgroundTasks objectForKey:[NSString stringWithFormat:@"BackgroundTask-%lu",(unsigned long)task.taskIdentifier]];
+        
+        [[NSFileManager defaultManager] removeItemAtPath:taskFileName error:nil];
+        
+        if (!_sendNotification) {
+            if ([[NSDate date] timeIntervalSince1970] - _backgroundTaskStartTime > 900) {_sendNotification = true;}
+        }
+    }
+}
+
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session
+{
+    NSLog(@"Session with id %@ completed",session.configuration.identifier);
+    
+    if (_sendNotification) {
+        XTAppDelegate *appDelegate = (XTAppDelegate *)[[UIApplication sharedApplication] delegate];
+        if (appDelegate.backgroundSessionCompletionHandler) {
+            void (^completionHandler)() = appDelegate.backgroundSessionCompletionHandler;
+            appDelegate.backgroundSessionCompletionHandler = nil;
+            completionHandler();
+        }
+    }
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request

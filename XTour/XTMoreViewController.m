@@ -172,68 +172,46 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
-                    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
-                    
-                    navigationView.navigationTitle.text = data.userInfo.userName;
-                    
-                    [self.view addSubview:navigationView.view];
-                    
-                    [self.view bringSubviewToFront:_header];
-                    [self.view bringSubviewToFront:_header_shadow];
-                    
-                    profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height-tabBarHeight)];
+                    profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height)];
                     
                     [profile initialize];
                     
-                    [navigationView.view addSubview:profile];
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName];
                     
-                    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {
-                        [navigationView.backButton setHidden:NO];
-                        [navigationView.navigationTitle setHidden:NO];
-                    }];
+                    [self.view addSubview:navigationView.view];
+                    
+                    [navigationView ShowView];
+                    
+                    [profile release];
                 }
                     
                     break;
                 case 1:
                 {
-                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
-                    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
+                    settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
+                    
+                    settings.view.frame = CGRectMake(0, 0, width, height);
+                    
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:settings.view title:@"Einstellungen"];
                     
                     [self.view addSubview:navigationView.view];
                     
-                    [self.view bringSubviewToFront:_header];
-                    [self.view bringSubviewToFront:_header_shadow];
-                    
-                    settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
-                    
-                    settings.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
-                
-                    [navigationView.view addSubview:settings.view];
-                    
-                    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
+                    [navigationView ShowView];
                 }
                     
                     break;
                 case 2:
                 {
-                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil];
-                    navigationView.view.frame = CGRectMake(2*width, 0, width, height-tabBarHeight);
-                    
-                    //[[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
-                    [self.view addSubview:navigationView.view];
-                    
-                    [self.view bringSubviewToFront:_header];
-                    [self.view bringSubviewToFront:_header_shadow];
-                    
                     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
                     [layout setItemSize:CGSizeMake(300, 100)];
                     collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
-                    collection.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);
+                    collection.view.frame = CGRectMake(0, 0, width, height);
                     
-                    [navigationView.view addSubview:collection.view];
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:collection.view title:@"Touren feed"];
                     
-                    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {navigationView.view.frame = CGRectMake(0, 0, width, height-tabBarHeight);} completion:^(BOOL finished) {[navigationView.backButton setHidden:NO];}];
+                    [self.view addSubview:navigationView.view];
+                    
+                    [navigationView ShowView];
                     
                     [layout release];
                 }

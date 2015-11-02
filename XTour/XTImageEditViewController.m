@@ -49,9 +49,19 @@
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
     self.view.frame = CGRectMake(0, 0, width, height+tabBarHeight);
-    self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
     
-    _imageEditView = [[UIView alloc] initWithFrame:CGRectMake(width-50, 30, 0, 0)];
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    _blurEffectView.frame = self.view.frame;
+    _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    [_blurEffectView setHidden:YES];
+    
+    [self.view addSubview:_blurEffectView];
+    
+    _imageEditView = [[UIView alloc] initWithFrame:CGRectMake(10, -200, width-20, 200)];
     _imageEditView.layer.cornerRadius = 10.0f;
     _imageEditView.layer.borderWidth = 5.0f;
     _imageEditView.layer.borderColor = [UIColor grayColor].CGColor;
@@ -71,10 +81,11 @@
     _loginButton.frame = CGRectMake((width-20)/2-50, 170, 100, 20);
     
     _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _cancelButton.frame = CGRectMake(width-100, 10, 80, 20);
+    _cancelButton.frame = CGRectMake(width-50, 10, 20, 20);
     
     [_loginButton setTitle:@"Eintragen" forState:UIControlStateNormal];
-    [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cleanup_icon@3x.png"] forState:UIControlStateNormal];
     
     [_loginButton addTarget:self action:@selector(Enter) forControlEvents:UIControlEventTouchUpInside];
     [_cancelButton addTarget:self action:@selector(Cancel) forControlEvents:UIControlEventTouchUpInside];
@@ -128,12 +139,14 @@
     else {yOffset = 80;}
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
-        _imageEditView.frame = CGRectMake(0, yOffset-10, width, 220);
+        //self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+        _imageEditView.frame = CGRectMake(10, 50, width-20, 200);
+        
+        [_blurEffectView setHidden:NO];
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_imageEditView.frame = CGRectMake(15, yOffset+5, width-30, 190);} completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_imageEditView.frame = CGRectMake(10, 45, width-20, 200);} completion:^(BOOL finished) {
             [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-                _imageEditView.frame = CGRectMake(10, yOffset, width-20, 200);
+                _imageEditView.frame = CGRectMake(10, 50, width-20, 200);
                 
                 [_imageInfoComment setAlpha:1.0f];
                 [_loginButton setAlpha:1.0f];
@@ -147,8 +160,7 @@
 - (void) HideView
 {
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
-        _imageEditView.frame = CGRectMake(280, 30, 0, 0);
+        _imageEditView.frame = CGRectMake(10, -200, self.view.frame.size.width-20, 200);
         
         [_imageInfoComment setAlpha:0.0f];
         [_loginButton setAlpha:0.0f];

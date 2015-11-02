@@ -98,7 +98,7 @@
     
     [self UpdateDisplayWithLocation:_bestLocation];
     
-    [self SaveCurrentLocation:_bestLocation];
+    if (_oldAccuracy < 100) {[self SaveCurrentLocation:_bestLocation];}
     
     _oldAccuracy = 10000.0;
 }
@@ -329,6 +329,24 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+    
+    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
+    /*NSString *tourDirectory = [data GetDocumentFilePathForFile:@"/" CheckIfExist:NO];
+    NSArray *content = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:tourDirectory error:nil];
+    
+    for (int i = 0; i < [content count]; i++) {
+        NSString *file = [NSString stringWithFormat:@"%@/%@", tourDirectory, [content objectAtIndex:i]];
+        if ([[file pathExtension] isEqualToString:@"txt"]) {
+            NSLog(@"Background session task: %@",file);
+            
+            [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+        }
+    }*/
 }
 
 - (void)viewDidUnload
@@ -754,8 +772,6 @@
     [data AddCoordinate:location];
     double d = [data CalculateHaversineForCurrentCoordinate];
     
-    if (d == -1) {[data RemoveLastCoordinate]; return;}
-    
     double altitudeDiff = [data CalculateAltitudeDiffForCurrentCoordinate];
     [data AddDistance:d andHeight:altitudeDiff];
     
@@ -884,6 +900,23 @@
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
     if ([buttonTitle isEqualToString:@"Ausloggen"]) {[data Logout];}
+    else if ([buttonTitle isEqualToString:@"Profil anzeigen"]) {
+        CGRect screenBound = [[UIScreen mainScreen] bounds];
+        float width = screenBound.size.width;
+        float height = screenBound.size.height;
+        
+        XTProfileViewController *profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+        
+        [profile initialize];
+        
+        XTNavigationViewContainer *navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName];
+        
+        [self.view addSubview:navigationView.view];
+        
+        [navigationView ShowView];
+        
+        [profile release];
+    }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
 }
@@ -930,7 +963,7 @@
     else {
         [self UpdateDisplayWithLocation:Location];
         
-        [self SaveCurrentLocation:Location];
+        if (accuracy < 100) {[self SaveCurrentLocation:Location];}
     }
 }
 
