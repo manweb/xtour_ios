@@ -11,8 +11,8 @@
 		640113CB1AEC72B000E6A9F6 /* camera_marker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640113CA1AEC72B000E6A9F6 /* camera_marker@2x.png */; };
 		64059E6218BDD3C800FDA369 /* XTSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */; };
 		64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */; };
-		6405F5AE1BC861F6009B1DFD /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6405F5AD1BC861F6009B1DFD /* SDWebImage.framework */; settings = {ASSET_TAGS = (); }; };
-		64067BE81BBDDF100021C856 /* XTUserStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 64067BE71BBDDF100021C856 /* XTUserStatistics.m */; settings = {ASSET_TAGS = (); }; };
+		6405F5AE1BC861F6009B1DFD /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6405F5AD1BC861F6009B1DFD /* SDWebImage.framework */; };
+		64067BE81BBDDF100021C856 /* XTUserStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 64067BE71BBDDF100021C856 /* XTUserStatistics.m */; };
 		640BBE6A1887B1A30029327F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE691887B1A30029327F /* Foundation.framework */; };
 		640BBE6C1887B1A30029327F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE6B1887B1A30029327F /* CoreGraphics.framework */; };
 		640BBE6E1887B1A30029327F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE6D1887B1A30029327F /* UIKit.framework */; };
@@ -48,7 +48,7 @@
 		640ECB2A1B1006F1004E9816 /* rating-star-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 640ECB241B1006F1004E9816 /* rating-star-on.png */; };
 		640ECB2B1B1006F1004E9816 /* rating-star-on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640ECB251B1006F1004E9816 /* rating-star-on@2x.png */; };
 		641493811AEFEC2C0020ADDD /* XTNavigationViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 641493801AEFEC2C0020ADDD /* XTNavigationViewContainer.m */; };
-		641DC06C1BC4787500B9477B /* XTBackgroundTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 641DC06B1BC4787500B9477B /* XTBackgroundTaskManager.m */; settings = {ASSET_TAGS = (); }; };
+		641DC06C1BC4787500B9477B /* XTBackgroundTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 641DC06B1BC4787500B9477B /* XTBackgroundTaskManager.m */; };
 		642143E618C087A700144711 /* arrow_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 642143E518C087A700144711 /* arrow_back.png */; };
 		64251D17188FB45B004F1675 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251CC6188FB45B004F1675 /* ASIAuthenticationDialog.m */; };
 		64251D18188FB45B004F1675 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 64251CC9188FB45B004F1675 /* ASIDataCompressor.m */; };
@@ -98,8 +98,8 @@
 		645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FEF1A18BC67CA009619E9 /* XTLoginViewController.m */; };
 		646183FC18BC30AF00C50FBB /* camera_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646183FB18BC30AF00C50FBB /* camera_icon.png */; };
 		6461F2DE1B1F553B00B23A51 /* XTProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461F2DD1B1F553B00B23A51 /* XTProfileViewController.m */; };
-		646219D31BB723F900503F1C /* XTCalendarPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646219D21BB723F900503F1C /* XTCalendarPageViewController.m */; settings = {ASSET_TAGS = (); }; };
-		646219D61BB7252C00503F1C /* XTCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646219D51BB7252C00503F1C /* XTCalendarViewController.m */; settings = {ASSET_TAGS = (); }; };
+		646219D31BB723F900503F1C /* XTCalendarPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646219D21BB723F900503F1C /* XTCalendarPageViewController.m */; };
+		646219D61BB7252C00503F1C /* XTCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646219D51BB7252C00503F1C /* XTCalendarViewController.m */; };
 		6463C3261B0519C0000ACB6E /* XTSummaryImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6463C3251B0519C0000ACB6E /* XTSummaryImageViewController.m */; };
 		646C41A01B33D2E9001C6BFB /* add_warning_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646C419D1B33D2E9001C6BFB /* add_warning_icon.png */; };
 		646C41A11B33D2E9001C6BFB /* add_warning_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 646C419E1B33D2E9001C6BFB /* add_warning_icon@2x.png */; };
@@ -115,7 +115,7 @@
 		6480121B18A6FD80000A387E /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121A18A6FD80000A387E /* button_green.png */; };
 		6480121D18A6FD8A000A387E /* button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121C18A6FD8A000A387E /* button_blue.png */; };
 		6480121F18A6FD95000A387E /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 6480121E18A6FD95000A387E /* button_red.png */; };
-		64883A731BCB309800A30DC0 /* XTYearlyStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64883A721BCB309800A30DC0 /* XTYearlyStatisticsViewController.m */; settings = {ASSET_TAGS = (); }; };
+		64883A731BCB309800A30DC0 /* XTYearlyStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64883A721BCB309800A30DC0 /* XTYearlyStatisticsViewController.m */; };
 		648E87F718B7D54700BE1AB3 /* XTCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87F618B7D54700BE1AB3 /* XTCameraViewController.m */; };
 		648E87FA18B7D6D300BE1AB3 /* XTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87F918B7D6D300BE1AB3 /* XTSettingsViewController.m */; };
 		648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 648E87FC18B7DBE600BE1AB3 /* XTXMLParser.m */; };
@@ -176,6 +176,10 @@
 		64F051E71B13F61F004CEBA1 /* XTImageEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F051E61B13F61F004CEBA1 /* XTImageEditViewController.m */; };
 		64F3A6FF1AF597BA0083856F /* XTTourDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F3A6FE1AF597BA0083856F /* XTTourDetailView.m */; };
 		64F5735E1AE301C700BFC7FE /* profile_icon_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F5735D1AE301C700BFC7FE /* profile_icon_gray.png */; };
+		64F69F9A1BE829E90065DDDF /* snowboarder_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F69F981BE829E90065DDDF /* snowboarder_down_button.png */; };
+		64F69F9B1BE829E90065DDDF /* snowboarder_up_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F69F991BE829E90065DDDF /* snowboarder_up_button.png */; };
+		64F69F9E1BE82AD20065DDDF /* snowboarder_down_button_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F69F9C1BE82AD20065DDDF /* snowboarder_down_button_inactive.png */; };
+		64F69F9F1BE82AD20065DDDF /* snowboarder_up_button_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F69F9D1BE82AD20065DDDF /* snowboarder_up_button_inactive.png */; };
 		64F99EBC1B031E50007EB2CE /* upload_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F99EBB1B031E50007EB2CE /* upload_icon@3x.png */; };
 /* End PBXBuildFile section */
 
@@ -411,6 +415,10 @@
 		64F3A6FD1AF597BA0083856F /* XTTourDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTTourDetailView.h; sourceTree = "<group>"; };
 		64F3A6FE1AF597BA0083856F /* XTTourDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTTourDetailView.m; sourceTree = "<group>"; };
 		64F5735D1AE301C700BFC7FE /* profile_icon_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon_gray.png; sourceTree = "<group>"; };
+		64F69F981BE829E90065DDDF /* snowboarder_down_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowboarder_down_button.png; sourceTree = "<group>"; };
+		64F69F991BE829E90065DDDF /* snowboarder_up_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowboarder_up_button.png; sourceTree = "<group>"; };
+		64F69F9C1BE82AD20065DDDF /* snowboarder_down_button_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowboarder_down_button_inactive.png; sourceTree = "<group>"; };
+		64F69F9D1BE82AD20065DDDF /* snowboarder_up_button_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowboarder_up_button_inactive.png; sourceTree = "<group>"; };
 		64F99EBB1B031E50007EB2CE /* upload_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upload_icon@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -599,6 +607,10 @@
 				64A7B47518B1F508004E4B2F /* skier_down_button.png */,
 				64B6E50E1AC89D070069A1A7 /* skier_up_button_inactive.png */,
 				64B6E50C1AC89CFA0069A1A7 /* skier_down_button_inactive.png */,
+				64F69F981BE829E90065DDDF /* snowboarder_down_button.png */,
+				64F69F991BE829E90065DDDF /* snowboarder_up_button.png */,
+				64F69F9C1BE82AD20065DDDF /* snowboarder_down_button_inactive.png */,
+				64F69F9D1BE82AD20065DDDF /* snowboarder_up_button_inactive.png */,
 				64A7B47B18B1F98E004E4B2F /* pause_button.png */,
 				648E880218B8402A00BE1AB3 /* stop_button.png */,
 				64D8C0DB18B556C2001A825E /* clock_icon.png */,
@@ -917,15 +929,18 @@
 				64CD04FC1B49F1DB004DD801 /* warning_icon.png in Resources */,
 				64B6E5111AC8B0AB0069A1A7 /* skier_down_icon.png in Resources */,
 				646C41A61B33D2FF001C6BFB /* cancel_icon.png in Resources */,
+				64F69F9B1BE829E90065DDDF /* snowboarder_up_button.png in Resources */,
 				6431C4F01A2EF566007A827F /* GPS_strong.png in Resources */,
 				64D8C0E018B55BD1001A825E /* item_background_40.png in Resources */,
 				646C41A21B33D2E9001C6BFB /* add_warning_icon@3x.png in Resources */,
 				640BBE7D1887B1A30029327F /* Main.storyboard in Resources */,
+				64F69F9A1BE829E90065DDDF /* snowboarder_down_button.png in Resources */,
 				640ECB2B1B1006F1004E9816 /* rating-star-on@2x.png in Resources */,
 				64746CBC189F18270070B8D9 /* XTour_button.png in Resources */,
 				6434706B1ACB6F2E00C8F916 /* distance_icon.png in Resources */,
 				64E88EE41B0E7B2F002ADF1A /* ski_pole_camera@3x.png in Resources */,
 				64BEAA6B1B26A5E200B7C565 /* rating-star-on@3x.png in Resources */,
+				64F69F9F1BE82AD20065DDDF /* snowboarder_up_button_inactive.png in Resources */,
 				6434706D1ACB702A00C8F916 /* skier_up_icon_2.png in Resources */,
 				64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */,
 				6431C4F11A2EF566007A827F /* GPS_weak.png in Resources */,
@@ -933,6 +948,7 @@
 				6400D0561AF56E130079203C /* arrow_back@3x.png in Resources */,
 				64A7B47418B1F501004E4B2F /* skier_up_button.png in Resources */,
 				64CD04FE1B49F1DB004DD801 /* warning_icon@3x.png in Resources */,
+				64F69F9E1BE82AD20065DDDF /* snowboarder_down_button_inactive.png in Resources */,
 				64B6E50F1AC89D070069A1A7 /* skier_up_button_inactive.png in Resources */,
 				64E3EBA118B020E400514CFE /* profile_icon.png in Resources */,
 				64CA2FFF1AEB67A0006F4219 /* compass_icon_white.png in Resources */,
