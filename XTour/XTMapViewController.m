@@ -53,9 +53,9 @@
     
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:zoom];
     _mapView = [GMSMapView mapWithFrame:self.view.bounds camera:camera];
-    _mapView.myLocationEnabled = YES;
+    //_mapView.myLocationEnabled = YES;
     
-    [_mapView addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context:NULL];
+    //[_mapView addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context:NULL];
     
     [self.view insertSubview:_mapView atIndex:0];
     [_mapView setDelegate:self];
@@ -140,6 +140,10 @@
         }
     }
     
+    _mapView.myLocationEnabled = YES;
+    
+    [_mapView addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context:NULL];
+    
     /*if ([data GetNumCoordinates] < 2) {return;}
     
     NSArray *bounds = [data GetCoordinateBounds];
@@ -168,8 +172,21 @@
     [corner2 release];*/
 }
 
+- (void) viewWillDisappear:(BOOL)animated
+{
+    _mapView.myLocationEnabled = NO;
+    
+    @try {
+        [_mapView removeObserver:self forKeyPath:@"myLocation" context:NULL];
+    }
+    @catch (id exception) {
+        
+    }
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    @try {
     CLLocation *location = [change objectForKey:NSKeyValueChangeNewKey];
     CGFloat currentZoom = _mapView.camera.zoom;
     GMSVisibleRegion visibleRegion = _mapView.projection.visibleRegion;
@@ -208,7 +225,10 @@
     /*_polyline.strokeColor = [UIColor blueColor];
     _polyline.strokeWidth = 5.f;
     _polyline.map = _mapView;*/
-    
+    }
+    @catch (id exception) {
+        
+    }
     return;
 }
 

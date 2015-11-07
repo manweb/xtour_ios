@@ -17,6 +17,7 @@
 #import "XTBackgroundTaskManager.h"
 #import "XTNavigationViewContainer.h"
 #import "XTProfileViewController.h"
+#import "XTNotificationViewController.h"
 
 @interface XTHomeViewController : UIViewController <UIAlertViewDelegate, UIActionSheetDelegate, CLLocationManagerDelegate>
 {
@@ -68,6 +69,9 @@
 @property (nonatomic) bool writeRecoveryFile;
 @property (retain, nonatomic) CLLocation *bestLocation;
 @property (retain, nonatomic) XTBackgroundTaskManager *backgroundTaskManager;
+@property (retain, nonatomic) NSString *up_button_icon;
+@property (retain, nonatomic) NSString *down_button_icon;
+
 - (IBAction)startUpTour:(id)sender;
 - (IBAction)startDownTour:(id)sender;
 - (IBAction)pauseTour:(id)sender;

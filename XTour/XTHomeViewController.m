@@ -347,6 +347,28 @@
             [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
         }
     }*/
+    
+    if ([data GetNumberOfFilesInTourDirectory] > 0) {
+        
+        XTFileUploader *uploader = [[XTFileUploader alloc] init];
+        
+        [uploader UploadGPXFiles];
+        [uploader UploadImages];
+        [uploader UploadImageInfo];
+        
+        XTNotificationViewController *notification = [[XTNotificationViewController alloc] init];
+        
+        //[[UIApplication sharedApplication].keyWindow addSubview:notification.view];
+        
+        [self.view addSubview:notification.view];
+        
+        notification.messageView.text = @"Einige Touren-Daten wurden noch nicht auf den Server hochgeladen. Versuche es jetzt nochmals.";
+        
+        notification.delayTime = 2.0f;
+        notification.displayTime = 10.0f;
+        
+        [notification ShowView];
+    }
 }
 
 - (void)viewDidUnload
@@ -412,6 +434,40 @@
     [self LoginViewDidClose:nil];
     
     if (data.runStatus == 5) {[self ResetTour];}
+    
+    NSString *up_icon;
+    NSString *down_icon;
+    
+    switch (data.profileSettings.equipment) {
+        case 0:
+            if (data.runStatus == 1) {up_icon = @"skier_up_button_inactive.png";}
+            else {up_icon = @"skier_up_button.png";}
+            if (data.runStatus == 3) {down_icon = @"skier_down_button_inactive.png";}
+            else {down_icon = @"skier_down_button.png";}
+            _up_button_icon = @"skier";
+            _down_button_icon = @"skier";
+            break;
+        case 1:
+            if (data.runStatus == 1) {up_icon = @"snowboarder_up_button_inactive.png";}
+            else {up_icon = @"snowboarder_up_button.png";}
+            if (data.runStatus == 3) {down_icon = @"snowboarder_down_button_inactive.png";}
+            else {down_icon = @"snowboarder_down_button.png";}
+            _up_button_icon = @"snowboarder";
+            _down_button_icon = @"snowboarder";
+            break;
+        case 2:
+            if (data.runStatus == 1) {up_icon = @"skier_up_button_inactive.png";}
+            else {up_icon = @"skier_up_button.png";}
+            if (data.runStatus == 3) {down_icon = @"snowboarder_down_button_inactive.png";}
+            else {down_icon = @"snowboarder_down_button.png";}
+            _up_button_icon = @"skier";
+            _down_button_icon = @"snowboarder";
+            break;
+            
+    }
+    
+    [_StartButton setImage:[UIImage imageNamed:up_icon] forState:UIControlStateNormal];
+    [_StopButton setImage:[UIImage imageNamed:down_icon] forState:UIControlStateNormal];
 }
 
 - (void)applicationEnterBackground
@@ -447,8 +503,8 @@
     if (_didRecoverTour) {
         _didRecoverTour = false;
         
-        [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
-        [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
+        [_StartButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_up_button.png",_up_button_icon]] forState:UIControlStateNormal];
+        [_StopButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_down_button.png",_down_button_icon]] forState:UIControlStateNormal];
         [_PauseButton setImage:[UIImage imageNamed:@"stop_button.png"] forState:UIControlStateNormal];
         
         data.runStatus = 2;
@@ -490,8 +546,8 @@
         summary = nil;
     }
     
-    [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
-    [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
+    [_StartButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_up_button.png",_up_button_icon]] forState:UIControlStateNormal];
+    [_StopButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_down_button.png",_down_button_icon]] forState:UIControlStateNormal];
     
     if (data.upCount > 0 && data.downCount > 0 && [_totalTimeLabel isHidden]) {
         [_totalTimeLabel setHidden:NO];
@@ -510,8 +566,8 @@
     if (_didRecoverTour) {
         _didRecoverTour = false;
         
-        [_StartButton setImage:[UIImage imageNamed:@"skier_up_button_inactive.png"] forState:UIControlStateNormal];
-        [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
+        [_StartButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_up_button_inactive.png",_up_button_icon]] forState:UIControlStateNormal];
+        [_StopButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_down_button.png",_down_button_icon]] forState:UIControlStateNormal];
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
         
         data.runStatus = 1;
@@ -577,8 +633,8 @@
         data.startTime = [NSDate date];
     }
     
-    [_StartButton setImage:[UIImage imageNamed:@"skier_up_button_inactive.png"] forState:UIControlStateNormal];
-    [_StopButton setImage:[UIImage imageNamed:@"skier_down_button.png"] forState:UIControlStateNormal];
+    [_StartButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_up_button_inactive.png",_up_button_icon]] forState:UIControlStateNormal];
+    [_StopButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_down_button.png",_down_button_icon]] forState:UIControlStateNormal];
     
     data.runStatus = 1;
     
@@ -599,8 +655,8 @@
     if (_didRecoverTour) {
         _didRecoverTour = false;
         
-        [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
-        [_StopButton setImage:[UIImage imageNamed:@"skier_down_button_inactive.png"] forState:UIControlStateNormal];
+        [_StartButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_up_button.png",_up_button_icon]] forState:UIControlStateNormal];
+        [_StopButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_down_button_inactive.png",_down_button_icon]] forState:UIControlStateNormal];
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
         
         data.runStatus = 3;
@@ -666,8 +722,8 @@
         [_PauseButton setImage:[UIImage imageNamed:@"pause_button.png"] forState:UIControlStateNormal];
     }
     
-    [_StartButton setImage:[UIImage imageNamed:@"skier_up_button.png"] forState:UIControlStateNormal];
-    [_StopButton setImage:[UIImage imageNamed:@"skier_down_button_inactive.png"] forState:UIControlStateNormal];
+    [_StartButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_up_button.png",_up_button_icon]] forState:UIControlStateNormal];
+    [_StopButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_down_button_inactive.png",_down_button_icon]] forState:UIControlStateNormal];
     
     data.runStatus = 3;
     
@@ -909,7 +965,7 @@
         
         [profile initialize];
         
-        XTNavigationViewContainer *navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName];
+        XTNavigationViewContainer *navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName isFirstView:YES];
         
         [self.view addSubview:navigationView.view];
         

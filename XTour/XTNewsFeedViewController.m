@@ -215,11 +215,11 @@ static NSString * const reuseIdentifier = @"Cell";
     [detailView Initialize:currentElement fromServer:YES withOffset:70 andContentOffset:tabBarHeight];
     
     if (!navigationView) {
-        navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:detailView title:nil];
+        navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:detailView title:@"Touren Detail" isFirstView:YES];
         
-        [navigationView.header removeFromSuperview];
-        [navigationView.header_shadow removeFromSuperview];
-        [navigationView.header_background removeFromSuperview];
+        //[navigationView.header removeFromSuperview];
+        //[navigationView.header_shadow removeFromSuperview];
+        //[navigationView.header_background removeFromSuperview];
     }
     else {
         [navigationView ClearContentView];
@@ -229,7 +229,11 @@ static NSString * const reuseIdentifier = @"Cell";
     
     //[[UIApplication sharedApplication].keyWindow addSubview:navigationView.backButton];
     
-    [self.view addSubview:navigationView.view];
+    XTNavigationViewContainer *lastNavigationViewContainer = [self lastNavigationViewContainer];
+    
+    [lastNavigationViewContainer.view addSubview:navigationView.view];
+    
+    //[self.view addSubview:navigationView.view];
     
     [navigationView ShowView];
     
@@ -354,6 +358,23 @@ static NSString * const reuseIdentifier = @"Cell";
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         _filterTab.frame = CGRectMake(position, frame.origin.y, frame.size.width, frame.size.height);
     } completion:nil];
+}
+
+- (XTNavigationViewContainer *) lastNavigationViewContainer {
+    // convenience function for casting and to "mask" the recursive function
+    return (XTNavigationViewContainer *)[self traverseResponderChainForUIViewController:self];
+}
+
+- (id) traverseResponderChainForUIViewController:(id)sender {
+    id nextResponder = [sender nextResponder];
+    if ([nextResponder isKindOfClass:[XTNavigationViewContainer class]]) {
+        NSLog(@"Found last navigation view container");
+        return nextResponder;
+    } else if ([nextResponder isKindOfClass:[UIView class]]) {
+        return [self traverseResponderChainForUIViewController:nextResponder];
+    } else {
+        return nil;
+    }
 }
 
 #pragma mark <UICollectionViewDelegate>

@@ -14,7 +14,7 @@
 
 @implementation XTNavigationViewContainer
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil view:(UIView*)navigationView title:(NSString*)navigationTitle
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil view:(UIView*)navigationView title:(NSString*)navigationTitle isFirstView:(bool)firstView
 {
     if ([self initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         data = [XTDataSingleton singleObj];
@@ -68,13 +68,22 @@
         [self.view addSubview:_header_background];
         [self.view addSubview:_header];
         [self.view addSubview:_header_shadow];
-        //[self.view addSubview:_backButton];
-        //[self.view addSubview:_navigationTitle];
         
-        [[[UIApplication sharedApplication] keyWindow] addSubview:_backButton];
-        [[[UIApplication sharedApplication] keyWindow] addSubview:_navigationTitle];
+        if (firstView) {
+            [self.view addSubview:_backButton];
+            [self.view addSubview:_navigationTitle];
+        }
+        else {
+            [[[UIApplication sharedApplication] keyWindow] addSubview:_backButton];
+            [[[UIApplication sharedApplication] keyWindow] addSubview:_navigationTitle];
+        }
         
         [self LoginViewDidClose:nil];
+        
+        UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(HandlePanGesture:)];
+        recognizer.delegate = self;
+        
+        [_contentView addGestureRecognizer:recognizer];
     }
     
     return self;
@@ -199,13 +208,11 @@
 - (void) ShowView
 {
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        if (_header_background.frame.size.width < _width) {_header_background.frame = CGRectMake(0, 0, 0, 70);}
         _contentView.frame = CGRectMake(0, 0, _width, _height-_tabBarHeight);
         [_backButton setAlpha:1.0];
         [_navigationTitle setAlpha:1.0];
     } completion:^(BOOL finished) {
-        [_backButton setHidden:NO];
-        [_navigationTitle setHidden:NO];
-        
         [_header_background setHidden:YES];
     }];
 }
@@ -215,6 +222,7 @@
     [_header_background setHidden:NO];
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        if (_header_background.frame.size.width < _width) {_header_background.frame = CGRectMake(0, 0, _width, 70);}
         _contentView.frame = CGRectMake(_width, 0, _width, _height-_tabBarHeight);
         [_backButton setAlpha:0.0];
         [_navigationTitle setAlpha:0.0];
@@ -231,6 +239,31 @@
 - (void) ClearContentView
 {
     [[_contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+}
+
+- (IBAction) HandlePanGesture:(UIPanGestureRecognizer*)recognizer
+{
+    CGPoint translation = [recognizer translationInView:self.view];
+    
+    CGRect currentPosition = _contentView.frame;
+    
+    if (translation.x > 0) {
+        _contentView.frame = CGRectMake(translation.x, currentPosition.origin.y, currentPosition.size.width, currentPosition.size.height);
+        
+        [_header_background setHidden:NO];
+        _header_background.frame = CGRectMake(0, 0, translation.x, 70);
+    }
+    
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        CGPoint location = [recognizer locationInView:self.view];
+        
+        if (location.x < _width/2) {
+            [self ShowView];
+        }
+        else {
+            [self HideView];
+        }
+    }
 }
 
 /*

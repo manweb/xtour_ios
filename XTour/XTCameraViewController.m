@@ -294,7 +294,7 @@
         NSData *ImageData = UIImageJPEGRepresentation(pickedImage, 0.9);
         NSData *imageResizedData = UIImageJPEGRepresentation(newImg, 0.9);
         
-        [ImageData writeToFile:newImageNameOriginal atomically:YES];
+        if (data.profileSettings.saveOriginalImage) {[ImageData writeToFile:newImageNameOriginal atomically:YES];}
         [imageResizedData writeToFile:newImageName atomically:YES];
         
         XTImageInfo *imageInfo = [[XTImageInfo alloc] init];

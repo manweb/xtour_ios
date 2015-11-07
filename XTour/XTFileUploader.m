@@ -179,7 +179,7 @@
 {
     NSString * str = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
-    if ([str isEqualToString:@"false"]) {NSLog(@"There was a problem uploading a file.");}
+    if ([str containsString:@"Error:"]) {NSLog(@"There was a problem uploading a file. Error message: %@",str);}
     else {
         NSLog(@"File %@ was uploaded to the server.",str);
         

@@ -10,7 +10,7 @@
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
 
-@interface XTNavigationViewContainer : UIViewController <UIActionSheetDelegate>
+@interface XTNavigationViewContainer : UIViewController <UIActionSheetDelegate,UIGestureRecognizerDelegate>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
@@ -27,7 +27,7 @@
 @property(nonatomic) float height;
 @property(nonatomic) float tabBarHeight;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil view:(UIView*)navigationView title:(NSString*)navigationTitle;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil view:(UIView*)navigationView title:(NSString*)navigationTitle isFirstView:(bool)firstView;
 - (void) LoadLogin:(id)sender;
 - (void) ShowLoginOptions:(id)sender;
 - (void) LoginViewDidClose:(id)sender;

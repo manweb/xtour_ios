@@ -76,7 +76,7 @@
     
     [_loginButton setTitle:@"Login" forState:UIControlStateNormal];
     //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cleanup_icon@3x.png"] forState:UIControlStateNormal];
+    [_cancelButton setBackgroundImage:[UIImage imageNamed:@"close_icon@3x.png"] forState:UIControlStateNormal];
     
     [_loginButton addTarget:self action:@selector(Login) forControlEvents:UIControlEventTouchUpInside];
     [_cancelButton addTarget:self action:@selector(Cancel) forControlEvents:UIControlEventTouchUpInside];

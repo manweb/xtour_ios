@@ -323,20 +323,44 @@
     
     [detailView Initialize:currentTour fromServer:YES withOffset:70 andContentOffset:0];
     
-    if (!navigationView) {navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:detailView title:nil];}
+    if (!navigationView) {navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:detailView title:@"Touren Detail" isFirstView:YES];}
     else {
         [navigationView ClearContentView];
         
         [navigationView.contentView addSubview:detailView];
     }
     
-    [[UIApplication sharedApplication].keyWindow addSubview:navigationView.view];
+    XTNavigationViewContainer *lastNavigationViewContainer = [self lastNavigationViewContainer];
+    
+    [lastNavigationViewContainer.view addSubview:navigationView.view];
     
     [navigationView ShowView];
     
     [detailView LoadTourDetail:currentTour fromServer:YES];
     
     [detailView release];
+}
+
+- (XTNavigationViewContainer *) lastNavigationViewContainer {
+    // convenience function for casting and to "mask" the recursive function
+    return (XTNavigationViewContainer *)[self traverseResponderChainForUIViewController:self];
+}
+
+- (id) traverseResponderChainForUIViewController:(id)sender {
+    id nextResponder = [sender nextResponder];
+    if ([nextResponder isKindOfClass:[UIViewController class]]) {
+        if ([nextResponder isKindOfClass:[XTNavigationViewContainer class]]) {
+            NSLog(@"Found last navigation view container");
+            return nextResponder;
+        }
+        else {
+            return [self traverseResponderChainForUIViewController:nextResponder];
+        }
+    } else if ([nextResponder isKindOfClass:[UIView class]]) {
+        return [self traverseResponderChainForUIViewController:nextResponder];
+    } else {
+        return nil;
+    }
 }
 
 - (void) CloseDetailView:(id)sender

@@ -46,10 +46,10 @@
     
     //_listOfFiles = [data GetAllImages];
     
-    NSArray *tableItems1 = [NSArray arrayWithObjects:@"Profil", @"Einstellungen", @"News feed", @"Wunschliste", @"Ausloggen", @"Einstellungen speichern", @"Einstellungen laden", nil];
-    NSArray *tableItems2 = [NSArray arrayWithObjects:@"Dateien hochladen", @"Aufräumen", nil];
-    NSArray *tableIcons1 = [NSArray arrayWithObjects:@"profile_icon_small@3x.png", @"settings_icon@3x.png", @"news_feed_icon@3x.png", @"wishlist_icon@3x.png", @"logout@3x.png", @"", @"", nil];
-    NSArray *tableIcons2 = [NSArray arrayWithObjects:@"upload_icon@3x.png", @"cleanup_icon@3x.png", nil];
+    NSArray *tableItems1 = [NSArray arrayWithObjects:@"Profil", @"Einstellungen", @"Touren feed", @"Wunschliste", @"Touren suchen", nil];
+    NSArray *tableItems2 = [NSArray arrayWithObjects:@"Ausloggen", nil];
+    NSArray *tableIcons1 = [NSArray arrayWithObjects:@"profile_icon_small@3x.png", @"settings_icon@3x.png", @"news_feed_icon@3x.png", @"wishlist_icon@3x.png", @"tour_search_icon@3x.png", nil];
+    NSArray *tableIcons2 = [NSArray arrayWithObjects:@"logout@3x.png", nil];
     
     _listOfFiles = [[NSDictionary alloc] initWithObjectsAndKeys:tableItems1, @"Allgemein", tableItems2, @"Beta testing", nil];
     
@@ -153,6 +153,10 @@
         }
     }
     
+    if (indexPath.section == 1) {
+        if (indexPath.row == 0) {cell.textLabel.textColor = [UIColor redColor];}
+    }
+    
     return cell;
 }
 
@@ -176,7 +180,7 @@
                     
                     [profile initialize];
                     
-                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName];
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName isFirstView:YES];
                     
                     [self.view addSubview:navigationView.view];
                     
@@ -192,7 +196,7 @@
                     
                     settings.view.frame = CGRectMake(0, 0, width, height);
                     
-                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:settings.view title:@"Einstellungen"];
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:settings.view title:@"Einstellungen" isFirstView:YES];
                     
                     [self.view addSubview:navigationView.view];
                     
@@ -207,7 +211,7 @@
                     collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
                     collection.view.frame = CGRectMake(0, 0, width, height);
                     
-                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:collection.view title:@"Touren feed"];
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:collection.view title:@"Touren feed" isFirstView:YES];
                     
                     [self.view addSubview:navigationView.view];
                     
@@ -220,30 +224,14 @@
                     
                     break;
                 case 4:
-                    [data Logout];
+                    
                     break;
-                case 5:
-                    [data WriteUserSettings];
-                    break;
-                case 6:
-                    [data GetUserSettings];
             }
             break;
         case 1:
             switch (indexPath.row) {
                 case 0:
-                {
-                    XTFileUploader *uploader = [[XTFileUploader alloc] init];
-                    
-                    [uploader UploadGPXFiles];
-                    [uploader UploadImages];
-                    [uploader UploadImageInfo];
-                }
-                    break;
-                case 1:
-                {
-                    [data CleanUpTourDirectory];
-                }
+                    [data Logout];
                     break;
             }
             break;
@@ -254,8 +242,8 @@
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *viewHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
-    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 15, 100, 20)];
+    UIView *viewHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 5)];
+    /*UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 15, 100, 20)];
     
     lblTitle.font = [UIFont fontWithName:@"Helvetica" size:16];
     lblTitle.textColor = [UIColor colorWithRed:150.0F/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
@@ -264,14 +252,14 @@
     
     [viewHeader addSubview:lblTitle];
     
-    [lblTitle release];
+    [lblTitle release];*/
     
     return viewHeader;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 40.0;
+    return 5.0;
 }
 
 - (void)dealloc {
