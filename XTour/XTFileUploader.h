@@ -23,6 +23,7 @@
 @property (nonatomic,retain) NSMutableDictionary *backgroundTasks;
 @property (nonatomic) NSUInteger backgroundTaskStartTime;
 @property (nonatomic) bool sendNotification;
+@property (nonatomic) bool hasUnfinishedTasks;
 
 - (NSArray *) GetTourDirList;
 - (NSArray *) GetFileList;

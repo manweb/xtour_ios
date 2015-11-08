@@ -30,11 +30,11 @@
     blurEffectView.frame = CGRectMake(0, 0, _width, 70);
     blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 25, 30, 30)];
+    UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 25, 20, 20)];
     
     icon.image = [UIImage imageNamed:@"xtour_icon@3x.png"];
     
-    _messageView = [[UITextView alloc] initWithFrame:CGRectMake(50, 15, _width-90, 50)];
+    _messageView = [[UITextView alloc] initWithFrame:CGRectMake(35, 15, _width-70, 50)];
     
     _messageView.backgroundColor = [UIColor clearColor];
     _messageView.font = [UIFont fontWithName:@"Helvetica" size:12.0f];

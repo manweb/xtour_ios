@@ -41,9 +41,20 @@
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
     _totalDescent = 0.0;
+    _totalAverageAltitude = 0.0;
+    _totalCumulativeAltitude = 0.0;
+    _totalAverageDescent = 0.0;
+    _totalCumulativeDescent = 0.0;
+    _lastAltitude = -100.0;
+    _lastDescent = 10000.0;
+    _averageAltitude = 0.0;
     _sumDistance = 0.0;
     _sumAltitude = 0.0;
     _sumDescent = 0.0;
+    _sumAverageAltitude = 0.0;
+    _sumCumulativeAltitude = 0.0;
+    _sumAverageDescent = 0.0;
+    _sumCumulativeDescent = 0.0;
     _lowestPoint = 1e6;
     _highestPoint = -1e6;
     _sumlowestPoint = 1e6;
@@ -58,6 +69,7 @@
     _TotalEndTime = 0;
     _tourDescription = nil;
     _tourRating = 0;
+    _averageCount = 0;
     _timer = 0;
     _loggedIn = false;
     _userID = nil;
@@ -75,6 +87,13 @@
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
     _totalDescent = 0.0;
+    _totalAverageAltitude = 0.0;
+    _totalCumulativeAltitude = 0.0;
+    _totalAverageDescent = 0.0;
+    _totalCumulativeDescent = 0.0;
+    _lastAltitude = -100.0;
+    _lastDescent = 10000.0;
+    _averageAltitude = 0.0;
     _lowestPoint = 1e6;
     _highestPoint = -1e6;
     _startTime = 0;
@@ -93,9 +112,20 @@
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
     _totalDescent = 0.0;
+    _totalAverageAltitude = 0.0;
+    _totalCumulativeAltitude = 0.0;
+    _totalAverageDescent = 0.0;
+    _totalCumulativeDescent = 0.0;
     _sumDistance = 0.0;
     _sumAltitude = 0.0;
     _sumDescent = 0.0;
+    _sumAverageAltitude = 0.0;
+    _sumCumulativeAltitude = 0.0;
+    _sumAverageDescent = 0.0;
+    _sumCumulativeDescent = 0.0;
+    _lastAltitude = -100.0;
+    _lastDescent = 10000;
+    _averageAltitude = 0.0;
     _lowestPoint = 1e6;
     _highestPoint = -1e6;
     _sumlowestPoint = 1e6;
@@ -132,10 +162,70 @@
     if (height > 0) {
         _totalAltitude += height;
         _sumAltitude += height;
+        
+        if ([self GetLastCoordinates].altitude > _lastAltitude) {
+            _totalCumulativeAltitude += height;
+            _sumCumulativeAltitude += height;
+            
+            _lastAltitude = [self GetLastCoordinates].altitude;
+        }
     }
     else {
         _totalDescent += fabs(height);
         _sumDescent += fabs(height);
+        
+        if ([self GetLastCoordinates].altitude < _lastDescent) {
+            _totalCumulativeDescent += fabs(height);
+            _sumCumulativeDescent += fabs(height);
+            
+            _lastDescent = [self GetLastCoordinates].altitude;
+        }
+    }
+    
+    if (dist > 0.5) {
+        double avg = 0.0;
+        if (_averageCount > 0) {
+            avg = _averageAltitude/(double)_averageCount;
+            
+            _averageCount = 0;
+        }
+        
+        if (height > 0) {
+            _totalAverageAltitude += height;
+            _sumAverageAltitude += height;
+        }
+        else {
+            _totalAverageDescent += fabs(height);
+            _sumAverageDescent += fabs(height);
+        }
+        
+        if (avg > 0) {
+            _totalAverageAltitude += avg;
+            _sumAverageAltitude += avg;
+        }
+        else {
+            _totalAverageDescent += fabs(avg);
+            _sumAverageDescent += fabs(avg);
+        }
+    }
+    else if (_averageCount < 10) {
+        _averageAltitude += height;
+        
+        _averageCount++;
+    }
+    else {
+        double avg = _averageAltitude/(double)_averageCount;
+        
+        if (avg > 0) {
+            _totalAverageAltitude += avg;
+            _sumAverageAltitude += avg;
+        }
+        else {
+            _totalAverageDescent += fabs(avg);
+            _sumAverageDescent += fabs(avg);
+        }
+        
+        _averageCount = 0;
     }
 }
 
@@ -304,6 +394,10 @@
         _totalDistance = _sumDistance;
         _totalAltitude = _sumAltitude;
         _totalDescent = _sumDescent;
+        _totalAverageAltitude = _sumAverageAltitude;
+        _totalCumulativeAltitude = _sumCumulativeAltitude;
+        _totalAverageDescent = _sumAverageDescent;
+        _totalCumulativeDescent = _sumCumulativeDescent;
         _lowestPoint = _sumlowestPoint;
         _highestPoint = _sumhighestPoint;
         _timer = _totalTime;
@@ -319,6 +413,10 @@
     [xml SetMetadataDouble:_totalDistance forKey:@"TotalDistance" withPrecision:4];
     [xml SetMetadataDouble:_totalAltitude forKey:@"TotalAltitude" withPrecision:1];
     [xml SetMetadataDouble:_totalDescent forKey:@"TotalDescent" withPrecision:1];
+    [xml SetMetadataDouble:_totalAverageAltitude forKey:@"TotalAverageAltitude" withPrecision:1];
+    [xml SetMetadataDouble:_totalCumulativeAltitude forKey:@"TotalCumulativeAltitude" withPrecision:1];
+    [xml SetMetadataDouble:_totalAverageDescent forKey:@"TotalAverageDescent" withPrecision:1];
+    [xml SetMetadataDouble:_totalCumulativeDescent forKey:@"TotalCumulativeDescent" withPrecision:1];
     [xml SetMetadataDouble:_lowestPoint forKey:@"LowestPoint" withPrecision:1];
     [xml SetMetadataDouble:_highestPoint forKey:@"HighestPoint" withPrecision:1];
     [xml SetMetadataString:_country forKey:@"Country"];

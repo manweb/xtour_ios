@@ -32,6 +32,8 @@
         _backgroundTasks = [[NSMutableDictionary alloc] init];
         
         _sendNotification = false;
+        
+        _hasUnfinishedTasks = false;
     }
     
     return self;
@@ -179,7 +181,11 @@
 {
     NSString * str = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
-    if ([str containsString:@"Error:"]) {NSLog(@"There was a problem uploading a file. Error message: %@",str);}
+    if ([str containsString:@"Error:"]) {
+        NSLog(@"There was a problem uploading a file. Error message: %@",str);
+        
+        _hasUnfinishedTasks = true;
+    }
     else {
         NSLog(@"File %@ was uploaded to the server.",str);
         
@@ -213,7 +219,7 @@
 {
     NSLog(@"Session with id %@ completed",session.configuration.identifier);
     
-    if (_sendNotification) {
+    if (_sendNotification && !_hasUnfinishedTasks) {
         XTAppDelegate *appDelegate = (XTAppDelegate *)[[UIApplication sharedApplication] delegate];
         if (appDelegate.backgroundSessionCompletionHandler) {
             void (^completionHandler)() = appDelegate.backgroundSessionCompletionHandler;
