@@ -302,9 +302,22 @@
         NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_tour_coordinates_string.php?tid=%@", tourInfo.tourID];
         NSURL *url = [NSURL URLWithString:requestString];
         
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        sessionConfiguration.timeoutIntervalForRequest = 10.0;
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
         
         NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+            if (error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                [_loadingView removeFromSuperview];
+                
+                return;
+            }
+            
             XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
             
             [request ProcessTourCoordinates:(NSData*)responseData];
@@ -315,7 +328,7 @@
             NSString *requestString2 = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_tour_images_string.php?tid=%@", tourInfo.tourID];
             NSURL *url2 = [NSURL URLWithString:requestString2];
             
-            NSURLSession *session2 = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+            NSURLSession *session2 = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
             
             NSURLSessionTask *sessionTask2 = [session2 dataTaskWithRequest:[NSURLRequest requestWithURL:url2] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
                 XTServerRequestHandler *request2 = [[[XTServerRequestHandler alloc] init] autorelease];
@@ -484,7 +497,7 @@
         
         GMSPolyline *polyline = [[GMSPolyline alloc] init];
         [polyline setPath:currentPath];
-        if ([[_tourFiles objectAtIndex:i] isEqualToString:@"up"]) {polyline.strokeColor = [UIColor blueColor];}
+        if ([[_tourFiles objectAtIndex:i] containsString:@"up"]) {polyline.strokeColor = [UIColor blueColor];}
         else {polyline.strokeColor = [UIColor redColor];}
         polyline.strokeWidth = 5.f;
         

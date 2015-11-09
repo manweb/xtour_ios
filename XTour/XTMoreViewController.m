@@ -40,7 +40,7 @@
     
     _loginButton.frame = CGRectMake(width-50, 25, 40, 40);
     
-    [_tableView setContentInset:UIEdgeInsetsMake(70, 0, 0, 0)];
+    [_tableView setContentInset:UIEdgeInsetsMake(100, 0, 0, 0)];
     
     data = [XTDataSingleton singleObj];
     

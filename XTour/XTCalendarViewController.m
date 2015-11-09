@@ -35,7 +35,7 @@
     
     float stp = 290/7;
     for (int i = 0; i < 7; i++) {
-        UILabel *dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(i*stp, 30, stp, 20)];
+        UILabel *dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(i*stp, 40, stp, 20)];
         
         dayLabel.text = [days objectAtIndex:i];
         

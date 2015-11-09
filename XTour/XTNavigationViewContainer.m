@@ -257,7 +257,7 @@
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint location = [recognizer locationInView:self.view];
         
-        if (location.x < _width/2) {
+        if (location.x < _width/2 || translation.x <= 0) {
             [self ShowView];
         }
         else {

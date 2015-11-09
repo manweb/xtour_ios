@@ -139,27 +139,27 @@
     
     _toursLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 115, boxWidth/2-10, iconSize)];
     
-    _toursLabel.text = @"2";
+    _toursLabel.text = @"--";
     _toursLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0f];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+15, 115, boxWidth/2-10, iconSize)];
     
-    _timeLabel.text = @"5h 45m";
+    _timeLabel.text = @"--h --m";
     _timeLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0f];
     
     _distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 125+iconSize, boxWidth/2-10, iconSize)];
     
-    _distanceLabel.text = @"5.2 km";
+    _distanceLabel.text = @"-- km";
     _distanceLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0f];
     
     _altitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/2+15, 125+iconSize, boxWidth/2-10, iconSize)];
     
-    _altitudeLabel.text = @"2.1 km";
+    _altitudeLabel.text = @"-- km";
     _altitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0f];
     
     yearlyStatistics = [[XTYearlyStatisticsViewController alloc] initWithNibName:nil bundle:nil];
     
-    yearlyStatistics.view.frame = CGRectMake(0, 220, boxWidth, 70);
+    yearlyStatistics.view.frame = CGRectMake(5, 220, boxWidth-10, 70);
     
     [yearlyStatistics LoadData];
     
@@ -212,9 +212,20 @@
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_user_statistics.php?uid=%@", data.userID];
     NSURL *url = [NSURL URLWithString:requestString];
     
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    sessionConfiguration.timeoutIntervalForRequest = 10.0;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
     
     NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            return;
+        }
+        
         XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
         
         _userStatistics = [request GetUserStatistics:responseData];

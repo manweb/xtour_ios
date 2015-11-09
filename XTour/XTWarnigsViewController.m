@@ -217,9 +217,22 @@ static NSString * const reuseIdentifier = @"Cell";
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_warnings_string.php?radius=%f&longitude=%f&latitude=%f", data.profileSettings.warningRadius, data.CurrentLocation.coordinate.longitude, data.CurrentLocation.coordinate.latitude];
     NSURL *url = [NSURL URLWithString:requestString];
     
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    sessionConfiguration.timeoutIntervalForRequest = 10.0;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
     
     NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            [refreshControl endRefreshing];
+            
+            return;
+        }
+        
         XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
         
         self.warningsArray = [request GetWarningsWithinRadius:responseData];
@@ -233,6 +246,7 @@ static NSString * const reuseIdentifier = @"Cell";
         }
         else {
             [_background setHidden:NO];
+            _emptyLabel.text = [NSString stringWithFormat:@"Im Umkreis von %.0fkm sind keine Gefahrenstellen markiert.",data.profileSettings.warningRadius];
             [self.collectionView setHidden:YES];
             
             [self tabBarItem].badgeValue = nil;
