@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GoogleMaps/GoogleMaps.h>
 #import "XTDataSingleton.h"
 #import "XTLoginViewController.h"
 #import "XTWarningsInfo.h"
 #import "XTServerRequestHandler.h"
+@import GoogleMaps;
 
 @interface XTMapViewController : UIViewController <UIActionSheetDelegate, GMSMapViewDelegate>
 {

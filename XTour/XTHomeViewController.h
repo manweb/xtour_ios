@@ -84,5 +84,6 @@
 - (void)UpdateDisplayWithLocation:(CLLocation*)location;
 - (void)SaveCurrentLocation:(CLLocation*)location;
 - (void)ResetTour;
+- (void)FinishTour:(bool)batteryIsLow;
 
 @end

@@ -79,6 +79,7 @@
     _photoCount = 0;
     _lastRunIndex = 0;
     _runStatus = 0;
+    _lowBatteryLevel = false;
 }
 
 - (void) ResetDataForNewRun
@@ -207,6 +208,8 @@
             _totalAverageDescent += fabs(avg);
             _sumAverageDescent += fabs(avg);
         }
+        
+        _averageAltitude = 0.0;
     }
     else if (_averageCount < 10) {
         _averageAltitude += height;
@@ -226,6 +229,8 @@
         }
         
         _averageCount = 0;
+        
+        _averageAltitude = 0.0;
     }
 }
 
@@ -474,6 +479,12 @@
     [xml SetMetadataDouble:_StartLocation.coordinate.latitude forKey:@"StartLocationLat" withPrecision:5];
     [xml SetMetadataDouble:_StartLocation.coordinate.longitude forKey:@"StartLocationLon" withPrecision:5];
     [xml SetMetadataDouble:_StartLocation.altitude forKey:@"StartLocationAltitude" withPrecision:1];
+    
+    NSInteger lowBattery;
+    if (_lowBatteryLevel) {lowBattery = 1;}
+    else {lowBattery = 0;}
+    
+    [xml SetMetadataDouble:lowBattery forKey:@"LowBatteryLevel" withPrecision:0];
     
     for (int i = 0; i < [_locationData count]; i++) {
         [xml AddTrackpoint:[_locationData objectAtIndex:i]];

@@ -69,6 +69,7 @@
 @property(nonatomic,retain) NSMutableArray *warningInfo;
 @property(nonatomic) NSInteger runStatus;
 @property(nonatomic,retain) XTSettings *profileSettings;
+@property(nonatomic) bool lowBatteryLevel;
 
 + (XTDataSingleton *) singleObj;
 

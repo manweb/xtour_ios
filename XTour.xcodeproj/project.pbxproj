@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3546BB168C7B07B6CE4DEA25 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C574BD7B36F6F0F9ED910053 /* libPods.a */; };
 		6400D0561AF56E130079203C /* arrow_back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6400D0551AF56E130079203C /* arrow_back@3x.png */; };
 		640113CB1AEC72B000E6A9F6 /* camera_marker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640113CA1AEC72B000E6A9F6 /* camera_marker@2x.png */; };
 		64059E6218BDD3C800FDA369 /* XTSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64059E6018BDD3C800FDA369 /* XTSummaryViewController.m */; };
@@ -81,8 +82,6 @@
 		643470781AE0D049003DDA13 /* XTNewsFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643470771AE0D049003DDA13 /* XTNewsFeedViewController.m */; };
 		6434707B1AE0E332003DDA13 /* XTNewsFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6434707A1AE0E332003DDA13 /* XTNewsFeedCell.m */; };
 		6443BC871BA4E39200FA3E83 /* XTSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6443BC861BA4E39200FA3E83 /* XTSettings.m */; };
-		645181181A27BBE100D887CA /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 645181171A27BBE100D887CA /* GoogleMaps.framework */; };
-		6451811A1A27BCFC00D887CA /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 645181191A27BCFC00D887CA /* GoogleMaps.bundle */; };
 		645181291A27CC2500D887CA /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = 6451811E1A27CC2500D887CA /* Contents.json */; };
 		6451812A1A27CC2500D887CA /* Icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 6451811F1A27CC2500D887CA /* Icon-40.png */; };
 		6451812B1A27CC2500D887CA /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 645181201A27CC2500D887CA /* Icon-40@2x.png */; };
@@ -192,6 +191,10 @@
 		64F69F9E1BE82AD20065DDDF /* snowboarder_down_button_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F69F9C1BE82AD20065DDDF /* snowboarder_down_button_inactive.png */; };
 		64F69F9F1BE82AD20065DDDF /* snowboarder_up_button_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F69F9D1BE82AD20065DDDF /* snowboarder_up_button_inactive.png */; };
 		64F99EBC1B031E50007EB2CE /* upload_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F99EBB1B031E50007EB2CE /* upload_icon@3x.png */; };
+		64FCAC3D1BF54F0600446F03 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FCAC3C1BF54F0600446F03 /* GoogleMaps.framework */; };
+		64FCAC3F1BF54F3700446F03 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 64FCAC3E1BF54F3700446F03 /* GoogleMaps.bundle */; };
+		64FCAC411BF5531F00446F03 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FCAC401BF5531F00446F03 /* Accelerate.framework */; };
+		64FCAC431BF5532E00446F03 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FCAC421BF5532E00446F03 /* CoreBluetooth.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -307,8 +310,6 @@
 		6434707A1AE0E332003DDA13 /* XTNewsFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTNewsFeedCell.m; sourceTree = "<group>"; };
 		6443BC851BA4E39200FA3E83 /* XTSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSettings.h; sourceTree = "<group>"; };
 		6443BC861BA4E39200FA3E83 /* XTSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSettings.m; sourceTree = "<group>"; };
-		645181171A27BBE100D887CA /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "GoogleMaps-iOS-1.9.0/GoogleMaps.framework"; sourceTree = "<group>"; };
-		645181191A27BCFC00D887CA /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "GoogleMaps-iOS-1.9.0/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		6451811E1A27CC2500D887CA /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
 		6451811F1A27CC2500D887CA /* Icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-40.png"; sourceTree = "<group>"; };
 		645181201A27CC2500D887CA /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-40@2x.png"; sourceTree = "<group>"; };
@@ -443,6 +444,13 @@
 		64F69F9C1BE82AD20065DDDF /* snowboarder_down_button_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowboarder_down_button_inactive.png; sourceTree = "<group>"; };
 		64F69F9D1BE82AD20065DDDF /* snowboarder_up_button_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowboarder_up_button_inactive.png; sourceTree = "<group>"; };
 		64F99EBB1B031E50007EB2CE /* upload_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upload_icon@3x.png"; sourceTree = "<group>"; };
+		64FCAC3C1BF54F0600446F03 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Pods/GoogleMaps/Frameworks/GoogleMaps.framework; sourceTree = "<group>"; };
+		64FCAC3E1BF54F3700446F03 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = Pods/GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
+		64FCAC401BF5531F00446F03 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		64FCAC421BF5532E00446F03 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		782BD5EB9BAAADE38AC8F6DF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A81FA645185E3FA58F0677B9 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C574BD7B36F6F0F9ED910053 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -450,6 +458,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64FCAC431BF5532E00446F03 /* CoreBluetooth.framework in Frameworks */,
+				64FCAC411BF5531F00446F03 /* Accelerate.framework in Frameworks */,
 				640BBEAC1887B2040029327F /* ImageIO.framework in Frameworks */,
 				64B7FED71A2BB2ED008DE880 /* AssetsLibrary.framework in Frameworks */,
 				64251D4C188FC1C8004F1675 /* libxml2.dylib in Frameworks */,
@@ -468,9 +478,10 @@
 				640BBEA41887B1DA0029327F /* CoreData.framework in Frameworks */,
 				640BBEA21887B1CF0029327F /* AVFoundation.framework in Frameworks */,
 				640BBE6C1887B1A30029327F /* CoreGraphics.framework in Frameworks */,
+				64FCAC3D1BF54F0600446F03 /* GoogleMaps.framework in Frameworks */,
 				640BBE6E1887B1A30029327F /* UIKit.framework in Frameworks */,
-				645181181A27BBE100D887CA /* GoogleMaps.framework in Frameworks */,
 				640BBE6A1887B1A30029327F /* Foundation.framework in Frameworks */,
+				3546BB168C7B07B6CE4DEA25 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +505,7 @@
 				640BBE911887B1A30029327F /* XTourTests */,
 				640BBE681887B1A30029327F /* Frameworks */,
 				640BBE671887B1A30029327F /* Products */,
+				8F573FFF4C8400C15BF11EC9 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -509,9 +521,11 @@
 		640BBE681887B1A30029327F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				64FCAC421BF5532E00446F03 /* CoreBluetooth.framework */,
+				64FCAC401BF5531F00446F03 /* Accelerate.framework */,
+				64FCAC3E1BF54F3700446F03 /* GoogleMaps.bundle */,
+				64FCAC3C1BF54F0600446F03 /* GoogleMaps.framework */,
 				64B7FED61A2BB2ED008DE880 /* AssetsLibrary.framework */,
-				645181191A27BCFC00D887CA /* GoogleMaps.bundle */,
-				645181171A27BBE100D887CA /* GoogleMaps.framework */,
 				64251D4B188FC1C8004F1675 /* libxml2.dylib */,
 				64251D42188FB91F004F1675 /* MobileCoreServices.framework */,
 				64251D40188FB908004F1675 /* CFNetwork.framework */,
@@ -531,6 +545,7 @@
 				640BBE6B1887B1A30029327F /* CoreGraphics.framework */,
 				640BBE6D1887B1A30029327F /* UIKit.framework */,
 				640BBE8B1887B1A30029327F /* XCTest.framework */,
+				C574BD7B36F6F0F9ED910053 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -806,6 +821,15 @@
 			path = images/icon/ios/AppIcon.appiconset;
 			sourceTree = SOURCE_ROOT;
 		};
+		8F573FFF4C8400C15BF11EC9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				782BD5EB9BAAADE38AC8F6DF /* Pods.debug.xcconfig */,
+				A81FA645185E3FA58F0677B9 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -813,9 +837,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 640BBE9B1887B1A30029327F /* Build configuration list for PBXNativeTarget "XTour" */;
 			buildPhases = (
+				8B88362C7793D0E3763AAD7A /* Check Pods Manifest.lock */,
 				640BBE621887B1A30029327F /* Sources */,
 				640BBE631887B1A30029327F /* Frameworks */,
 				640BBE641887B1A30029327F /* Resources */,
+				950A8A1312672B5379EE02F3 /* Embed Pods Frameworks */,
+				CB0B9AA5DC27190928F2A13D /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -905,7 +932,6 @@
 				64935FAA1B77FFC300CD8E4E /* delete_icon@3x.png in Resources */,
 				64A1E0041AE4800D00403950 /* settings_icon@3x.png in Resources */,
 				646C41A81B33D2FF001C6BFB /* cancel_icon@3x.png in Resources */,
-				6451811A1A27BCFC00D887CA /* GoogleMaps.bundle in Resources */,
 				645181311A27CC2500D887CA /* Icon-Small.png in Resources */,
 				640BBE851887B1A30029327F /* Images.xcassets in Resources */,
 				64C09A8B18B68E16004A230E /* item_background_40_half.png in Resources */,
@@ -981,6 +1007,7 @@
 				64746CBC189F18270070B8D9 /* XTour_button.png in Resources */,
 				6434706B1ACB6F2E00C8F916 /* distance_icon.png in Resources */,
 				64E88EE41B0E7B2F002ADF1A /* ski_pole_camera@3x.png in Resources */,
+				64FCAC3F1BF54F3700446F03 /* GoogleMaps.bundle in Resources */,
 				64BEAA6B1B26A5E200B7C565 /* rating-star-on@3x.png in Resources */,
 				64F69F9F1BE82AD20065DDDF /* snowboarder_up_button_inactive.png in Resources */,
 				641FD4571BEEA041002DD407 /* xtour_icon@3x.png in Resources */,
@@ -1013,6 +1040,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8B88362C7793D0E3763AAD7A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		950A8A1312672B5379EE02F3 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB0B9AA5DC27190928F2A13D /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		640BBE621887B1A30029327F /* Sources */ = {
@@ -1191,6 +1266,7 @@
 		};
 		640BBE9C1887B1A30029327F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 782BD5EB9BAAADE38AC8F6DF /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1200,12 +1276,12 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
 					"$(PROJECT_DIR)/XTour",
+					"$(PROJECT_DIR)/Pods/GoogleMaps/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
+					"$(PROJECT_DIR)/XTour",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XTour/XTour-Prefix.pch";
@@ -1214,8 +1290,13 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SDKROOT)/usr/include/libxml2",
 				);
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "XTour/XTour-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-ObjC",
 					"-lxml2",
@@ -1229,6 +1310,7 @@
 		};
 		640BBE9D1887B1A30029327F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A81FA645185E3FA58F0677B9 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1238,12 +1320,12 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
 					"$(PROJECT_DIR)/XTour",
+					"$(PROJECT_DIR)/Pods/GoogleMaps/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/GoogleMaps-iOS-1.9.0",
+					"$(PROJECT_DIR)/XTour",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XTour/XTour-Prefix.pch";
@@ -1253,10 +1335,41 @@
 					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "XTour/XTour-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				"OTHER_LDFLAGS[arch=*]" = (
+					"$(inherited)",
 					"-ObjC",
-					"-lxml2",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"CoreBluetooth\"",
+					"-framework",
+					"\"CoreData\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreText\"",
+					"-framework",
+					"\"GLKit\"",
+					"-framework",
+					"\"GoogleMaps\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"OpenGLES\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

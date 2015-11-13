@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "XTServerRequestHandler.h"
-#import "GoogleMaps/GoogleMaps.h"
 #import "XTTourInfo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "XTSummaryImageViewController.h"
 #import "XTGraphPageViewController.h"
 #import "XTDataSingleton.h"
 #import "XTXMLParser.h"
+@import GoogleMaps;
 
 @interface XTTourDetailView : UIScrollView
 {

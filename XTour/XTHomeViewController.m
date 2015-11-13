@@ -324,6 +324,8 @@
     NSArray *imagesInDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:nil];
     NSLog(@"Content of tour directory: %@",imagesInDirectory);
     
+    [data GetUserSettings];
+    
     [self startLocationUpdate];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -734,6 +736,55 @@
     }
 }
 
+- (void) FinishTour:(bool)batteryIsLow
+{
+    [_pollingTimer invalidate];
+    _pollingTimer = nil;
+    
+    [self stopLocationUpdate:NO];
+    
+    if (data.runStatus == 0 || data.runStatus == 5) {return;}
+    
+    NSString *tourType = @"up";
+    
+    switch (data.runStatus) {
+        case 1:
+            tourType = @"up";
+            break;
+        case 2:
+            tourType = @"up";
+            break;
+        case 3:
+            tourType = @"down";
+            break;
+        case 4:
+            tourType = @"down";
+            break;
+    }
+    
+    data.endTime = [NSDate date];
+    data.TotalEndTime = [NSDate date];
+    [data CreateXMLForCategory:tourType];
+    
+    data.lowBatteryLevel = batteryIsLow;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [data CreateXMLForCategory:@"sum"];
+        [data WriteImageInfo];
+        
+        data.runStatus = 5;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [data ResetAll];
+            
+            XTFileUploader *uploader = [[XTFileUploader alloc] init];
+            [uploader UploadGPXFiles];
+            [uploader UploadImages];
+            [uploader UploadImageInfo];
+        });
+    });
+}
+
 - (void) UpdateDisplayWithLocation:(CLLocation*)location
 {
     if (!location) {return;}
@@ -767,15 +818,22 @@
     _elevationLabel.text = altString;
     
     NSString *distTotal;
-    if (data.totalDistance < 0.1) {distTotal = [[NSString alloc] initWithFormat:@"%.0f m", (data.totalDistance)*1000];}
-    else {distTotal = [[NSString alloc] initWithFormat:@"%.1f km", data.totalDistance];}
-    NSString *altTotal = [[NSString alloc] initWithFormat:@"%.0f m", data.totalAltitude];
+    if (data.totalDistance < 0.1) {distTotal = [NSString stringWithFormat:@"%.0f m", (data.totalDistance)*1000];}
+    else {distTotal = [NSString stringWithFormat:@"%.1f km", data.totalDistance];}
+    
+    NSString *altTotal;
+    if (data.runStatus == 1) {
+        altTotal = [NSString stringWithFormat:@"%.0f m", data.totalCumulativeAltitude];
+    }
+    else {
+        altTotal = [NSString stringWithFormat:@"%.0f m", data.totalCumulativeDescent];
+    }
     
     _distanceLabel.text = distTotal;
     _altitudeLabel.text = altTotal;
     
     _totalDistanceLabel.text = [NSString stringWithFormat:@"%.1f km",data.sumDistance];
-    _totalAltitudeLabel.text = [NSString stringWithFormat:@"%.1f m",data.sumAltitude];
+    _totalAltitudeLabel.text = [NSString stringWithFormat:@"%.1f m",data.sumCumulativeAltitude];
     
     if (data.rateTimer > 10) {
         double diffDistance = data.totalDistance - data.rateLastDistance;
@@ -843,6 +901,22 @@
     if (alt > data.sumhighestPoint) {data.sumhighestPoint = alt;}
     
     NSLog(@"Haversine distance: %f", d);
+    
+    if (level < 0.2 && data.profileSettings.batterySafeMode) {
+        [self FinishTour:YES];
+        
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        
+        [notification setAlertAction:@"Launch"];
+        [notification setAlertBody:@"\U0001F50B Die Battery ist unter 20% gefallen. Die GPS-Aufzeichnung wurde gestoppt und die Tour beendet."];
+        [notification setHasAction:YES];
+        notification.applicationIconBadgeNumber = 1;
+        notification.soundName = UILocalNotificationDefaultSoundName;
+        
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+        
+        [notification release];
+    }
 }
 
 - (void) SetBackgroundTimer

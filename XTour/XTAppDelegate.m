@@ -7,7 +7,7 @@
 //
 
 #import "XTAppDelegate.h"
-#import <GoogleMaps/GoogleMaps.h>
+@import GoogleMaps;
 
 @implementation XTAppDelegate
 
@@ -52,7 +52,7 @@
     
     data = [XTDataSingleton singleObj];
     
-    [data RemoveRecoveryFile];
+    [data WriteUserSettings];
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier
@@ -62,7 +62,7 @@
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     
     [notification setAlertAction:@"Launch"];
-    [notification setAlertBody:@"Die Touren-Daten sind nun auf dem Server gespeichert."];
+    [notification setAlertBody:@"\U0001F44D Alle Touren-Daten sind nun auf dem Server gespeichert. Enjoy \U0001F60E"];
     [notification setHasAction:YES];
     notification.applicationIconBadgeNumber = 1;
     notification.soundName = UILocalNotificationDefaultSoundName;
