@@ -40,9 +40,7 @@
     header.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
     header_shadow.backgroundColor = [UIColor colorWithRed:24.f/255.f green:71.f/255.f blue:111.f/255.f alpha:0.9f];
     
-    _loginButton.frame = CGRectMake(width-50, 25, 40, 40);
-    
-    _loginButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 25, 40, 40)];
+    _loginButton = [[UIButton alloc] initWithFrame:CGRectMake(width-50, 25, 40, 40)];
     [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     [_loginButton addTarget:self action:@selector(LoadLogin:) forControlEvents:UIControlEventTouchDown];
     
@@ -148,6 +146,23 @@
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
     if ([buttonTitle isEqualToString:@"Ausloggen"]) {[data Logout];}
+    else if ([buttonTitle isEqualToString:@"Profil anzeigen"]) {
+        CGRect screenBound = [[UIScreen mainScreen] bounds];
+        float width = screenBound.size.width;
+        float height = screenBound.size.height;
+        
+        XTProfileViewController *profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+        
+        [profile initialize];
+        
+        XTNavigationViewContainer *navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName isFirstView:YES];
+        
+        [self.view addSubview:navigationView.view];
+        
+        [navigationView ShowView];
+        
+        [profile release];
+    }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
 }

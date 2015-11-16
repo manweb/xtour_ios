@@ -11,6 +11,8 @@
 #import "XTLoginViewController.h"
 #import "XTWarningsInfo.h"
 #import "XTServerRequestHandler.h"
+#import "XTProfileViewController.h"
+#import "XTNavigationViewContainer.h"
 @import GoogleMaps;
 
 @interface XTMapViewController : UIViewController <UIActionSheetDelegate, GMSMapViewDelegate>

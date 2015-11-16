@@ -12,6 +12,8 @@
 #import "XTWarningsInfo.h"
 #import "XTServerRequestHandler.h"
 #import "XTWarningCell.h"
+#import "XTProfileViewController.h"
+#import "XTNavigationViewContainer.h"
 
 @interface XTWarnigsViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 {

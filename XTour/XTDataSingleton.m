@@ -409,6 +409,12 @@
         _lastRunIndex = 0;
     }
     
+    int lowBattery = 0;
+    if (_lowBatteryLevel) {lowBattery = 1;}
+    
+    int anonymousTracking = 0;
+    if (self.profileSettings.anonymousTracking) {anonymousTracking = 1;}
+    
     [xml SetMetadataString:_userID forKey:@"userid"];
     [xml SetMetadataString:_tourID forKey:@"tourid"];
     [xml SetMetadataDate:_startTime forKey:@"StartTime"];
@@ -428,6 +434,8 @@
     [xml SetMetadataString:_province forKey:@"Province"];
     [xml SetMetadataString:_tourDescription forKey:@"Description"];
     [xml SetMetadataDouble:(double)_tourRating forKey:@"Rating" withPrecision:0];
+    [xml SetMetadataDouble:(double)anonymousTracking forKey:@"AnonymousTracking" withPrecision:0];
+    [xml SetMetadataDouble:(double)lowBattery forKey:@"LowBatteryLevel" withPrecision:0];
     
     for (int i = _lastRunIndex; i < [_locationData count]; i++) {
         if (i < [_batteryLevel count]) {[xml AddTrackpoint:[_locationData objectAtIndex:i] batteryLevel:[[_batteryLevel objectAtIndex:i] floatValue]];}

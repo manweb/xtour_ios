@@ -255,6 +255,16 @@
 - (void)dealloc {
     [_profileSummary release];
     [_profilePicture release];
+    [_calendarView release];
+    [_month release];
+    [_season release];
+    [_total release];
+    [_timeLabel release];
+    [_toursLabel release];
+    [_distanceLabel release];
+    [_altitudeLabel release];
+    [_tab release];
+    [_userStatistics release];
     [super dealloc];
 }
 

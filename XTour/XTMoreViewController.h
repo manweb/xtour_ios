@@ -19,9 +19,6 @@
 {
     XTDataSingleton *data;
     XTLoginViewController *login;
-    XTNewsFeedViewController *collection;
-    XTSettingsViewController *settings;
-    XTProfileViewController *profile;
     XTNavigationViewContainer *navigationView;
 }
 
@@ -33,8 +30,6 @@
 @property(nonatomic,retain) NSArray *sectionTitles;
 @property (retain, nonatomic) IBOutlet UIButton *loginButton;
 @property(nonatomic,retain) UIView *detailView;
-@property (retain, nonatomic) IBOutlet UIButton *backButton;
-- (IBAction)back:(id)sender;
 - (void)LoadLogin:(id)sender;
 - (void)ShowLoginOptions:(id)sender;
 - (void)LoginViewDidClose:(id)sender;

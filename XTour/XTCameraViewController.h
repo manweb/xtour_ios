@@ -13,6 +13,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import "XTImageInfo.h"
 #import "XTImageDetailView.h"
+#import "XTProfileViewController.h"
+#import "XTNavigationViewContainer.h"
 
 @interface XTCameraViewController : UICollectionViewController <UIActionSheetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 {

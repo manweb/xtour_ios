@@ -81,8 +81,6 @@
     
     [self.view addSubview:_detailView];
     
-    [_backButton setHidden:YES];
-    
     self.tableView.frame = CGRectMake(0, 0, width, height);
     
     self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
@@ -148,7 +146,8 @@
     cell.imageView.image = [UIImage imageNamed:[sectionIcons objectAtIndex:indexPath.row]];
     
     if (indexPath.section == 0) {
-        if (indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 2) {
+        if (indexPath.row == 0 && data.loggedIn) {cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;}
+        if (indexPath.row == 1 || indexPath.row == 2) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
@@ -176,7 +175,16 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+                    if (!data.loggedIn) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:@"Du musst dich einloggen um deine Touren anzuzeigen. Klicke auf das Profil-Icon." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                        
+                        [alert show];
+                        [alert release];
+                        
+                        return;
+                    }
+                    
+                    XTProfileViewController *profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height)];
                     
                     [profile initialize];
                     
@@ -192,7 +200,7 @@
                     break;
                 case 1:
                 {
-                    settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
+                    XTSettingsViewController *settings = [[XTSettingsViewController alloc] initWithNibName:nil bundle:nil];
                     
                     settings.view.frame = CGRectMake(0, 0, width, height);
                     
@@ -208,7 +216,7 @@
                 {
                     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
                     [layout setItemSize:CGSizeMake(300, 100)];
-                    collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
+                    XTNewsFeedViewController *collection = [[XTNewsFeedViewController alloc] initWithCollectionViewLayout:layout];
                     collection.view.frame = CGRectMake(0, 0, width, height);
                     
                     navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:collection.view title:@"Touren feed" isFirstView:YES];
@@ -264,7 +272,6 @@
 
 - (void)dealloc {
     [_loginButton release];
-    [_backButton release];
     [_header release];
     [_header_shadow release];
     [_tableView release];
@@ -310,29 +317,25 @@
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
     if ([buttonTitle isEqualToString:@"Ausloggen"]) {[data Logout];}
+    else if ([buttonTitle isEqualToString:@"Profil anzeigen"]) {
+        CGRect screenBound = [[UIScreen mainScreen] bounds];
+        float width = screenBound.size.width;
+        float height = screenBound.size.height;
+        
+        XTProfileViewController *profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+        
+        [profile initialize];
+        
+        navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName isFirstView:YES];
+        
+        [self.view addSubview:navigationView.view];
+        
+        [navigationView ShowView];
+        
+        [profile release];
+    }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
-}
-
-- (IBAction)back:(id)sender {
-    CGRect screenBound = [[UIScreen mainScreen] bounds];
-    float width = screenBound.size.width;
-    float height = screenBound.size.height;
-    
-    UITabBarController *tabBarController = [super tabBarController];
-    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
-    
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_detailView.frame = CGRectMake(2*width, 70, width, height-70-tabBarHeight);} completion:NULL];
-    
-    if (collection.view.frame.origin.x == 0) {
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {collection.view.frame = CGRectMake(2*width, 70, width, height-70-tabBarHeight);} completion:NULL];
-    }
-    
-    for (UIView *view in _detailView.subviews) {
-        [view removeFromSuperview];
-    }
-    
-    [_backButton setHidden:YES];
 }
 
 @end

@@ -206,6 +206,23 @@ static NSString * const reuseIdentifier = @"Cell";
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
     if ([buttonTitle isEqualToString:@"Ausloggen"]) {[data Logout];}
+    else if ([buttonTitle isEqualToString:@"Profil anzeigen"]) {
+        CGRect screenBound = [[UIScreen mainScreen] bounds];
+        float width = screenBound.size.width;
+        float height = screenBound.size.height;
+        
+        XTProfileViewController *profile = [[XTProfileViewController alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+        
+        [profile initialize];
+        
+        XTNavigationViewContainer *navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:profile title:data.userInfo.userName isFirstView:YES];
+        
+        [self.view addSubview:navigationView.view];
+        
+        [navigationView ShowView];
+        
+        [profile release];
+    }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
 }
