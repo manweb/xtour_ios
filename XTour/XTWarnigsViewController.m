@@ -94,7 +94,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:nil];
+    [super viewWillAppear:animated];
     
     [self UpdateWarnings:nil];
     [self LoginViewDidClose:nil];
@@ -259,7 +259,7 @@ static NSString * const reuseIdentifier = @"Cell";
             [self.collectionView setHidden:NO];
             [self.collectionView reloadData];
             
-            [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", [_warningsArray count]];
+            [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", (unsigned long)[_warningsArray count]];
         }
         else {
             [_background setHidden:NO];

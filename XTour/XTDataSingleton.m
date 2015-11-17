@@ -599,7 +599,7 @@
 {
     NSString *path = [self GetDocumentFilePathForFile:@"/tours" CheckIfExist:NO];
     
-    NSString *newName = [[NSString alloc] initWithFormat:@"%@/images/%@_%03ld.jpg",path,_tourID,_photoCount];
+    NSString *newName = [[NSString alloc] initWithFormat:@"%@/images/%@_%03ld.jpg",path,_tourID,(long)_photoCount];
     
     _photoCount++;
     

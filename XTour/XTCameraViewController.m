@@ -64,7 +64,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:nil];
+    [super viewWillAppear:animated];
     
     [self LoginViewDidClose:nil];
     
@@ -197,7 +197,7 @@
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Selected photo %li", indexPath.row);
+    NSLog(@"Selected photo %li", (long)indexPath.row);
     
     UICollectionViewLayoutAttributes *attributes = [collectionView layoutAttributesForItemAtIndexPath:indexPath];
     _cellRect = attributes.frame;

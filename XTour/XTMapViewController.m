@@ -126,7 +126,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:nil];
+    [super viewWillAppear:animated];
     
     [self LoginViewDidClose:nil];
     
