@@ -171,34 +171,6 @@
 
 - (void) ValidateLogin
 {
-    /*BOOL success = false;
-    
-    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/validate_login.php?uid=%s&pwd=%s", [_username.text UTF8String], [_password.text UTF8String]];
-    NSURL *url = [NSURL URLWithString:requestString];
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request startSynchronous];
-    NSError *error = [request error];
-    if (!error) {
-        NSString *response = [request responseString];
-        if ([response isEqualToString:@"false"]) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Die Login-Informationen sind falsch." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-            [alert show];
-            
-            data.loggedIn = false;
-        }
-        else {
-            data.loggedIn = true;
-            data.userID = response;
-            
-            success = true;
-        }
-    }
-    else {
-        NSLog(@"There was a problem sending login information.");
-    }
-    
-    [requestString release];*/
-    
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/validate_login.php?uid=%s&pwd=%s", [_username.text UTF8String], [_password.text UTF8String]];
     NSURL *url = [NSURL URLWithString:requestString];
     

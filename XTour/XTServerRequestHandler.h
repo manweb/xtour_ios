@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-#import "ASIHTTPRequest.h"
-#import "ASIFormDataRequest.h"
 #import "XTTourInfo.h"
 #import "XTImageInfo.h"
 #import "XTDataSingleton.h"
@@ -25,15 +23,11 @@
 @property (nonatomic,retain) NSMutableArray *tourFilesCoordinates;
 
 - (NSMutableArray *) GetNewsFeedString:(NSData*)responseData;
-- (NSMutableArray *) GetTourFilesForTour:(NSString *)tourID andType:(NSString *)type;
-- (NSMutableArray *) GetCoordinatesForFile:(NSString *)file;
 - (void) ProcessTourCoordinates:(NSData*)responseData;
 - (NSMutableArray *) GetImagesForTour:(NSData*)responseData;
 - (NSMutableArray *) GetWarningsWithinRadius:(NSData*)responseData;
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID;
 - (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo;
-- (BOOL) DownloadProfilePicture:(NSString*)userID;
-- (BOOL) DownloadUserInfo:(NSString*)userID;
 - (void) CheckGraphsForTour:(NSString*)tourID;
 - (XTUserStatistics*) GetUserStatistics:(NSData*)responseData;
 - (NSMutableArray*) GetYearlyStatistics:(NSData*)responseData;

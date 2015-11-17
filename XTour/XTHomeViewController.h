@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "XTDataSingleton.h"
-#include "ASIHTTPRequest.h"
-#include "ASIFormDataRequest.h"
 #include <CoreLocation/CoreLocation.h>
 #include "XTXMLParser.h"
 #import "XTLoginViewController.h"

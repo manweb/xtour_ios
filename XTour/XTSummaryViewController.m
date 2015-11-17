@@ -51,8 +51,8 @@
     tourInfo.longitude = data.StartLocation.coordinate.longitude;
     tourInfo.latitude = data.StartLocation.coordinate.latitude;
     tourInfo.distance = data.sumDistance;
-    tourInfo.altitude = data.sumAltitude;
-    tourInfo.descent = data.sumDescent;
+    tourInfo.altitude = data.sumCumulativeAltitude;
+    tourInfo.descent = data.sumCumulativeDescent;
     tourInfo.highestPoint = data.sumhighestPoint;
     tourInfo.lowestPoint = data.sumlowestPoint;
     tourInfo.tourDescription = @"";

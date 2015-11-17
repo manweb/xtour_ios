@@ -541,6 +541,8 @@
     [self setContentOffset:CGPointMake(0, self.contentSize.height - self.bounds.size.height + self.contentInset.bottom) animated:YES];
     
     if (!_hasDescription) {_descriptionView.text = @"";}
+    
+    _hasDescription = true;
 }
 
 - (void) keyboardWillHide:(NSNotification *)notification {

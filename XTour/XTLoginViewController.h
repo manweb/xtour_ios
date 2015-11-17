@@ -7,8 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ASIHTTPRequest.h"
-#import "ASIFormDataRequest.h"
 #import "XTDataSingleton.h"
 #import "XTServerRequestHandler.h"
 

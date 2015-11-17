@@ -122,24 +122,7 @@
 
 - (void) UploadFile:(NSString *) filename
 {
-    //NSURL *url = [NSURL URLWithString:@"http://www.xtour.ch/file_upload.php"];
-    /*ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    
-    [request setDelegate:self];
-    [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:filename, @"file", nil]];
-    [request setPostValue:data.userID forKey:@"userID"];
-    [request addFile:filename forKey:@"files"];
-    
-    [request startAsynchronous];*/
-    
-    /*NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"xtour.ch-BackgroundTask-%@",filename]] delegate:self delegateQueue:nil];
-    
-    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];
-    [request setHTTPMethod:@"POST"];*/
-    
     NSString *boundary = @"XTourFormBoundary";
-    //NSString *contentType = [NSString stringWithFormat:@"multipart/form-data, boundary=%@",boundary];
-    //[request addValue:contentType forHTTPHeaderField: @"Content-Type"];
     
     NSMutableData *body = [NSMutableData data];
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -160,13 +143,10 @@
     [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     
-    //[request setHTTPBody:body];
-    
     NSString *taskFileName = [filename stringByAppendingString:@".tmp"];
     
     [body writeToFile:taskFileName atomically:YES];
     
-    //NSURLSessionTask *dataTask = [session dataTaskWithRequest:request];
     NSURLSessionTask *dataTask = [_session uploadTaskWithRequest:_request fromFile:[NSURL fileURLWithPath:taskFileName]];
     
     NSLog(@"Starting background task %@",taskFileName);
@@ -227,29 +207,6 @@
             completionHandler();
         }
     }
-}
-
-- (void)requestFinished:(ASIHTTPRequest *)request
-{
-    NSString *filename = [[request userInfo] valueForKey:@"file"];
-    NSString *response = [request responseString];
-    
-    if ([response isEqualToString:@"true"]) {
-        NSLog(@"Upload of file %@ was successful", filename);
-        
-        [[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
-    }
-    
-    NSLog(@"The response text is:\n%@", response);
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    NSString *filename = [[request userInfo] valueForKey:@"file"];
-    NSError *error = [request error];
-    
-    NSLog(@"Upload of file %@ failed", filename);
-    NSLog(@"Error:\n%@", error);
 }
 
 @end
