@@ -30,7 +30,7 @@
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
-    float height = screenBound.size.height;
+    //float height = screenBound.size.height;
     
     data = [XTDataSingleton singleObj];
     

@@ -15,7 +15,7 @@
 #import "XTProfileViewController.h"
 #import "XTNavigationViewContainer.h"
 
-@interface XTWarnigsViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface XTWarnigsViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIActionSheetDelegate>
 {
     XTDataSingleton *data;
     XTLoginViewController *login;

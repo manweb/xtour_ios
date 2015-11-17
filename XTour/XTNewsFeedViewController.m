@@ -21,7 +21,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
-    float height = screenBound.size.height;
+    //float height = screenBound.size.height;
     
     UITabBarController *tabBarController = [UITabBarController new];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;

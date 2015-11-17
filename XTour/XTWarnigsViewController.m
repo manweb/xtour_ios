@@ -42,7 +42,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     float width = screenBounds.size.width;
-    float height = screenBounds.size.height;
+    //float height = screenBounds.size.height;
     
     _header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 69)];
     _header_shadow = [[UIView alloc] initWithFrame:CGRectMake(0, 69, width, 1)];

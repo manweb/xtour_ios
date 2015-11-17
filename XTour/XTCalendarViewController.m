@@ -20,7 +20,7 @@
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
-    float height = screenBound.size.height;
+    //float height = screenBound.size.height;
     
     _calendarWidth = width - 30;
     _calendarHeight = 1.05*(width - 30);
@@ -165,12 +165,12 @@
     
     NSCalendar *c = [NSCalendar currentCalendar];
     
-    NSDateComponents *dateComponent = [c components:NSWeekdayCalendarUnit fromDate:monthDate];
+    NSDateComponents *dateComponent = [c components:NSCalendarUnitWeekday fromDate:monthDate];
     
     NSInteger weekday = dateComponent.weekday - 2;
     if (weekday == -1) {weekday = 6;}
     
-    NSRange daysRange = [c rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:monthDate];
+    NSRange daysRange = [c rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:monthDate];
     
     NSInteger numberOfDays = daysRange.length;
     

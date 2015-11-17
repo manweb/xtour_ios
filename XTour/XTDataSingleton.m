@@ -264,10 +264,10 @@
     CLLocation *p1 = [self GetCoordinatesAtIndex:(nCoordinates - 1)];
     CLLocation *p2 = [self GetCoordinatesAtIndex:(nCoordinates - 2)];
     
-    double timeDiff = (p1.timestamp.timeIntervalSince1970 - p2.timestamp.timeIntervalSince1970)/3600.0;
+    //double timeDiff = (p1.timestamp.timeIntervalSince1970 - p2.timestamp.timeIntervalSince1970)/3600.0;
     
     double distance = [self CalculateHaversineForPoint:p1 andPoint:p2];
-    double speed = distance/timeDiff;
+    //double speed = distance/timeDiff;
     
     return distance;
 }
@@ -437,7 +437,7 @@
     [xml SetMetadataDouble:(double)anonymousTracking forKey:@"AnonymousTracking" withPrecision:0];
     [xml SetMetadataDouble:(double)lowBattery forKey:@"LowBatteryLevel" withPrecision:0];
     
-    for (int i = _lastRunIndex; i < [_locationData count]; i++) {
+    for (int i = (int)_lastRunIndex; i < [_locationData count]; i++) {
         if (i < [_batteryLevel count]) {[xml AddTrackpoint:[_locationData objectAtIndex:i] batteryLevel:[[_batteryLevel objectAtIndex:i] floatValue]];}
         else {[xml AddTrackpoint:[_locationData objectAtIndex:i]];}
     }

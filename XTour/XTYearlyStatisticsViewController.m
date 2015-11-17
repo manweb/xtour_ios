@@ -32,7 +32,7 @@
     float marginBottom = 15;
     
     float spaceBetweenWeeks = 1;
-    float spaceBetweenMonths = 2;
+    //float spaceBetweenMonths = 2;
     
     float viewWidth = (width-marginLeft-marginRight-51*spaceBetweenWeeks)/52;
     
@@ -40,7 +40,7 @@
     
     NSDate *currentDate = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSMonthCalendarUnit fromDate:currentDate];
+    NSDateComponents *components = [calendar components:NSCalendarUnitMonth fromDate:currentDate];
     
     NSInteger currentMonth = [components month];
     

@@ -28,13 +28,13 @@
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
-    float height = screenBound.size.height;
+    //float height = screenBound.size.height;
     
     float boxWidth = width - 20;
     float boxRadius = 5.f;
     float boxBorderWidth = 1.0f;
     float boxMarginLeft = 10.0f;
-    float boxMarginTop = 75.0f;
+    //float boxMarginTop = 75.0f;
     UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
     
     float boxYPosition = 5;
@@ -291,9 +291,9 @@
 
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server
 {
-    CGRect screenBound = [[UIScreen mainScreen] bounds];
-    float width = screenBound.size.width;
-    float boxWidth = width - 20;
+    //CGRect screenBound = [[UIScreen mainScreen] bounds];
+    //float width = screenBound.size.width;
+    //float boxWidth = width - 20;
     
     _tourFiles = [[NSMutableArray alloc] init];
     _coordinateArray = [[NSMutableArray alloc] init];

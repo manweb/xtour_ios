@@ -167,8 +167,8 @@
     float width = screenBound.size.width;
     float height = screenBound.size.height;
     
-    UITabBarController *tabBarController = [super tabBarController];
-    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+    //UITabBarController *tabBarController = [super tabBarController];
+    //CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
     
     switch (indexPath.section) {
         case 0:

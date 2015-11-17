@@ -189,7 +189,7 @@
     @try {
     CLLocation *location = [change objectForKey:NSKeyValueChangeNewKey];
     CGFloat currentZoom = _mapView.camera.zoom;
-    GMSVisibleRegion visibleRegion = _mapView.projection.visibleRegion;
+    //GMSVisibleRegion visibleRegion = _mapView.projection.visibleRegion;
     if (!_mapHasMoved) {
         _mapView.camera = [GMSCameraPosition cameraWithTarget:location.coordinate zoom:currentZoom];
     }
