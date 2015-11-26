@@ -98,7 +98,7 @@
     
     [self UpdateDisplayWithLocation:_bestLocation];
     
-    if (_oldAccuracy < 100) {[self SaveCurrentLocation:_bestLocation];}
+    if (_oldAccuracy < 300) {[self SaveCurrentLocation:_bestLocation];}
     
     _oldAccuracy = 10000.0;
 }
@@ -895,14 +895,14 @@
     
     [data.batteryLevel addObject:[NSNumber numberWithFloat:level]];
     
-    if (alt < data.lowestPoint) {data.lowestPoint = alt;}
-    if (alt > data.highestPoint) {data.highestPoint = alt;}
-    if (alt < data.sumlowestPoint) {data.sumlowestPoint = alt;}
-    if (alt > data.sumhighestPoint) {data.sumhighestPoint = alt;}
+    if (alt < data.lowestPoint.altitude) {data.lowestPoint = location;}
+    if (alt > data.highestPoint.altitude) {data.highestPoint = location;}
+    if (alt < data.sumlowestPoint.altitude) {data.sumlowestPoint = location;}
+    if (alt > data.sumhighestPoint.altitude) {data.sumhighestPoint = location;}
     
     NSLog(@"Haversine distance: %f", d);
     
-    if (level < 0.2 && data.profileSettings.batterySafeMode) {
+    if (level < 0.2 && data.profileSettings.safetyModus) {
         [self FinishTour:YES];
         
         UILocalNotification *notification = [[UILocalNotification alloc] init];
@@ -924,7 +924,7 @@
     self.backgroundTaskManager = [XTBackgroundTaskManager sharedBackgroundTaskManager];
     [self.backgroundTaskManager beginNewBackgroundTask];
     
-    if (!_locationStartTimer) {_locationStartTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(startLocationUpdate) userInfo:nil repeats:NO];}
+    if (!_locationStartTimer) {_locationStartTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(startLocationUpdate) userInfo:nil repeats:NO];}
     
     if (!_locationStopTimer) {_locationStopTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(stopLocationUpdate) userInfo:nil repeats:NO];}
 }
@@ -1093,7 +1093,7 @@
     else {
         [self UpdateDisplayWithLocation:Location];
         
-        if (accuracy < 100) {[self SaveCurrentLocation:Location];}
+        if (accuracy < 300) {[self SaveCurrentLocation:Location];}
     }
 }
 

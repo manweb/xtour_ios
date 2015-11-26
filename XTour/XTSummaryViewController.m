@@ -53,8 +53,8 @@
     tourInfo.distance = data.sumDistance;
     tourInfo.altitude = data.sumCumulativeAltitude;
     tourInfo.descent = data.sumCumulativeDescent;
-    tourInfo.highestPoint = data.sumhighestPoint;
-    tourInfo.lowestPoint = data.sumlowestPoint;
+    tourInfo.highestPoint = data.sumhighestPoint.altitude;
+    tourInfo.lowestPoint = data.sumlowestPoint.altitude;
     tourInfo.tourDescription = @"";
     
     UITabBarController *tabBarController = [super tabBarController];

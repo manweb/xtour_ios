@@ -40,10 +40,10 @@
 @property(nonatomic) double sumCumulativeAltitude;
 @property(nonatomic) double sumAverageDescent;
 @property(nonatomic) double sumCumulativeDescent;
-@property(nonatomic) double lowestPoint;
-@property(nonatomic) double highestPoint;
-@property(nonatomic) double sumlowestPoint;
-@property(nonatomic) double sumhighestPoint;
+@property(nonatomic,retain) CLLocation *lowestPoint;
+@property(nonatomic,retain) CLLocation *highestPoint;
+@property(nonatomic,retain) CLLocation *sumlowestPoint;
+@property(nonatomic,retain) CLLocation *sumhighestPoint;
 @property(nonatomic) double DistanceRate;
 @property(nonatomic) double AltitudeRate;
 @property(nonatomic) double rateLastDistance;

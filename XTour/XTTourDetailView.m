@@ -20,6 +20,8 @@
 
 - (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset andContentOffset:(NSInteger)offsetContent
 {
+    data = [XTDataSingleton singleObj];
+    
     _viewOffset = 0;
     if (offset) {_viewOffset = offset;}
     
@@ -41,6 +43,49 @@
     
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
     if (!mapView) {mapView = [GMSMapView mapWithFrame:CGRectMake(5, 5, boxWidth - 10, 240) camera:camera];}
+    
+    _mountainPeakViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 80)];
+    
+    _MountainPeakIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+    
+    [_MountainPeakIcon setImage:[UIImage imageNamed:@"peak_finder_icon@3x.png"]];
+    
+    _MountainPeakTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 5, boxWidth-120, 15)];
+    _MountainPeakCoordinatesLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 80, boxWidth-120, 15)];
+    _MountainPeakAltitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 25, boxWidth-120, 50)];
+    
+    _MountainPeakTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    _MountainPeakCoordinatesLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    _MountainPeakAltitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0];
+    
+    _MountainPeakTitleLabel.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/155.0f blue:100.0f/155.0f alpha:1.0f];
+    _MountainPeakCoordinatesLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _MountainPeakAltitudeLabel.textColor = [UIColor colorWithRed:50.0f/255.0f green:50.0f/255.0f blue:50.0f/255.0f alpha:1.0f];
+    
+    [_mountainPeakViewContainer addSubview:_MountainPeakTitleLabel];
+    [_mountainPeakViewContainer addSubview:_MountainPeakCoordinatesLabel];
+    [_mountainPeakViewContainer addSubview:_MountainPeakAltitudeLabel];
+    
+    if (!server) {
+        NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_closest_mountain_peak.php?lon=%f&lat=%f", data.highestPoint.coordinate.longitude, data.highestPoint.coordinate.latitude];
+        NSURL *url = [NSURL URLWithString:requestString];
+        
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        sessionConfiguration.timeoutIntervalForRequest = 5.0;
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+            if (error) {
+                
+            }
+        }];
+        
+        [sessionTask resume];
+        
+        boxYPosition += 85;
+    }
     
     _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 140)];
     
@@ -64,24 +109,28 @@
     
     boxYPosition += 205;
     
+    _mountainPeakViewContainer.backgroundColor = [UIColor whiteColor];
     _mapViewContainer.backgroundColor = [UIColor whiteColor];
     _summaryViewContainer.backgroundColor = [UIColor whiteColor];
     _imageViewContainer.backgroundColor = [UIColor whiteColor];
     _descriptionViewContainer.backgroundColor = [UIColor whiteColor];
     _graphViewContainer.backgroundColor = [UIColor whiteColor];
     
+    _mountainPeakViewContainer.layer.cornerRadius = boxRadius;
     _mapViewContainer.layer.cornerRadius = boxRadius;
     _summaryViewContainer.layer.cornerRadius = boxRadius;
     _imageViewContainer.layer.cornerRadius = boxRadius;
     _descriptionViewContainer.layer.cornerRadius = boxRadius;
     _graphViewContainer.layer.cornerRadius = boxRadius;
     
+    _mountainPeakViewContainer.layer.borderWidth = boxBorderWidth;
     _mapViewContainer.layer.borderWidth = boxBorderWidth;
     _summaryViewContainer.layer.borderWidth = boxBorderWidth;
     _imageViewContainer.layer.borderWidth = boxBorderWidth;
     _descriptionViewContainer.layer.borderWidth = boxBorderWidth;
     _graphViewContainer.layer.borderWidth = boxBorderWidth;
     
+    _mountainPeakViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _mapViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _summaryViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _imageViewContainer.layer.borderColor = boxBorderColor.CGColor;
@@ -235,6 +284,7 @@
     [_summaryViewContainer addSubview:_LowestPointLabel];
     [_descriptionViewContainer addSubview:_descriptionView];
     
+    if (!server) {[self addSubview:_mountainPeakViewContainer];}
     [self addSubview:_mapViewContainer];
     [self addSubview:_summaryViewContainer];
     [self addSubview:_imageViewContainer];
@@ -261,6 +311,7 @@
     [_tourFiles release];
     [_loadingView release];
     [_activityView release];
+    [_mountainPeakViewContainer release];
     [_mapViewContainer release];
     [_summaryViewContainer release];
     [_imageViewContainer release];
@@ -347,8 +398,6 @@
     }
     else {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            data = [XTDataSingleton singleObj];
-            
             _tourFiles = [data GetGPXFilesForCurrentTour];
             
             XTXMLParser *xml = [[[XTXMLParser alloc] init] autorelease];

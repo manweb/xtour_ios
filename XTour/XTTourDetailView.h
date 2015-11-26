@@ -33,6 +33,7 @@
 @property (retain, nonatomic) UIView *imageViewContainer;
 @property (retain, nonatomic) UIView *descriptionViewContainer;
 @property (retain, nonatomic) UIView *graphViewContainer;
+@property (retain, nonatomic) UIView *mountainPeakViewContainer;
 @property (retain, nonatomic) UITextView *descriptionView;
 @property (retain, nonatomic) UIImageView *profilePicture;
 @property (retain, nonatomic) UILabel *TimeTitleLabel;
@@ -53,6 +54,10 @@
 @property (retain, nonatomic) UILabel *LowestPointLabel;
 @property (retain, nonatomic) UILabel *UpRateLabel;
 @property (retain, nonatomic) UILabel *DownRateLabel;
+@property (retain, nonatomic) UIImageView *MountainPeakIcon;
+@property (retain, nonatomic) UILabel *MountainPeakTitleLabel;
+@property (retain, nonatomic) UILabel *MountainPeakCoordinatesLabel;
+@property (retain, nonatomic) UILabel *MountainPeakAltitudeLabel;
 @property (nonatomic) NSInteger viewOffset;
 @property (nonatomic) NSInteger viewContentOffset;
 @property (nonatomic) BOOL hasDescription;
