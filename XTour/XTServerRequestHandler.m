@@ -102,6 +102,8 @@
     
     NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
+    if ([response isEqualToString:@",,,,,,,;"]) {return nil;}
+    
     NSArray *tour_images_array = [response componentsSeparatedByString:@";"];
     NSMutableArray *tour_images_info = [NSMutableArray arrayWithArray:tour_images_array];
     [tour_images_info removeLastObject];

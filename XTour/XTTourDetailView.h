@@ -15,9 +15,10 @@
 #import "XTGraphPageViewController.h"
 #import "XTDataSingleton.h"
 #import "XTXMLParser.h"
+#import "XTPeakFinder.h"
 @import GoogleMaps;
 
-@interface XTTourDetailView : UIScrollView
+@interface XTTourDetailView : UIScrollView <UITableViewDelegate, UITableViewDataSource>
 {
     GMSMapView *mapView;
     XTDataSingleton *data;
@@ -34,6 +35,11 @@
 @property (retain, nonatomic) UIView *descriptionViewContainer;
 @property (retain, nonatomic) UIView *graphViewContainer;
 @property (retain, nonatomic) UIView *mountainPeakViewContainer;
+@property (retain, nonatomic) UIView *mountainPeakExtendedView;
+@property (retain, nonatomic) UITableView *mountainPeakMoreView;
+@property (retain, nonatomic) UIVisualEffectView *blurEffectView;
+@property (retain, nonatomic) UIView *noImagesViewContainer;
+@property (retain, nonatomic) UIView *noDescriptionViewContainer;
 @property (retain, nonatomic) UITextView *descriptionView;
 @property (retain, nonatomic) UIImageView *profilePicture;
 @property (retain, nonatomic) UILabel *TimeTitleLabel;
@@ -55,9 +61,11 @@
 @property (retain, nonatomic) UILabel *UpRateLabel;
 @property (retain, nonatomic) UILabel *DownRateLabel;
 @property (retain, nonatomic) UIImageView *MountainPeakIcon;
+@property (retain, nonatomic) UIButton *MountainPeakMore;
 @property (retain, nonatomic) UILabel *MountainPeakTitleLabel;
 @property (retain, nonatomic) UILabel *MountainPeakCoordinatesLabel;
 @property (retain, nonatomic) UILabel *MountainPeakAltitudeLabel;
+@property (retain, nonatomic) NSMutableArray *morePeaks;
 @property (nonatomic) NSInteger viewOffset;
 @property (nonatomic) NSInteger viewContentOffset;
 @property (nonatomic) BOOL hasDescription;
@@ -65,6 +73,7 @@
 - (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset andContentOffset:(NSInteger)offsetContent;
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server;
 - (void) UpdateView:(XTTourInfo*) tourInfo;
+- (void) ShowMorePeaks:(id)sender;
 - (void) keyboardWasShown:(NSNotification *) notification;
 - (void) keyboardWillHide:(NSNotification *) notification;
 

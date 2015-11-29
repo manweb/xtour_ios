@@ -20,5 +20,6 @@
 @property(nonatomic, retain) UIImageView *distanceIcon;
 @property(nonatomic, retain) UITextView *tourDescription;
 @property(nonatomic, retain) UIView *gradientOverlay;
+@property(nonatomic, retain) UIButton *moreButton;
 
 @end

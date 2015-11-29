@@ -44,47 +44,111 @@
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
     if (!mapView) {mapView = [GMSMapView mapWithFrame:CGRectMake(5, 5, boxWidth - 10, 240) camera:camera];}
     
-    _mountainPeakViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 80)];
+    _mountainPeakViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 60)];
     
-    _MountainPeakIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+    _mountainPeakExtendedView = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition+55, boxWidth, 0)];
+    
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    _blurEffectView.frame = CGRectMake(0, 0, boxWidth, 0);
+    _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    [_mountainPeakExtendedView addSubview:_blurEffectView];
+    
+    _mountainPeakMoreView = [[UITableView alloc] initWithFrame:CGRectMake(5, 5, boxWidth-10, 240) style:UITableViewStyleGrouped];
+    
+    _mountainPeakMoreView.rowHeight = 40.0;
+    _mountainPeakMoreView.sectionHeaderHeight = 30.0;
+    _mountainPeakMoreView.sectionFooterHeight = 1.0;
+    _mountainPeakMoreView.backgroundColor = [UIColor clearColor];
+    _mountainPeakMoreView.scrollEnabled = YES;
+    _mountainPeakMoreView.showsVerticalScrollIndicator = YES;
+    _mountainPeakMoreView.userInteractionEnabled = YES;
+    _mountainPeakMoreView.bounces = YES;
+    _mountainPeakMoreView.delegate = self;
+    _mountainPeakMoreView.dataSource = self;
+    
+    [_mountainPeakExtendedView addSubview:_mountainPeakMoreView];
+    
+    [_mountainPeakMoreView setHidden:YES];
+    
+    //_morePeaks = [[NSMutableArray alloc] init];
+    
+    _MountainPeakMore = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    _MountainPeakMore.frame = CGRectMake(boxWidth-30, 10, 20, 15);
+    [_MountainPeakMore setBackgroundImage:[UIImage imageNamed:@"arrow_more@3x.png"] forState:UIControlStateNormal];
+    [_MountainPeakMore addTarget:self action:@selector(ShowMorePeaks:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _MountainPeakIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
     
     [_MountainPeakIcon setImage:[UIImage imageNamed:@"peak_finder_icon@3x.png"]];
     
-    _MountainPeakTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 5, boxWidth-120, 15)];
-    _MountainPeakCoordinatesLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 80, boxWidth-120, 15)];
-    _MountainPeakAltitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 25, boxWidth-120, 50)];
+    _MountainPeakTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 5, boxWidth-100, 15)];
+    _MountainPeakCoordinatesLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 40, boxWidth-100, 12)];
+    _MountainPeakAltitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 22, boxWidth-100, 15)];
     
     _MountainPeakTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
     _MountainPeakCoordinatesLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
-    _MountainPeakAltitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:30.0];
+    _MountainPeakAltitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
     
-    _MountainPeakTitleLabel.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/155.0f blue:100.0f/155.0f alpha:1.0f];
+    _MountainPeakTitleLabel.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
     _MountainPeakCoordinatesLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     _MountainPeakAltitudeLabel.textColor = [UIColor colorWithRed:50.0f/255.0f green:50.0f/255.0f blue:50.0f/255.0f alpha:1.0f];
     
+    [_mountainPeakExtendedView setHidden:YES];
+    
+    [_mountainPeakViewContainer addSubview:_MountainPeakIcon];
+    [_mountainPeakViewContainer addSubview:_MountainPeakMore];
     [_mountainPeakViewContainer addSubview:_MountainPeakTitleLabel];
     [_mountainPeakViewContainer addSubview:_MountainPeakCoordinatesLabel];
     [_mountainPeakViewContainer addSubview:_MountainPeakAltitudeLabel];
     
     if (!server) {
-        NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_closest_mountain_peak.php?lon=%f&lat=%f", data.highestPoint.coordinate.longitude, data.highestPoint.coordinate.latitude];
-        NSURL *url = [NSURL URLWithString:requestString];
-        
-        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        
-        sessionConfiguration.timeoutIntervalForRequest = 5.0;
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-        
-        NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
-            if (error) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            XTPeakFinder *peakFinder = [[[XTPeakFinder alloc] init] autorelease];
+            
+            _MountainPeakTitleLabel.text = @"Suche Gipfel...";
+            
+            [peakFinder FindPeakAtLongitude:data.highestPoint.coordinate.longitude latitude:data.highestPoint.coordinate.latitude country:@"Switzerland"];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSMutableArray *peak = [peakFinder GetPeak];
+                _morePeaks = [peakFinder GetAlternativePeaks];
                 
-            }
-        }];
+                if (peak) {
+                    float longitude = [[peak objectAtIndex:1] floatValue];
+                    NSString *lonEW;
+                    if (longitude < 0) {lonEW = @"W"; longitude = fabs(longitude);}
+                    else {lonEW = @"E";}
+                    
+                    float latitude = [[peak objectAtIndex:2] floatValue];
+                    NSString *latNS;
+                    if (latitude < 0) {latNS = @"S"; latitude = fabs(latitude);}
+                    else {latNS = @"N";}
+                    
+                    NSString *lonString = [NSString stringWithFormat:@"%.0f°%.0f'%.0f\" %s",
+                                           floor(longitude),
+                                           floor((longitude - floor(longitude)) * 60),
+                                           ((longitude - floor(longitude)) * 60 - floor((longitude - floor(longitude)) * 60)) * 60, [lonEW UTF8String]];
+                    NSString *latString = [NSString stringWithFormat:@"%.0f°%.0f'%.0f\" %s",
+                                           floor(latitude),
+                                           floor((latitude - floor(latitude)) * 60),
+                                           ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];
+                    
+                    _MountainPeakTitleLabel.text = @"Dieser Gipfel wurde gefunden";
+                    _MountainPeakAltitudeLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
+                    _MountainPeakCoordinatesLabel.text = [NSString stringWithFormat:@"%@ %@", lonString, latString];
+                }
+                else {
+                    _MountainPeakTitleLabel.text = @"Kein Gipfel gefunden";
+                }
+    
+    [self.mountainPeakMoreView reloadData];
+            });
+        });
         
-        [sessionTask resume];
-        
-        boxYPosition += 85;
+        boxYPosition += 65;
     }
     
     _summaryViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 140)];
@@ -109,7 +173,48 @@
     
     boxYPosition += 205;
     
+    _noImagesViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset + boxYPosition - 410, boxWidth, 50)];
+    
+    _noDescriptionViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset + boxYPosition - 205, boxWidth, 50)];
+    
+    UIImageView *cameraImage = [[UIImageView alloc] initWithFrame:CGRectMake(boxWidth/2-15, 0, 30, 30)];
+    
+    [cameraImage setImage:[UIImage imageNamed:@"camera_icon_gray@3x.png"]];
+    
+    UILabel *noImagesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, boxWidth, 15)];
+    
+    noImagesLabel.text = @"Keine Bilder zu diese Tour";
+    noImagesLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    noImagesLabel.textColor = [UIColor colorWithRed:164.0f/255.0f green:164.0f/255.0f blue:164.0f/255.0f alpha:1.0f];
+    noImagesLabel.textAlignment = NSTextAlignmentCenter;
+    
+    UIImageView *editImage = [[UIImageView alloc] initWithFrame:CGRectMake(boxWidth/2-10, 0, 20, 20)];
+    
+    [editImage setImage:[UIImage imageNamed:@"edit_icon_gray@3x.png"]];
+    
+    UILabel *noDescriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 25, boxWidth, 15)];
+    
+    noDescriptionLabel.text = @"Keine Beschreibung zu dieser Tour";
+    noDescriptionLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    noDescriptionLabel.textColor = [UIColor colorWithRed:164.0f/255.0f green:164.0f/255.0f blue:164.0f/255.0f alpha:1.0f];
+    noDescriptionLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [_noImagesViewContainer setHidden:YES];
+    
+    [_noDescriptionViewContainer setHidden:YES];
+    
+    [_noImagesViewContainer addSubview:cameraImage];
+    [_noImagesViewContainer addSubview:noImagesLabel];
+    [_noDescriptionViewContainer addSubview:editImage];
+    [_noDescriptionViewContainer addSubview:noDescriptionLabel];
+    
+    [cameraImage release];
+    [noImagesLabel release];
+    [editImage release];
+    [noDescriptionLabel release];
+    
     _mountainPeakViewContainer.backgroundColor = [UIColor whiteColor];
+    _mountainPeakExtendedView.backgroundColor = [UIColor clearColor];
     _mapViewContainer.backgroundColor = [UIColor whiteColor];
     _summaryViewContainer.backgroundColor = [UIColor whiteColor];
     _imageViewContainer.backgroundColor = [UIColor whiteColor];
@@ -124,6 +229,7 @@
     _graphViewContainer.layer.cornerRadius = boxRadius;
     
     _mountainPeakViewContainer.layer.borderWidth = boxBorderWidth;
+    _mountainPeakExtendedView.layer.borderWidth = boxBorderWidth;
     _mapViewContainer.layer.borderWidth = boxBorderWidth;
     _summaryViewContainer.layer.borderWidth = boxBorderWidth;
     _imageViewContainer.layer.borderWidth = boxBorderWidth;
@@ -131,6 +237,7 @@
     _graphViewContainer.layer.borderWidth = boxBorderWidth;
     
     _mountainPeakViewContainer.layer.borderColor = boxBorderColor.CGColor;
+    _mountainPeakExtendedView.layer.borderColor = boxBorderColor.CGColor;
     _mapViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _summaryViewContainer.layer.borderColor = boxBorderColor.CGColor;
     _imageViewContainer.layer.borderColor = boxBorderColor.CGColor;
@@ -283,13 +390,23 @@
     [_summaryViewContainer addSubview:_HighestPointLabel];
     [_summaryViewContainer addSubview:_LowestPointLabel];
     [_descriptionViewContainer addSubview:_descriptionView];
+    if (server && !_hasDescription) {
+        [_descriptionViewContainer setHidden:YES];
+        
+        [_noDescriptionViewContainer setHidden:NO];
+        
+        boxYPosition -= 155;
+    }
     
     if (!server) {[self addSubview:_mountainPeakViewContainer];}
     [self addSubview:_mapViewContainer];
     [self addSubview:_summaryViewContainer];
     [self addSubview:_imageViewContainer];
     [self addSubview:_descriptionViewContainer];
+    [self addSubview:_noImagesViewContainer];
+    [self addSubview:_noDescriptionViewContainer];
     if (server) {[self addSubview:_graphViewContainer];}
+    if (!server) {[self addSubview:_mountainPeakExtendedView];}
     
     if (server) {self.contentSize = CGSizeMake(width, _viewOffset+boxYPosition+_viewContentOffset);}
     else {self.contentSize = CGSizeMake(width, _viewOffset+boxYPosition);}
@@ -561,12 +678,31 @@
     
     [_loadingView removeFromSuperview];
     
-    XTSummaryImageViewController *imageView = [[XTSummaryImageViewController alloc] initWithNibName:nil bundle:nil];
-    
-    imageView.view.frame = CGRectMake(0, 0, boxWidth, 200);
-    imageView.images = _tourImages;
-    
-    [_imageViewContainer addSubview:imageView.view];
+    if (!_tourImages) {
+        [_imageViewContainer setHidden:YES];
+        
+        [_noImagesViewContainer setHidden:NO];
+        
+        CGRect descriptionViewFrame = _descriptionViewContainer.frame;
+        
+        _descriptionViewContainer.frame = CGRectMake(descriptionViewFrame.origin.x, descriptionViewFrame.origin.y - 155, descriptionViewFrame.size.width, descriptionViewFrame.size.height);
+        
+        CGRect noDescriptionViewFrame = _noDescriptionViewContainer.frame;
+        
+        _noDescriptionViewContainer.frame = CGRectMake(noDescriptionViewFrame.origin.x, noDescriptionViewFrame.origin.y - 155, noDescriptionViewFrame.size.width, noDescriptionViewFrame.size.height);
+        
+        CGSize contentSize = self.contentSize;
+        
+        self.contentSize = CGSizeMake(contentSize.width, contentSize.height-155);
+    }
+    else {
+        XTSummaryImageViewController *imageView = [[XTSummaryImageViewController alloc] initWithNibName:nil bundle:nil];
+        
+        imageView.view.frame = CGRectMake(0, 0, boxWidth, 200);
+        imageView.images = _tourImages;
+        
+        [_imageViewContainer addSubview:imageView.view];
+    }
     
     XTGraphPageViewController *graphPageController = [[XTGraphPageViewController alloc] initWithNibName:nil bundle:nil andTourInfo:tourInfo];
     
@@ -574,6 +710,152 @@
     graphPageController.pageController.view.frame = CGRectMake(0, 0, boxWidth-10, width/320*200);
     
     [_graphViewContainer addSubview:graphPageController.view];
+}
+
+- (void) ShowMorePeaks:(id)sender
+{
+    CGRect mountainPeakExtendedViewFrame = _mountainPeakExtendedView.frame;
+    
+    if (_mountainPeakExtendedView.isHidden) {[_mountainPeakExtendedView setHidden:NO];}
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        if (_mountainPeakExtendedView.frame.size.height == 0) {
+            _mountainPeakExtendedView.frame = CGRectMake(mountainPeakExtendedViewFrame.origin.x, mountainPeakExtendedViewFrame.origin.y, mountainPeakExtendedViewFrame.size.width, 250);
+            
+            _blurEffectView.frame = CGRectMake(0, 0, mountainPeakExtendedViewFrame.size.width, 250);
+            
+            CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+            _MountainPeakMore.transform = transform;
+        }
+        else {
+            [_mountainPeakMoreView setHidden:YES];
+            
+            _mountainPeakExtendedView.frame = CGRectMake(mountainPeakExtendedViewFrame.origin.x, mountainPeakExtendedViewFrame.origin.y, mountainPeakExtendedViewFrame.size.width, 0);
+            
+            _blurEffectView.frame = CGRectMake(0, 0, mountainPeakExtendedViewFrame.size.width, 0);
+            
+            CGAffineTransform transform = CGAffineTransformMakeRotation(2*M_PI);
+            _MountainPeakMore.transform = transform;
+        }
+    } completion:^(BOOL finished) {
+        if (_mountainPeakExtendedView.frame.size.height == 0) {
+            [_mountainPeakExtendedView setHidden:YES];
+        }
+        else {
+            [_mountainPeakMoreView setHidden:NO];
+        }
+    }];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0) {return 1;}
+    else {return [_morePeaks count];}
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
+    
+    cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0];
+    
+    if (indexPath.section == 0) {
+        cell.textLabel.text = @"Entferne diesen Gipfel";
+        cell.textLabel.textColor = [UIColor redColor];
+    }
+    else {
+        NSMutableArray *peak = [_morePeaks objectAtIndex:indexPath.row];
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"%@, %.0f", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
+        cell.textLabel.textColor = [UIColor blackColor];
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    if (indexPath.section == 0) {
+        _MountainPeakTitleLabel.text = @"Kein Gipfel ausgewählt";
+        _MountainPeakCoordinatesLabel.text = @"";
+        _MountainPeakAltitudeLabel.text = @"";
+    }
+    else {
+        NSMutableArray *peak = [_morePeaks objectAtIndex:indexPath.row];
+        
+        float longitude = [[peak objectAtIndex:1] floatValue];
+        NSString *lonEW;
+        if (longitude < 0) {lonEW = @"W"; longitude = fabs(longitude);}
+        else {lonEW = @"E";}
+        
+        float latitude = [[peak objectAtIndex:2] floatValue];
+        NSString *latNS;
+        if (latitude < 0) {latNS = @"S"; latitude = fabs(latitude);}
+        else {latNS = @"N";}
+        
+        NSString *lonString = [NSString stringWithFormat:@"%.0f°%.0f'%.0f\" %s",
+                               floor(longitude),
+                               floor((longitude - floor(longitude)) * 60),
+                               ((longitude - floor(longitude)) * 60 - floor((longitude - floor(longitude)) * 60)) * 60, [lonEW UTF8String]];
+        NSString *latString = [NSString stringWithFormat:@"%.0f°%.0f'%.0f\" %s",
+                               floor(latitude),
+                               floor((latitude - floor(latitude)) * 60),
+                               ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];
+        
+        _MountainPeakTitleLabel.text = @"Dieser Gipfel ist ausgewählt";
+        _MountainPeakCoordinatesLabel.text = [NSString stringWithFormat:@"%@ %@", lonString, latString];
+        _MountainPeakAltitudeLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
+    }
+    
+    [self ShowMorePeaks:nil];
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *viewHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, tableView.frame.size.width-10, 20)];
+    
+    viewHeader.backgroundColor = [UIColor clearColor];
+    
+    lblTitle.font = [UIFont fontWithName:@"Helvetica" size:14];
+    lblTitle.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    lblTitle.backgroundColor = [UIColor clearColor];
+    
+    if (section == 0) {lblTitle.text = @"Nicht der richtige Gipfel?";}
+    else {lblTitle.text = @"Oder wähle einer der umliegenden Gipfel";}
+    
+    [viewHeader addSubview:lblTitle];
+    
+    [lblTitle release];
+    
+    return viewHeader;
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 30.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 1.0;
 }
 
 - (void)keyboardWasShown:(NSNotification *)notification

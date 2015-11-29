@@ -64,6 +64,11 @@
         gradientLayer.endPoint = CGPointMake(1.0f, 1.0f);
         _gradientOverlay.layer.mask = gradientLayer;
         
+        _moreButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        
+        _moreButton.frame = CGRectMake(frame.size.width-45, 0, 45, 25);
+        [_moreButton setBackgroundImage:[UIImage imageNamed:@"dots_icon@3x.png"] forState:UIControlStateNormal];
+        
         [self addSubview:_profilePicture];
         [self addSubview:_title];
         [self addSubview:_time];
@@ -74,6 +79,7 @@
         [self addSubview:_distanceIcon];
         [self addSubview:_tourDescription];
         [self addSubview:_gradientOverlay];
+        [self addSubview:_moreButton];
         
         self.layer.borderWidth = boxBorderWidth;
         self.layer.borderColor = boxBorderColor.CGColor;

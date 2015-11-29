@@ -14,7 +14,7 @@
 #import "XTTourDetailView.h"
 #import "XTTourInfo.h"
 
-@interface XTNewsFeedViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate>
+@interface XTNewsFeedViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate,UIActionSheetDelegate>
 {
     XTDataSingleton *data;
     XTServerRequestHandler *ServerHandler;
@@ -30,6 +30,7 @@
 @property (nonatomic,retain) UIButton *filterBest;
 @property (nonatomic,retain) NSString *UID;
 @property (nonatomic) int filter;
+@property (nonatomic) NSInteger clickedButton;
 
 - (void) refreshNewsFeed;
 - (void) SelectAll:(id)sender;

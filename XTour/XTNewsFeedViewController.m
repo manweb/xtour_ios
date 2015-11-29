@@ -189,6 +189,9 @@ static NSString * const reuseIdentifier = @"Cell";
         [cell.gradientOverlay setHidden:NO];
     }
     
+    [cell.moreButton addTarget:self action:@selector(ShowOptions:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.moreButton setTag:indexPath.row];
+    
     [formatter release];
     
     return cell;
@@ -371,6 +374,76 @@ static NSString * const reuseIdentifier = @"Cell";
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         _filterTab.frame = CGRectMake(position, frame.origin.y, frame.size.width, frame.size.height);
     } completion:nil];
+}
+
+- (void) ShowOptions:(id)sender
+{
+    _clickedButton = [(UIButton*)sender tag];
+    
+    XTTourInfo *currentElement = [self.news_feed objectAtIndex:_clickedButton];
+    
+    if ([currentElement.userID isEqualToString:data.userInfo.userID]) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Tour löschen" otherButtonTitles:@"Tour verstecken", @"Zur Wunschliste", @"Zeige Details", nil];
+        
+        [actionSheet showInView:self.view];
+        
+        [actionSheet release];
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:nil otherButtonTitles:@"Zur Wunschliste", @"Zeige Details", nil];
+        
+        [actionSheet showInView:self.view];
+        
+        [actionSheet release];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if ([buttonTitle isEqualToString:@"Zeige Details"]) {
+        XTTourInfo *currentElement = [self.news_feed objectAtIndex:_clickedButton];
+        
+        CGRect screenBound = [[UIScreen mainScreen] bounds];
+        float width = screenBound.size.width;
+        float height = screenBound.size.height;
+        
+        UITabBarController *tabBarController = [UITabBarController new];
+        CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+        
+        XTTourDetailView *detailView = [[XTTourDetailView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+        detailView.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
+        
+        [detailView Initialize:currentElement fromServer:YES withOffset:70 andContentOffset:tabBarHeight];
+        
+        if (!navigationView) {
+            navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:detailView title:@"Touren Detail" isFirstView:YES];
+            
+            //[navigationView.header removeFromSuperview];
+            //[navigationView.header_shadow removeFromSuperview];
+            //[navigationView.header_background removeFromSuperview];
+        }
+        else {
+            [navigationView ClearContentView];
+            
+            [navigationView.contentView addSubview:detailView];
+        }
+        
+        //[[UIApplication sharedApplication].keyWindow addSubview:navigationView.backButton];
+        
+        XTNavigationViewContainer *lastNavigationViewContainer = [self lastNavigationViewContainer];
+        
+        [lastNavigationViewContainer.view addSubview:navigationView.view];
+        
+        //[self.view addSubview:navigationView.view];
+        
+        [navigationView ShowView];
+        
+        [detailView LoadTourDetail:currentElement fromServer:YES];
+        
+        [detailView release];
+    }
 }
 
 - (XTNavigationViewContainer *) lastNavigationViewContainer {
