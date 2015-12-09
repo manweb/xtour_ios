@@ -44,6 +44,8 @@
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
     if (!mapView) {mapView = [GMSMapView mapWithFrame:CGRectMake(5, 5, boxWidth - 10, 240) camera:camera];}
     
+    mapView.mapType = kGMSTypeTerrain;
+    
     _mountainPeakViewContainer = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition, boxWidth, 60)];
     
     _mountainPeakExtendedView = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, _viewOffset+boxYPosition+55, boxWidth, 0)];
@@ -139,12 +141,16 @@
                     _MountainPeakTitleLabel.text = @"Dieser Gipfel wurde gefunden";
                     _MountainPeakAltitudeLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
                     _MountainPeakCoordinatesLabel.text = [NSString stringWithFormat:@"%@ %@", lonString, latString];
+                    
+                    _mountainPeak = [peak objectAtIndex:0];
                 }
                 else {
                     _MountainPeakTitleLabel.text = @"Kein Gipfel gefunden";
+                    
+                    _mountainPeak = @"";
                 }
-    
-    [self.mountainPeakMoreView reloadData];
+                
+                [self.mountainPeakMoreView reloadData];
             });
         });
         
@@ -791,6 +797,8 @@
         _MountainPeakTitleLabel.text = @"Kein Gipfel ausgewählt";
         _MountainPeakCoordinatesLabel.text = @"";
         _MountainPeakAltitudeLabel.text = @"";
+        
+        _mountainPeak = @"";
     }
     else {
         NSMutableArray *peak = [_morePeaks objectAtIndex:indexPath.row];
@@ -817,6 +825,8 @@
         _MountainPeakTitleLabel.text = @"Dieser Gipfel ist ausgewählt";
         _MountainPeakCoordinatesLabel.text = [NSString stringWithFormat:@"%@ %@", lonString, latString];
         _MountainPeakAltitudeLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
+        
+        _mountainPeak = [peak objectAtIndex:0];
     }
     
     [self ShowMorePeaks:nil];

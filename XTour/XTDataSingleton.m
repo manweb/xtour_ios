@@ -69,6 +69,7 @@
     _TotalEndTime = 0;
     _tourDescription = nil;
     _tourRating = 0;
+    _mountainPeak = nil;
     _averageCount = 0;
     _timer = 0;
     _loggedIn = false;
@@ -148,6 +149,7 @@
     _lastRunIndex = 0;
     _tourDescription = nil;
     _tourRating = 0;
+    _mountainPeak = nil;
 }
 
 - (void) AddCoordinate:(CLLocation *)p
@@ -436,6 +438,7 @@
     [xml SetMetadataDouble:(double)_tourRating forKey:@"Rating" withPrecision:0];
     [xml SetMetadataDouble:(double)anonymousTracking forKey:@"AnonymousTracking" withPrecision:0];
     [xml SetMetadataDouble:(double)lowBattery forKey:@"LowBatteryLevel" withPrecision:0];
+    [xml SetMetadataString:_mountainPeak forKey:@"MountainPeak"];
     
     for (int i = (int)_lastRunIndex; i < [_locationData count]; i++) {
         if (i < [_batteryLevel count]) {[xml AddTrackpoint:[_locationData objectAtIndex:i] batteryLevel:[[_batteryLevel objectAtIndex:i] floatValue]];}

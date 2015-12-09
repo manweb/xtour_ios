@@ -98,6 +98,7 @@
 - (IBAction)Close {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (detailView.hasDescription) {data.tourDescription = detailView.descriptionView.text;}
+        data.mountainPeak = detailView.mountainPeak;
         [data CreateXMLForCategory:@"sum"];
         [data WriteImageInfo];
         

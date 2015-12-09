@@ -65,6 +65,7 @@
 @property (retain, nonatomic) UILabel *MountainPeakTitleLabel;
 @property (retain, nonatomic) UILabel *MountainPeakCoordinatesLabel;
 @property (retain, nonatomic) UILabel *MountainPeakAltitudeLabel;
+@property (retain, nonatomic) NSString *mountainPeak;
 @property (retain, nonatomic) NSMutableArray *morePeaks;
 @property (nonatomic) NSInteger viewOffset;
 @property (nonatomic) NSInteger viewContentOffset;

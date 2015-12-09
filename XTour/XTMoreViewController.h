@@ -14,6 +14,7 @@
 #import "XTFileUploader.h"
 #import "XTSettingsViewController.h"
 #import "XTProfileViewController.h"
+#import "XTWishlistViewController.h"
 
 @interface XTMoreViewController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
 {

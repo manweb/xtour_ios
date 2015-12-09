@@ -54,6 +54,7 @@
 @property(nonatomic,retain) NSDate *TotalEndTime;
 @property(nonatomic,retain) NSString *tourDescription;
 @property(nonatomic) NSInteger tourRating;
+@property(nonatomic,retain) NSString *mountainPeak;
 @property(nonatomic) NSInteger averageCount;
 @property(nonatomic) bool loggedIn;
 @property(nonatomic,retain) NSString *userID;

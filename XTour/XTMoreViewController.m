@@ -229,7 +229,20 @@
                 }
                     break;
                 case 3:
+                {
+                    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+                    [layout setItemSize:CGSizeMake(300, 100)];
+                    XTWishlistViewController *collection = [[XTWishlistViewController alloc] initWithCollectionViewLayout:layout];
+                    collection.view.frame = CGRectMake(0, 0, width, height);
                     
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:collection.view title:@"Wunschlist" isFirstView:YES];
+                    
+                    [self.view addSubview:navigationView.view];
+                    
+                    [navigationView ShowView];
+                    
+                    [layout release];
+                }
                     break;
                 case 4:
                     

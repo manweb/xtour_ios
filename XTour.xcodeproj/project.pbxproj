@@ -148,6 +148,8 @@
 		64A7DBA41AA4E44300D8A4C5 /* more_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7DBA31AA4E44300D8A4C5 /* more_icon@2x.png */; };
 		64AD8EFF1B13C6E000960A6C /* XTImageDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64AD8EFE1B13C6E000960A6C /* XTImageDetailView.m */; };
 		64B18CF918BD73DA002A5417 /* XTFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B18CF818BD73DA002A5417 /* XTFileUploader.m */; };
+		64B2C0F41C15BA1100D1E7F8 /* XTWishlistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B2C0F31C15BA1100D1E7F8 /* XTWishlistViewController.m */; };
+		64B2C0F71C15BAEF00D1E7F8 /* XTWishlistViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B2C0F61C15BAEF00D1E7F8 /* XTWishlistViewCell.m */; };
 		64B6E50D1AC89CFA0069A1A7 /* skier_down_button_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B6E50C1AC89CFA0069A1A7 /* skier_down_button_inactive.png */; };
 		64B6E50F1AC89D070069A1A7 /* skier_up_button_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B6E50E1AC89D070069A1A7 /* skier_up_button_inactive.png */; };
 		64B6E5111AC8B0AB0069A1A7 /* skier_down_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B6E5101AC8B0AB0069A1A7 /* skier_down_icon.png */; };
@@ -383,6 +385,10 @@
 		64AD8EFE1B13C6E000960A6C /* XTImageDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTImageDetailView.m; sourceTree = "<group>"; };
 		64B18CF718BD73DA002A5417 /* XTFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTFileUploader.h; sourceTree = "<group>"; };
 		64B18CF818BD73DA002A5417 /* XTFileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTFileUploader.m; sourceTree = "<group>"; };
+		64B2C0F21C15BA1100D1E7F8 /* XTWishlistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTWishlistViewController.h; sourceTree = "<group>"; };
+		64B2C0F31C15BA1100D1E7F8 /* XTWishlistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTWishlistViewController.m; sourceTree = "<group>"; };
+		64B2C0F51C15BAEF00D1E7F8 /* XTWishlistViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTWishlistViewCell.h; sourceTree = "<group>"; };
+		64B2C0F61C15BAEF00D1E7F8 /* XTWishlistViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTWishlistViewCell.m; sourceTree = "<group>"; };
 		64B6E50C1AC89CFA0069A1A7 /* skier_down_button_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skier_down_button_inactive.png; sourceTree = "<group>"; };
 		64B6E50E1AC89D070069A1A7 /* skier_up_button_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skier_up_button_inactive.png; sourceTree = "<group>"; };
 		64B6E5101AC8B0AB0069A1A7 /* skier_down_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skier_down_icon.png; sourceTree = "<group>"; };
@@ -546,6 +552,10 @@
 				640BBE7B1887B1A30029327F /* Main.storyboard */,
 				640BBE7E1887B1A30029327F /* XTHomeViewController.h */,
 				640BBE7F1887B1A30029327F /* XTHomeViewController.m */,
+				64B2C0F51C15BAEF00D1E7F8 /* XTWishlistViewCell.h */,
+				64B2C0F61C15BAEF00D1E7F8 /* XTWishlistViewCell.m */,
+				64B2C0F21C15BA1100D1E7F8 /* XTWishlistViewController.h */,
+				64B2C0F31C15BA1100D1E7F8 /* XTWishlistViewController.m */,
 				641F8B191C0794A70056A4F5 /* XTPeakFinder.h */,
 				641F8B1A1C0794A70056A4F5 /* XTPeakFinder.m */,
 				641FD4531BEE8AE3002DD407 /* XTNotificationViewController.h */,
@@ -1081,6 +1091,7 @@
 				64067BE81BBDDF100021C856 /* XTUserStatistics.m in Sources */,
 				6434707B1AE0E332003DDA13 /* XTNewsFeedCell.m in Sources */,
 				646219D31BB723F900503F1C /* XTCalendarPageViewController.m in Sources */,
+				64B2C0F41C15BA1100D1E7F8 /* XTWishlistViewController.m in Sources */,
 				64DBCCDD1AD5930D009DB4DC /* XTServerRequestHandler.m in Sources */,
 				6461F2DE1B1F553B00B23A51 /* XTProfileViewController.m in Sources */,
 				64883A731BCB309800A30DC0 /* XTYearlyStatisticsViewController.m in Sources */,
@@ -1103,6 +1114,7 @@
 				645FEF1C18BC67CA009619E9 /* XTLoginViewController.m in Sources */,
 				640BBE801887B1A30029327F /* XTHomeViewController.m in Sources */,
 				64F051E71B13F61F004CEBA1 /* XTImageEditViewController.m in Sources */,
+				64B2C0F71C15BAEF00D1E7F8 /* XTWishlistViewCell.m in Sources */,
 				646219D61BB7252C00503F1C /* XTCalendarViewController.m in Sources */,
 				648FE08F1B72F4A400FC20F7 /* XTGraphViewController.m in Sources */,
 			);
