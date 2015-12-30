@@ -35,6 +35,9 @@
 - (void) ReadGPXFile:(NSString *)filename;
 - (NSString *)GetValueFromFile:(NSString *)element;
 - (NSMutableArray *)GetLocationDataFromFile;
+- (NSMutableArray *)GetLocationDataFromFileAtIndex:(NSInteger)index;
+- (NSString *) GetTrackTypeAtIndex:(NSInteger)index;
+- (NSInteger) GetNumberOfTracksInFile;
 - (void) AddImageInfo:(XTImageInfo *)imageInfo;
 - (void) SaveImageInfo:(NSString *)filename;
 - (XTUserInfo*) GetUserInfo:(NSString*)filename;

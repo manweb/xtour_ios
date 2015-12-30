@@ -235,7 +235,7 @@
                     XTWishlistViewController *collection = [[XTWishlistViewController alloc] initWithCollectionViewLayout:layout];
                     collection.view.frame = CGRectMake(0, 0, width, height);
                     
-                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:collection.view title:@"Wunschlist" isFirstView:YES];
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:collection.view title:@"Wunschliste" isFirstView:YES];
                     
                     [self.view addSubview:navigationView.view];
                     

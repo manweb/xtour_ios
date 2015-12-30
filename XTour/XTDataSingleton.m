@@ -35,7 +35,7 @@
     if (!_warningInfo) {_warningInfo = [[NSMutableArray alloc] init];}
     if (!_profileSettings) {_profileSettings = [[XTSettings alloc] init];}
     [_locationData removeAllObjects];
-    _StartLocation = 0;
+    _StartLocation = nil;
     _CurrentLocation = 0;
     _totalTime = 0;
     _totalDistance = 0.0;
@@ -81,6 +81,7 @@
     _lastRunIndex = 0;
     _runStatus = 0;
     _lowBatteryLevel = false;
+    _followTourInfo = nil;
 }
 
 - (void) ResetDataForNewRun
@@ -110,7 +111,7 @@
     [_batteryLevel removeAllObjects];
     [_imageInfo removeAllObjects];
     [_warningInfo removeAllObjects];
-    _StartLocation = 0;
+    _StartLocation = nil;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
     _totalDescent = 0.0;
@@ -675,6 +676,20 @@
     }
     
     return imageInfoFiles;
+}
+
+- (NSMutableArray *) GetWishlistGPXFiles
+{
+    NSString *path = [self GetDocumentFilePathForFile:@"/" CheckIfExist:NO];
+    NSArray *content = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
+    
+    NSMutableArray *GPXFiles = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [content count]; i++) {
+        NSString *file = [NSString stringWithFormat:@"%@/%@", path, [content objectAtIndex:i]];
+        if ([file containsString:@"Wishlist"] && [[file pathExtension] isEqualToString:@"gpx"]) {[GPXFiles addObject:file];}
+    }
+    
+    return GPXFiles;
 }
 
 - (void) CleanUpTourDirectory

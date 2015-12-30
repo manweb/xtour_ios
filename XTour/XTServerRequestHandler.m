@@ -263,4 +263,26 @@
     [sessionTask resume];
 }
 
+- (void) DownloadFile:(NSString*)filename to:(NSString*)localFile
+{
+    NSString *requestString = filename;
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *response, NSError *error) {
+        if (error) {NSLog(@"There was an error downloading the file: %@", filename); return;}
+        
+        data = [XTDataSingleton singleObj];
+        
+        NSString *filePath = [data GetDocumentFilePathForFile:localFile CheckIfExist:NO];
+        
+        [responseData writeToFile:filePath atomically:YES];
+    }];
+    
+    [sessionTask resume];
+}
+
 @end

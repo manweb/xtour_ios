@@ -28,5 +28,6 @@
 @property (retain, nonatomic) NSString *tourDescription;
 @property (nonatomic) NSInteger tourRating;
 @property (retain, nonatomic) NSString *mountainPeak;
+@property (retain,nonatomic) NSMutableArray *tracks;
 
 @end

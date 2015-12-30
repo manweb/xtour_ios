@@ -29,6 +29,13 @@
     return self;
 }
 
+- (void) dealloc
+{
+    [super dealloc];
+    
+    [formatter release];
+}
+
 - (void) SetMetadataString:(NSString *)value forKey:(NSString *)key
 {
     if (!Metadata) {return;}
@@ -183,10 +190,19 @@
 
 - (NSMutableArray *)GetLocationDataFromFile
 {
+    return [self GetLocationDataFromFileAtIndex:0];
+}
+
+- (NSMutableArray *) GetLocationDataFromFileAtIndex:(NSInteger)index
+{
     if (!_RecoveredData) {return nil;}
     
     GDataXMLElement *trackSegment = [[_RecoveredData.rootElement elementsForName:@"trk"] objectAtIndex:0];
-    GDataXMLElement *track = [[trackSegment elementsForName:@"trkseg"] objectAtIndex:0];
+    NSArray *tracks = [trackSegment elementsForName:@"trkseg"];
+    
+    if (index > [tracks count] - 1) {return nil;}
+    
+    GDataXMLElement *track = [tracks objectAtIndex:index];
     
     NSArray *trackPoints = [track elementsForName:@"trkpt"];
     
@@ -219,6 +235,30 @@
     [dateFormatter release];
     
     return locations;
+}
+
+- (NSString *) GetTrackTypeAtIndex:(NSInteger)index
+{
+    if (!_RecoveredData) {return nil;}
+    
+    GDataXMLElement *trackSegment = [[_RecoveredData.rootElement elementsForName:@"trk"] objectAtIndex:0];
+    NSArray *tracks = [trackSegment elementsForName:@"trkseg"];
+    
+    if (index > [tracks count] - 1) {return nil;}
+    
+    GDataXMLElement *track = [tracks objectAtIndex:index];
+    
+    return [[track attributeForName:@"type"] stringValue];
+}
+
+- (NSInteger) GetNumberOfTracksInFile
+{
+    if (!_RecoveredData) {return 0;}
+    
+    GDataXMLElement *trackSegment = [[_RecoveredData.rootElement elementsForName:@"trk"] objectAtIndex:0];
+    NSArray *tracks = [trackSegment elementsForName:@"trkseg"];
+    
+    return [tracks count];
 }
 
 - (void) AddImageInfo:(XTImageInfo *)imageInfo

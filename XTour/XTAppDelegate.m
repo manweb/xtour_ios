@@ -7,6 +7,8 @@
 //
 
 #import "XTAppDelegate.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 @import GoogleMaps;
 
 @implementation XTAppDelegate
@@ -20,6 +22,8 @@
     pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
     pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:1.0f];
     pageControl.backgroundColor = [UIColor clearColor];
+    
+    [Fabric with:@[[Crashlytics class]]];
     
     return YES;
 }

@@ -868,8 +868,11 @@
     
     CLLocationDistance alt = location.altitude;
     
-    if (data.StartLocation == 0) {
+    if (!data.StartLocation) {
         data.StartLocation = location;
+        
+        data.lowestPoint = location;
+        data.highestPoint = location;
         
         [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
             if (error == nil && [placemarks count] > 0) {

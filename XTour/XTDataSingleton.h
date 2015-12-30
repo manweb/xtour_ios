@@ -13,6 +13,7 @@
 #import "XTUserInfo.h"
 #import "XTWarningsInfo.h"
 #import "XTSettings.h"
+#import "XTTourInfo.h"
 
 @interface XTDataSingleton : NSObject
 
@@ -71,6 +72,7 @@
 @property(nonatomic) NSInteger runStatus;
 @property(nonatomic,retain) XTSettings *profileSettings;
 @property(nonatomic) bool lowBatteryLevel;
+@property(nonatomic,retain) XTTourInfo *followTourInfo;
 
 + (XTDataSingleton *) singleObj;
 
@@ -103,6 +105,7 @@
 - (NSMutableArray *) GetAllImages;
 - (NSMutableArray *) GetImagesForCurrentTour;
 - (NSMutableArray *) GetAllImageInfoFiles;
+- (NSMutableArray *) GetWishlistGPXFiles;
 - (void) CleanUpTourDirectory;
 - (void) RemoveFile:(NSString*)filename;
 - (NSUInteger) GetNumberOfFilesInTourDirectory;

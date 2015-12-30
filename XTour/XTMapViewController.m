@@ -57,6 +57,8 @@
     
     //[_mapView addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context:NULL];
     
+    _mapView.mapType = kGMSTypeTerrain;
+    
     [self.view insertSubview:_mapView atIndex:0];
     [_mapView setDelegate:self];
     
@@ -67,6 +69,8 @@
     _polyline.strokeColor = [UIColor blueColor];
     _polyline.strokeWidth = 5.f;
     _polyline.map = _mapView;
+    
+    _polylines = [[NSMutableArray alloc] init];
     
     _mapHasMoved = false;
     
@@ -120,6 +124,93 @@
     [_addWarningBackground addSubview:_enterWarning];
     [self.view addSubview:_addWarningBackground];
     
+    _changeMapBackground = [[UIView alloc] initWithFrame:CGRectMake(_width-50, 130, 40, 40)];
+    
+    _changeMapBackground.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6f];
+    _changeMapBackground.layer.cornerRadius = 5.0f;
+    
+    _changeMap = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    _changeMap.frame = CGRectMake(5, 5, 30, 30);
+    [_changeMap setBackgroundImage:[UIImage imageNamed:@"map_type_satellite@3x.png"] forState:UIControlStateNormal];
+    [_changeMap addTarget:self action:@selector(ChangeMapType:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_changeMapBackground addSubview:_changeMap];
+    [self.view addSubview:_changeMapBackground];
+    
+    _followTourView = [[UIView alloc] initWithFrame:CGRectMake(10, 75, _width-20, 50)];
+    
+    _followTourView.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6f];
+    _followTourView.layer.cornerRadius = 5.0f;
+    
+    _followTourTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, _width-80, 15)];
+    
+    _followTourTitle.textColor = [UIColor whiteColor];
+    _followTourTitle.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    _followTourTitle.text = @"Hinzugefügte Tour";
+    
+    float labelWidth = (_width-70)/3;
+    
+    _followTourTime = [[UILabel alloc] initWithFrame:CGRectMake(5, 20, labelWidth-5, 15)];
+    
+    _followTourTime.textColor = [UIColor whiteColor];
+    _followTourTime.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    
+    _followTourDistance = [[UILabel alloc] initWithFrame:CGRectMake(labelWidth+5, 20, labelWidth-5, 15)];
+    
+    _followTourDistance.textColor = [UIColor whiteColor];
+    _followTourDistance.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    
+    _followTourAltitude = [[UILabel alloc] initWithFrame:CGRectMake(2*labelWidth+5, 20, labelWidth, 15)];
+    
+    _followTourAltitude.textColor = [UIColor whiteColor];
+    _followTourAltitude.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    
+    _removeFollowTour = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    _removeFollowTour.frame = CGRectMake(_width-55, 10, 30, 30);
+    [_removeFollowTour setBackgroundImage:[UIImage imageNamed:@"cancel_icon@3x.png"] forState:UIControlStateNormal];
+    [_removeFollowTour addTarget:self action:@selector(RemoveFollowTour:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _upLineView = [[UIView alloc] initWithFrame:CGRectMake(5, 42, 50, 2)];
+    
+    _upLineView.backgroundColor = [UIColor greenColor];
+    
+    _downLineView = [[UIView alloc] initWithFrame:CGRectMake(120, 42, 50, 2)];
+    
+    _downLineView.backgroundColor = [UIColor yellowColor];
+    
+    _upLineLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 35, 50, 15)];
+    
+    _upLineLabel.textColor = [UIColor whiteColor];
+    _upLineLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    _upLineLabel.text = @"Aufstieg";
+    
+    _downLineLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 35, 50, 15)];
+    
+    _downLineLabel.textColor = [UIColor whiteColor];
+    _downLineLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    _downLineLabel.text = @"Abfahrt";
+    
+    [_followTourView addSubview:_followTourTitle];
+    [_followTourView addSubview:_followTourTime];
+    [_followTourView addSubview:_followTourDistance];
+    [_followTourView addSubview:_followTourAltitude];
+    [_followTourView addSubview:_removeFollowTour];
+    [_followTourView addSubview:_upLineView];
+    [_followTourView addSubview:_downLineView];
+    [_followTourView addSubview:_upLineLabel];
+    [_followTourView addSubview:_downLineLabel];
+    
+    [self.view addSubview:_followTourView];
+    
+    [_followTourView setHidden:YES];
+    
+    [_upLineView setHidden:YES];
+    [_downLineView setHidden:YES];
+    [_upLineLabel setHidden:YES];
+    [_downLineLabel setHidden:YES];
+    
     _addWarning = false;
 	// Do any additional setup after loading the view, typically from a nib.
 }
@@ -143,6 +234,65 @@
     _mapView.myLocationEnabled = YES;
     
     [_mapView addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    for (int i = 0; i < [_polylines count]; i++) {
+        GMSPolyline *currentPolyline = [_polylines objectAtIndex:i];
+        
+        currentPolyline.map = nil;
+    }
+    
+    [_polylines removeAllObjects];
+    
+    if (data.followTourInfo) {
+        for (int i = 0; i < [data.followTourInfo.tracks count]; i++) {
+            GMSPolyline *currentPolyline = [[GMSPolyline alloc] init];
+            currentPolyline = [data.followTourInfo.tracks objectAtIndex:i];
+            
+            currentPolyline.map = _mapView;
+            
+            [_polylines addObject:currentPolyline];
+        }
+    }
+    
+    if (data.followTourInfo) {
+        float tourTime = (float)data.followTourInfo.totalTime;
+        
+        float hours = floorf(tourTime/3600);
+        float minutes = floorf((tourTime/3600 - hours)*60);
+        float seconds = roundf(((tourTime/3600 - hours)*60 - minutes)*60);
+        
+        float distance = data.followTourInfo.distance;
+        NSString *distanceUnit = @"km";
+        if (data.followTourInfo.distance < 1) {
+            distance = data.followTourInfo.distance*1000;
+            distanceUnit = @"m";
+        }
+        
+        _followTourTime.text = [NSString stringWithFormat:@"%.0fh %.0fm %.0fs",hours,minutes,seconds];
+        _followTourDistance.text = [NSString stringWithFormat:@"%.1f%@",data.followTourInfo.distance,distanceUnit];
+        _followTourAltitude.text = [NSString stringWithFormat:@"%.1fm",data.followTourInfo.altitude];
+        
+        if (_followTourView.hidden) {
+            CGRect warningFrame = _addWarningBackground.frame;
+            CGRect mapFrame = _changeMapBackground.frame;
+            
+            _addWarningBackground.frame = CGRectMake(warningFrame.origin.x, warningFrame.origin.y+55, warningFrame.size.width, warningFrame.size.height);
+            
+            _changeMapBackground.frame = CGRectMake(mapFrame.origin.x, mapFrame.origin.y+55, mapFrame.size.width, mapFrame.size.height);
+            
+            [_upLineView setHidden:NO];
+            [_upLineLabel setHidden:NO];
+            
+            [_followTourView setAlpha:1.0];
+            
+            [_followTourView setHidden:NO];
+        }
+        
+        if ([_polylines count] > 1) {
+            [_downLineView setHidden:NO];
+            [_downLineLabel setHidden:NO];
+        }
+    }
     
     /*if ([data GetNumCoordinates] < 2) {return;}
     
@@ -428,6 +578,44 @@
             [_enterWarning setHidden:NO];
             [_editWarningText setHidden:NO];
             [_editWarningText becomeFirstResponder];
+        } completion:nil];
+    }];
+}
+
+- (void) ChangeMapType:(id)sender
+{
+    if (_mapView.mapType == kGMSTypeTerrain) {
+        _mapView.mapType = kGMSTypeHybrid;
+        
+        [_changeMap setBackgroundImage:[UIImage imageNamed:@"map_type_terrain@3x.png"] forState:UIControlStateNormal];
+    }
+    else {
+        _mapView.mapType = kGMSTypeTerrain;
+        
+        [_changeMap setBackgroundImage:[UIImage imageNamed:@"map_type_satellite@3x.png"] forState:UIControlStateNormal];
+    }
+}
+
+- (void) RemoveFollowTour:(id)sender
+{
+    for (int i = 0; i < [_polylines count]; i++) {
+        GMSPolyline *currentPolyline = [_polylines objectAtIndex:i];
+        
+        currentPolyline.map = nil;
+    }
+    
+    [_polylines removeAllObjects];
+    
+    data.followTourInfo = nil;
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        [_followTourView setAlpha:0.0];
+        
+        [_followTourView setHidden:YES];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            _addWarningBackground.frame = CGRectMake(_width-50, 80, 40, 40);
+            _changeMapBackground.frame = CGRectMake(_width-50, 130, 40, 40);
         } completion:nil];
     }];
 }

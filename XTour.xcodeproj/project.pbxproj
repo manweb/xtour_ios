@@ -51,6 +51,8 @@
 		640ECB2B1B1006F1004E9816 /* rating-star-on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640ECB251B1006F1004E9816 /* rating-star-on@2x.png */; };
 		641493811AEFEC2C0020ADDD /* XTNavigationViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 641493801AEFEC2C0020ADDD /* XTNavigationViewContainer.m */; };
 		641DC06C1BC4787500B9477B /* XTBackgroundTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 641DC06B1BC4787500B9477B /* XTBackgroundTaskManager.m */; };
+		641F06221C31C52A00D1EBDA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 641F06201C31C52A00D1EBDA /* Fabric.framework */; };
+		641F06231C31C52A00D1EBDA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 641F06211C31C52A00D1EBDA /* Crashlytics.framework */; };
 		641F8B1B1C0794A70056A4F5 /* XTPeakFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 641F8B1A1C0794A70056A4F5 /* XTPeakFinder.m */; };
 		641F8B1D1C07A62D0056A4F5 /* mountain_peaks_ch.xml in Resources */ = {isa = PBXBuildFile; fileRef = 641F8B1C1C07A62D0056A4F5 /* mountain_peaks_ch.xml */; };
 		641F8B231C080C7F0056A4F5 /* arrow_more@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 641F8B221C080C7F0056A4F5 /* arrow_more@3x.png */; };
@@ -155,6 +157,7 @@
 		64B6E5111AC8B0AB0069A1A7 /* skier_down_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B6E5101AC8B0AB0069A1A7 /* skier_down_icon.png */; };
 		64B7FED71A2BB2ED008DE880 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64B7FED61A2BB2ED008DE880 /* AssetsLibrary.framework */; };
 		64BEAA6B1B26A5E200B7C565 /* rating-star-on@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64BEAA6A1B26A5E200B7C565 /* rating-star-on@3x.png */; };
+		64BF2D551C17CA7700260A6A /* start_tour_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64BF2D541C17CA7700260A6A /* start_tour_icon@3x.png */; };
 		64C09A8B18B68E16004A230E /* item_background_40_half.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C09A8A18B68E16004A230E /* item_background_40_half.png */; };
 		64C2B97918B87AD100D4FDE4 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97818B87AD000D4FDE4 /* camera@2x.png */; };
 		64C2B97B18B87ADE00D4FDE4 /* cog_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */; };
@@ -178,6 +181,8 @@
 		64D8C0E618B55C50001A825E /* compass_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D8C0E518B55C50001A825E /* compass_icon.png */; };
 		64DBCCDD1AD5930D009DB4DC /* XTServerRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 64DBCCDC1AD5930D009DB4DC /* XTServerRequestHandler.m */; };
 		64DCB3511B31D85F009D61B8 /* XTWarningsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 64DCB3501B31D85F009D61B8 /* XTWarningsInfo.m */; };
+		64E3DACF1C1B4B2F00B073E6 /* map_type_terrain@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E3DACE1C1B4B2F00B073E6 /* map_type_terrain@3x.png */; };
+		64E3DAD11C1B4B3600B073E6 /* map_type_satellite@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E3DAD01C1B4B3600B073E6 /* map_type_satellite@3x.png */; };
 		64E3EB9F18B0200500514CFE /* xtour_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E3EB9E18B0200500514CFE /* xtour_header.png */; };
 		64E3EBA118B020E400514CFE /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E3EBA018B020E400514CFE /* profile_icon.png */; };
 		64E88EE41B0E7B2F002ADF1A /* ski_pole_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E88EE31B0E7B2F002ADF1A /* ski_pole_camera@3x.png */; };
@@ -262,6 +267,8 @@
 		641493801AEFEC2C0020ADDD /* XTNavigationViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTNavigationViewContainer.m; sourceTree = "<group>"; };
 		641DC06A1BC4787500B9477B /* XTBackgroundTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTBackgroundTaskManager.h; sourceTree = "<group>"; };
 		641DC06B1BC4787500B9477B /* XTBackgroundTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTBackgroundTaskManager.m; sourceTree = "<group>"; };
+		641F06201C31C52A00D1EBDA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		641F06211C31C52A00D1EBDA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		641F8B191C0794A70056A4F5 /* XTPeakFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTPeakFinder.h; sourceTree = "<group>"; };
 		641F8B1A1C0794A70056A4F5 /* XTPeakFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTPeakFinder.m; sourceTree = "<group>"; };
 		641F8B1C1C07A62D0056A4F5 /* mountain_peaks_ch.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mountain_peaks_ch.xml; sourceTree = "<group>"; };
@@ -394,6 +401,7 @@
 		64B6E5101AC8B0AB0069A1A7 /* skier_down_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skier_down_icon.png; sourceTree = "<group>"; };
 		64B7FED61A2BB2ED008DE880 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		64BEAA6A1B26A5E200B7C565 /* rating-star-on@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating-star-on@3x.png"; sourceTree = "<group>"; };
+		64BF2D541C17CA7700260A6A /* start_tour_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "start_tour_icon@3x.png"; sourceTree = "<group>"; };
 		64C09A8A18B68E16004A230E /* item_background_40_half.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = item_background_40_half.png; path = images/item_background_40_half.png; sourceTree = SOURCE_ROOT; };
 		64C2B97818B87AD000D4FDE4 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@2x.png"; path = "../images/camera@2x.png"; sourceTree = "<group>"; };
 		64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cog_01@2x.png"; path = "../images/cog_01@2x.png"; sourceTree = "<group>"; };
@@ -420,6 +428,8 @@
 		64DBCCDC1AD5930D009DB4DC /* XTServerRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTServerRequestHandler.m; sourceTree = "<group>"; };
 		64DCB34F1B31D85E009D61B8 /* XTWarningsInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTWarningsInfo.h; sourceTree = "<group>"; };
 		64DCB3501B31D85F009D61B8 /* XTWarningsInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTWarningsInfo.m; sourceTree = "<group>"; };
+		64E3DACE1C1B4B2F00B073E6 /* map_type_terrain@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_type_terrain@3x.png"; sourceTree = "<group>"; };
+		64E3DAD01C1B4B3600B073E6 /* map_type_satellite@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_type_satellite@3x.png"; sourceTree = "<group>"; };
 		64E3EB9E18B0200500514CFE /* xtour_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = xtour_header.png; path = ../images/xtour_header.png; sourceTree = "<group>"; };
 		64E3EBA018B020E400514CFE /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = profile_icon.png; path = ../images/profile_icon.png; sourceTree = "<group>"; };
 		64E88EE31B0E7B2F002ADF1A /* ski_pole_camera@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ski_pole_camera@3x.png"; sourceTree = "<group>"; };
@@ -452,6 +462,7 @@
 			files = (
 				64FCAC431BF5532E00446F03 /* CoreBluetooth.framework in Frameworks */,
 				64FCAC411BF5531F00446F03 /* Accelerate.framework in Frameworks */,
+				641F06231C31C52A00D1EBDA /* Crashlytics.framework in Frameworks */,
 				640BBEAC1887B2040029327F /* ImageIO.framework in Frameworks */,
 				64B7FED71A2BB2ED008DE880 /* AssetsLibrary.framework in Frameworks */,
 				64251D4C188FC1C8004F1675 /* libxml2.dylib in Frameworks */,
@@ -471,6 +482,7 @@
 				640BBEA21887B1CF0029327F /* AVFoundation.framework in Frameworks */,
 				640BBE6C1887B1A30029327F /* CoreGraphics.framework in Frameworks */,
 				64FCAC3D1BF54F0600446F03 /* GoogleMaps.framework in Frameworks */,
+				641F06221C31C52A00D1EBDA /* Fabric.framework in Frameworks */,
 				640BBE6E1887B1A30029327F /* UIKit.framework in Frameworks */,
 				640BBE6A1887B1A30029327F /* Foundation.framework in Frameworks */,
 				3546BB168C7B07B6CE4DEA25 /* libPods.a in Frameworks */,
@@ -727,6 +739,9 @@
 				6470D7601C03966F004B5C25 /* XTour_icon_text.png */,
 				64293D851C06966000D58303 /* peak_finder_icon@3x.png */,
 				640345DB1C0AB2D200B5CB1B /* dots_icon@3x.png */,
+				64BF2D541C17CA7700260A6A /* start_tour_icon@3x.png */,
+				64E3DACE1C1B4B2F00B073E6 /* map_type_terrain@3x.png */,
+				64E3DAD01C1B4B3600B073E6 /* map_type_satellite@3x.png */,
 				640ECB211B1006F1004E9816 /* rating-star-off.png */,
 				640ECB221B1006F1004E9816 /* rating-star-off@2x.png */,
 				640ECB231B1006F1004E9816 /* rating-star-off@3x.png */,
@@ -798,6 +813,8 @@
 		8F573FFF4C8400C15BF11EC9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				641F06201C31C52A00D1EBDA /* Fabric.framework */,
+				641F06211C31C52A00D1EBDA /* Crashlytics.framework */,
 				782BD5EB9BAAADE38AC8F6DF /* Pods.debug.xcconfig */,
 				A81FA645185E3FA58F0677B9 /* Pods.release.xcconfig */,
 			);
@@ -817,6 +834,7 @@
 				640BBE641887B1A30029327F /* Resources */,
 				950A8A1312672B5379EE02F3 /* Embed Pods Frameworks */,
 				CB0B9AA5DC27190928F2A13D /* Copy Pods Resources */,
+				641F061F1C31C4BF00D1EBDA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -928,6 +946,7 @@
 				641FD45C1BEEA32B002DD407 /* close_icon_black@2x.png in Resources */,
 				64A1E0021AE47D9E00403950 /* news_feed_icon@3x.png in Resources */,
 				64A1E0001AE47D6A00403950 /* profile_icon_small@3x.png in Resources */,
+				64E3DAD11C1B4B3600B073E6 /* map_type_satellite@3x.png in Resources */,
 				64CC3F541B769779004000B0 /* logout@3x.png in Resources */,
 				64CC3F531B769779004000B0 /* logout@2x.png in Resources */,
 				64CC3F521B769779004000B0 /* logout.png in Resources */,
@@ -991,6 +1010,7 @@
 				64F69F9F1BE82AD20065DDDF /* snowboarder_up_button_inactive.png in Resources */,
 				641FD4571BEEA041002DD407 /* xtour_icon@3x.png in Resources */,
 				6434706D1ACB702A00C8F916 /* skier_up_icon_2.png in Resources */,
+				64BF2D551C17CA7700260A6A /* start_tour_icon@3x.png in Resources */,
 				64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */,
 				6431C4F11A2EF566007A827F /* GPS_weak.png in Resources */,
 				64D8C0E418B55C0E001A825E /* skier_up_icon.png in Resources */,
@@ -1000,6 +1020,7 @@
 				64F69F9E1BE82AD20065DDDF /* snowboarder_down_button_inactive.png in Resources */,
 				64B6E50F1AC89D070069A1A7 /* skier_up_button_inactive.png in Resources */,
 				64E3EBA118B020E400514CFE /* profile_icon.png in Resources */,
+				64E3DACF1C1B4B2F00B073E6 /* map_type_terrain@3x.png in Resources */,
 				64CA2FFF1AEB67A0006F4219 /* compass_icon_white.png in Resources */,
 				641FD4521BEE89F0002DD407 /* close_icon@3x.png in Resources */,
 				6451812F1A27CC2500D887CA /* Icon-76.png in Resources */,
@@ -1023,6 +1044,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		641F061F1C31C4BF00D1EBDA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 5413ebe99f8afd81cee183eaf32aea14a0308349 bd9dc557a48a1e71dea0598de671fde182ac8f17c1bbd5267252750d4ef6dfdc";
+		};
 		8B88362C7793D0E3763AAD7A /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1253,6 +1287,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/XTour",
 					"$(PROJECT_DIR)/Pods/GoogleMaps/Frameworks",
+					"$(PROJECT_DIR)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
@@ -1297,6 +1332,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/XTour",
 					"$(PROJECT_DIR)/Pods/GoogleMaps/Frameworks",
+					"$(PROJECT_DIR)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",

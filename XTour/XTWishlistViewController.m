@@ -22,15 +22,60 @@ static NSString * const reuseIdentifier = @"Cell";
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
+    UITabBarController *tabBarController = [UITabBarController new];
+    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+    
     // Register cell classes
     [self.collectionView registerClass:[XTWishlistViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
+    [self.collectionView setContentInset:UIEdgeInsetsMake(70, 0, tabBarHeight, 0)];
+    
     // Do any additional setup after loading the view.
+    [self.collectionView setBackgroundColor:[UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f]];
+    
+    data = [XTDataSingleton singleObj];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    if (!_tourInfos) {_tourInfos = [[NSMutableArray alloc] init];}
+    
+    [_tourInfos removeAllObjects];
+    
+    NSMutableArray *GPXFiles = [[NSMutableArray alloc] init];
+    
+    GPXFiles = [data GetWishlistGPXFiles];
+    
+    for (int i = 0; i < [GPXFiles count]; i++) {
+        XTXMLParser *parser = [[XTXMLParser alloc] init];
+        
+        [parser ReadGPXFile:[GPXFiles objectAtIndex:i]];
+        
+        XTTourInfo *tourInfo = [[XTTourInfo alloc] init];
+        
+        tourInfo.userID = [parser GetValueFromFile:@"userid"];
+        tourInfo.tourID = [parser GetValueFromFile:@"tourid"];
+        tourInfo.date = [[parser GetValueFromFile:@"date"] integerValue];
+        tourInfo.totalTime = [[parser GetValueFromFile:@"TotalTime"] integerValue];
+        tourInfo.distance = [[parser GetValueFromFile:@"TotalDistance"] floatValue];
+        tourInfo.altitude = [[parser GetValueFromFile:@"TotalAltitude"] floatValue];
+        tourInfo.descent = [[parser GetValueFromFile:@"TotalDescent"] floatValue];
+        tourInfo.highestPoint = [[parser GetValueFromFile:@"HighestPoint"] floatValue];
+        tourInfo.lowestPoint = [[parser GetValueFromFile:@"LowestPoint"] floatValue];
+        tourInfo.mountainPeak = [parser GetValueFromFile:@"MountainPeak"];
+        
+        [_tourInfos addObject:tourInfo];
+        
+        [tourInfo release];
+        [parser release];
+    }
+    
+    [GPXFiles release];
 }
 
 /*
@@ -80,8 +125,10 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.title.text = [NSString stringWithFormat:@"Hinzugefügt am %@", formattedDate];
     cell.time.text = TimeString;
     
-    if (currentElement.distance < 10000) {cell.distance.text = [NSString stringWithFormat:@"%.0f m", currentElement.distance];}
-    else {cell.distance.text = [NSString stringWithFormat:@"%.1f km", currentElement.distance/1000];}
+    cell.mountainPeak.text = currentElement.mountainPeak;
+    
+    if (currentElement.distance < 10) {cell.distance.text = [NSString stringWithFormat:@"%.0f m", 1000*currentElement.distance];}
+    else {cell.distance.text = [NSString stringWithFormat:@"%.1f km", currentElement.distance];}
     
     cell.altitude.text = [NSString stringWithFormat:@"%.0f m", currentElement.altitude];
     cell.highestPoint.text = [NSString stringWithFormat:@"%.0f m", currentElement.highestPoint];
@@ -116,6 +163,14 @@ static NSString * const reuseIdentifier = @"Cell";
     _clickedButton = [(UIButton*)sender tag];
     
     XTTourInfo *currentElement = [self.tourInfos objectAtIndex:_clickedButton];
+    
+    NSString *filename = [data GetDocumentFilePathForFile:[NSString stringWithFormat:@"/Wishlist_%@.gpx",currentElement.tourID] CheckIfExist:NO];
+    
+    bool result = [[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
+    
+    if (result) {[_tourInfos removeObjectAtIndex:_clickedButton];}
+    
+    [self.collectionView reloadData];
 }
 
 - (void) StartTour:(id)sender
@@ -123,6 +178,40 @@ static NSString * const reuseIdentifier = @"Cell";
     _clickedButton = [(UIButton*)sender tag];
     
     XTTourInfo *currentElement = [self.tourInfos objectAtIndex:_clickedButton];
+    
+    NSString *filename = [data GetDocumentFilePathForFile:[NSString stringWithFormat:@"/Wishlist_%@.gpx",currentElement.tourID] CheckIfExist:NO];
+    
+    XTXMLParser *parser = [[XTXMLParser alloc] init];
+    
+    [parser ReadGPXFile:filename];
+    
+    NSInteger numberOfTracks = [parser GetNumberOfTracksInFile];
+    
+    data.followTourInfo = currentElement;
+    
+    if (!data.followTourInfo.tracks) {data.followTourInfo.tracks = [[NSMutableArray alloc] init];}
+    
+    [data.followTourInfo.tracks removeAllObjects];
+    
+    GMSMutablePath *currentPath = [[GMSMutablePath alloc] init];
+    for (int i = 0; i < numberOfTracks; i++) {
+        [currentPath removeAllCoordinates];
+        
+        NSMutableArray *coordinate = [parser GetLocationDataFromFileAtIndex:i];
+        
+        for (int k = 0; k < [coordinate count]; k++) {
+            CLLocation *location = [coordinate objectAtIndex:k];
+            [currentPath addCoordinate:location.coordinate];
+        }
+        
+        GMSPolyline *polyline = [[GMSPolyline alloc] init];
+        [polyline setPath:currentPath];
+        if ([[parser GetTrackTypeAtIndex:i] containsString:@"up"]) {polyline.strokeColor = [UIColor greenColor];}
+        else {polyline.strokeColor = [UIColor yellowColor];}
+        polyline.strokeWidth = 3.f;
+        
+        [data.followTourInfo.tracks addObject:polyline];
+    }
 }
 
 #pragma mark <UICollectionViewDelegate>

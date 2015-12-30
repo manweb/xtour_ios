@@ -31,5 +31,6 @@
 - (void) CheckGraphsForTour:(NSString*)tourID;
 - (XTUserStatistics*) GetUserStatistics:(NSData*)responseData;
 - (NSMutableArray*) GetYearlyStatistics:(NSData*)responseData;
+- (void) DownloadFile:(NSString*)filename to:(NSString*)localFile;
 
 @end

@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "XTWishlistViewCell.h"
 #import "XTTourInfo.h"
+#import "XTServerRequestHandler.h"
+#import "XTDataSingleton.h"
+#import "XTXMLParser.h"
+@import GoogleMaps;
 
 @interface XTWishlistViewController : UICollectionViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+{
+    XTDataSingleton *data;
+}
 
 @property (nonatomic,retain) NSMutableArray *tourInfos;
 @property (nonatomic) NSInteger clickedButton;

@@ -402,9 +402,40 @@ static NSString * const reuseIdentifier = @"Cell";
 {
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if ([buttonTitle isEqualToString:@"Zeige Details"]) {
-        XTTourInfo *currentElement = [self.news_feed objectAtIndex:_clickedButton];
+    XTTourInfo *currentElement = [self.news_feed objectAtIndex:_clickedButton];
+    
+    if ([buttonTitle isEqualToString:@"Zur Wunschliste"]) {
+        NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/generate_wishlist.php?tid=%@", currentElement.tourID];
+        NSURL *url = [NSURL URLWithString:requestString];
         
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        sessionConfiguration.timeoutIntervalForRequest = 10.0;
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+            if (error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                return;
+            }
+            
+            NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            
+            if ([response isEqualToString:@"true"]) {
+                
+                NSString *remoteFile = [NSString stringWithFormat:@"http://www.xtour.ch/users/%@/tours/%@/Wishlist_%@.gpx",currentElement.userID,currentElement.tourID,currentElement.tourID];
+                NSString *localFile = [NSString stringWithFormat:@"/Wishlist_%@.gpx",currentElement.tourID];
+                
+                [ServerHandler DownloadFile:remoteFile to:localFile];
+            }
+        }];
+        
+        [sessionTask resume];
+    }
+    if ([buttonTitle isEqualToString:@"Zeige Details"]) {
         CGRect screenBound = [[UIScreen mainScreen] bounds];
         float width = screenBound.size.width;
         float height = screenBound.size.height;

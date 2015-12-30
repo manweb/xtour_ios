@@ -23,10 +23,10 @@
         
         _icon.image = [UIImage imageNamed:@"wishlist_icon@3x.png"];
         
-        _title = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, frame.size.width/2, 12)];
+        _title = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, frame.size.width/2, 14)];
         
         _title.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
-        _title.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+        _title.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, 43, frame.size.width/2-55, 12)];
         
@@ -38,7 +38,7 @@
         
         _distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width/2+5, 43, frame.size.width/2-60, 12)];
         
-        _distance.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+        _distanceLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
         
         _distanceLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         
@@ -50,7 +50,7 @@
         
         _altitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         
-        _altitudeLabel.text = @"Höhenunterschied";
+        _altitudeLabel.text = @"Höhendifferenz";
         
         _highestPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width/2+5, 80, frame.size.width/2-60, 12)];
         
@@ -82,21 +82,21 @@
         
         _moreButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         
-        _moreButton.frame = CGRectMake(frame.size.width-55, 10, 50, 50);
+        _moreButton.frame = CGRectMake(frame.size.width-55, 21, 50, 28);
         [_moreButton setBackgroundImage:[UIImage imageNamed:@"dots_icon@3x.png"] forState:UIControlStateNormal];
         
         _startButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         
-        _startButton.frame = CGRectMake(frame.size.width-55, 60, 50, 50);
-        [_startButton setBackgroundImage:[UIImage imageNamed:@"start_icon@3x.png"] forState:UIControlStateNormal];
+        _startButton.frame = CGRectMake(frame.size.width-55, 71, 50, 28);
+        [_startButton setBackgroundImage:[UIImage imageNamed:@"start_tour_icon@3x.png"] forState:UIControlStateNormal];
         
         UIView *verticalLine = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width-56, 10, 1, 100)];
         
-        verticalLine.backgroundColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
+        verticalLine.backgroundColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
         
         UIView *horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width-55, 60, 50, 1)];
         
-        horizontalLine.backgroundColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
+        horizontalLine.backgroundColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
         
         [self addSubview:_icon];
         [self addSubview:_title];

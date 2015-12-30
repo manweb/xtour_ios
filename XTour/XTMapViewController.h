@@ -35,10 +35,23 @@
 @property (retain, nonatomic) UITextView *addWarningText;
 @property (retain, nonatomic) UITextView *editWarningText;
 @property (retain, nonatomic) UIButton *enterWarning;
+@property (retain, nonatomic) UIView *changeMapBackground;
+@property (retain, nonatomic) UIButton *changeMap;
+@property (retain, nonatomic) UIView *followTourView;
+@property (retain, nonatomic) UILabel *followTourTitle;
+@property (retain, nonatomic) UILabel *followTourTime;
+@property (retain, nonatomic) UILabel *followTourDistance;
+@property (retain, nonatomic) UILabel *followTourAltitude;
+@property (retain, nonatomic) UIButton *removeFollowTour;
+@property (retain, nonatomic) UIView *upLineView;
+@property (retain, nonatomic) UIView *downLineView;
+@property (retain, nonatomic) UILabel *upLineLabel;
+@property (retain, nonatomic) UILabel *downLineLabel;
 @property (retain, nonatomic) GMSMapView *mapView;
 @property (retain, nonatomic) GMSMutablePath *path;
 @property (retain, nonatomic) GMSPolyline *polyline;
 @property (retain, nonatomic) GMSCameraUpdate *cameraUpdate;
+@property (retain, nonatomic) NSMutableArray *polylines;
 @property (nonatomic) bool mapHasMoved;
 @property (nonatomic) bool addWarning;
 @property (nonatomic) float width;
@@ -49,6 +62,8 @@
 - (void)LoginViewDidClose:(id)sender;
 - (void)AddWarning:(id)sender;
 - (void)EnterWarning:(id)sender;
+- (void)ChangeMapType:(id)sender;
+- (void)RemoveFollowTour:(id)sender;
 - (IBAction)centerMap:(id)sender;
 
 @end
