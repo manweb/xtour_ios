@@ -171,8 +171,6 @@
 }
 
 - (void)ShowLoginOptions:(id)sender {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LoginViewDidClose:) name:@"LoginViewDismissed" object:nil];
-    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"Du bist eingelogged als %@",data.userInfo.userName] delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Ausloggen" otherButtonTitles:@"Profil anzeigen", nil];
     
     [actionSheet showInView:self.view];
@@ -200,9 +198,11 @@
 {
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if ([buttonTitle isEqualToString:@"Ausloggen"]) {[data Logout];}
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginViewDismissed" object:nil userInfo:nil];
+    if ([buttonTitle isEqualToString:@"Ausloggen"]) {
+        [data Logout];
+        
+        [self LoginViewDidClose:nil];
+    }
 }
 
 - (void) ShowView

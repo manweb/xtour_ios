@@ -789,48 +789,29 @@
 {
     if (!location) {return;}
     
-    CLLocationDegrees lon = location.coordinate.longitude;
-    CLLocationDegrees lat = location.coordinate.latitude;
-    CLLocationDistance alt = location.altitude;
+    double longitude = (double)location.coordinate.longitude;
+    double latitude = (double)location.coordinate.latitude;
+    double alt = (double)location.altitude;
     
-    double longitude = (double)lon;
-    NSString *lonEW;
-    if (longitude < 0) {lonEW = @"W"; longitude = fabs(longitude);}
-    else {lonEW = @"E";}
+    double longitudeAbs = fabs(longitude);
+    double latitudeAbs = fabs(latitude);
     
-    double latitude = (double)lat;
-    NSString *latNS;
-    if (latitude < 0) {latNS = @"S"; latitude = fabs(latitude);}
-    else {latNS = @"N";}
-    
-    NSString *lonString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
-                           floor(longitude),
-                           floor((longitude - floor(longitude)) * 60),
-                           ((longitude - floor(longitude)) * 60 - floor((longitude - floor(longitude)) * 60)) * 60, [lonEW UTF8String]];
-    NSString *latString = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %s",
-                           floor(latitude),
-                           floor((latitude - floor(latitude)) * 60),
-                           ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];
-    NSString *altString = [NSString stringWithFormat:@"%.0f müm", alt];
-    
-    _longLabel.text = lonString;
-    _latLabel.text = latString;
-    _elevationLabel.text = altString;
+    _longLabel.text = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %@",
+                       floor(longitudeAbs),
+                       floor((longitudeAbs - floor(longitudeAbs)) * 60),
+                       ((longitudeAbs - floor(longitudeAbs)) * 60 - floor((longitudeAbs - floor(longitudeAbs)) * 60)) * 60, longitude < 0 ? @"W" : @"E"];
+    _latLabel.text = [NSString stringWithFormat:@"%.0f°%.0f'%.1f\" %@",
+                      floor(latitudeAbs),
+                      floor((latitudeAbs - floor(latitudeAbs)) * 60),
+                      ((latitudeAbs - floor(latitudeAbs)) * 60 - floor((latitudeAbs - floor(latitudeAbs)) * 60)) * 60, latitude < 0 ? @"S" : @"N"];
+    _elevationLabel.text = [NSString stringWithFormat:@"%.0f müm", alt];
     
     NSString *distTotal;
     if (data.totalDistance < 0.1) {distTotal = [NSString stringWithFormat:@"%.0f m", (data.totalDistance)*1000];}
     else {distTotal = [NSString stringWithFormat:@"%.1f km", data.totalDistance];}
     
-    NSString *altTotal;
-    if (data.runStatus == 1) {
-        altTotal = [NSString stringWithFormat:@"%.0f m", data.totalCumulativeAltitude];
-    }
-    else {
-        altTotal = [NSString stringWithFormat:@"%.0f m", data.totalCumulativeDescent];
-    }
-    
     _distanceLabel.text = distTotal;
-    _altitudeLabel.text = altTotal;
+    _altitudeLabel.text = [NSString stringWithFormat:@"%.0f m", data.runStatus == 1 ? data.totalCumulativeAltitude : data.totalCumulativeDescent];
     
     _totalDistanceLabel.text = [NSString stringWithFormat:@"%.1f km",data.sumDistance];
     _totalAltitudeLabel.text = [NSString stringWithFormat:@"%.1f m",data.sumCumulativeAltitude];
@@ -855,11 +836,6 @@
         data.rateLastDistance = data.totalDistance;
         data.rateLastAltitude = data.totalAltitude;
     }
-    
-    [lonEW release];
-    [latNS release];
-    [distTotal release];
-    [altTotal release];
 }
 
 - (void) SaveCurrentLocation:(CLLocation*)location

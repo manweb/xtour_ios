@@ -14,7 +14,7 @@
 #import "XTTourDetailView.h"
 #import "XTTourInfo.h"
 
-@interface XTNewsFeedViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate,UIActionSheetDelegate>
+@interface XTNewsFeedViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 {
     XTDataSingleton *data;
     XTServerRequestHandler *ServerHandler;

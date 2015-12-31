@@ -240,6 +240,12 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [navigationView ShowView];
     
+    [navigationView.loginButton setImage:nil forState:UIControlStateNormal];
+    [navigationView.loginButton setBackgroundImage:[UIImage imageNamed:@"dots_icon_white@3x.png"] forState:UIControlStateNormal];
+    [navigationView.loginButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [navigationView.loginButton addTarget:self action:@selector(ShowOptionsWithNoDetail:) forControlEvents:UIControlEventTouchUpInside];
+    [navigationView.loginButton setTag:indexPath.row];
+    
     [detailView LoadTourDetail:currentElement fromServer:YES];
     
     [detailView release];
@@ -398,12 +404,66 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+- (void) ShowOptionsWithNoDetail:(id)sender
+{
+    _clickedButton = [(UIButton*)sender tag];
+    
+    XTTourInfo *currentElement = [self.news_feed objectAtIndex:_clickedButton];
+    
+    if ([currentElement.userID isEqualToString:data.userInfo.userID]) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Tour löschen" otherButtonTitles:@"Tour verstecken", @"Zur Wunschliste", nil];
+        
+        [actionSheet showInView:self.view];
+        
+        [actionSheet release];
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:nil otherButtonTitles:@"Zur Wunschliste", nil];
+        
+        [actionSheet showInView:self.view];
+        
+        [actionSheet release];
+    }
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
     XTTourInfo *currentElement = [self.news_feed objectAtIndex:_clickedButton];
     
+    if ([buttonTitle isEqualToString:@"Tour löschen"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bestätige" message:@"Bist du sicher, dass du diese Tour löschen willst?" delegate:self cancelButtonTitle:@"Abbrechen" otherButtonTitles:@"Löschen", nil];
+        
+        [alert show];
+    }
+    if ([buttonTitle isEqualToString:@"Tour verstecken"]) {
+        NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/hide_tour.php?tid=%@", currentElement.tourID];
+        NSURL *url = [NSURL URLWithString:requestString];
+        
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        sessionConfiguration.timeoutIntervalForRequest = 10.0;
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+            if (error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                return;
+            }
+            
+            NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            
+            if ([response isEqualToString:@"true"]) {
+                [self refreshNewsFeed];
+            }
+        }];
+        
+        [sessionTask resume];
+    }
     if ([buttonTitle isEqualToString:@"Zur Wunschliste"]) {
         NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/generate_wishlist.php?tid=%@", currentElement.tourID];
         NSURL *url = [NSURL URLWithString:requestString];
@@ -474,6 +534,43 @@ static NSString * const reuseIdentifier = @"Cell";
         [detailView LoadTourDetail:currentElement fromServer:YES];
         
         [detailView release];
+    }
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if ([buttonTitle isEqualToString:@"Löschen"]) {
+        XTTourInfo *currentElement = [self.news_feed objectAtIndex:_clickedButton];
+        
+        NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/delete_tour.php?tid=%@", currentElement.tourID];
+        NSURL *url = [NSURL URLWithString:requestString];
+        
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        sessionConfiguration.timeoutIntervalForRequest = 10.0;
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+            if (error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                return;
+            }
+            
+            NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            
+            if ([response isEqualToString:@"true"]) {
+                [self refreshNewsFeed];
+            }
+        }];
+        
+        [sessionTask resume];
+        
+        [navigationView HideView];
     }
 }
 
