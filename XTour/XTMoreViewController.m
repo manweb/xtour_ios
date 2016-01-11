@@ -147,8 +147,35 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0 && data.loggedIn) {cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;}
-        if (indexPath.row == 1 || indexPath.row == 2) {
+        if (indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 4) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        if (indexPath.row == 3) {
+            NSInteger numberOfWishlistFiles = [data GetNumberOfWishlistFiles];
+            
+            if (numberOfWishlistFiles > 0) {
+                float numberWidth = 40;
+                if (numberOfWishlistFiles >= 10 && numberOfWishlistFiles < 100) {numberWidth = 45;}
+                if (numberOfWishlistFiles >= 100) {numberWidth = 50;}
+                
+                UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-numberWidth-10, cell.frame.size.height/2-15, numberWidth, 30)];
+                
+                accessoryView.layer.cornerRadius = 15.0f;
+                accessoryView.backgroundColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
+                
+                UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, numberWidth, 30)];
+                
+                numberLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
+                numberLabel.textColor = [UIColor whiteColor];
+                numberLabel.textAlignment = NSTextAlignmentCenter;
+                numberLabel.text = [NSString stringWithFormat:@"%li",(long)numberOfWishlistFiles];
+                
+                [accessoryView addSubview:numberLabel];
+                
+                cell.accessoryView = accessoryView;
+                
+                [accessoryView release];
+            }
         }
     }
     
@@ -245,7 +272,20 @@
                 }
                     break;
                 case 4:
+                {
+                    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+                    [layout setItemSize:CGSizeMake(300, 100)];
+                    XTSearchViewController *collection = [[XTSearchViewController alloc] initWithCollectionViewLayout:layout];
+                    collection.view.frame = CGRectMake(0, 0, width, height);
                     
+                    navigationView = [[XTNavigationViewContainer alloc] initWithNibName:nil bundle:nil view:collection.view title:@"Suche" isFirstView:YES];
+                    
+                    [self.view addSubview:navigationView.view];
+                    
+                    [navigationView ShowView];
+                    
+                    [layout release];
+                }
                     break;
             }
             break;

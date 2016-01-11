@@ -31,8 +31,10 @@
 @property (nonatomic,retain) NSString *UID;
 @property (nonatomic) int filter;
 @property (nonatomic) NSInteger clickedButton;
+@property (nonatomic,retain) UIActivityIndicatorView *appendData;
 
 - (void) refreshNewsFeed;
+- (void) appendDataAndReload;
 - (void) SelectAll:(id)sender;
 - (void) SelectMine:(id)sender;
 - (void) SelectBest:(id)sender;

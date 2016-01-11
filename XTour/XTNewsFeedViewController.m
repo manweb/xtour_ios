@@ -78,6 +78,10 @@ static NSString * const reuseIdentifier = @"Cell";
     _UID = @"0";
     _filter = 0;
     
+    _appendData = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    _appendData.frame = CGRectMake(width/2-15, 0, 30, 30);
+    
     ServerHandler = [[XTServerRequestHandler alloc] init];
     
     self.collectionView.alwaysBounceVertical = YES;
@@ -191,6 +195,8 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [cell.moreButton addTarget:self action:@selector(ShowOptions:) forControlEvents:UIControlEventTouchUpInside];
     [cell.moreButton setTag:indexPath.row];
+    
+    if ([self.news_feed count] - 1 == indexPath.row) {[self appendDataAndReload];}
     
     [formatter release];
     
@@ -314,6 +320,39 @@ static NSString * const reuseIdentifier = @"Cell";
     });
     
     dispatch_release(fetch);*/
+}
+
+- (void) appendDataAndReload
+{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_news_feed_string.php?num=%i&start=%lu&uid=%@&filter=%i", 10, (unsigned long)[self.news_feed count], _UID, _filter];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    sessionConfiguration.timeoutIntervalForRequest = 10.0;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            //[refreshControl endRefreshing];
+            
+            return;
+        }
+        
+        NSMutableArray *append_data = [ServerHandler GetNewsFeedString:(NSData*)responseData];
+        
+        [self.news_feed addObjectsFromArray:append_data];
+        
+        [self.collectionView reloadData];
+        
+        //[refreshControl endRefreshing];
+    }];
+    
+    [sessionTask resume];
 }
 
 - (void)SelectAll:(id)sender

@@ -15,6 +15,7 @@
 #import "XTSettingsViewController.h"
 #import "XTProfileViewController.h"
 #import "XTWishlistViewController.h"
+#import "XTSearchViewController.h"
 
 @interface XTMoreViewController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
 {

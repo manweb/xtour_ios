@@ -106,6 +106,7 @@
 - (NSMutableArray *) GetImagesForCurrentTour;
 - (NSMutableArray *) GetAllImageInfoFiles;
 - (NSMutableArray *) GetWishlistGPXFiles;
+- (NSInteger) GetNumberOfWishlistFiles;
 - (void) CleanUpTourDirectory;
 - (void) RemoveFile:(NSString*)filename;
 - (NSUInteger) GetNumberOfFilesInTourDirectory;

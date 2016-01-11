@@ -692,6 +692,13 @@
     return GPXFiles;
 }
 
+- (NSInteger) GetNumberOfWishlistFiles
+{
+    NSMutableArray *GPXFiles = [self GetWishlistGPXFiles];
+    
+    return [GPXFiles count];
+}
+
 - (void) CleanUpTourDirectory
 {
     NSMutableArray *GPXFiles = [self GetAllGPXFiles];

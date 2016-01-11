@@ -92,6 +92,24 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    if ([_tourInfos count] == 0) {
+        UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        
+        UITextView *messageLbl = [[UITextView alloc] initWithFrame:CGRectMake(10,self.view.bounds.size.height/2-50,self.view.bounds.size.width-20,100)];
+        
+        messageLbl.backgroundColor = [UIColor clearColor];
+        messageLbl.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
+        messageLbl.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+        messageLbl.text = @"Keine Touren in der Wunschliste.\n\nUm Touren hinzuzufügen gehe zum Touren feed und klicke auf \"Zur Wunschlise\"";
+        messageLbl.textAlignment = NSTextAlignmentCenter;
+        
+        [backgroundView addSubview:messageLbl];
+        
+        self.collectionView.backgroundView = backgroundView;
+        
+        return 0;
+    }
+    
     return 1;
 }
 

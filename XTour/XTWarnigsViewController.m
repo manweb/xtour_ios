@@ -56,29 +56,8 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [_header addSubview:_loginButton];
     
-    _background = [[UIView alloc] initWithFrame:screenBounds];
-    _background.backgroundColor = [UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
-    
-    _emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, screenBounds.size.height/2-25, screenBounds.size.width - 40, 50)];
-    _emptyLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
-    _emptyLabel.text = @"Im Umkreis von 20km sind keine Gefahrenstellen markiert.";
-    [_emptyLabel setNumberOfLines:3];
-    [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
-    
-    UIButton *updateButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    
-    updateButton.frame = CGRectMake(screenBounds.size.width/2-50, screenBounds.size.height/2+40, 100, 30);
-    
-    [updateButton setTitle:@"Update" forState:UIControlStateNormal];
-    [updateButton addTarget:self action:@selector(UpdateWarnings:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [_background addSubview:_emptyLabel];
-    [_background addSubview:updateButton];
     [self.view addSubview:_header];
     [self.view addSubview:_header_shadow];
-    [self.view addSubview:_background];
-    
-    [self.view sendSubviewToBack:_background];
     
     _warningsArray = [[NSMutableArray alloc] init];
     [_warningsArray removeAllObjects];
@@ -107,6 +86,24 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    if ([_warningsArray count] == 0) {
+        UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        
+        UITextView *messageLbl = [[UITextView alloc] initWithFrame:CGRectMake(10,self.view.bounds.size.height/2-50,self.view.bounds.size.width-20,100)];
+        
+        messageLbl.backgroundColor = [UIColor clearColor];
+        messageLbl.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
+        messageLbl.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+        messageLbl.text = [NSString stringWithFormat:@"Im Umkreis von %.0fkm sind keine Gefahrenstellen markiert.\n\nHerunterziehen um zu aktualisieren",data.profileSettings.warningRadius];
+        messageLbl.textAlignment = NSTextAlignmentCenter;
+        
+        [backgroundView addSubview:messageLbl];
+        
+        self.collectionView.backgroundView = backgroundView;
+        
+        return 0;
+    }
+    
     return 1;
 }
 
@@ -157,8 +154,6 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)dealloc {
     [_header release];
     [_header_shadow release];
-    [_background release];
-    [_emptyLabel release];
     [_loginButton release];
     [_warningsArray release];
     [super dealloc];
@@ -231,6 +226,8 @@ static NSString * const reuseIdentifier = @"Cell";
 {
     if (!data.CurrentLocation) {return;}
     
+    [refreshControl beginRefreshing];
+    
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_warnings_string.php?radius=%f&longitude=%f&latitude=%f", data.profileSettings.warningRadius, data.CurrentLocation.coordinate.longitude, data.CurrentLocation.coordinate.latitude];
     NSURL *url = [NSURL URLWithString:requestString];
     
@@ -255,19 +252,11 @@ static NSString * const reuseIdentifier = @"Cell";
         self.warningsArray = [request GetWarningsWithinRadius:responseData];
         
         if ([_warningsArray count] > 0) {
-            [_background setHidden:YES];
-            [self.collectionView setHidden:NO];
             [self.collectionView reloadData];
             
             [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", (unsigned long)[_warningsArray count]];
         }
-        else {
-            [_background setHidden:NO];
-            _emptyLabel.text = [NSString stringWithFormat:@"Im Umkreis von %.0fkm sind keine Gefahrenstellen markiert.",data.profileSettings.warningRadius];
-            [self.collectionView setHidden:YES];
-            
-            [self tabBarItem].badgeValue = nil;
-        }
+        else {[self tabBarItem].badgeValue = nil;}
         
         [refreshControl endRefreshing];
     }];

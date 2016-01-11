@@ -163,6 +163,8 @@
 		64C2B97918B87AD100D4FDE4 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97818B87AD000D4FDE4 /* camera@2x.png */; };
 		64C2B97B18B87ADE00D4FDE4 /* cog_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */; };
 		64C2B97D18B87AF300D4FDE4 /* globe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C2B97C18B87AF300D4FDE4 /* globe@2x.png */; };
+		64C6068F1C4011140089E549 /* XTSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C6068E1C4011140089E549 /* XTSearchViewController.m */; };
+		64C606921C40113B0089E549 /* XTSearchViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C606911C40113B0089E549 /* XTSearchViewCell.m */; };
 		64C87E581B3F698F0048F6E8 /* check_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C87E551B3F698F0048F6E8 /* check_icon.png */; };
 		64C87E591B3F698F0048F6E8 /* check_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C87E561B3F698F0048F6E8 /* check_icon@2x.png */; };
 		64C87E5A1B3F698F0048F6E8 /* check_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64C87E571B3F698F0048F6E8 /* check_icon@3x.png */; };
@@ -408,6 +410,10 @@
 		64C2B97818B87AD000D4FDE4 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@2x.png"; path = "../images/camera@2x.png"; sourceTree = "<group>"; };
 		64C2B97A18B87ADE00D4FDE4 /* cog_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cog_01@2x.png"; path = "../images/cog_01@2x.png"; sourceTree = "<group>"; };
 		64C2B97C18B87AF300D4FDE4 /* globe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "globe@2x.png"; path = "../images/globe@2x.png"; sourceTree = "<group>"; };
+		64C6068D1C4011140089E549 /* XTSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSearchViewController.h; sourceTree = "<group>"; };
+		64C6068E1C4011140089E549 /* XTSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSearchViewController.m; sourceTree = "<group>"; };
+		64C606901C40113B0089E549 /* XTSearchViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSearchViewCell.h; sourceTree = "<group>"; };
+		64C606911C40113B0089E549 /* XTSearchViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSearchViewCell.m; sourceTree = "<group>"; };
 		64C87E551B3F698F0048F6E8 /* check_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check_icon.png; sourceTree = "<group>"; };
 		64C87E561B3F698F0048F6E8 /* check_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_icon@2x.png"; sourceTree = "<group>"; };
 		64C87E571B3F698F0048F6E8 /* check_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_icon@3x.png"; sourceTree = "<group>"; };
@@ -566,6 +572,10 @@
 				640BBE7B1887B1A30029327F /* Main.storyboard */,
 				640BBE7E1887B1A30029327F /* XTHomeViewController.h */,
 				640BBE7F1887B1A30029327F /* XTHomeViewController.m */,
+				64C606901C40113B0089E549 /* XTSearchViewCell.h */,
+				64C606911C40113B0089E549 /* XTSearchViewCell.m */,
+				64C6068D1C4011140089E549 /* XTSearchViewController.h */,
+				64C6068E1C4011140089E549 /* XTSearchViewController.m */,
 				64B2C0F51C15BAEF00D1E7F8 /* XTWishlistViewCell.h */,
 				64B2C0F61C15BAEF00D1E7F8 /* XTWishlistViewCell.m */,
 				64B2C0F21C15BA1100D1E7F8 /* XTWishlistViewController.h */,
@@ -1114,6 +1124,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				640BBE7A1887B1A30029327F /* XTAppDelegate.m in Sources */,
+				64C6068F1C4011140089E549 /* XTSearchViewController.m in Sources */,
 				64AD8EFF1B13C6E000960A6C /* XTImageDetailView.m in Sources */,
 				648FE0921B72F59C00FC20F7 /* XTGraphPageViewController.m in Sources */,
 				648E87FA18B7D6D300BE1AB3 /* XTSettingsViewController.m in Sources */,
@@ -1122,6 +1133,7 @@
 				641DC06C1BC4787500B9477B /* XTBackgroundTaskManager.m in Sources */,
 				640BBEBF1887BBDB0029327F /* XTDataSingleton.m in Sources */,
 				64767DF81B0D2B9800EAC3D8 /* DXStarRatingView.m in Sources */,
+				64C606921C40113B0089E549 /* XTSearchViewCell.m in Sources */,
 				64B18CF918BD73DA002A5417 /* XTFileUploader.m in Sources */,
 				64CD04F81B49E2F8004DD801 /* XTWarningCell.m in Sources */,
 				64059E6218BDD3C800FDA369 /* XTSummaryViewController.m in Sources */,

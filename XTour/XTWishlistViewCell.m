@@ -60,7 +60,7 @@
         
         _highestPointLabel.text = @"Höchster Punkt";
         
-        _mountainPeak = [[UILabel alloc] initWithFrame:CGRectMake(55, 22, frame.size.width-110, 16)];
+        _mountainPeak = [[UILabel alloc] initWithFrame:CGRectMake(55, 22, frame.size.width-110, 18)];
         
         _mountainPeak.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
         

@@ -24,8 +24,6 @@
 
 @property (retain, nonatomic) UIView *header;
 @property (retain, nonatomic) UIView *header_shadow;
-@property (retain, nonatomic) UIView *background;
-@property (retain, nonatomic) UILabel *emptyLabel;
 @property (retain, nonatomic) UIButton *loginButton;
 @property (retain, nonatomic) NSMutableArray *warningsArray;
 

@@ -88,7 +88,7 @@
     
     _MountainPeakTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 5, boxWidth-100, 15)];
     _MountainPeakCoordinatesLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 40, boxWidth-100, 12)];
-    _MountainPeakAltitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 22, boxWidth-100, 15)];
+    _MountainPeakAltitudeLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 22, boxWidth-100, 16)];
     
     _MountainPeakTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
     _MountainPeakCoordinatesLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
