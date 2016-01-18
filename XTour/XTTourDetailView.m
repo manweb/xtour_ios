@@ -59,7 +59,7 @@
     
     _mountainPeakMoreView = [[UITableView alloc] initWithFrame:CGRectMake(5, 5, boxWidth-10, 240) style:UITableViewStyleGrouped];
     
-    _mountainPeakMoreView.rowHeight = 40.0;
+    _mountainPeakMoreView.rowHeight = 30.0;
     _mountainPeakMoreView.sectionHeaderHeight = 30.0;
     _mountainPeakMoreView.sectionFooterHeight = 1.0;
     _mountainPeakMoreView.backgroundColor = [UIColor clearColor];
@@ -509,7 +509,21 @@
                 
                 _tourImages = [request2 GetImagesForTour:(NSData*)responseData];
                 
-                [self UpdateView:tourInfo];
+                NSString *requestString3 = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_comments_string.php?tid=%@", tourInfo.tourID];
+                NSURL *url3 = [NSURL URLWithString:requestString3];
+                
+                NSURLSession *session3 = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+                
+                NSURLSessionTask *sessionTask3 = [session3 dataTaskWithRequest:[NSURLRequest requestWithURL:url3] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+                    XTServerRequestHandler *request3 = [[[XTServerRequestHandler alloc] init] autorelease];
+                    
+                    _tourComments = [request3 GetUserCommentsForTour:(NSData*)responseData];
+                    
+                    [self UpdateView:tourInfo];
+                }];
+                
+                [sessionTask3 resume];
+                
             }];
             
             [sessionTask2 resume];
@@ -643,6 +657,10 @@
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
     float boxWidth = width - 20;
+    float boxRadius = 5.f;
+    float boxBorderWidth = 1.0f;
+    float boxMarginLeft = 10.0f;
+    UIColor *boxBorderColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
     
     float minLon = 1e6;
     float maxLon = -1e6;
@@ -716,6 +734,62 @@
     graphPageController.pageController.view.frame = CGRectMake(0, 0, boxWidth-10, width/320*200);
     
     [_graphViewContainer addSubview:graphPageController.view];
+    
+    float commentsY = self.contentSize.height - [UITabBarController new].tabBar.frame.size.height;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    [formatter setDateFormat:@"dd.MM.yyyy HH:mm"];
+    
+    for (int n = 0; n < [_tourComments count]; n++) {
+        XTUserComment *currentComment = [_tourComments objectAtIndex:n];
+        
+        UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, commentsY, boxWidth, 100)];
+        
+        commentView.backgroundColor = [UIColor whiteColor];
+        commentView.layer.cornerRadius = boxRadius;
+        commentView.layer.borderWidth = boxBorderWidth;
+        commentView.layer.borderColor = boxBorderColor.CGColor;
+        
+        UILabel *commentTitle = [[UILabel alloc] initWithFrame:CGRectMake(40, 5, 200, 20)];
+        
+        commentTitle.textColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
+        commentTitle.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+        
+        NSString *commentDate = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:currentComment.commentDate]];
+        
+        commentTitle.text = [NSString stringWithFormat:@"%@ am %@",currentComment.userName,commentDate];
+        
+        UIImageView *profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 30, 30)];
+        
+        [profilePicture setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.xtour.ch/users/%@/profile.png",currentComment.userID]] placeholderImage:[UIImage imageNamed:@"profile_icon_gray.png"]];
+        
+        UITextView *commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(35, 30, boxWidth-40, 65)];
+        
+        commentTextView.editable = NO;
+        commentTextView.scrollEnabled = YES;
+        commentTextView.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
+        commentTextView.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
+        
+        NSString *commentText = [currentComment.comment stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+        
+        commentTextView.text = [commentText stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [commentView addSubview:commentTitle];
+        [commentView addSubview:profilePicture];
+        [commentView addSubview:commentTextView];
+        
+        [self addSubview:commentView];
+        
+        [commentTitle release];
+        [profilePicture release];
+        [commentTextView release];
+        [commentView release];
+    }
+    
+    CGSize contentSize = self.contentSize;
+    
+    self.contentSize = CGSizeMake(contentSize.width, contentSize.height+[_tourComments count]*105);
 }
 
 - (void) ShowMorePeaks:(id)sender
@@ -724,11 +798,15 @@
     
     if (_mountainPeakExtendedView.isHidden) {[_mountainPeakExtendedView setHidden:NO];}
     
+    float height = ([_morePeaks count]+1)*30.0 + 125.0;
+    if (height < 150) {height = 150;}
+    if (height > 245) {height = 245;}
+    
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         if (_mountainPeakExtendedView.frame.size.height == 0) {
-            _mountainPeakExtendedView.frame = CGRectMake(mountainPeakExtendedViewFrame.origin.x, mountainPeakExtendedViewFrame.origin.y, mountainPeakExtendedViewFrame.size.width, 250);
+            _mountainPeakExtendedView.frame = CGRectMake(mountainPeakExtendedViewFrame.origin.x, mountainPeakExtendedViewFrame.origin.y, mountainPeakExtendedViewFrame.size.width, height);
             
-            _blurEffectView.frame = CGRectMake(0, 0, mountainPeakExtendedViewFrame.size.width, 250);
+            _blurEffectView.frame = CGRectMake(0, 0, mountainPeakExtendedViewFrame.size.width, height);
             
             CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
             _MountainPeakMore.transform = transform;
@@ -742,6 +820,35 @@
             
             CGAffineTransform transform = CGAffineTransformMakeRotation(2*M_PI);
             _MountainPeakMore.transform = transform;
+            
+            if (![_enterMountainPeak.text isEqualToString:@""]) {
+                NSMutableArray *peak = [NSMutableArray arrayWithObjects:_enterMountainPeak.text, [NSNumber numberWithFloat:data.highestPoint.coordinate.longitude], [NSNumber numberWithFloat:data.highestPoint.coordinate.latitude], [NSNumber numberWithFloat:data.highestPoint.altitude], [NSNumber numberWithFloat:0.0], nil];
+                
+                float longitude = [[peak objectAtIndex:1] floatValue];
+                NSString *lonEW;
+                if (longitude < 0) {lonEW = @"W"; longitude = fabs(longitude);}
+                else {lonEW = @"E";}
+                
+                float latitude = [[peak objectAtIndex:2] floatValue];
+                NSString *latNS;
+                if (latitude < 0) {latNS = @"S"; latitude = fabs(latitude);}
+                else {latNS = @"N";}
+                
+                NSString *lonString = [NSString stringWithFormat:@"%.0f°%.0f'%.0f\" %s",
+                                       floor(longitude),
+                                       floor((longitude - floor(longitude)) * 60),
+                                       ((longitude - floor(longitude)) * 60 - floor((longitude - floor(longitude)) * 60)) * 60, [lonEW UTF8String]];
+                NSString *latString = [NSString stringWithFormat:@"%.0f°%.0f'%.0f\" %s",
+                                       floor(latitude),
+                                       floor((latitude - floor(latitude)) * 60),
+                                       ((latitude - floor(latitude)) * 60 - floor((latitude - floor(latitude)) * 60)) * 60, [latNS UTF8String]];
+                
+                _MountainPeakTitleLabel.text = @"Dieser Gipfel ist ausgewählt";
+                _MountainPeakCoordinatesLabel.text = [NSString stringWithFormat:@"%@ %@", lonString, latString];
+                _MountainPeakAltitudeLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
+                
+                _mountainPeak = [peak objectAtIndex:0];
+            }
         }
     } completion:^(BOOL finished) {
         if (_mountainPeakExtendedView.frame.size.height == 0) {
@@ -755,13 +862,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    if ([_morePeaks count] > 0) {return 3;}
+    else {return 2;}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {return 1;}
-    else {return [_morePeaks count];}
+    if ([_morePeaks count] > 0) {
+        if (section == 0 || section == 2) {return 1;}
+        else {return [_morePeaks count];}
+    }
+    else {return 1;}
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -775,15 +886,36 @@
     
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0];
     
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    
     if (indexPath.section == 0) {
         cell.textLabel.text = @"Entferne diesen Gipfel";
         cell.textLabel.textColor = [UIColor redColor];
     }
-    else {
+    else if (indexPath.section == 1 && [_morePeaks count] > 0) {
         NSMutableArray *peak = [_morePeaks objectAtIndex:indexPath.row];
         
         cell.textLabel.text = [NSString stringWithFormat:@"%@, %.0f", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
         cell.textLabel.textColor = [UIColor blackColor];
+    }
+    else {
+        UIView *newPeakFieldBackground = [[UIView alloc] initWithFrame:CGRectMake(10, 5, width-50, 20)];
+        
+        newPeakFieldBackground.backgroundColor = [UIColor clearColor];
+        newPeakFieldBackground.layer.borderWidth = 1.0f;
+        newPeakFieldBackground.layer.borderColor = [[UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f] CGColor];
+        newPeakFieldBackground.layer.cornerRadius = 5.0f;
+        
+        _enterMountainPeak = [[UITextField alloc] initWithFrame:CGRectMake(5, 0, width-60, 20)];
+        
+        _enterMountainPeak.textColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
+        
+        [newPeakFieldBackground addSubview:_enterMountainPeak];
+        
+        [cell.contentView addSubview:newPeakFieldBackground];
+        
+        [newPeakFieldBackground release];
     }
     
     return cell;
@@ -800,7 +932,7 @@
         
         _mountainPeak = @"";
     }
-    else {
+    else if (indexPath.section == 1 && [_morePeaks count]) {
         NSMutableArray *peak = [_morePeaks objectAtIndex:indexPath.row];
         
         float longitude = [[peak objectAtIndex:1] floatValue];
@@ -844,7 +976,8 @@
     lblTitle.backgroundColor = [UIColor clearColor];
     
     if (section == 0) {lblTitle.text = @"Nicht der richtige Gipfel?";}
-    else {lblTitle.text = @"Oder wähle einer der umliegenden Gipfel";}
+    else if (section == 1 && [_morePeaks count] > 0) {lblTitle.text = @"Oder wähle einer der umliegenden Gipfel";}
+    else {lblTitle.text = @"Oder gib ein Gipfel ein";}
     
     [viewHeader addSubview:lblTitle];
     
@@ -866,6 +999,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 1.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 30.0;
 }
 
 - (void)keyboardWasShown:(NSNotification *)notification

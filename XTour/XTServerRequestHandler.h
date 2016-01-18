@@ -13,6 +13,7 @@
 #import "XTDataSingleton.h"
 #import "XTWarningsInfo.h"
 #import "XTUserStatistics.h"
+#import "XTUserComment.h"
 
 @interface XTServerRequestHandler : NSObject
 {
@@ -25,6 +26,7 @@
 - (NSMutableArray *) GetNewsFeedString:(NSData*)responseData;
 - (void) ProcessTourCoordinates:(NSData*)responseData;
 - (NSMutableArray *) GetImagesForTour:(NSData*)responseData;
+- (NSMutableArray *) GetUserCommentsForTour:(NSData*)responseData;
 - (NSMutableArray *) GetWarningsWithinRadius:(NSData*)responseData;
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID;
 - (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo;

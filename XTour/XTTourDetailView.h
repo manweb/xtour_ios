@@ -16,6 +16,7 @@
 #import "XTDataSingleton.h"
 #import "XTXMLParser.h"
 #import "XTPeakFinder.h"
+#import "XTUserComment.h"
 @import GoogleMaps;
 
 @interface XTTourDetailView : UIScrollView <UITableViewDelegate, UITableViewDataSource>
@@ -27,6 +28,7 @@
 @property (retain, nonatomic) NSMutableArray *coordinateArray;
 @property (retain, nonatomic) NSMutableArray *tourImages;
 @property (retain, nonatomic) NSMutableArray *tourFiles;
+@property (retain, nonatomic) NSMutableArray *tourComments;
 @property (retain, nonatomic) UIView *loadingView;
 @property (retain, nonatomic) UIActivityIndicatorView *activityView;
 @property (retain, nonatomic) UIView *mapViewContainer;
@@ -67,6 +69,7 @@
 @property (retain, nonatomic) UILabel *MountainPeakAltitudeLabel;
 @property (retain, nonatomic) NSString *mountainPeak;
 @property (retain, nonatomic) NSMutableArray *morePeaks;
+@property (retain, nonatomic) UITextField *enterMountainPeak;
 @property (nonatomic) NSInteger viewOffset;
 @property (nonatomic) NSInteger viewContentOffset;
 @property (nonatomic) BOOL hasDescription;

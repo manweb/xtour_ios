@@ -104,6 +104,8 @@ static NSString * const reuseIdentifier = @"Cell";
         return 0;
     }
     
+    self.collectionView.backgroundView = nil;
+    
     return 1;
 }
 

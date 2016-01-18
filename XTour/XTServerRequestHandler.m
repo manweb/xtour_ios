@@ -134,6 +134,40 @@
     return tour_images;
 }
 
+- (NSMutableArray *) GetUserCommentsForTour:(NSData*)responseData
+{
+    NSMutableArray *user_comments = [[NSMutableArray alloc] init];
+    
+    NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+    if ([response isEqualToString:@",,,,;"]) {return nil;}
+    
+    NSArray *user_comments_array = [response componentsSeparatedByString:@";"];
+    NSMutableArray *user_comments_info = [NSMutableArray arrayWithArray:user_comments_array];
+    [user_comments_info removeLastObject];
+    
+    for (int i = 0; i < [user_comments_info count]; i++) {
+        XTUserComment *userComment = [[XTUserComment alloc] init];
+        
+        NSString *currentComment = [user_comments_info objectAtIndex:i];
+        
+        NSArray *userCommentArray = [currentComment componentsSeparatedByString:@","];
+        
+        if ([userCommentArray count] < 5) {continue;}
+        
+        userComment.userID = [userCommentArray objectAtIndex:0];
+        userComment.userName = [userCommentArray objectAtIndex:2];
+        userComment.commentDate = [[userCommentArray objectAtIndex:3] integerValue];
+        userComment.comment = [userCommentArray objectAtIndex:4];
+        
+        [user_comments addObject:userComment];
+        
+        [userComment release];
+    }
+    
+    return user_comments;
+}
+
 - (NSMutableArray*) GetWarningsWithinRadius:(NSData*)responseData
 {
     NSMutableArray *warnings = [[NSMutableArray alloc] init];

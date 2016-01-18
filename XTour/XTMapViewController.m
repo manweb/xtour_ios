@@ -74,14 +74,46 @@
     
     _mapHasMoved = false;
     
-    [_centerButton setHidden:YES];
-    _centerButton.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6];
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *centerBlurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    centerBlurView.frame = CGRectMake(0, 0, 120, 30);
+    centerBlurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    centerBlurView.layer.cornerRadius = 5.0f;
+    centerBlurView.clipsToBounds = YES;
+    
+    _centerView = [[UIView alloc] initWithFrame:CGRectMake(_width/2-60, _height-tabBarHeight-40, 120, 30)];
+    
+    _centerView.backgroundColor = [UIColor clearColor];
+    _centerView.layer.cornerRadius = 5.0f;
+    
+    _centerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    _centerButton.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    _centerButton.backgroundColor = [UIColor clearColor];
     _centerButton.layer.cornerRadius = 5.0f;
-    _centerButton.frame = CGRectMake(_width/2-60, _height-tabBarHeight-40, 120, 30);
+    _centerButton.frame = CGRectMake(0, 0, 120, 30);
+    [_centerButton setTitle:@"Karte zentrieren" forState:UIControlStateNormal];
+    [_centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_centerButton addTarget:self action:@selector(centerMap:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_centerView addSubview:centerBlurView];
+    [_centerView addSubview:_centerButton];
+    
+    [_centerView setHidden:YES];
+    
+    [centerBlurView release];
+    
+    [self.view addSubview:_centerView];
+    
+    UIVisualEffectView *addWarningBlurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    addWarningBlurView.frame = CGRectMake(0, 0, 40, 40);
+    addWarningBlurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    addWarningBlurView.layer.cornerRadius = 5.0f;
+    addWarningBlurView.clipsToBounds = YES;
     
     _addWarningBackground = [[UIView alloc] initWithFrame:CGRectMake(_width-50, 80, 40, 40)];
     
-    _addWarningBackground.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6];
+    _addWarningBackground.backgroundColor = [UIColor clearColor];
     _addWarningBackground.layer.cornerRadius = 5.0f;
     
     _addWarningButton = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 30, 30)];
@@ -97,36 +129,24 @@
     _addWarningText.contentInset = UIEdgeInsetsMake(-8, 0, 0, 0);
     _addWarningText.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
     
-    _editWarningText = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 250, 100)];
-    
-    _editWarningText.alpha = 1.0;
-    _editWarningText.layer.borderWidth = 1.0f;
-    _editWarningText.layer.borderColor = [[UIColor whiteColor] CGColor];
-    _editWarningText.layer.cornerRadius = 5.0f;
-    _editWarningText.textColor = [UIColor whiteColor];
-    _editWarningText.font = [UIFont fontWithName:@"Helvetica" size:12];
-    _editWarningText.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f];
-    
-    _enterWarning = [[UIButton alloc] initWithFrame:CGRectMake(_width-55, 75, 30, 30)];
-    
-    [_enterWarning setImage:[UIImage imageNamed:@"check_icon@3x.png"] forState:UIControlStateNormal];
-    [_enterWarning addTarget:self action:@selector(EnterWarning:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [_editWarningText setHidden:YES];
-    
     [_addWarningText setHidden:YES];
     
-    [_enterWarning setHidden:YES];
-    
+    [_addWarningBackground addSubview:addWarningBlurView];
     [_addWarningBackground addSubview:_addWarningButton];
     [_addWarningBackground addSubview:_addWarningText];
-    [_addWarningBackground addSubview:_editWarningText];
-    [_addWarningBackground addSubview:_enterWarning];
     [self.view addSubview:_addWarningBackground];
+    
+    [addWarningBlurView release];
+    
+    UIVisualEffectView *changeMapBlurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    changeMapBlurView.frame = CGRectMake(0, 0, 40, 40);
+    changeMapBlurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    changeMapBlurView.layer.cornerRadius = 5.0f;
+    changeMapBlurView.clipsToBounds = YES;
     
     _changeMapBackground = [[UIView alloc] initWithFrame:CGRectMake(_width-50, 130, 40, 40)];
     
-    _changeMapBackground.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6f];
+    _changeMapBackground.backgroundColor = [UIColor clearColor];
     _changeMapBackground.layer.cornerRadius = 5.0f;
     
     _changeMap = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -135,12 +155,21 @@
     [_changeMap setBackgroundImage:[UIImage imageNamed:@"map_type_satellite@3x.png"] forState:UIControlStateNormal];
     [_changeMap addTarget:self action:@selector(ChangeMapType:) forControlEvents:UIControlEventTouchUpInside];
     
+    [_changeMapBackground addSubview:changeMapBlurView];
     [_changeMapBackground addSubview:_changeMap];
     [self.view addSubview:_changeMapBackground];
     
+    [changeMapBlurView release];
+    
+    UIVisualEffectView *followTourBlurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    followTourBlurView.frame = CGRectMake(0, 0, _width-20, 50);
+    followTourBlurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    followTourBlurView.layer.cornerRadius = 5.0f;
+    followTourBlurView.clipsToBounds = YES;
+    
     _followTourView = [[UIView alloc] initWithFrame:CGRectMake(10, 75, _width-20, 50)];
     
-    _followTourView.backgroundColor = [UIColor colorWithRed:80.0f/255.0f green:80.0f/255.0f blue:80.0f/255.0f alpha:0.6f];
+    _followTourView.backgroundColor = [UIColor clearColor];
     _followTourView.layer.cornerRadius = 5.0f;
     
     _followTourTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, _width-80, 15)];
@@ -192,6 +221,7 @@
     _downLineLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     _downLineLabel.text = @"Abfahrt";
     
+    [_followTourView addSubview:followTourBlurView];
     [_followTourView addSubview:_followTourTitle];
     [_followTourView addSubview:_followTourTime];
     [_followTourView addSubview:_followTourDistance];
@@ -211,7 +241,11 @@
     [_upLineLabel setHidden:YES];
     [_downLineLabel setHidden:YES];
     
+    [followTourBlurView release];
+    
     _addWarning = false;
+    
+    _tempMarker = [[GMSMarker alloc] init];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -386,7 +420,7 @@
 {
     if (gesture) {
         _mapHasMoved = true;
-        [_centerButton setHidden:NO];
+        [_centerView setHidden:NO];
     }
 }
 
@@ -405,7 +439,23 @@
     warningInfo.longitude = coordinate.longitude;
     warningInfo.latitude = coordinate.latitude;
     
-    [self ShowEditWarning];
+    _tempMarker.position = coordinate;
+    _tempMarker.icon = [UIImage imageNamed:@"ski_pole_warning@3x.png"];
+    _tempMarker.groundAnchor = CGPointMake(0.88, 1.0);
+    _tempMarker.map = _mapView;
+    
+    if (addWarningView) {[addWarningView.view removeFromSuperview];}
+    
+    addWarningView = [[XTAddWarningViewController alloc] initWithNibName:nil bundle:nil warningInfo:warningInfo];
+    
+    addWarningView.titleLabel.text = @"Neue Gefahrenstelle";
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(EnterWarning:) name:@"AddWarningViewDismissed" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(CancelEnterWarning:) name:@"AddWarningViewDismissedCancel" object:nil];
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:addWarningView.view];
+    [addWarningView animate];
 }
 
 - (void)didReceiveMemoryWarning
@@ -427,14 +477,13 @@
     [_distanceLabel release];
     [_loginButton release];
     [_distanceLabel release];
+    [_centerView release];
     [_centerButton release];
     [_header release];
     [_header_shadow release];
     [_addWarningBackground release];
     [_addWarningText release];
     [_addWarningButton release];
-    [_editWarningText release];
-    [_enterWarning release];
     [super dealloc];
 }
 
@@ -501,9 +550,9 @@
     }
 }
 
-- (IBAction)centerMap:(id)sender {
+- (void)centerMap:(id)sender {
     _mapHasMoved = false;
-    [_centerButton setHidden:YES];
+    [_centerView setHidden:YES];
 }
 
 - (void)AddWarning:(id)sender {
@@ -516,6 +565,8 @@
 }
 
 - (void) EnterWarning:(id)sender {
+    _tempMarker.map = nil;
+    
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(warningInfo.latitude, warningInfo.longitude);
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = coordinate;
@@ -524,21 +575,19 @@
     marker.groundAnchor = CGPointMake(0.88, 1.0);
     marker.map = _mapView;
     
-    warningInfo.comment = _editWarningText.text;
-    
-    [data AddWarningInfo:warningInfo];
-    
-    if (!request) {request = [[XTServerRequestHandler alloc] init];}
-    
-    [request SubmitWarningInfo:warningInfo];
-    
     [self HideAddWarning];
+}
+
+- (void) CancelEnterWarning:(id)sender {
+    _tempMarker.map = nil;
 }
 
 - (void) ShowAddWarning
 {
+    CGRect addWarningBackgroundFrame = _addWarningBackground.frame;
+    
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _addWarningBackground.frame = CGRectMake(10, 80, _width-20, 40);
+        _addWarningBackground.frame = CGRectMake(10, addWarningBackgroundFrame.origin.y, _width-20, 40);
         _addWarningButton.frame = CGRectMake(_width-55, 5, 30, 30);
         [_addWarningButton setImage:[UIImage imageNamed:@"cancel_icon@3x.png"] forState:UIControlStateNormal];
     } completion:^(BOOL finished) {
@@ -552,34 +601,19 @@
 
 - (void) HideAddWarning
 {
+    CGRect addWarningBackgroundFrame = _addWarningBackground.frame;
+    
     [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         [_addWarningText setHidden:YES];
-        [_editWarningText setHidden:YES];
-        [_enterWarning setHidden:YES];
-        [_editWarningText resignFirstResponder];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-            _addWarningBackground.frame = CGRectMake(_width-50, 80, 40, 40);
+            _addWarningBackground.frame = CGRectMake(_width-50, addWarningBackgroundFrame.origin.y, 40, 40);
             _addWarningButton.frame = CGRectMake(5, 5, 30, 30);
             [_addWarningButton setImage:[UIImage imageNamed:@"add_warning_icon@3x.png"] forState:UIControlStateNormal];
         } completion:nil];
     }];
     
     _addWarning = false;
-}
-
-- (void) ShowEditWarning
-{
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _addWarningBackground.frame = CGRectMake(10, 80, _width-20, 110);
-        [_addWarningText setHidden:YES];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-            [_enterWarning setHidden:NO];
-            [_editWarningText setHidden:NO];
-            [_editWarningText becomeFirstResponder];
-        } completion:nil];
-    }];
 }
 
 - (void) ChangeMapType:(id)sender
