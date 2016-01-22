@@ -30,7 +30,9 @@
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
-    //float height = screenBound.size.height;
+    float height = screenBound.size.height;
+    
+    float tabBarHeight = [UITabBarController new].tabBar.frame.size.height;
     
     data = [XTDataSingleton singleObj];
     
@@ -44,12 +46,12 @@
     [_loginButton setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     [_loginButton addTarget:self action:@selector(LoadLogin:) forControlEvents:UIControlEventTouchDown];
     
-    _CameraIcon = [[UIButton alloc] initWithFrame:CGRectMake(25, 30, 38, 30)];
-    [_CameraIcon setImage:[UIImage imageNamed:@"camera_icon.png"] forState:UIControlStateNormal];
+    _CameraIcon = [[UIButton alloc] initWithFrame:CGRectMake(width/2-40, height-tabBarHeight-80, 80, 80)];
+    [_CameraIcon setImage:[UIImage imageNamed:@"camera_button@3x.png"] forState:UIControlStateNormal];
     [_CameraIcon addTarget:self action:@selector(LoadCamera:) forControlEvents:UIControlEventTouchDown];
     
     [header addSubview:_loginButton];
-    [header addSubview:_CameraIcon];
+    [self.view addSubview:_CameraIcon];
     
     [self.view addSubview:header];
     [self.view addSubview:header_shadow];

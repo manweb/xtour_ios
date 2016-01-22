@@ -162,42 +162,42 @@
     [changeMapBlurView release];
     
     UIVisualEffectView *followTourBlurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    followTourBlurView.frame = CGRectMake(0, 0, _width-20, 50);
+    followTourBlurView.frame = CGRectMake(0, 0, _width-20, 52);
     followTourBlurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     followTourBlurView.layer.cornerRadius = 5.0f;
     followTourBlurView.clipsToBounds = YES;
     
-    _followTourView = [[UIView alloc] initWithFrame:CGRectMake(10, 75, _width-20, 50)];
+    _followTourView = [[UIView alloc] initWithFrame:CGRectMake(10, 75, _width-20, 52)];
     
     _followTourView.backgroundColor = [UIColor clearColor];
     _followTourView.layer.cornerRadius = 5.0f;
     
-    _followTourTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, _width-80, 15)];
+    _followTourTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 3, _width-80, 16)];
     
     _followTourTitle.textColor = [UIColor whiteColor];
-    _followTourTitle.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    _followTourTitle.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     _followTourTitle.text = @"Hinzugefügte Tour";
     
     float labelWidth = (_width-70)/3;
     
-    _followTourTime = [[UILabel alloc] initWithFrame:CGRectMake(5, 20, labelWidth-5, 15)];
+    _followTourTime = [[UILabel alloc] initWithFrame:CGRectMake(5, 20, labelWidth-5, 16)];
     
     _followTourTime.textColor = [UIColor whiteColor];
-    _followTourTime.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    _followTourTime.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     
-    _followTourDistance = [[UILabel alloc] initWithFrame:CGRectMake(labelWidth+5, 20, labelWidth-5, 15)];
+    _followTourDistance = [[UILabel alloc] initWithFrame:CGRectMake(labelWidth+5, 20, labelWidth-5, 16)];
     
     _followTourDistance.textColor = [UIColor whiteColor];
-    _followTourDistance.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    _followTourDistance.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     
-    _followTourAltitude = [[UILabel alloc] initWithFrame:CGRectMake(2*labelWidth+5, 20, labelWidth, 15)];
+    _followTourAltitude = [[UILabel alloc] initWithFrame:CGRectMake(2*labelWidth+5, 20, labelWidth, 16)];
     
     _followTourAltitude.textColor = [UIColor whiteColor];
-    _followTourAltitude.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    _followTourAltitude.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     
     _removeFollowTour = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
-    _removeFollowTour.frame = CGRectMake(_width-55, 10, 30, 30);
+    _removeFollowTour.frame = CGRectMake(_width-55, 11, 30, 30);
     [_removeFollowTour setBackgroundImage:[UIImage imageNamed:@"cancel_icon@3x.png"] forState:UIControlStateNormal];
     [_removeFollowTour addTarget:self action:@selector(RemoveFollowTour:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -292,8 +292,7 @@
         float tourTime = (float)data.followTourInfo.totalTime;
         
         float hours = floorf(tourTime/3600);
-        float minutes = floorf((tourTime/3600 - hours)*60);
-        float seconds = roundf(((tourTime/3600 - hours)*60 - minutes)*60);
+        float minutes = floor(floorf((tourTime/3600 - hours)*60)/10)*10;
         
         float distance = data.followTourInfo.distance;
         NSString *distanceUnit = @"km";
@@ -302,7 +301,7 @@
             distanceUnit = @"m";
         }
         
-        _followTourTime.text = [NSString stringWithFormat:@"%.0fh %.0fm %.0fs",hours,minutes,seconds];
+        _followTourTime.text = [NSString stringWithFormat:@"%.0fh %.0fm",hours,minutes];
         _followTourDistance.text = [NSString stringWithFormat:@"%.1f%@",data.followTourInfo.distance,distanceUnit];
         _followTourAltitude.text = [NSString stringWithFormat:@"%.1fm",data.followTourInfo.altitude];
         
@@ -310,9 +309,9 @@
             CGRect warningFrame = _addWarningBackground.frame;
             CGRect mapFrame = _changeMapBackground.frame;
             
-            _addWarningBackground.frame = CGRectMake(warningFrame.origin.x, warningFrame.origin.y+55, warningFrame.size.width, warningFrame.size.height);
+            _addWarningBackground.frame = CGRectMake(warningFrame.origin.x, warningFrame.origin.y+57, warningFrame.size.width, warningFrame.size.height);
             
-            _changeMapBackground.frame = CGRectMake(mapFrame.origin.x, mapFrame.origin.y+55, mapFrame.size.width, mapFrame.size.height);
+            _changeMapBackground.frame = CGRectMake(mapFrame.origin.x, mapFrame.origin.y+57, mapFrame.size.width, mapFrame.size.height);
             
             [_upLineView setHidden:NO];
             [_upLineLabel setHidden:NO];

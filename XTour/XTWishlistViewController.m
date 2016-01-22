@@ -100,7 +100,7 @@ static NSString * const reuseIdentifier = @"Cell";
         messageLbl.backgroundColor = [UIColor clearColor];
         messageLbl.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
         messageLbl.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
-        messageLbl.text = @"Keine Touren in der Wunschliste.\n\nUm Touren hinzuzufügen gehe zum Touren feed und klicke auf \"Zur Wunschlise\"";
+        messageLbl.text = @"Keine Touren in der Wunschliste.\n\nUm Touren hinzuzufügen gehe zum Touren feed und klicke auf \"Zur Wunschliste\"";
         messageLbl.textAlignment = NSTextAlignmentCenter;
         
         [backgroundView addSubview:messageLbl];
@@ -135,10 +135,9 @@ static NSString * const reuseIdentifier = @"Cell";
     
     NSUInteger tm = currentElement.totalTime;
     
-    NSString *TimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
+    NSString *TimeString = [NSString stringWithFormat:@"%02lih %.0fm",
                             lround(floor(tm / 3600.)) % 100,
-                            lround(floor(tm / 60.)) % 60,
-                            lround(floor(tm)) % 60];
+                            floor((lround(floor(tm / 60.)) % 60)/10.)*10.];
     
     cell.title.text = [NSString stringWithFormat:@"Hinzugefügt am %@", formattedDate];
     cell.time.text = TimeString;

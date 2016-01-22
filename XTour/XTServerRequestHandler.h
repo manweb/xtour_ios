@@ -30,6 +30,7 @@
 - (NSMutableArray *) GetWarningsWithinRadius:(NSData*)responseData;
 - (BOOL) SubmitImageComment:(NSString *)comment forImage:(NSString *)imageID;
 - (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo;
+- (BOOL) SubmitUserComment:(XTUserComment *)userComment;
 - (void) CheckGraphsForTour:(NSString*)tourID;
 - (XTUserStatistics*) GetUserStatistics:(NSData*)responseData;
 - (NSMutableArray*) GetYearlyStatistics:(NSData*)responseData;

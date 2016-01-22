@@ -32,6 +32,8 @@
         
         _warningDescription.font = [UIFont fontWithName:@"Helvetica" size:12];
         _warningDescription.textColor = [UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:1.0];
+        [_warningDescription setEditable:NO];
+        [_warningDescription setUserInteractionEnabled:NO];
         
         [self addSubview:warningIcon];
         [self addSubview:_warningTitle];

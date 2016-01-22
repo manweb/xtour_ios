@@ -67,16 +67,22 @@
 @property (retain, nonatomic) UILabel *MountainPeakTitleLabel;
 @property (retain, nonatomic) UILabel *MountainPeakCoordinatesLabel;
 @property (retain, nonatomic) UILabel *MountainPeakAltitudeLabel;
+@property (retain, nonatomic) UILabel *noPeakFoundLabel;
 @property (retain, nonatomic) NSString *mountainPeak;
 @property (retain, nonatomic) NSMutableArray *morePeaks;
 @property (retain, nonatomic) UITextField *enterMountainPeak;
 @property (nonatomic) NSInteger viewOffset;
 @property (nonatomic) NSInteger viewContentOffset;
 @property (nonatomic) BOOL hasDescription;
+@property (retain,nonatomic) NSString *currentTourID;
+@property (retain,nonatomic) UITextView *enterCommentTextView;
+@property (retain,nonatomic) UILabel *enterCommentTitle;
+@property (retain,nonatomic) UIButton *enterComment;
 
 - (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset andContentOffset:(NSInteger)offsetContent;
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server;
-- (void) UpdateView:(XTTourInfo*) tourInfo;
+- (void) UpdateView:(XTTourInfo*) tourInfo fromServer:(BOOL)server;
+- (void) EnterComment:(id)sender;
 - (void) ShowMorePeaks:(id)sender;
 - (void) keyboardWasShown:(NSNotification *) notification;
 - (void) keyboardWillHide:(NSNotification *) notification;

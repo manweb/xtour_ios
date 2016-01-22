@@ -22,6 +22,8 @@
 {
     data = [XTDataSingleton singleObj];
     
+    _currentTourID = tourInfo.tourID;
+    
     _viewOffset = 0;
     if (offset) {_viewOffset = offset;}
     
@@ -98,6 +100,14 @@
     _MountainPeakCoordinatesLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     _MountainPeakAltitudeLabel.textColor = [UIColor colorWithRed:50.0f/255.0f green:50.0f/255.0f blue:50.0f/255.0f alpha:1.0f];
     
+    _noPeakFoundLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 20, boxWidth-100, 20)];
+    
+    _noPeakFoundLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
+    _noPeakFoundLabel.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
+    _noPeakFoundLabel.text = @"Kein Gipfel gefunden";
+    
+    [_noPeakFoundLabel setHidden:YES];
+    
     [_mountainPeakExtendedView setHidden:YES];
     
     [_mountainPeakViewContainer addSubview:_MountainPeakIcon];
@@ -105,6 +115,7 @@
     [_mountainPeakViewContainer addSubview:_MountainPeakTitleLabel];
     [_mountainPeakViewContainer addSubview:_MountainPeakCoordinatesLabel];
     [_mountainPeakViewContainer addSubview:_MountainPeakAltitudeLabel];
+    [_mountainPeakViewContainer addSubview:_noPeakFoundLabel];
     
     if (!server) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -145,7 +156,9 @@
                     _mountainPeak = [peak objectAtIndex:0];
                 }
                 else {
-                    _MountainPeakTitleLabel.text = @"Kein Gipfel gefunden";
+                    [_noPeakFoundLabel setHidden:NO];
+                    
+                    _MountainPeakTitleLabel.text = @"";
                     
                     _mountainPeak = @"";
                 }
@@ -189,7 +202,7 @@
     
     UILabel *noImagesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, boxWidth, 15)];
     
-    noImagesLabel.text = @"Keine Bilder zu diese Tour";
+    noImagesLabel.text = @"Keine Bilder zu dieser Tour";
     noImagesLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
     noImagesLabel.textColor = [UIColor colorWithRed:164.0f/255.0f green:164.0f/255.0f blue:164.0f/255.0f alpha:1.0f];
     noImagesLabel.textAlignment = NSTextAlignmentCenter;
@@ -460,6 +473,8 @@
     [_LowestPointLabel release];
     [_UpRateLabel release];
     [_DownRateLabel release];
+    if (_enterCommentTextView) {[_enterCommentTextView release];}
+    if (_enterCommentTitle) {[_enterCommentTitle release];}
     [super dealloc];
 }
 
@@ -519,7 +534,7 @@
                     
                     _tourComments = [request3 GetUserCommentsForTour:(NSData*)responseData];
                     
-                    [self UpdateView:tourInfo];
+                    [self UpdateView:tourInfo fromServer:server];
                 }];
                 
                 [sessionTask3 resume];
@@ -551,7 +566,7 @@
             _tourImages = data.imageInfo;
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self UpdateView:tourInfo];
+                [self UpdateView:tourInfo fromServer:server];
             });
         });
     }
@@ -652,7 +667,7 @@
     });*/
 }
 
-- (void) UpdateView:(XTTourInfo*)tourInfo
+- (void) UpdateView:(XTTourInfo*)tourInfo fromServer:(BOOL)server
 {
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
@@ -735,14 +750,60 @@
     
     [_graphViewContainer addSubview:graphPageController.view];
     
-    float commentsY = self.contentSize.height - [UITabBarController new].tabBar.frame.size.height;
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    
-    [formatter setDateFormat:@"dd.MM.yyyy HH:mm"];
-    
-    for (int n = 0; n < [_tourComments count]; n++) {
-        XTUserComment *currentComment = [_tourComments objectAtIndex:n];
+    if (server) {
+        float commentsY = self.contentSize.height - [UITabBarController new].tabBar.frame.size.height;
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        
+        [formatter setDateFormat:@"dd.MM.yyyy HH:mm"];
+        
+        for (int n = 0; n < [_tourComments count]; n++) {
+            XTUserComment *currentComment = [_tourComments objectAtIndex:n];
+            
+            UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, commentsY, boxWidth, 100)];
+            
+            commentView.backgroundColor = [UIColor whiteColor];
+            commentView.layer.cornerRadius = boxRadius;
+            commentView.layer.borderWidth = boxBorderWidth;
+            commentView.layer.borderColor = boxBorderColor.CGColor;
+            
+            UILabel *commentTitle = [[UILabel alloc] initWithFrame:CGRectMake(40, 5, 200, 20)];
+            
+            commentTitle.textColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
+            commentTitle.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+            
+            NSString *commentDate = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:currentComment.commentDate]];
+            
+            commentTitle.text = [NSString stringWithFormat:@"%@ am %@",currentComment.userName,commentDate];
+            
+            UIImageView *profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 30, 30)];
+            
+            [profilePicture setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.xtour.ch/users/%@/profile.png",currentComment.userID]] placeholderImage:[UIImage imageNamed:@"profile_icon_gray.png"]];
+            
+            UITextView *commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(35, 30, boxWidth-40, 65)];
+            
+            commentTextView.editable = NO;
+            commentTextView.scrollEnabled = YES;
+            commentTextView.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
+            commentTextView.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
+            
+            NSString *commentText = [currentComment.comment stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+            
+            commentTextView.text = [commentText stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            [commentView addSubview:commentTitle];
+            [commentView addSubview:profilePicture];
+            [commentView addSubview:commentTextView];
+            
+            [self addSubview:commentView];
+            
+            commentsY += 105;
+            
+            [commentTitle release];
+            [profilePicture release];
+            [commentTextView release];
+            [commentView release];
+        }
         
         UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(boxMarginLeft, commentsY, boxWidth, 100)];
         
@@ -751,45 +812,81 @@
         commentView.layer.borderWidth = boxBorderWidth;
         commentView.layer.borderColor = boxBorderColor.CGColor;
         
-        UILabel *commentTitle = [[UILabel alloc] initWithFrame:CGRectMake(40, 5, 200, 20)];
+        _enterCommentTitle = [[UILabel alloc] initWithFrame:CGRectMake(40, 5, 200, 20)];
         
-        commentTitle.textColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
-        commentTitle.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+        _enterCommentTitle.textColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
+        _enterCommentTitle.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         
-        NSString *commentDate = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:currentComment.commentDate]];
-        
-        commentTitle.text = [NSString stringWithFormat:@"%@ am %@",currentComment.userName,commentDate];
+        _enterCommentTitle.text = @"Kommentar schreiben";
         
         UIImageView *profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 30, 30)];
         
-        [profilePicture setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.xtour.ch/users/%@/profile.png",currentComment.userID]] placeholderImage:[UIImage imageNamed:@"profile_icon_gray.png"]];
+        [profilePicture setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.xtour.ch/users/%@/profile.png",data.userID]] placeholderImage:[UIImage imageNamed:@"profile_icon_gray.png"]];
         
-        UITextView *commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(35, 30, boxWidth-40, 65)];
+        _enterCommentTextView = [[UITextView alloc] initWithFrame:CGRectMake(40, 30, boxWidth-80, 60)];
         
-        commentTextView.editable = NO;
-        commentTextView.scrollEnabled = YES;
-        commentTextView.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
-        commentTextView.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
+        _enterCommentTextView.editable = YES;
+        _enterCommentTextView.scrollEnabled = YES;
+        _enterCommentTextView.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
+        _enterCommentTextView.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
+        _enterCommentTextView.layer.borderWidth = 1.0f;
+        _enterCommentTextView.layer.borderColor = [[UIColor colorWithRed:180.0f/255.0f green:180.f/255.0f blue:180.0f/255.0f alpha:1.0f] CGColor];
         
-        NSString *commentText = [currentComment.comment stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+        _enterComment = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         
-        commentTextView.text = [commentText stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        _enterComment.frame = CGRectMake(boxWidth-35, 65, 30, 30);
+        [_enterComment setBackgroundImage:[UIImage imageNamed:@"enter_comment_icon@3x.png"] forState:UIControlStateNormal];
+        [_enterComment addTarget:self action:@selector(EnterComment:) forControlEvents:UIControlEventTouchUpInside];
         
-        [commentView addSubview:commentTitle];
+        [commentView addSubview:_enterCommentTitle];
         [commentView addSubview:profilePicture];
-        [commentView addSubview:commentTextView];
+        [commentView addSubview:_enterCommentTextView];
+        [commentView addSubview:_enterComment];
         
         [self addSubview:commentView];
         
-        [commentTitle release];
         [profilePicture release];
-        [commentTextView release];
         [commentView release];
+        
+        CGSize contentSize = self.contentSize;
+        
+        self.contentSize = CGSizeMake(contentSize.width, contentSize.height+([_tourComments count]+1)*105);
     }
+}
+
+- (void) EnterComment:(id)sender
+{
+    XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
     
-    CGSize contentSize = self.contentSize;
+    XTUserComment *userComment = [[XTUserComment alloc] init];
     
-    self.contentSize = CGSizeMake(contentSize.width, contentSize.height+[_tourComments count]*105);
+    userComment.userID = data.userID;
+    userComment.tourID = _currentTourID;
+    userComment.userName = data.userInfo.userName;
+    userComment.commentDate = [[NSDate date] timeIntervalSince1970];
+    userComment.comment = _enterCommentTextView.text;
+    
+    [request SubmitUserComment:userComment];
+    
+    [_enterCommentTextView resignFirstResponder];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    [formatter setDateFormat:@"dd.MM.yyyy HH:mm"];
+    
+    NSString *commentDate = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:userComment.commentDate]];
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        _enterCommentTitle.text = [NSString stringWithFormat:@"%@ am %@",userComment.userName,commentDate];
+        
+        _enterCommentTextView.layer.borderWidth = 0;
+        
+        CGRect commentViewFrame = _enterCommentTextView.frame;
+        
+        _enterCommentTextView.frame = CGRectMake(35, commentViewFrame.origin.y, commentViewFrame.size.width+40, commentViewFrame.size.height);
+        
+        [_enterComment setHidden:YES];
+    } completion:NULL];
 }
 
 - (void) ShowMorePeaks:(id)sender
@@ -848,6 +945,8 @@
                 _MountainPeakAltitudeLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
                 
                 _mountainPeak = [peak objectAtIndex:0];
+                
+                [_noPeakFoundLabel setHidden:NO];
             }
         }
     } completion:^(BOOL finished) {
@@ -926,13 +1025,18 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     if (indexPath.section == 0) {
-        _MountainPeakTitleLabel.text = @"Kein Gipfel ausgewählt";
+        [_noPeakFoundLabel setHidden:NO];
+        
+        _noPeakFoundLabel.text = @"Kein Gipfel ausgewählt";
+        _MountainPeakTitleLabel.text = @"";
         _MountainPeakCoordinatesLabel.text = @"";
         _MountainPeakAltitudeLabel.text = @"";
         
         _mountainPeak = @"";
     }
     else if (indexPath.section == 1 && [_morePeaks count]) {
+        [_noPeakFoundLabel setHidden:YES];
+        
         NSMutableArray *peak = [_morePeaks objectAtIndex:indexPath.row];
         
         float longitude = [[peak objectAtIndex:1] floatValue];

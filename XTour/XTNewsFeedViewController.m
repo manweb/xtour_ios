@@ -196,6 +196,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [cell.moreButton addTarget:self action:@selector(ShowOptions:) forControlEvents:UIControlEventTouchUpInside];
     [cell.moreButton setTag:indexPath.row];
     
+    [cell SetNumberOfComments:currentElement.numberOfComments andNumberOfPictures:currentElement.numberOfImages];
+    
     if ([self.news_feed count] - 1 == indexPath.row) {[self appendDataAndReload];}
     
     [formatter release];

@@ -21,5 +21,13 @@
 @property(nonatomic, retain) UITextView *tourDescription;
 @property(nonatomic, retain) UIView *gradientOverlay;
 @property(nonatomic, retain) UIButton *moreButton;
+@property(nonatomic, retain) UIImageView *comments;
+@property(nonatomic, retain) UIImageView *pictures;
+@property(nonatomic, retain) UILabel *numberOfComments;
+@property(nonatomic, retain) UILabel *numberOfPictures;
+
+- (void) SetNumberOfComments:(NSInteger)numberOfComments andNumberOfPictures:(NSInteger)numberOfPictures;
+- (void) HideInfo;
+- (void) ShowInfo;
 
 @end

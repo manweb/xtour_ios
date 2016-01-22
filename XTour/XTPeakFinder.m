@@ -59,7 +59,7 @@
 {
     NSMutableArray *peak = nil;
     
-    if (_distance < 10000.0) {
+    if (_distance < 10.0) {
         peak = [NSMutableArray arrayWithObjects:[NSString stringWithString:_peakName], [NSNumber numberWithFloat:_peakLongitude], [NSNumber numberWithFloat:_peakLatitude], [NSNumber numberWithFloat:_peakAltitude], [NSNumber numberWithFloat:_distance], nil];
     }
     

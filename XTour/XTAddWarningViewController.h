@@ -11,12 +11,13 @@
 #import "XTWarningsInfo.h"
 #import "XTServerRequestHandler.h"
 
-@interface XTAddWarningViewController : UIViewController
+@interface XTAddWarningViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 {
     XTDataSingleton *data;
     XTServerRequestHandler *request;
 }
 
+@property (nonatomic,retain) UIPickerView *pickerView;
 @property (nonatomic,retain) UIVisualEffectView *blurEffectView;
 @property (nonatomic,retain) UIView *backgroundView;
 @property (nonatomic,retain) UILabel *titleLabel;
@@ -25,6 +26,7 @@
 @property (nonatomic,retain) UIButton *cancelButton;
 @property (nonatomic,retain) UIButton *loginButton;
 @property (nonatomic,retain) XTWarningsInfo *warning;
+@property (nonatomic,retain) NSMutableArray *categories;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil warningInfo:(XTWarningsInfo *)warning;

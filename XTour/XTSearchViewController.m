@@ -37,12 +37,13 @@ static NSString * const reuseIdentifier = @"Cell";
     // Do any additional setup after loading the view.
     [self.collectionView setBackgroundColor:[UIColor colorWithRed:242.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0f]];
     
-    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 70, width, 40)];
+    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(5, 75, width-10, 40)];
     
     searchView.backgroundColor = [UIColor whiteColor];
     [searchView setAlpha:0.9];
+    searchView.layer.cornerRadius = 5.0f;
     
-    UIView *searchFieldBackground = [[UIView alloc] initWithFrame:CGRectMake(10, 5, width-20, 30)];
+    UIView *searchFieldBackground = [[UIView alloc] initWithFrame:CGRectMake(10, 5, width-30, 30)];
     
     searchFieldBackground.backgroundColor = [UIColor clearColor];
     searchFieldBackground.layer.borderWidth = 1.0f;
@@ -65,7 +66,7 @@ static NSString * const reuseIdentifier = @"Cell";
     UILabel *emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height/2-20, width, 40)];
     
     emptyLabel.backgroundColor = [UIColor clearColor];
-    emptyLabel.textColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
+    emptyLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
     emptyLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
     emptyLabel.textAlignment = NSTextAlignmentCenter;
     emptyLabel.text = @"Suchfunktion noch nicht implementiert";

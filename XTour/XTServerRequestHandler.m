@@ -22,7 +22,7 @@
         NSString *elements = [news_feed_array objectAtIndex:i];
         NSArray *element = [elements componentsSeparatedByString:@","];
         
-        if ([element count] < 17) {continue;}
+        if ([element count] < 19) {continue;}
         
         XTTourInfo *tourInfo = [[XTTourInfo alloc] init];
         
@@ -46,6 +46,8 @@
         tourDescriptionEncoded = [tourDescriptionEncoded stringByReplacingOccurrencesOfString:@"+" withString:@" "];
         tourInfo.tourDescription = [tourDescriptionEncoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         tourInfo.tourRating = [[element objectAtIndex:16] integerValue];
+        tourInfo.numberOfComments = [[element objectAtIndex:17] integerValue];
+        tourInfo.numberOfImages = [[element objectAtIndex:18] integerValue];
         
         [news_feeds addObject:tourInfo];
         
@@ -193,10 +195,10 @@
         warningsInfo.userID = [warningsInfoArray objectAtIndex:0];
         warningsInfo.userName = [warningsInfoArray objectAtIndex:1];
         warningsInfo.submitDate = [warningsInfoArray objectAtIndex:2];
-        warningsInfo.category = [[warningsInfoArray objectAtIndex:3] integerValue];
-        warningsInfo.longitude = [[warningsInfoArray objectAtIndex:4] floatValue];
-        warningsInfo.latitude = [[warningsInfoArray objectAtIndex:5] floatValue];
-        warningsInfo.elevation = [[warningsInfoArray objectAtIndex:6] floatValue];
+        warningsInfo.longitude = [[warningsInfoArray objectAtIndex:3] floatValue];
+        warningsInfo.latitude = [[warningsInfoArray objectAtIndex:4] floatValue];
+        warningsInfo.elevation = [[warningsInfoArray objectAtIndex:5] floatValue];
+        warningsInfo.category = [[warningsInfoArray objectAtIndex:6] integerValue];
         warningsInfo.comment = [warningsInfoArray objectAtIndex:7];
         warningsInfo.distance = [[warningsInfoArray objectAtIndex:8] floatValue];
         
@@ -273,6 +275,20 @@
 - (BOOL) SubmitWarningInfo:(XTWarningsInfo *)warningInfo
 {
     NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/insert_warning_info.php?userID=%@&tourID=%@&date=%@&longitude=%.5f&latitude=%.5f&elevation=%.5f&category=%lu&comment=%@", warningInfo.userID, warningInfo.tourID, warningInfo.submitDate, warningInfo.longitude, warningInfo.latitude, warningInfo.elevation, (unsigned long)warningInfo.category, [warningInfo.comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url]];
+    
+    [sessionTask resume];
+    
+    return true;
+}
+
+- (BOOL) SubmitUserComment:(XTUserComment *)userComment
+{
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/enter_new_comment.php?uid=%@&tid=%@&date=%li&name=%@&comment=%@", userComment.userID, userComment.tourID, (long)userComment.commentDate, [userComment.userName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [userComment.comment stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSURL *url = [NSURL URLWithString:requestString];
     
     NSURLSession *session = [NSURLSession sharedSession];

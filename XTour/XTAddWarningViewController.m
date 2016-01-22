@@ -63,7 +63,7 @@
     
     [self.view addSubview:_blurEffectView];*/
     
-    _addWarningView = [[UIView alloc] initWithFrame:CGRectMake(10, -200, width-20, 200)];
+    _addWarningView = [[UIView alloc] initWithFrame:CGRectMake(10, -200, width-20, 250)];
     _addWarningView.layer.cornerRadius = 10.0f;
     _addWarningView.layer.borderWidth = 5.0f;
     _addWarningView.layer.borderColor = [UIColor grayColor].CGColor;
@@ -72,8 +72,9 @@
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 200, 20)];
     
     _titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    _titleLabel.text = @"Was hat du beobachtet?";
     
-    _warningComment = [[UITextView alloc] initWithFrame:CGRectMake(20, 35, width-60, 120)];
+    _warningComment = [[UITextView alloc] initWithFrame:CGRectMake(20, 90, width-60, 120)];
     [_warningComment setAlpha:0.0f];
     
     _warningComment.layer.borderWidth = 1.0f;
@@ -82,7 +83,7 @@
     _warningComment.font = [UIFont fontWithName:@"Helvetica" size:16];
     
     _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _loginButton.frame = CGRectMake((width-20)/2-50, 170, 100, 20);
+    _loginButton.frame = CGRectMake((width-20)/2-50, 220, 100, 20);
     
     _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     _cancelButton.frame = CGRectMake(width-50, 10, 20, 20);
@@ -94,17 +95,44 @@
     [_loginButton addTarget:self action:@selector(Enter) forControlEvents:UIControlEventTouchUpInside];
     [_cancelButton addTarget:self action:@selector(Cancel) forControlEvents:UIControlEventTouchUpInside];
     
+    _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(20, 15, width-60, 80)];
+    
+    _pickerView.delegate = self;
+    
+    [_addWarningView addSubview:_pickerView];
     [_addWarningView addSubview:_titleLabel];
     [_addWarningView addSubview:_loginButton];
     [_addWarningView addSubview:_cancelButton];
     [_addWarningView addSubview:_warningComment];
     
     [self.view addSubview:_addWarningView];
+    
+    _categories = [[NSMutableArray alloc] initWithObjects:@"Lawinenabgang",@"Instabile Unterlage",@"Spalten",@"Steinschlag",@"Sonst etwas", nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [_categories count];
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [_categories objectAtIndex:row];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    _warning.category = row;
 }
 
 - (void) Enter
@@ -146,14 +174,14 @@
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         //self.view.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
-        _addWarningView.frame = CGRectMake(10, 50, width-20, 200);
+        _addWarningView.frame = CGRectMake(10, 50, width-20, 250);
         
         //[_blurEffectView setHidden:NO];
         [_backgroundView setAlpha:0.4f];
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_addWarningView.frame = CGRectMake(10, 45, width-20, 200);} completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {_addWarningView.frame = CGRectMake(10, 45, width-20, 250);} completion:^(BOOL finished) {
             [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-                _addWarningView.frame = CGRectMake(10, 50, width-20, 200);
+                _addWarningView.frame = CGRectMake(10, 50, width-20, 250);
                 
                 [_warningComment setAlpha:1.0f];
                 [_loginButton setAlpha:1.0f];
@@ -167,7 +195,7 @@
 - (void) HideView
 {
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _addWarningView.frame = CGRectMake(10, -200, self.view.frame.size.width-20, 200);
+        _addWarningView.frame = CGRectMake(10, -200, self.view.frame.size.width-20, 250);
         
         [_warningComment setAlpha:0.0f];
         [_loginButton setAlpha:0.0f];

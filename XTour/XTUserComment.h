@@ -11,6 +11,7 @@
 @interface XTUserComment : NSObject
 
 @property (nonatomic,retain) NSString *userID;
+@property (nonatomic,retain) NSString *tourID;
 @property (nonatomic,retain) NSString *userName;
 @property (nonatomic) NSInteger commentDate;
 @property (nonatomic,retain) NSString *comment;

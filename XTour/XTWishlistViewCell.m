@@ -82,8 +82,8 @@
         
         _moreButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         
-        _moreButton.frame = CGRectMake(frame.size.width-55, 21, 50, 28);
-        [_moreButton setBackgroundImage:[UIImage imageNamed:@"dots_icon@3x.png"] forState:UIControlStateNormal];
+        _moreButton.frame = CGRectMake(frame.size.width-40, 25, 20, 20);
+        [_moreButton setBackgroundImage:[UIImage imageNamed:@"delete_icon_gray@3x.png"] forState:UIControlStateNormal];
         
         _startButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         

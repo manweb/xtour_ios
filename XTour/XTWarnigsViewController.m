@@ -64,6 +64,8 @@ static NSString * const reuseIdentifier = @"Cell";
     
     data = [XTDataSingleton singleObj];
     
+    _categories = [[NSMutableArray alloc] initWithObjects:@"Lawinenabgang",@"Instabile Unterlage",@"Spalten",@"Steinschlag",@"Sonst etwas", nil];
+    
     if (refreshControl == nil) {
         refreshControl = [[UIRefreshControl alloc] init];
     }
@@ -125,7 +127,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [formatter setDateFormat:@"dd.MM.yyyy HH:mm"];
     NSString *formattedDate = [formatter stringFromDate:date];
     
-    cell.warningTitle.text = @"Title of warning";
+    cell.warningTitle.text = [_categories objectAtIndex:currentWarning.category];
     cell.warningDescription.text = [NSString stringWithFormat:@"Eingetragen von %@ am %@. Distanz zur Gefahrenstelle: %.1f km",currentWarning.userName,formattedDate,currentWarning.distance];
     
     [formatter release];
@@ -135,7 +137,19 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     
+    CGRect cellFrame = cell.frame;
+    
+    XTWarningsInfo *currentWarning = [_warningsArray objectAtIndex:indexPath.row];
+    
+    warningDetailView = [[XTWarningDetailView alloc] init];
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:warningDetailView.view];
+    
+    [warningDetailView LoadInfo:currentWarning withFrame:cellFrame];
+    
+    [warningDetailView Animate];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -254,11 +268,11 @@ static NSString * const reuseIdentifier = @"Cell";
         self.warningsArray = [request GetWarningsWithinRadius:responseData];
         
         if ([_warningsArray count] > 0) {
-            [self.collectionView reloadData];
-            
             [self tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu", (unsigned long)[_warningsArray count]];
         }
         else {[self tabBarItem].badgeValue = nil;}
+        
+        [self.collectionView reloadData];
         
         [refreshControl endRefreshing];
     }];
