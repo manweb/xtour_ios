@@ -569,10 +569,16 @@
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(warningInfo.latitude, warningInfo.longitude);
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = coordinate;
-    marker.title = [NSString stringWithFormat:@"Gefahrenstelle bei Koordinate: %.5f %.5f",coordinate.longitude,coordinate.latitude];
     marker.icon = [UIImage imageNamed:@"ski_pole_warning@3x.png"];
     marker.groundAnchor = CGPointMake(0.88, 1.0);
     marker.map = _mapView;
+    
+    NSMutableArray *categories = [[NSMutableArray alloc] initWithObjects:@"Lawinenabgang",@"Instabile Unterlage",@"Spalten",@"Steinschlag",@"Sonst etwas", nil];
+    
+    if ([[categories objectAtIndex:warningInfo.category] isEqualToString:@"Sonst etwas"]) {marker.title = @"Gefahrenstelle";}
+    else {marker.title = [categories objectAtIndex:warningInfo.category];}
+    
+    [categories release];
     
     [self HideAddWarning];
 }

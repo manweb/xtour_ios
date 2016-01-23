@@ -131,7 +131,8 @@
     [formatter setDateFormat:@"dd.MM.yyyy HH:mm"];
     NSString *formattedDate = [formatter stringFromDate:date];
     
-    _warningTitle.text = [_categories objectAtIndex:warningsInfo.category];
+    if ([[_categories objectAtIndex:warningsInfo.category] isEqualToString:@"Sonst etwas"]) {_warningTitle.text = @"Gefahrenstelle";}
+    else {_warningTitle.text = [_categories objectAtIndex:warningsInfo.category];}
     _warningDescription.text = [NSString stringWithFormat:@"Eingetragen von %@ am %@. Distanz zur Gefahrenstelle: %.1f km",warningsInfo.userName,formattedDate,warningsInfo.distance];
     
     _descriptionTextField.text = warningsInfo.comment;

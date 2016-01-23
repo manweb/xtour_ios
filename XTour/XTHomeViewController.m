@@ -244,6 +244,8 @@
     _totalAltitudeLabel.frame = CGRectMake(width/4, _sectionHeight-iconScale*20, width/2-20-width/4, iconScale*20);
     _totalAltitudeLabel.font = [UIFont fontWithName:@"Helvetica" size:12*iconScale];
     
+    _altitudeRateIcon.frame = CGRectMake(width-60, _sectionHeight/2-15*iconScale, 30*iconScale, 30*iconScale);
+    
     [_totalTimeLabel setHidden:YES];
     [_totalDistanceLabel setHidden:YES];
     [_totalAltitudeLabel setHidden:YES];

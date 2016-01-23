@@ -1112,6 +1112,7 @@
 
 - (void)keyboardWasShown:(NSNotification *)notification
 {
+    if (_enterMountainPeak.isFirstResponder) {return;}
     
     // Step 1: Get the size of the keyboard.
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
@@ -1140,7 +1141,7 @@
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self.descriptionView endEditing:YES];
+    [self endEditing:YES];
 }
 
 @end

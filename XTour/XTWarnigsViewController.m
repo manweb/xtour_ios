@@ -127,7 +127,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [formatter setDateFormat:@"dd.MM.yyyy HH:mm"];
     NSString *formattedDate = [formatter stringFromDate:date];
     
-    cell.warningTitle.text = [_categories objectAtIndex:currentWarning.category];
+    if ([[_categories objectAtIndex:currentWarning.category] isEqualToString:@"Sonst etwas"]) {cell.warningTitle.text = @"Gefahrenstelle";}
+    else {cell.warningTitle.text = [_categories objectAtIndex:currentWarning.category];}
     cell.warningDescription.text = [NSString stringWithFormat:@"Eingetragen von %@ am %@. Distanz zur Gefahrenstelle: %.1f km",currentWarning.userName,formattedDate,currentWarning.distance];
     
     [formatter release];
