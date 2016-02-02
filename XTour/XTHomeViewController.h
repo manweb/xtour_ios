@@ -69,6 +69,7 @@
 @property (retain, nonatomic) XTBackgroundTaskManager *backgroundTaskManager;
 @property (retain, nonatomic) NSString *up_button_icon;
 @property (retain, nonatomic) NSString *down_button_icon;
+@property (retain, nonatomic) UIView *warningNotification;
 
 - (IBAction)startUpTour:(id)sender;
 - (IBAction)startDownTour:(id)sender;

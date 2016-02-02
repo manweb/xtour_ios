@@ -1060,6 +1060,34 @@
             
             [self UpdateDisplayWithLocation:Location];
             
+            NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_warnings_string.php?radius=%f&longitude=%f&latitude=%f", data.profileSettings.warningRadius, Location.coordinate.longitude, Location.coordinate.latitude];
+            NSURL *url = [NSURL URLWithString:requestString];
+            
+            NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            
+            sessionConfiguration.timeoutIntervalForRequest = 10.0;
+            
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+            
+            NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+                if (error) {
+                    return;
+                }
+                
+                XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
+                
+                NSMutableArray *warningsArray = [request GetWarningsWithinRadius:responseData];
+                
+                if ([warningsArray count] > 0) {
+                    [[[[[self tabBarController] tabBar] items] objectAtIndex:3] setBadgeValue:[NSString stringWithFormat:@"%lu", (unsigned long)[warningsArray count]]];
+                    
+                    [self ShowWarningNotification];
+                }
+                else {[[[[[self tabBarController] tabBar] items] objectAtIndex:3] setBadgeValue:nil];}
+            }];
+            
+            [sessionTask resume];
+            
             return;
         }
     }
@@ -1076,6 +1104,70 @@
         
         if (accuracy < 300) {[self SaveCurrentLocation:Location];}
     }
+}
+
+- (void)ShowWarningNotification
+{
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    float height = screenBound.size.height;
+    
+    float tabBarHeight = [[UITabBarController new] tabBar].frame.size.height;
+    
+    if (!_warningNotification) {_warningNotification = [[UIView alloc] initWithFrame:CGRectMake(20, height-tabBarHeight-60, width-40, 50)];}
+    
+    _warningNotification.backgroundColor = [UIColor clearColor];
+    
+    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width-40, 40)];
+    
+    background.backgroundColor = [UIColor blackColor];
+    [background setAlpha:0.8];
+    background.layer.cornerRadius = 5.0f;
+    
+    UITextField *notification = [[UITextField alloc] initWithFrame:CGRectMake(5, 5, width-50, 40)];
+    
+    notification.textColor = [UIColor whiteColor];
+    notification.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
+    notification.text = @"In der Umgebung sind Gefahrenstellen markiert!";
+    
+    UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(width/5*3-25, 40, 10, 10)];
+    
+    [arrow setImage:[UIImage imageNamed:@"notification_arrow_down@3x.png"]];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(CloseNotification:)];
+    
+    [background addSubview:notification];
+    
+    [_warningNotification addSubview:background];
+    [_warningNotification addSubview:arrow];
+    [_warningNotification addGestureRecognizer:tap];
+    
+    [self.view addSubview:_warningNotification];
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+        _warningNotification.frame = CGRectMake(20, height-tabBarHeight-50, width-40, 50);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            _warningNotification.frame = CGRectMake(20, height-tabBarHeight-55, width-40, 50);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+                _warningNotification.frame = CGRectMake(20, height-tabBarHeight-50, width-40, 50);
+            } completion:NULL
+             ];
+        }];
+    }];
+    
+    [background release];
+    [notification release];
+    [arrow release];
+    [tap release];
+}
+
+- (void)CloseNotification:(id)sender
+{
+    [_warningNotification removeFromSuperview];
+    
+    _warningNotification = nil;
 }
 
 @end

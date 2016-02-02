@@ -23,8 +23,6 @@
     float height = screenBound.size.height;
     
     float boxRadius = 5.f;
-    float boxBorderWidth = 1.0f;
-    UIColor *boxBorderColor = [UIColor colorWithRed:220.0f/255.0f green:220.0f/255.0f blue:220.0f/255.0f alpha:1.0f];
     
     _backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     
