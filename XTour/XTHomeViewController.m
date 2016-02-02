@@ -1114,23 +1114,24 @@
     
     float tabBarHeight = [[UITabBarController new] tabBar].frame.size.height;
     
-    if (!_warningNotification) {_warningNotification = [[UIView alloc] initWithFrame:CGRectMake(20, height-tabBarHeight-60, width-40, 50)];}
+    if (!_warningNotification) {_warningNotification = [[UIView alloc] initWithFrame:CGRectMake(10, height-tabBarHeight-60, width-20, 50)];}
     
     _warningNotification.backgroundColor = [UIColor clearColor];
     
-    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width-40, 40)];
+    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width-20, 40)];
     
     background.backgroundColor = [UIColor blackColor];
     [background setAlpha:0.8];
     background.layer.cornerRadius = 5.0f;
     
-    UITextField *notification = [[UITextField alloc] initWithFrame:CGRectMake(5, 5, width-50, 40)];
+    UILabel *notification = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, width-30, 30)];
     
     notification.textColor = [UIColor whiteColor];
     notification.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     notification.text = @"In der Umgebung sind Gefahrenstellen markiert!";
+    notification.textAlignment = NSTextAlignmentCenter;
     
-    UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(width/5*3-25, 40, 10, 10)];
+    UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(width/5*3.5-17, 40, 15, 10)];
     
     [arrow setImage:[UIImage imageNamed:@"notification_arrow_down@3x.png"]];
     
@@ -1145,13 +1146,13 @@
     [self.view addSubview:_warningNotification];
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _warningNotification.frame = CGRectMake(20, height-tabBarHeight-50, width-40, 50);
+        _warningNotification.frame = CGRectMake(10, height-tabBarHeight-50, width-20, 50);
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-            _warningNotification.frame = CGRectMake(20, height-tabBarHeight-55, width-40, 50);
+            _warningNotification.frame = CGRectMake(10, height-tabBarHeight-55, width-20, 50);
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-                _warningNotification.frame = CGRectMake(20, height-tabBarHeight-50, width-40, 50);
+                _warningNotification.frame = CGRectMake(10, height-tabBarHeight-50, width-20, 50);
             } completion:NULL
              ];
         }];
