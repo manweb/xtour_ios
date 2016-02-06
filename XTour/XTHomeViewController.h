@@ -16,6 +16,7 @@
 #import "XTNavigationViewContainer.h"
 #import "XTProfileViewController.h"
 #import "XTNotificationViewController.h"
+#import "XTPointingNotificationView.h"
 
 @interface XTHomeViewController : UIViewController <UIAlertViewDelegate, UIActionSheetDelegate, CLLocationManagerDelegate>
 {

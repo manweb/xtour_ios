@@ -14,6 +14,7 @@
 #import "XTTourInfo.h"
 #import "XTTourDetailView.h"
 #import "DXStarRatingView.h"
+#import "XTPointingNotificationView.h"
 
 @interface XTSummaryViewController : UIViewController <UIScrollViewDelegate>
 {

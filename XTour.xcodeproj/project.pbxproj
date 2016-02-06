@@ -112,6 +112,7 @@
 		6461F2DE1B1F553B00B23A51 /* XTProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461F2DD1B1F553B00B23A51 /* XTProfileViewController.m */; };
 		646219D31BB723F900503F1C /* XTCalendarPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646219D21BB723F900503F1C /* XTCalendarPageViewController.m */; };
 		646219D61BB7252C00503F1C /* XTCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646219D51BB7252C00503F1C /* XTCalendarViewController.m */; };
+		646223181C62D11C009D6AB8 /* XTPointingNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 646223171C62D11C009D6AB8 /* XTPointingNotificationView.m */; };
 		6463C3261B0519C0000ACB6E /* XTSummaryImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6463C3251B0519C0000ACB6E /* XTSummaryImageViewController.m */; };
 		646C41A01B33D2E9001C6BFB /* add_warning_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 646C419D1B33D2E9001C6BFB /* add_warning_icon.png */; };
 		646C41A11B33D2E9001C6BFB /* add_warning_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 646C419E1B33D2E9001C6BFB /* add_warning_icon@2x.png */; };
@@ -354,6 +355,8 @@
 		646219D21BB723F900503F1C /* XTCalendarPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTCalendarPageViewController.m; sourceTree = "<group>"; };
 		646219D41BB7252C00503F1C /* XTCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTCalendarViewController.h; sourceTree = "<group>"; };
 		646219D51BB7252C00503F1C /* XTCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTCalendarViewController.m; sourceTree = "<group>"; };
+		646223161C62D11C009D6AB8 /* XTPointingNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTPointingNotificationView.h; sourceTree = "<group>"; };
+		646223171C62D11C009D6AB8 /* XTPointingNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTPointingNotificationView.m; sourceTree = "<group>"; };
 		6463C3241B0519C0000ACB6E /* XTSummaryImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSummaryImageViewController.h; sourceTree = "<group>"; };
 		6463C3251B0519C0000ACB6E /* XTSummaryImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSummaryImageViewController.m; sourceTree = "<group>"; };
 		646C419D1B33D2E9001C6BFB /* add_warning_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_warning_icon.png; sourceTree = "<group>"; };
@@ -595,6 +598,8 @@
 				640BBE7B1887B1A30029327F /* Main.storyboard */,
 				640BBE7E1887B1A30029327F /* XTHomeViewController.h */,
 				640BBE7F1887B1A30029327F /* XTHomeViewController.m */,
+				646223161C62D11C009D6AB8 /* XTPointingNotificationView.h */,
+				646223171C62D11C009D6AB8 /* XTPointingNotificationView.m */,
 				64C645B91C52052C00A32A61 /* XTWarningDetailView.h */,
 				64C645BA1C52052C00A32A61 /* XTWarningDetailView.m */,
 				6494626E1C4CB20100D625DF /* XTUserComment.h */,
@@ -1195,6 +1200,7 @@
 				64A4A00D18B953D2007B4E54 /* XTWarnigsViewController.m in Sources */,
 				6443BC871BA4E39200FA3E83 /* XTSettings.m in Sources */,
 				64C645BB1C52052C00A32A61 /* XTWarningDetailView.m in Sources */,
+				646223181C62D11C009D6AB8 /* XTPointingNotificationView.m in Sources */,
 				6463C3261B0519C0000ACB6E /* XTSummaryImageViewController.m in Sources */,
 				648E87FD18B7DBE600BE1AB3 /* XTXMLParser.m in Sources */,
 				64DCB3511B31D85F009D61B8 /* XTWarningsInfo.m in Sources */,

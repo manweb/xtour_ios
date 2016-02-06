@@ -250,7 +250,7 @@
     [_totalDistanceLabel setHidden:YES];
     [_totalAltitudeLabel setHidden:YES];
     
-    _GPSSignalLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, 200, 20)];
+    _GPSSignalLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 0, 200, _sectionHeight)];
     
     _GPSSignalLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
     _GPSSignalLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
@@ -1114,61 +1114,13 @@
     
     float tabBarHeight = [[UITabBarController new] tabBar].frame.size.height;
     
-    if (!_warningNotification) {_warningNotification = [[UIView alloc] initWithFrame:CGRectMake(10, height-tabBarHeight-60, width-20, 50)];}
+    XTPointingNotificationView *notification = [[XTPointingNotificationView alloc] initWithSize:CGSizeMake(width-20, 40) pointingAt:CGPointMake(width/5*3.5, height-tabBarHeight) direction:0 message:@"Gefahrenstellen in der Umgebung gefunden!"];
     
-    _warningNotification.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:notification];
     
-    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width-20, 40)];
+    [notification animateWithTimeout:5];
     
-    background.backgroundColor = [UIColor blackColor];
-    [background setAlpha:0.8];
-    background.layer.cornerRadius = 5.0f;
-    
-    UILabel *notification = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, width-30, 30)];
-    
-    notification.textColor = [UIColor whiteColor];
-    notification.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
-    notification.text = @"In der Umgebung sind Gefahrenstellen markiert!";
-    notification.textAlignment = NSTextAlignmentCenter;
-    
-    UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(width/5*3.5-17, 40, 15, 10)];
-    
-    [arrow setImage:[UIImage imageNamed:@"notification_arrow_down@3x.png"]];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(CloseNotification:)];
-    
-    [background addSubview:notification];
-    
-    [_warningNotification addSubview:background];
-    [_warningNotification addSubview:arrow];
-    [_warningNotification addGestureRecognizer:tap];
-    
-    [self.view addSubview:_warningNotification];
-    
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-        _warningNotification.frame = CGRectMake(10, height-tabBarHeight-50, width-20, 50);
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-            _warningNotification.frame = CGRectMake(10, height-tabBarHeight-55, width-20, 50);
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
-                _warningNotification.frame = CGRectMake(10, height-tabBarHeight-50, width-20, 50);
-            } completion:NULL
-             ];
-        }];
-    }];
-    
-    [background release];
     [notification release];
-    [arrow release];
-    [tap release];
-}
-
-- (void)CloseNotification:(id)sender
-{
-    [_warningNotification removeFromSuperview];
-    
-    _warningNotification = nil;
 }
 
 @end

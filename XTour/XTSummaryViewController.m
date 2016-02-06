@@ -89,10 +89,24 @@
     [tourInfo release];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(ShowNotification) userInfo:nil repeats:NO];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)ShowNotification
+{
+    XTPointingNotificationView *notification = [[XTPointingNotificationView alloc] initWithSize:CGSizeMake(self.view.frame.size.width-40, 40) pointingAt:CGPointMake(_closeButton.frame.origin.x+_closeButton.frame.size.width/2, 60) direction:1 message:@"Nicht vergessen Tour abzuschliessen!"];
+    
+    [self.view addSubview:notification];
+    
+    [notification animateWithTimeout:5];
 }
 
 - (IBAction)Close {

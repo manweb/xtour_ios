@@ -60,11 +60,13 @@
     _username = [[UITextField alloc] initWithFrame:CGRectMake((width-20)/2-100, 50, 200, 30)];
     _password = [[UITextField alloc] initWithFrame:CGRectMake((width-20)/2-100, 100, 200, 30)];
     
+    _username.keyboardType = UIKeyboardTypeEmailAddress;
+    
     _username.borderStyle = UITextBorderStyleRoundedRect;
     _password.borderStyle = UITextBorderStyleRoundedRect;
     
-    _username.placeholder = @"Username";
-    _password.placeholder = @"Password";
+    _username.placeholder = @"E-Mail";
+    _password.placeholder = @"Passwort";
     
     _password.secureTextEntry = YES;
     
