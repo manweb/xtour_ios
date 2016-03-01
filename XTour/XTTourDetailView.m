@@ -61,7 +61,7 @@
     
     _mountainPeakMoreView = [[UITableView alloc] initWithFrame:CGRectMake(5, 5, boxWidth-10, 240) style:UITableViewStyleGrouped];
     
-    _mountainPeakMoreView.rowHeight = 30.0;
+    _mountainPeakMoreView.rowHeight = 40.0;
     _mountainPeakMoreView.sectionHeaderHeight = 30.0;
     _mountainPeakMoreView.sectionFooterHeight = 1.0;
     _mountainPeakMoreView.backgroundColor = [UIColor clearColor];
@@ -895,9 +895,9 @@
     
     if (_mountainPeakExtendedView.isHidden) {[_mountainPeakExtendedView setHidden:NO];}
     
-    float height = ([_morePeaks count]+1)*30.0 + 125.0;
+    float height = ([_morePeaks count]+1)*40.0 + 125.0;
     if (height < 150) {height = 150;}
-    if (height > 245) {height = 245;}
+    if (height > 250) {height = 250;}
     
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
         if (_mountainPeakExtendedView.frame.size.height == 0) {
@@ -945,6 +945,13 @@
                 _MountainPeakAltitudeLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
                 
                 _mountainPeak = [peak objectAtIndex:0];
+                
+                [_noPeakFoundLabel setHidden:YES];
+            }
+            else if ([_mountainPeak isEqualToString:@""]) {
+                _MountainPeakTitleLabel.text = @"";
+                _MountainPeakCoordinatesLabel.text = @"";
+                _MountainPeakAltitudeLabel.text = @"";
                 
                 [_noPeakFoundLabel setHidden:NO];
             }
@@ -995,20 +1002,20 @@
     else if (indexPath.section == 1 && [_morePeaks count] > 0) {
         NSMutableArray *peak = [_morePeaks objectAtIndex:indexPath.row];
         
-        cell.textLabel.text = [NSString stringWithFormat:@"%@, %.0f", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
         cell.textLabel.textColor = [UIColor blackColor];
     }
     else {
-        UIView *newPeakFieldBackground = [[UIView alloc] initWithFrame:CGRectMake(10, 5, width-50, 20)];
+        UIView *newPeakFieldBackground = [[UIView alloc] initWithFrame:CGRectMake(10, 5, width-50, 30)];
         
         newPeakFieldBackground.backgroundColor = [UIColor clearColor];
         newPeakFieldBackground.layer.borderWidth = 1.0f;
         newPeakFieldBackground.layer.borderColor = [[UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f] CGColor];
         newPeakFieldBackground.layer.cornerRadius = 5.0f;
         
-        _enterMountainPeak = [[UITextField alloc] initWithFrame:CGRectMake(5, 0, width-60, 20)];
+        _enterMountainPeak = [[UITextField alloc] initWithFrame:CGRectMake(5, 0, width-60, 30)];
         
-        _enterMountainPeak.textColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
+        _enterMountainPeak.textColor = [UIColor colorWithRed:100.0f/255.0f green:100.0f/255.0f blue:100.0f/255.0f alpha:1.0f];
         
         [newPeakFieldBackground addSubview:_enterMountainPeak];
         
@@ -1034,7 +1041,7 @@
         
         _mountainPeak = @"";
     }
-    else if (indexPath.section == 1 && [_morePeaks count]) {
+    else if (indexPath.section == 1 && [_morePeaks count] > 0) {
         [_noPeakFoundLabel setHidden:YES];
         
         NSMutableArray *peak = [_morePeaks objectAtIndex:indexPath.row];
@@ -1107,7 +1114,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 30.0;
+    return 40.0;
 }
 
 - (void)keyboardWasShown:(NSNotification *)notification
@@ -1130,6 +1137,8 @@
 }
 
 - (void) keyboardWillHide:(NSNotification *)notification {
+    
+    if (_enterMountainPeak.isFirstResponder) {return;}
     
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.contentInset = contentInsets;

@@ -98,6 +98,8 @@ static NSString * const reuseIdentifier = @"Cell";
         messageLbl.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
         messageLbl.text = [NSString stringWithFormat:@"Im Umkreis von %.0fkm sind keine Gefahrenstellen markiert.\n\nHerunterziehen um zu aktualisieren",data.profileSettings.warningRadius];
         messageLbl.textAlignment = NSTextAlignmentCenter;
+        [messageLbl setEditable:NO];
+        [messageLbl setScrollEnabled:NO];
         
         [backgroundView addSubview:messageLbl];
         

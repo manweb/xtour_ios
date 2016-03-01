@@ -102,6 +102,8 @@ static NSString * const reuseIdentifier = @"Cell";
         messageLbl.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
         messageLbl.text = @"Keine Touren in der Wunschliste.\n\nUm Touren hinzuzufügen gehe zum Touren feed und klicke auf \"Zur Wunschliste\"";
         messageLbl.textAlignment = NSTextAlignmentCenter;
+        [messageLbl setEditable:NO];
+        [messageLbl setScrollEnabled:NO];
         
         [backgroundView addSubview:messageLbl];
         
@@ -127,11 +129,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     XTTourInfo *currentElement = [self.tourInfos objectAtIndex:indexPath.row];
     
-    NSUInteger timestamp = currentElement.date;
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd.MM.yyyy"];
-    NSString *formattedDate = [formatter stringFromDate:date];
+    NSString *formattedDate = [self GetTimeForWishlist:currentElement.tourID];
     
     NSUInteger tm = currentElement.totalTime;
     
@@ -181,7 +179,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     XTTourInfo *currentElement = [self.tourInfos objectAtIndex:_clickedButton];
     
-    NSString *filename = [data GetDocumentFilePathForFile:[NSString stringWithFormat:@"/Wishlist_%@.gpx",currentElement.tourID] CheckIfExist:NO];
+    NSString *filename = [self GetWishlistFile:currentElement.tourID];
     
     bool result = [[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
     
@@ -196,7 +194,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     XTTourInfo *currentElement = [self.tourInfos objectAtIndex:_clickedButton];
     
-    NSString *filename = [data GetDocumentFilePathForFile:[NSString stringWithFormat:@"/Wishlist_%@.gpx",currentElement.tourID] CheckIfExist:NO];
+    NSString *filename = [self GetWishlistFile:currentElement.tourID];
     
     XTXMLParser *parser = [[XTXMLParser alloc] init];
     
@@ -229,6 +227,40 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [data.followTourInfo.tracks addObject:polyline];
     }
+}
+
+- (NSString *)GetWishlistFile:(NSString *)tourID
+{
+    NSString *searchFilename = [NSString stringWithFormat:@"Wishlist_%@",tourID];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSArray *listOfFiles = [fileManager contentsOfDirectoryAtPath:[data GetDocumentFilePathForFile:@"/" CheckIfExist:NO] error:nil];
+    
+    NSString *filename = nil;
+    
+    for (int i = 0; i < [listOfFiles count]; i++) {
+        if ([[listOfFiles objectAtIndex:i] containsString:searchFilename]) {filename = [NSString stringWithFormat:@"%@/%@",[data GetDocumentFilePathForFile:@"/" CheckIfExist:NO],[listOfFiles objectAtIndex:i]]; break;}
+    }
+    
+    return filename;
+}
+
+- (NSString *)GetTimeForWishlist:(NSString *)tourID
+{
+    NSString *filename = [self GetWishlistFile:tourID];
+    
+    NSString *timestampStringTMP = [[filename componentsSeparatedByString:@"_"] objectAtIndex:2];
+    NSString *timestampString = [[timestampStringTMP componentsSeparatedByString:@"."] objectAtIndex:0];
+    
+    NSInteger timestamp = [timestampString integerValue];
+    
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd.MM.yyyy"];
+    NSString *formattedDate = [formatter stringFromDate:date];
+    
+    return formattedDate;
 }
 
 #pragma mark <UICollectionViewDelegate>

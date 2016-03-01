@@ -130,14 +130,14 @@
 {
     [self HideInfo];
     
-    if (numberOfComments > 0) {
+    if (numberOfComments > 0 && numberOfPictures == 0) {
         [_comments setHidden:NO];
         [_numberOfComments setHidden:NO];
         
         if (numberOfComments > 10) {_numberOfComments.text = @"10+";}
         else {_numberOfComments.text = [NSString stringWithFormat:@"%li",(long)numberOfComments];}
     }
-    else if (numberOfPictures > 0) {
+    else if (numberOfPictures > 0 && numberOfComments == 0) {
         [_pictures setHidden:NO];
         [_numberOfPictures setHidden:NO];
         

@@ -13,6 +13,7 @@
 #import "XTNavigationViewContainer.h"
 #import "XTTourDetailView.h"
 #import "XTTourInfo.h"
+@import GoogleMaps;
 
 @interface XTNewsFeedViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 {
@@ -32,6 +33,36 @@
 @property (nonatomic) int filter;
 @property (nonatomic) NSInteger clickedButton;
 @property (nonatomic,retain) UIActivityIndicatorView *appendData;
+@property (nonatomic,retain) UIVisualEffectView *blurEffectView;
+@property (nonatomic,retain) UIView *previewSummary;
+@property (nonatomic,retain) UIView *previewSummaryContainer1;
+@property (nonatomic,retain) UIView *previewSummaryContainer2;
+@property (nonatomic,retain) UIView *previewMapView;
+@property (nonatomic,retain) UIView *previewGraphView;
+@property (nonatomic,retain) GMSMapView *map;
+@property (nonatomic,retain) NSMutableArray *polylines;
+@property (nonatomic,retain) UIView *loadingView;
+@property (nonatomic,retain) UIImageView *previewUpArrow;
+@property (nonatomic,retain) UIImageView *profilePicture;
+@property (nonatomic,retain) UILabel *previewTitle;
+@property (nonatomic,retain) UILabel *previewTime;
+@property (nonatomic,retain) UILabel *previewAltitude;
+@property (nonatomic,retain) UILabel *previewDistance;
+@property (nonatomic,retain) UIView *gradientOverlay;
+@property (nonatomic,retain) UITextView *previewTourDescription;
+@property (nonatomic,retain) UILabel *TimeLabel;
+@property (nonatomic,retain) UILabel *DistanceLabel;
+@property (nonatomic,retain) UILabel *SpeedLabel;
+@property (nonatomic,retain) UILabel *UpLabel;
+@property (nonatomic,retain) UILabel *DownLabel;
+@property (nonatomic,retain) UILabel *HighestPointLabel;
+@property (nonatomic,retain) UILabel *LowestPointLabel;
+@property (nonatomic,retain) UIImageView *graph;
+@property (nonatomic,retain) XTTourInfo *currentPreviewTour;
+@property (nonatomic) CGPoint tapPoint;
+@property (nonatomic) CGRect frameOrigin;
+@property (nonatomic) bool mapWasShown;
+@property (nonatomic,retain) NSURLSessionTask *previewSessionTask;
 
 - (void) refreshNewsFeed;
 - (void) appendDataAndReload;

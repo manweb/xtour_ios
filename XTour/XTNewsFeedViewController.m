@@ -78,6 +78,231 @@ static NSString * const reuseIdentifier = @"Cell";
     _UID = @"0";
     _filter = 0;
     
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(HandleLongPress:)];
+    lpgr.minimumPressDuration = 0.5; //seconds
+    lpgr.delegate = self;
+    [self.collectionView addGestureRecognizer:lpgr];
+    [lpgr release];
+    
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    _blurEffectView.frame = self.view.frame;
+    _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    [_blurEffectView setHidden:YES];
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:_blurEffectView];
+    
+    _previewSummary = [[UIView alloc] initWithFrame:CGRectMake(10, 10, width-20, 100)];
+    
+    _previewSummary.backgroundColor = [UIColor whiteColor];
+    _previewSummary.layer.cornerRadius = 5.0f;
+    _previewSummary.layer.borderWidth = 1.0f;
+    _previewSummary.layer.borderColor = [[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] CGColor];
+    [_previewSummary setHidden:YES];
+    
+    _previewUpArrow = [[UIImageView alloc] initWithFrame:CGRectMake(width/2-15, 10, 30, 30)];
+    
+    [_previewUpArrow setImage:[UIImage imageNamed:@"arrow_up_preview@3x.png"]];
+    [_previewUpArrow setHidden:YES];
+    
+    _previewMapView = [[UIView alloc] initWithFrame:CGRectMake(10, 120, width-20, 200)];
+    
+    _previewMapView.backgroundColor = [UIColor whiteColor];
+    _previewMapView.layer.cornerRadius = 5.0f;
+    _previewMapView.layer.borderWidth = 1.0f;
+    _previewMapView.layer.borderColor = [[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] CGColor];
+    [_previewMapView setHidden:YES];
+    [_previewMapView setAlpha:0.0];
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:46.770809 longitude:8.377733 zoom:6];
+    if (!_map) {_map = [GMSMapView mapWithFrame:CGRectMake(5, 5, width - 30, 190) camera:camera];}
+    
+    _map.mapType = kGMSTypeTerrain;
+    
+    [_previewMapView addSubview:_map];
+    
+    _loadingView = [[UIView alloc] initWithFrame:CGRectMake((width-20)/2-50, 50, 100, 100)];
+    _loadingView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.6];
+    _loadingView.layer.cornerRadius = 10.0f;
+    
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityView.frame = CGRectMake(20, 20, 60, 60);
+    [activityView startAnimating];
+    
+    [_loadingView addSubview:activityView];
+    
+    [activityView release];
+    
+    [_loadingView setHidden:YES];
+    
+    [_previewMapView addSubview:_loadingView];
+    
+    _previewGraphView = [[UIView alloc] initWithFrame:CGRectMake(10, 330, width-20, width/320*200+10)];
+    
+    _previewGraphView.backgroundColor = [UIColor whiteColor];
+    _previewGraphView.layer.cornerRadius = 5.0f;
+    _previewGraphView.layer.borderWidth = 1.0f;
+    _previewGraphView.layer.borderColor = [[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] CGColor];
+    [_previewGraphView setHidden:YES];
+    [_previewGraphView setAlpha:0.0];
+    
+    _profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(8, 25, 50, 50)];
+    _previewTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, 223, 15)];
+    _previewTime = [[UILabel alloc] initWithFrame:CGRectMake(60, 60, 70, 15)];
+    _previewAltitude = [[UILabel alloc] initWithFrame:CGRectMake(130, 60, 50, 15)];
+    _previewDistance = [[UILabel alloc] initWithFrame:CGRectMake(190, 60, 50, 15)];
+    
+    _previewTitle.font = [UIFont fontWithName:@"Helvetica" size:12];
+    _previewTime.font = [UIFont fontWithName:@"Helvetica" size:10];
+    _previewAltitude.font = [UIFont fontWithName:@"Helvetica" size:10];
+    _previewDistance.font = [UIFont fontWithName:@"Helvetica" size:10];
+    
+    _previewTitle.textAlignment = NSTextAlignmentLeft;
+    _previewTime.textAlignment = NSTextAlignmentCenter;
+    _previewAltitude.textAlignment = NSTextAlignmentCenter;
+    _previewDistance.textAlignment = NSTextAlignmentCenter;
+    
+    _previewTitle.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    
+    UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(80, 30, 30, 30)];
+    UIImageView *altitudeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(140, 30, 30, 30)];
+    UIImageView *distanceIcon = [[UIImageView alloc] initWithFrame:CGRectMake(200, 30, 30, 30)];
+    
+    timeIcon.image = [UIImage imageNamed:@"clock_icon.png"];
+    altitudeIcon.image = [UIImage imageNamed:@"altitude_icon.png"];
+    distanceIcon.image = [UIImage imageNamed:@"skier_up_icon.png"];
+    
+    _previewTourDescription = [[UITextView alloc] initWithFrame:CGRectMake(5, 80, _previewSummary.frame.size.width-10, 60)];
+    
+    _previewTourDescription.textColor = [UIColor colorWithRed:190.0f/255.0f green:190.0f/255.0f blue:190.0f/255.0f alpha:1.0f];
+    _previewTourDescription.font = [UIFont fontWithName:@"Helvetica" size:12];
+    _previewTourDescription.editable = NO;
+    _previewTourDescription.scrollEnabled = NO;
+    
+    _gradientOverlay = [[UIView alloc] initWithFrame:CGRectMake(5, 80, _previewSummary.frame.size.width-10, 60)];
+    
+    _gradientOverlay.backgroundColor = [UIColor whiteColor];
+    
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = _gradientOverlay.bounds;
+    gradientLayer.colors = [NSArray arrayWithObjects:(id)[UIColor clearColor].CGColor, (id)[UIColor whiteColor].CGColor, nil];
+    gradientLayer.startPoint = CGPointMake(1.0f, 0.2f);
+    gradientLayer.endPoint = CGPointMake(1.0f, 1.0f);
+    _gradientOverlay.layer.mask = gradientLayer;
+    
+    _previewSummaryContainer1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width-20, 140)];
+    
+    _previewSummaryContainer1.backgroundColor = [UIColor clearColor];
+    
+    _previewSummaryContainer2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width-20, 140)];
+    
+    _previewSummaryContainer2.backgroundColor = [UIColor clearColor];
+    [_previewSummaryContainer2 setAlpha:0.0];
+    
+    [_previewSummary addSubview:_profilePicture];
+    [_previewSummaryContainer1 addSubview:_previewTitle];
+    [_previewSummaryContainer1 addSubview:_previewTime];
+    [_previewSummaryContainer1 addSubview:_previewAltitude];
+    [_previewSummaryContainer1 addSubview:_previewDistance];
+    [_previewSummaryContainer1 addSubview:timeIcon];
+    [_previewSummaryContainer1 addSubview:altitudeIcon];
+    [_previewSummaryContainer1 addSubview:distanceIcon];
+    [_previewSummaryContainer1 addSubview:_previewTourDescription];
+    [_previewSummaryContainer1 addSubview:_gradientOverlay];
+    
+    [_previewSummary addSubview:_previewSummaryContainer1];
+    [_previewSummary addSubview:_previewSummaryContainer2];
+    
+    [timeIcon release];
+    [altitudeIcon release];
+    [distanceIcon release];
+    
+    float boxWidth = width-20;
+    
+    float labelX1 = 5;
+    float labelX2 = (boxWidth-10)/3;
+    float labelX3 = (boxWidth-10)*2/3;
+    
+    UILabel *DistanceTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX1, 58, 100, 15)];
+    UILabel *SpeedTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX2, 58, 100, 15)];
+    UILabel *UpTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX3, 58, 100, 15)];
+    UILabel *DownTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX1, 100, 100, 15)];
+    UILabel *HighestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX2, 100, 100, 15)];
+    UILabel *LowestPointTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX3, 100, 100, 15)];
+    
+    _TimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3-10, 15, boxWidth*2/3-10, 30)];
+    _DistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX1, 72, 100, 20)];
+    _SpeedLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX2, 72, 100, 20)];
+    _UpLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX3, 72, 100, 20)];
+    _DownLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX1, 114, 100, 20)];
+    _HighestPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX2, 114, 100, 20)];
+    _LowestPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX3, 114, 100, 20)];
+    
+    DistanceTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    SpeedTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    UpTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    DownTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    HighestPointTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    LowestPointTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    
+    _TimeLabel.textAlignment = NSTextAlignmentRight;
+    
+    DistanceTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    SpeedTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    UpTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    DownTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    HighestPointTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    LowestPointTitleLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    
+    _TimeLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*32.0f];
+    _DistanceLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _SpeedLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _UpLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _DownLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _HighestPointLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    _LowestPointLabel.font = [UIFont fontWithName:@"Helvetica" size:width/320*16.0f];
+    
+    DistanceTitleLabel.text = @"Distanz";
+    SpeedTitleLabel.text = @"Geschwindigkeit";
+    UpTitleLabel.text = @"Aufstieg";
+    DownTitleLabel.text = @"Abfahrt";
+    HighestPointTitleLabel.text = @"Höchster Punkt";
+    LowestPointTitleLabel.text = @"Tiefster Punkt";
+    
+    [_previewSummaryContainer2 addSubview:_TimeLabel];
+    [_previewSummaryContainer2 addSubview:DistanceTitleLabel];
+    [_previewSummaryContainer2 addSubview:SpeedTitleLabel];
+    [_previewSummaryContainer2 addSubview:UpTitleLabel];
+    [_previewSummaryContainer2 addSubview:DownTitleLabel];
+    [_previewSummaryContainer2 addSubview:HighestPointTitleLabel];
+    [_previewSummaryContainer2 addSubview:LowestPointTitleLabel];
+    [_previewSummaryContainer2 addSubview:_DistanceLabel];
+    [_previewSummaryContainer2 addSubview:_SpeedLabel];
+    [_previewSummaryContainer2 addSubview:_UpLabel];
+    [_previewSummaryContainer2 addSubview:_DownLabel];
+    [_previewSummaryContainer2 addSubview:_HighestPointLabel];
+    [_previewSummaryContainer2 addSubview:_LowestPointLabel];
+    
+    [DistanceTitleLabel release];
+    [SpeedTitleLabel release];
+    [UpTitleLabel release];
+    [DownTitleLabel release];
+    [HighestPointTitleLabel release];
+    [LowestPointTitleLabel release];
+    
+    _graph = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, width-30, width/320*152)];
+    
+    [_previewGraphView addSubview:_graph];
+    
+    [_blurEffectView addSubview:_previewSummary];
+    [_blurEffectView addSubview:_previewUpArrow];
+    [_blurEffectView addSubview:_previewMapView];
+    [_blurEffectView addSubview:_previewGraphView];
+    
+    _mapWasShown = false;
+    
     _appendData = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     _appendData.frame = CGRectMake(width/2-15, 0, 30, 30);
@@ -467,6 +692,340 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+- (void) HandleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    /*CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+    
+    NSIndexPath *indexPath = [self.collectionView indexPathForRowAtPoint:p];
+    
+    XTTourInfo *currentTour = [_news_feed objectAtIndex:indexPath.row];
+    
+    NSLog(@"Selected tour: %f",currentTour.distance);*/
+    
+    float scrollPosition = self.collectionView.contentOffset.y+110;
+    
+    CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+    
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"Getting cell for position %f",p.y);
+        
+        NSInteger index = [self indexOfCellAtPosition:p.y];
+        
+        _currentPreviewTour = [_news_feed objectAtIndex:index];
+        
+        NSUInteger timestamp = _currentPreviewTour.date;
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"dd.MM.yyyy"];
+        NSString *formattedDate = [formatter stringFromDate:date];
+        
+        NSUInteger tm = _currentPreviewTour.totalTime;
+        
+        NSString *TimeString = [NSString stringWithFormat:@"%02lih %02lim %02lis",
+                                lround(floor(tm / 3600.)) % 100,
+                                lround(floor(tm / 60.)) % 60,
+                                lround(floor(tm)) % 60];
+        
+        [_profilePicture setImageWithURL:[NSURL URLWithString:_currentPreviewTour.profilePicture] placeholderImage:[UIImage imageNamed:@"profile_icon_gray.png"]];
+        
+        _previewTitle.text = [NSString stringWithFormat:@"%@ am %@",_currentPreviewTour.userName, formattedDate];
+        _previewTime.text = TimeString;
+        _previewAltitude.text = [NSString stringWithFormat:@"%.1f m", _currentPreviewTour.altitude];
+        _previewDistance.text = [NSString stringWithFormat:@"%.2f km", _currentPreviewTour.distance];
+        _previewTourDescription.text = _currentPreviewTour.tourDescription;
+        
+        float distance = _currentPreviewTour.distance;
+        float time = (float)_currentPreviewTour.totalTime/3600.0;
+        float speed = distance/time;
+        
+        NSString *distanceUnit = @"km";
+        NSString *speedUnit = @"km/h";
+        
+        if (distance < 10.0) {
+            distance *= 1000.0;
+            distanceUnit = @"m";
+        }
+        
+        if (speed < 10.0) {
+            speed *= 1000.0;
+            speedUnit = @"m/h";
+        }
+        
+        _TimeLabel.text = TimeString;
+        _DistanceLabel.text = [NSString stringWithFormat:@"%.1f %@", distance, distanceUnit];
+        _SpeedLabel.text = [NSString stringWithFormat:@"%.1f %@", speed, speedUnit];
+        _UpLabel.text = [NSString stringWithFormat:@"%.1f m", _currentPreviewTour.altitude];
+        _DownLabel.text = [NSString stringWithFormat:@"%.1f m", _currentPreviewTour.descent];
+        _HighestPointLabel.text = [NSString stringWithFormat:@"%.1f m", _currentPreviewTour.highestPoint];
+        _LowestPointLabel.text = [NSString stringWithFormat:@"%.1f m", _currentPreviewTour.lowestPoint];
+        
+        if ([_currentPreviewTour.tourDescription isEqualToString:@""]) {
+            [_previewTourDescription setHidden:YES];
+            [_gradientOverlay setHidden:YES];
+        }
+        else {
+            [_previewTourDescription setHidden:NO];
+            [_gradientOverlay setHidden:NO];
+        }
+        
+        NSURL *graphURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.xtour.ch/users/%@/tours/%@/%@_graph1.png", _currentPreviewTour.userID, _currentPreviewTour.tourID, _currentPreviewTour.tourID]];
+        
+        [_graph setImageWithURL:graphURL placeholderImage:nil];
+        
+        NSLog(@"%f",_currentPreviewTour.distance);
+        
+        CGRect cellFrame = [self frameForCellAtIndex:index scrollPosition:scrollPosition];
+        
+        _frameOrigin = cellFrame;
+        
+        _tapPoint = p;
+        
+        NSLog(@"%f %f %f %f",cellFrame.origin.x,cellFrame.origin.y,cellFrame.size.width,cellFrame.size.height);
+        
+        _previewSummary.frame = cellFrame;
+        
+        _previewUpArrow.frame = CGRectMake((cellFrame.size.width+20)/2-15, cellFrame.origin.y-35, 30, 30);
+        
+        [_blurEffectView setHidden:NO];
+        
+        [_previewSummary setHidden:NO];
+        
+        [_previewUpArrow setHidden:NO];
+        
+        [_previewMapView setHidden:NO];
+        
+        [_previewGraphView setHidden:NO];
+        
+        _profilePicture.frame = CGRectMake(8, 25, 50, 50);
+        
+        [_previewSummaryContainer1 setAlpha:1.0];
+        
+        [_previewSummaryContainer2 setAlpha:0.0];
+        
+        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            if (_frameOrigin.size.height < 140) {
+                _previewSummary.frame = CGRectMake(_frameOrigin.origin.x, _frameOrigin.origin.y-40, _frameOrigin.size.width, 140);
+                
+                _previewUpArrow.frame = CGRectMake((cellFrame.size.width+20)/2-15, cellFrame.origin.y-75, 30, 30);
+            }
+            
+            _profilePicture.frame = CGRectMake(5, 5, 50, 50);
+            
+            [_previewSummaryContainer1 setAlpha:0.0];
+        } completion:^(BOOL finished) {
+            if (_frameOrigin.size.height < 140) {_frameOrigin = CGRectMake(cellFrame.origin.x, cellFrame.origin.y-40, cellFrame.size.width, 140);}
+            
+            [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+                [_previewSummaryContainer2 setAlpha:1.0];
+            } completion:nil];
+        }];
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        float distance = _tapPoint.y - p.y;
+        
+        float rangeLowMapView = 0;
+        float rangeUpMapView = (_frameOrigin.origin.y - 40)/2;
+        
+        float rangeLowGraphView = rangeUpMapView;
+        float rangeUpGraphView = _frameOrigin.origin.y - 40;
+        
+        float previewMapViewAlpha = 1.0/(rangeUpMapView-rangeLowMapView)*distance + 1.0 - 1.0/(rangeUpMapView-rangeLowMapView)*rangeUpMapView;
+        if (previewMapViewAlpha > 1) {previewMapViewAlpha = 1;}
+        if (previewMapViewAlpha < 0) {previewMapViewAlpha = 0;}
+        
+        float previewGraphViewAlpha = 1.0/(rangeUpGraphView-rangeLowGraphView)*distance + 1.0 - 1.0/(rangeUpGraphView-rangeLowGraphView)*rangeUpGraphView;
+        if (previewGraphViewAlpha > 1) {previewGraphViewAlpha = 1;}
+        if (previewGraphViewAlpha < 0) {previewGraphViewAlpha = 0;}
+        
+        if (distance < 0) {distance /= 8;}
+        
+        float previewSummaryY = _frameOrigin.origin.y - distance;
+        
+        if (previewSummaryY < 40) {
+            float overshoot = 40 - previewSummaryY;
+            
+            previewSummaryY += overshoot;
+            previewSummaryY -= overshoot/8;
+        }
+        
+        float previewUpArrowAlpha = 1.0;
+        
+        if (previewSummaryY < 50) {previewUpArrowAlpha = 1.0/10.0*previewSummaryY + 1.0 - 1.0/10.0*50;}
+        
+        _previewSummary.frame = CGRectMake(_frameOrigin.origin.x, previewSummaryY, _frameOrigin.size.width, _frameOrigin.size.height);
+        
+        _previewUpArrow.frame = CGRectMake((_frameOrigin.size.width+20)/2-15, previewSummaryY-35, 30, 30);
+        
+        [_previewUpArrow setAlpha:previewUpArrowAlpha];
+        
+        _previewMapView.frame = CGRectMake(_frameOrigin.origin.x, previewSummaryY + 150, _frameOrigin.size.width, 200);
+        
+        _previewGraphView.frame = CGRectMake(_frameOrigin.origin.x, previewSummaryY + 360, _frameOrigin.size.width, (_frameOrigin.size.width+20)/320*150+10);
+        
+        [_previewMapView setAlpha:previewMapViewAlpha];
+        
+        [_previewGraphView setAlpha:previewGraphViewAlpha];
+        
+        if (previewMapViewAlpha > 0 && !_mapWasShown) {
+            [self LoadTourCoordinates:_currentPreviewTour.tourID];
+            
+            _mapWasShown = true;
+        }
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            [_blurEffectView setAlpha:0.0];
+            
+            [_previewSummary setAlpha:0.0];
+            
+            [_previewUpArrow setAlpha:0.0];
+            
+            [_previewMapView setAlpha:0.0];
+            
+            [_previewGraphView setAlpha:0.0];
+            
+            _previewSummary.frame = CGRectMake(_frameOrigin.origin.x, _frameOrigin.origin.y, _frameOrigin.size.width, _frameOrigin.size.height);
+            
+            _previewUpArrow.frame = CGRectMake((_frameOrigin.size.width+20)/2-15, _frameOrigin.origin.y-35, 30, 30);
+            
+            _previewMapView.frame = CGRectMake(_frameOrigin.origin.x, _frameOrigin.origin.y+_frameOrigin.size.height+10, _frameOrigin.size.width, 200);
+            
+            _previewGraphView.frame = CGRectMake(_frameOrigin.origin.x, _frameOrigin.origin.y+_frameOrigin.size.height+220, _frameOrigin.size.width, _frameOrigin.size.width/320*150+10);
+        } completion:^(BOOL finished) {
+            [_blurEffectView setHidden:YES];
+            [_previewSummary setHidden:YES];
+            [_previewUpArrow setHidden:YES];
+            [_previewMapView setHidden:YES];
+            [_previewGraphView setHidden:YES];
+            
+            [_blurEffectView setAlpha:1.0];
+            
+            [_previewSummary setAlpha:1.0];
+            
+            [_previewUpArrow setAlpha:1.0];
+            
+            [self CancelSessionTask];
+            
+            _mapWasShown = false;
+        }];
+    }
+}
+
+- (NSInteger) indexOfCellAtPosition:(float)position
+{
+    float yPosition = 0;
+    NSInteger i = 0;
+    
+    while (position > yPosition && i < [_news_feed count]) {
+        XTTourInfo *currentTour = [_news_feed objectAtIndex:i];
+        
+        if ([currentTour.tourDescription isEqualToString:@""]) {yPosition += 110;}
+        else {yPosition += 150;}
+        
+        i++;
+    }
+    
+    return i-1;
+}
+
+- (CGRect) frameForCellAtIndex:(NSInteger)index scrollPosition:(float)scroll
+{
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    float width = screenBound.size.width;
+    
+    float yPosition = 0;
+    float cellHeight = 0;
+    
+    for (int i = 0; i < index+1; i++) {
+        XTTourInfo *currentTour = [_news_feed objectAtIndex:i];
+        
+        if ([currentTour.tourDescription isEqualToString:@""]) {cellHeight = 100; yPosition += 110;}
+        else {cellHeight = 140; yPosition += 150;}
+    }
+    
+    CGRect cellFrame = CGRectMake(10, yPosition-cellHeight+110-scroll, width-20, cellHeight);
+    
+    return cellFrame;
+}
+
+- (void) LoadTourCoordinates:(NSString *)tourID
+{
+    [_loadingView setHidden:NO];
+    
+    NSString *requestString = [[NSString alloc] initWithFormat:@"http://www.xtour.ch/get_tour_coordinates_string.php?tid=%@", tourID];
+    NSURL *url = [NSURL URLWithString:requestString];
+    
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    sessionConfiguration.timeoutIntervalForRequest = 10.0;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    self.previewSessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
+        [_loadingView setHidden:YES];
+        
+        XTServerRequestHandler *request = [[[XTServerRequestHandler alloc] init] autorelease];
+        
+        [request ProcessTourCoordinates:(NSData*)responseData];
+        
+        NSMutableArray *tourFiles = request.tourFilesType;
+        NSMutableArray *coordinateArray = request.tourFilesCoordinates;
+        
+        float minLon = 1e6;
+        float maxLon = -1e6;
+        float minLat = 1e6;
+        float maxLat = -1e6;
+        
+        GMSMutablePath *currentPath = [[GMSMutablePath alloc] init];
+        if (!_polylines) {_polylines = [[NSMutableArray alloc] init];}
+        
+        [_polylines removeAllObjects];
+        
+        for (int i = 0; i < [coordinateArray count]; i++) {
+            [currentPath removeAllCoordinates];
+            
+            NSMutableArray *coordinate = [coordinateArray objectAtIndex:i];
+            
+            for (int k = 0; k < [coordinate count]; k++) {
+                CLLocation *location = [coordinate objectAtIndex:k];
+                [currentPath addCoordinate:location.coordinate];
+                
+                if (location.coordinate.longitude < minLon) {minLon = location.coordinate.longitude;}
+                if (location.coordinate.longitude > maxLon) {maxLon = location.coordinate.longitude;}
+                if (location.coordinate.latitude < minLat) {minLat = location.coordinate.latitude;}
+                if (location.coordinate.latitude > maxLat) {maxLat = location.coordinate.latitude;}
+            }
+            
+            GMSPolyline *polyline = [[GMSPolyline alloc] init];
+            [polyline setPath:currentPath];
+            if ([[tourFiles objectAtIndex:i] containsString:@"up"]) {polyline.strokeColor = [UIColor blueColor];}
+            else {polyline.strokeColor = [UIColor redColor];}
+            polyline.strokeWidth = 5.f;
+            
+            [_polylines addObject:polyline];
+            GMSPolyline *currentPolyline = [_polylines objectAtIndex:i];
+            
+            currentPolyline.map = _map;
+        }
+        
+        GMSCameraUpdate *cameraUpdate = [GMSCameraUpdate fitBounds:[[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(minLat, minLon) coordinate:CLLocationCoordinate2DMake(maxLat, maxLon)] withPadding:50.0f];
+        [_map moveCamera:cameraUpdate];
+    }];
+    
+    [self.previewSessionTask resume];
+}
+
+- (void) CancelSessionTask
+{
+    if (self.previewSessionTask.state == NSURLSessionTaskStateRunning) {[self.previewSessionTask cancel];}
+    
+    for (int i = 0; i < [_polylines count]; i++) {
+        GMSPolyline *currentPolyline = [_polylines objectAtIndex:i];
+        
+        currentPolyline.map = nil;
+    }
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
@@ -526,9 +1085,10 @@ static NSString * const reuseIdentifier = @"Cell";
             NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             
             if ([response isEqualToString:@"true"]) {
+                NSInteger timestamp = (NSInteger)[[NSDate date] timeIntervalSince1970];
                 
                 NSString *remoteFile = [NSString stringWithFormat:@"http://www.xtour.ch/users/%@/tours/%@/Wishlist_%@.gpx",currentElement.userID,currentElement.tourID,currentElement.tourID];
-                NSString *localFile = [NSString stringWithFormat:@"/Wishlist_%@.gpx",currentElement.tourID];
+                NSString *localFile = [NSString stringWithFormat:@"/Wishlist_%@_%li.gpx",currentElement.tourID,(long)timestamp];
                 
                 [ServerHandler DownloadFile:remoteFile to:localFile];
             }

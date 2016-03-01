@@ -47,7 +47,7 @@
             _distance = d;
         }
         
-        if (d < 10.0) {
+        if (d < 10000.0) {
             NSArray *arrTMP = [NSArray arrayWithObjects:name, [NSNumber numberWithFloat:lon], [NSNumber numberWithFloat:lat], [NSNumber numberWithFloat:alt], [NSNumber numberWithFloat:d], nil];
             
             [_peaksArray addObject:arrTMP];

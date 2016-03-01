@@ -277,6 +277,19 @@
     
     [_polylines removeAllObjects];
     
+    NSLog(@"Number of tracks: %lu",(unsigned long)[data.pathSegments count]);
+    
+    for (int i = 0; i < [data.pathSegments count]; i++) {
+        GMSPolyline *currentPolyline = [[GMSPolyline alloc] init];
+        currentPolyline = [data.pathSegments objectAtIndex:i];
+        
+        NSLog(@"Number of coordinates: %lu",(unsigned long)[currentPolyline.path count]);
+        
+        currentPolyline.map = _mapView;
+        
+        [_polylines addObject:currentPolyline];
+    }
+    
     if (data.followTourInfo) {
         for (int i = 0; i < [data.followTourInfo.tracks count]; i++) {
             GMSPolyline *currentPolyline = [[GMSPolyline alloc] init];

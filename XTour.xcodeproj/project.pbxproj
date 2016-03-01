@@ -15,6 +15,7 @@
 		64059E6318BDD3C800FDA369 /* XTSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64059E6118BDD3C800FDA369 /* XTSummaryViewController.xib */; };
 		6405F5AE1BC861F6009B1DFD /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6405F5AD1BC861F6009B1DFD /* SDWebImage.framework */; };
 		64067BE81BBDDF100021C856 /* XTUserStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 64067BE71BBDDF100021C856 /* XTUserStatistics.m */; };
+		640A78161C7310D000F3BC3E /* arrow_up_preview@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640A78151C7310D000F3BC3E /* arrow_up_preview@3x.png */; };
 		640BBE6A1887B1A30029327F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE691887B1A30029327F /* Foundation.framework */; };
 		640BBE6C1887B1A30029327F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE6B1887B1A30029327F /* CoreGraphics.framework */; };
 		640BBE6E1887B1A30029327F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBE6D1887B1A30029327F /* UIKit.framework */; };
@@ -237,6 +238,7 @@
 		6405F5AD1BC861F6009B1DFD /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = "<group>"; };
 		64067BE61BBDDF100021C856 /* XTUserStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUserStatistics.h; sourceTree = "<group>"; };
 		64067BE71BBDDF100021C856 /* XTUserStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUserStatistics.m; sourceTree = "<group>"; };
+		640A78151C7310D000F3BC3E /* arrow_up_preview@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_up_preview@3x.png"; sourceTree = "<group>"; };
 		640BBE661887B1A30029327F /* XTour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XTour.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		640BBE691887B1A30029327F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		640BBE6B1887B1A30029327F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -745,6 +747,7 @@
 				64865C661C4E06DC000A7801 /* camera_button@3x.png */,
 				642143E518C087A700144711 /* arrow_back.png */,
 				6400D0551AF56E130079203C /* arrow_back@3x.png */,
+				640A78151C7310D000F3BC3E /* arrow_up_preview@3x.png */,
 				641F8B221C080C7F0056A4F5 /* arrow_more@3x.png */,
 				64F99EBB1B031E50007EB2CE /* upload_icon@3x.png */,
 				6431C4EA1A2EF566007A827F /* GPS_medium.png */,
@@ -1050,6 +1053,7 @@
 				646C41A61B33D2FF001C6BFB /* cancel_icon.png in Resources */,
 				64F69F9B1BE829E90065DDDF /* snowboarder_up_button.png in Resources */,
 				641FD4511BEE89F0002DD407 /* close_icon@2x.png in Resources */,
+				640A78161C7310D000F3BC3E /* arrow_up_preview@3x.png in Resources */,
 				6431C4F01A2EF566007A827F /* GPS_strong.png in Resources */,
 				64D8C0E018B55BD1001A825E /* item_background_40.png in Resources */,
 				6470D7611C03966F004B5C25 /* XTour_icon_text.png in Resources */,

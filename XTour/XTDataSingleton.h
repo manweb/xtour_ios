@@ -14,6 +14,7 @@
 #import "XTWarningsInfo.h"
 #import "XTSettings.h"
 #import "XTTourInfo.h"
+@import GoogleMaps;
 
 @interface XTDataSingleton : NSObject
 
@@ -73,6 +74,7 @@
 @property(nonatomic,retain) XTSettings *profileSettings;
 @property(nonatomic) bool lowBatteryLevel;
 @property(nonatomic,retain) XTTourInfo *followTourInfo;
+@property(nonatomic,retain) NSMutableArray *pathSegments;
 
 + (XTDataSingleton *) singleObj;
 
@@ -81,6 +83,7 @@
 - (void) ResetAll;
 - (void) AddCoordinate:(CLLocation *)p;
 - (void) AddDistance:(double)dist andHeight:(double)height;
+- (void) AddCurrentPathToSegments;
 - (void) RemoveLastCoordinate;
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2;
 - (double) CalculateHaversineForCurrentCoordinate;
