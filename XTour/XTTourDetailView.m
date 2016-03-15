@@ -430,6 +430,8 @@
     if (server) {self.contentSize = CGSizeMake(width, _viewOffset+boxYPosition+_viewContentOffset);}
     else {self.contentSize = CGSizeMake(width, _viewOffset+boxYPosition);}
     
+    _didSelectRow = false;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
@@ -918,7 +920,7 @@
             CGAffineTransform transform = CGAffineTransformMakeRotation(2*M_PI);
             _MountainPeakMore.transform = transform;
             
-            if (![_enterMountainPeak.text isEqualToString:@""]) {
+            if (![_enterMountainPeak.text isEqualToString:@""] && !_didSelectRow) {
                 NSMutableArray *peak = [NSMutableArray arrayWithObjects:_enterMountainPeak.text, [NSNumber numberWithFloat:data.highestPoint.coordinate.longitude], [NSNumber numberWithFloat:data.highestPoint.coordinate.latitude], [NSNumber numberWithFloat:data.highestPoint.altitude], [NSNumber numberWithFloat:0.0], nil];
                 
                 float longitude = [[peak objectAtIndex:1] floatValue];
@@ -963,6 +965,8 @@
         else {
             [_mountainPeakMoreView setHidden:NO];
         }
+        
+        _didSelectRow = false;
     }];
 }
 
@@ -990,6 +994,10 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
+    UIView *PeakFieldView = [cell viewWithTag:10];
+    
+    [PeakFieldView removeFromSuperview];
+    
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0];
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
@@ -1008,10 +1016,11 @@
     else {
         UIView *newPeakFieldBackground = [[UIView alloc] initWithFrame:CGRectMake(10, 5, width-50, 30)];
         
-        newPeakFieldBackground.backgroundColor = [UIColor clearColor];
+        newPeakFieldBackground.backgroundColor = [UIColor whiteColor];
         newPeakFieldBackground.layer.borderWidth = 1.0f;
         newPeakFieldBackground.layer.borderColor = [[UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f] CGColor];
         newPeakFieldBackground.layer.cornerRadius = 5.0f;
+        newPeakFieldBackground.tag = 10;
         
         _enterMountainPeak = [[UITextField alloc] initWithFrame:CGRectMake(5, 0, width-60, 30)];
         
@@ -1020,6 +1029,8 @@
         [newPeakFieldBackground addSubview:_enterMountainPeak];
         
         [cell.contentView addSubview:newPeakFieldBackground];
+        
+        cell.textLabel.text = @"";
         
         [newPeakFieldBackground release];
     }
@@ -1040,6 +1051,8 @@
         _MountainPeakAltitudeLabel.text = @"";
         
         _mountainPeak = @"";
+        
+        _didSelectRow = true;
     }
     else if (indexPath.section == 1 && [_morePeaks count] > 0) {
         [_noPeakFoundLabel setHidden:YES];
@@ -1070,6 +1083,8 @@
         _MountainPeakAltitudeLabel.text = [NSString stringWithFormat:@"%@, %.0fm", [peak objectAtIndex:0], [[peak objectAtIndex:3] floatValue]];
         
         _mountainPeak = [peak objectAtIndex:0];
+        
+        _didSelectRow = true;
     }
     
     [self ShowMorePeaks:nil];

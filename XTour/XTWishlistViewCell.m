@@ -98,6 +98,23 @@
         
         horizontalLine.backgroundColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
         
+        _overlay = [[UIView alloc] initWithFrame:CGRectMake((frame.size.width-250)/2, 10, 250, 50)];
+        
+        _overlay.backgroundColor = [UIColor blackColor];
+        _overlay.layer.cornerRadius = boxRadius;
+        [_overlay setAlpha:0.8];
+        [_overlay setHidden:YES];
+        
+        _overlayText = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, 240, 40)];
+        
+        _overlayText.backgroundColor = [UIColor clearColor];
+        _overlayText.textColor = [UIColor whiteColor];
+        _overlayText.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+        _overlayText.text = @"Folge dieser Tour";
+        _overlayText.textAlignment = NSTextAlignmentCenter;
+        
+        [_overlay addSubview:_overlayText];
+        
         [self addSubview:_icon];
         [self addSubview:_title];
         [self addSubview:_timeLabel];
@@ -113,6 +130,7 @@
         [self addSubview:_startButton];
         [self addSubview:verticalLine];
         [self addSubview:horizontalLine];
+        [self addSubview:_overlay];
         
         [verticalLine release];
         [horizontalLine release];

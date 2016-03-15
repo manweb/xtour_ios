@@ -100,7 +100,7 @@
         }
         
         if (imageInfo.Comment) {_imgCommentLabel.text = imageInfo.Comment;}
-        else {_imgCommentLabel.text = @"No comments";}
+        else {_imgCommentLabel.text = @"Noch kein Kommentar";}
         
         if (!_editIcon) {
             _editIcon = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth-30, 5, 25, 25)];
@@ -130,6 +130,8 @@
         [self addSubview:_commentBackground];
         
         [selectedImage release];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFinishEditingImageInfo:) name:@"ImageInfoEditingFinished" object:nil];
     }
     
     return self;
@@ -206,6 +208,13 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Möchtest du dieses Foto wirklich löschen?" delegate:self cancelButtonTitle:@"Abbrechen" destructiveButtonTitle:@"Löschen" otherButtonTitles:nil, nil];
     
     [actionSheet showInView:self];
+}
+
+- (void)didFinishEditingImageInfo:(id)sender
+{
+    _imgCommentLabel.text = [data GetImageInfoAt:_imageID].Comment;
+    
+    if ([_imgCommentLabel.text isEqualToString:@""]) {_imgCommentLabel.text = @"Noch kein Kommentar";}
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

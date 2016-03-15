@@ -54,6 +54,8 @@
 @property (retain, nonatomic) GMSCameraUpdate *cameraUpdate;
 @property (retain, nonatomic) GMSMarker *tempMarker;
 @property (retain, nonatomic) NSMutableArray *polylines;
+@property (retain, nonatomic) NSMutableArray *savedPolylines;
+@property (nonatomic) NSUInteger lastRunStatus;
 @property (nonatomic) bool mapHasMoved;
 @property (nonatomic) bool addWarning;
 @property (nonatomic) float width;

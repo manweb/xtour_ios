@@ -47,7 +47,7 @@
             _distance = d;
         }
         
-        if (d < 10000.0) {
+        if (d < 5.0) {
             NSArray *arrTMP = [NSArray arrayWithObjects:name, [NSNumber numberWithFloat:lon], [NSNumber numberWithFloat:lat], [NSNumber numberWithFloat:alt], [NSNumber numberWithFloat:d], nil];
             
             [_peaksArray addObject:arrTMP];
@@ -59,7 +59,7 @@
 {
     NSMutableArray *peak = nil;
     
-    if (_distance < 10.0) {
+    if (_distance < 1.0) {
         peak = [NSMutableArray arrayWithObjects:[NSString stringWithString:_peakName], [NSNumber numberWithFloat:_peakLongitude], [NSNumber numberWithFloat:_peakLatitude], [NSNumber numberWithFloat:_peakAltitude], [NSNumber numberWithFloat:_distance], nil];
     }
     

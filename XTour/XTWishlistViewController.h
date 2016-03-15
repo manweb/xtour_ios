@@ -24,5 +24,6 @@
 
 - (void) ShowOptions:(id)sender;
 - (void) StartTour:(id)sender;
+- (void) RemoveTour:(id)sender;
 
 @end

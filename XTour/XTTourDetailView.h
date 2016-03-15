@@ -78,6 +78,7 @@
 @property (retain,nonatomic) UITextView *enterCommentTextView;
 @property (retain,nonatomic) UILabel *enterCommentTitle;
 @property (retain,nonatomic) UIButton *enterComment;
+@property (nonatomic) bool didSelectRow;
 
 - (void) Initialize:(XTTourInfo *) tourInfo fromServer:(BOOL)server withOffset:(NSInteger)offset andContentOffset:(NSInteger)offsetContent;
 - (void) LoadTourDetail:(XTTourInfo *) tourInfo fromServer:(BOOL) server;

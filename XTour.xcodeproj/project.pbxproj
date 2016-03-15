@@ -161,6 +161,7 @@
 		64A7B47C18B1F98E004E4B2F /* pause_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7B47B18B1F98E004E4B2F /* pause_button.png */; };
 		64A7DBA41AA4E44300D8A4C5 /* more_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A7DBA31AA4E44300D8A4C5 /* more_icon@2x.png */; };
 		64AD8EFF1B13C6E000960A6C /* XTImageDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64AD8EFE1B13C6E000960A6C /* XTImageDetailView.m */; };
+		64ADCD341C91FB4100E8EFDB /* XTCollectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64ADCD331C91FB4100E8EFDB /* XTCollectionHeaderView.m */; };
 		64B18CF918BD73DA002A5417 /* XTFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B18CF818BD73DA002A5417 /* XTFileUploader.m */; };
 		64B2C0F41C15BA1100D1E7F8 /* XTWishlistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B2C0F31C15BA1100D1E7F8 /* XTWishlistViewController.m */; };
 		64B2C0F71C15BAEF00D1E7F8 /* XTWishlistViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B2C0F61C15BAEF00D1E7F8 /* XTWishlistViewCell.m */; };
@@ -420,6 +421,8 @@
 		64A7DBA31AA4E44300D8A4C5 /* more_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more_icon@2x.png"; sourceTree = "<group>"; };
 		64AD8EFD1B13C6E000960A6C /* XTImageDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTImageDetailView.h; sourceTree = "<group>"; };
 		64AD8EFE1B13C6E000960A6C /* XTImageDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTImageDetailView.m; sourceTree = "<group>"; };
+		64ADCD321C91FB4100E8EFDB /* XTCollectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTCollectionHeaderView.h; sourceTree = "<group>"; };
+		64ADCD331C91FB4100E8EFDB /* XTCollectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTCollectionHeaderView.m; sourceTree = "<group>"; };
 		64B18CF718BD73DA002A5417 /* XTFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTFileUploader.h; sourceTree = "<group>"; };
 		64B18CF818BD73DA002A5417 /* XTFileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTFileUploader.m; sourceTree = "<group>"; };
 		64B2C0F21C15BA1100D1E7F8 /* XTWishlistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTWishlistViewController.h; sourceTree = "<group>"; };
@@ -600,6 +603,8 @@
 				640BBE7B1887B1A30029327F /* Main.storyboard */,
 				640BBE7E1887B1A30029327F /* XTHomeViewController.h */,
 				640BBE7F1887B1A30029327F /* XTHomeViewController.m */,
+				64ADCD321C91FB4100E8EFDB /* XTCollectionHeaderView.h */,
+				64ADCD331C91FB4100E8EFDB /* XTCollectionHeaderView.m */,
 				646223161C62D11C009D6AB8 /* XTPointingNotificationView.h */,
 				646223171C62D11C009D6AB8 /* XTPointingNotificationView.m */,
 				64C645B91C52052C00A32A61 /* XTWarningDetailView.h */,
@@ -1212,6 +1217,7 @@
 				645E31201AE886C300B2FF89 /* XTImageInfo.m in Sources */,
 				643470781AE0D049003DDA13 /* XTNewsFeedViewController.m in Sources */,
 				641F8B1B1C0794A70056A4F5 /* XTPeakFinder.m in Sources */,
+				64ADCD341C91FB4100E8EFDB /* XTCollectionHeaderView.m in Sources */,
 				64F3A6FF1AF597BA0083856F /* XTTourDetailView.m in Sources */,
 				641493811AEFEC2C0020ADDD /* XTNavigationViewContainer.m in Sources */,
 				6453E9FB1B25E90800EE5242 /* XTUserInfo.m in Sources */,

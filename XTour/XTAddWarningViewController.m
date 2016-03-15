@@ -74,7 +74,7 @@
     _titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     _titleLabel.text = @"Was hat du beobachtet?";
     
-    _warningComment = [[UITextView alloc] initWithFrame:CGRectMake(20, 90, width-60, 120)];
+    _warningComment = [[UITextView alloc] initWithFrame:CGRectMake(20, 90, width-60, 110)];
     [_warningComment setAlpha:0.0f];
     
     _warningComment.layer.borderWidth = 1.0f;
@@ -83,7 +83,10 @@
     _warningComment.font = [UIFont fontWithName:@"Helvetica" size:16];
     
     _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _loginButton.frame = CGRectMake((width-20)/2-50, 220, 100, 20);
+    _loginButton.frame = CGRectMake((width-20)/2-50, 210, 100, 30);
+    _loginButton.layer.cornerRadius = 15.0;
+    _loginButton.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     _cancelButton.frame = CGRectMake(width-50, 10, 20, 20);

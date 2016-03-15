@@ -75,6 +75,7 @@
 @property(nonatomic) bool lowBatteryLevel;
 @property(nonatomic,retain) XTTourInfo *followTourInfo;
 @property(nonatomic,retain) NSMutableArray *pathSegments;
+@property(nonatomic,retain) NSMutableArray *pathSegmentsPath;
 
 + (XTDataSingleton *) singleObj;
 

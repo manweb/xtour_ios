@@ -25,5 +25,7 @@
 @property (nonatomic,retain) UILabel *mountainPeak;
 @property (nonatomic,retain) UIButton *moreButton;
 @property (nonatomic,retain) UIButton *startButton;
+@property (nonatomic,retain) UIView *overlay;
+@property (nonatomic,retain) UILabel *overlayText;
 
 @end

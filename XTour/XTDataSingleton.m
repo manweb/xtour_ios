@@ -35,6 +35,7 @@
     if (!_warningInfo) {_warningInfo = [[NSMutableArray alloc] init];}
     if (!_profileSettings) {_profileSettings = [[XTSettings alloc] init];}
     if (!_pathSegments) {_pathSegments = [[NSMutableArray alloc] init];}
+    if (!_pathSegmentsPath) {_pathSegmentsPath = [[NSMutableArray alloc] init];}
     [_locationData removeAllObjects];
     _StartLocation = nil;
     _CurrentLocation = 0;
@@ -113,6 +114,7 @@
     [_imageInfo removeAllObjects];
     [_warningInfo removeAllObjects];
     [_pathSegments removeAllObjects];
+    [_pathSegmentsPath removeAllObjects];
     _StartLocation = nil;
     _totalDistance = 0.0;
     _totalAltitude = 0.0;
@@ -244,7 +246,6 @@
     GMSMutablePath *path = [[GMSMutablePath alloc] init];
     GMSPolyline *polyline = [[GMSPolyline alloc] init];
     
-    [polyline setPath:path];
     if (_runStatus == 1 || _runStatus == 2) {polyline.strokeColor = [UIColor blueColor];}
     else {polyline.strokeColor = [UIColor redColor];}
     polyline.strokeWidth = 5.0f;
@@ -255,10 +256,11 @@
         [path addCoordinate:currentCoordinate.coordinate];
     }
     
-    [_pathSegments addObject:polyline];
+    [_pathSegmentsPath addObject:path];
     
-    [path release];
-    [polyline release];
+    [polyline setPath:[_pathSegmentsPath lastObject]];
+    
+    [_pathSegments addObject:polyline];
 }
 
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2

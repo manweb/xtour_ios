@@ -71,7 +71,10 @@
     _password.secureTextEntry = YES;
     
     _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _loginButton.frame = CGRectMake((width-20)/2-50, 150, 100, 20);
+    _loginButton.frame = CGRectMake((width-20)/2-50, 150, 100, 30);
+    _loginButton.layer.cornerRadius = 15.0;
+    _loginButton.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     _cancelButton.frame = CGRectMake(width-50, 10, 20, 20);

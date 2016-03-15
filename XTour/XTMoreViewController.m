@@ -275,6 +275,7 @@
                 {
                     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
                     [layout setItemSize:CGSizeMake(300, 100)];
+                    [layout setHeaderReferenceSize:CGSizeMake(width, 30)];
                     XTSearchViewController *collection = [[XTSearchViewController alloc] initWithCollectionViewLayout:layout];
                     collection.view.frame = CGRectMake(0, 0, width, height);
                     

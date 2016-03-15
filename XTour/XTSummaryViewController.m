@@ -37,7 +37,11 @@
     _header.frame = CGRectMake(0, 0, width, 69);
     _header_shadow.frame = CGRectMake(0, 69, width, 1);
     
-    _closeButton.frame = CGRectMake(width-65, 30, 45, 30);
+    _closeButton.frame = CGRectMake(width-100, 30, 80, 30);
+    
+    _closeButton.layer.cornerRadius = 15.0;
+    _closeButton.layer.borderWidth = 1.0;
+    _closeButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     
     data = [XTDataSingleton singleObj];
     

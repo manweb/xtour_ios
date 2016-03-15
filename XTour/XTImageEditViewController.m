@@ -67,7 +67,7 @@
     _imageEditView.layer.borderColor = [UIColor grayColor].CGColor;
     _imageEditView.backgroundColor = [UIColor whiteColor];
     
-    _imageInfoComment = [[UITextView alloc] initWithFrame:CGRectMake(20, 35, width-60, 120)];
+    _imageInfoComment = [[UITextView alloc] initWithFrame:CGRectMake(20, 35, width-60, 110)];
     [_imageInfoComment setAlpha:0.0f];
     
     _imageInfoComment.layer.borderWidth = 1.0f;
@@ -78,7 +78,10 @@
     _imageInfoComment.text = imageInfo.Comment;
     
     _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _loginButton.frame = CGRectMake((width-20)/2-50, 170, 100, 20);
+    _loginButton.frame = CGRectMake((width-20)/2-50, 160, 100, 30);
+    _loginButton.layer.cornerRadius = 15.0;
+    _loginButton.backgroundColor = [UIColor colorWithRed:41.f/255.f green:127.f/255.f blue:199.f/255.f alpha:0.9f];
+    [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     _cancelButton.frame = CGRectMake(width-50, 10, 20, 20);
@@ -113,6 +116,8 @@
     }
     else {
         [data GetImageInfoAt:_imageID].Comment = _imageInfoComment.text;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ImageInfoEditingFinished" object:nil userInfo:nil];
     }
     
     [self HideView];

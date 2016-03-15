@@ -154,6 +154,17 @@ static NSString * const reuseIdentifier = @"Cell";
     [cell.moreButton addTarget:self action:@selector(ShowOptions:) forControlEvents:UIControlEventTouchUpInside];
     [cell.startButton addTarget:self action:@selector(StartTour:) forControlEvents:UIControlEventTouchUpInside];
     
+    if ([currentElement.tourID isEqualToString:data.followTourInfo.tourID]) {
+        cell.overlayText.text = @"Folge dieser Tour";
+        
+        [cell.overlay setHidden:NO];
+        
+        cell.startButton.frame = CGRectMake(cell.frame.size.width-45, 71, 30, 30);
+        [cell.startButton setBackgroundImage:[UIImage imageNamed:@"close_icon@3x.png"] forState:UIControlStateNormal];
+        [cell.startButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+        [cell.startButton addTarget:self action:@selector(RemoveTour:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
     return cell;
 }
 
@@ -192,6 +203,17 @@ static NSString * const reuseIdentifier = @"Cell";
 {
     _clickedButton = [(UIButton*)sender tag];
     
+    XTWishlistViewCell *cell = (XTWishlistViewCell*)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_clickedButton inSection:0]];
+    
+    cell.overlayText.text = @"Tour hinzugefügt";
+    
+    [cell.overlay setHidden:NO];
+    
+    cell.startButton.frame = CGRectMake(cell.frame.size.width-45, 71, 30, 30);
+    [cell.startButton setBackgroundImage:[UIImage imageNamed:@"close_icon@3x.png"] forState:UIControlStateNormal];
+    [cell.startButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+    [cell.startButton addTarget:self action:@selector(RemoveTour:) forControlEvents:UIControlEventTouchUpInside];
+    
     XTTourInfo *currentElement = [self.tourInfos objectAtIndex:_clickedButton];
     
     NSString *filename = [self GetWishlistFile:currentElement.tourID];
@@ -227,6 +249,22 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [data.followTourInfo.tracks addObject:polyline];
     }
+}
+
+- (void) RemoveTour:(id)sender
+{
+    _clickedButton = [(UIButton*)sender tag];
+    
+    XTWishlistViewCell *cell = (XTWishlistViewCell*)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_clickedButton inSection:0]];
+    
+    [cell.overlay setHidden:YES];
+    
+    data.followTourInfo = nil;
+    
+    cell.startButton.frame = CGRectMake(cell.frame.size.width-55, 71, 50, 28);
+    [cell.startButton setBackgroundImage:[UIImage imageNamed:@"start_tour_icon@3x.png"] forState:UIControlStateNormal];
+    [cell.startButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+    [cell.startButton addTarget:self action:@selector(StartTour:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (NSString *)GetWishlistFile:(NSString *)tourID

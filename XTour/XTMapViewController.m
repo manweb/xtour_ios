@@ -72,6 +72,8 @@
     
     _polylines = [[NSMutableArray alloc] init];
     
+    _savedPolylines = [[NSMutableArray alloc] init];
+    
     _mapHasMoved = false;
     
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
@@ -246,6 +248,8 @@
     _addWarning = false;
     
     _tempMarker = [[GMSMarker alloc] init];
+    
+    _lastRunStatus = 0;
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -276,6 +280,16 @@
     }
     
     [_polylines removeAllObjects];
+    
+    /*if (data.runStatus == 0 || data.runStatus == 5) {
+        for (int i = 0; i < [_savedPolylines count]; i++) {
+            GMSPolyline *currentPolyline = [_savedPolylines objectAtIndex:i];
+            
+            currentPolyline.map = nil;
+        }
+        
+        [_savedPolylines removeAllObjects];
+    }*/
     
     NSLog(@"Number of tracks: %lu",(unsigned long)[data.pathSegments count]);
     
@@ -339,6 +353,16 @@
             [_downLineLabel setHidden:NO];
         }
     }
+    else {
+        CGRect warningFrame = _addWarningBackground.frame;
+        CGRect mapFrame = _changeMapBackground.frame;
+        
+        _addWarningBackground.frame = CGRectMake(warningFrame.origin.x, 80, warningFrame.size.width, warningFrame.size.height);
+        
+        _changeMapBackground.frame = CGRectMake(mapFrame.origin.x, 130, mapFrame.size.width, mapFrame.size.height);
+        
+        [_followTourView setHidden:YES];
+    }
     
     /*if ([data GetNumCoordinates] < 2) {return;}
     
@@ -393,9 +417,25 @@
     NSUInteger coordinateSize = [[data GetCoordinatesForCurrentRun] count];
     NSUInteger pathSize = [_path count];
     
+    if (_lastRunStatus == 0) {_lastRunStatus = data.runStatus;}
+    
     if (coordinateSize < 2) {return;}
     
     if (pathSize > coordinateSize) {
+        /*GMSPolyline *currentPolyline = [[GMSPolyline alloc] init];
+        
+        currentPolyline.strokeWidth = 5.0f;
+        if (_lastRunStatus == 1 || _lastRunStatus == 2) {currentPolyline.strokeColor = [UIColor blueColor];}
+        else {currentPolyline.strokeColor = [UIColor redColor];}
+        
+        [currentPolyline setPath:_path];
+        
+        [_savedPolylines addObject:currentPolyline];
+        
+        currentPolyline.map = _mapView;
+        
+        _lastRunStatus = data.runStatus;*/
+        
         [_path removeAllCoordinates];
         pathSize = 0;
     }
