@@ -66,13 +66,39 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [searchView release];
     
-    _emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height/2-20, width, 40)];
+    UILabel *emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height/2-20, width, 40)];
     
-    _emptyLabel.backgroundColor = [UIColor clearColor];
-    _emptyLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
-    _emptyLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
-    _emptyLabel.textAlignment = NSTextAlignmentCenter;
-    _emptyLabel.text = @"Suchfunktion noch nicht implementiert";
+    emptyLabel.backgroundColor = [UIColor clearColor];
+    emptyLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    emptyLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
+    emptyLabel.textAlignment = NSTextAlignmentCenter;
+    emptyLabel.text = @"Keine Internetverbindung";
+    
+    _noConnectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    
+    UIImageView *noConnectionImage = [[UIImageView alloc] initWithFrame:CGRectMake((width-100)/2, height/2+20, 100, 40)];
+    
+    [noConnectionImage setImage:[UIImage imageNamed:@"NoConnection@3x.png"]];
+    
+    [_noConnectionView addSubview:emptyLabel];
+    [_noConnectionView addSubview:noConnectionImage];
+    
+    [emptyLabel release];
+    [noConnectionImage release];
+    
+    _noToursFoundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    
+    _messageLbl = [[UITextView alloc] initWithFrame:CGRectMake(10,self.view.bounds.size.height/2-50,self.view.bounds.size.width-20,100)];
+    
+    _messageLbl.backgroundColor = [UIColor clearColor];
+    _messageLbl.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
+    _messageLbl.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    _messageLbl.text = [NSString stringWithFormat:@"Im Umkreis von %.0fkm wurden keine Touren gefunden.\n\nHerunterziehen um zu aktualisieren",data.profileSettings.toursRadius];
+    _messageLbl.textAlignment = NSTextAlignmentCenter;
+    [_messageLbl setEditable:NO];
+    [_messageLbl setScrollEnabled:NO];
+    
+    [_noToursFoundView addSubview:_messageLbl];
     
     ServerHandler = [[XTServerRequestHandler alloc] init];
     
@@ -265,6 +291,8 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if (indexPath.section == 0) {headerTitle.text = @"Touren in deiner Umgebung";}
     
+    if ([self.news_feed count] == 0) {headerTitle.text = @"";}
+    
     [header addSubview:headerTitle];
     
     [headerTitle release];
@@ -288,17 +316,21 @@ static NSString * const reuseIdentifier = @"Cell";
             //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             //[alert show];
             
-            _emptyLabel.text = @"Keine Internetverbindung";
-            self.collectionView.backgroundView = _emptyLabel;
+            self.collectionView.backgroundView = _noConnectionView;
             
             [refreshControl endRefreshing];
             
             return;
         }
         
-        self.collectionView.backgroundView = nil;
-        
         self.news_feed = [ServerHandler GetNewsFeedString:(NSData*)responseData];
+        
+        if ([self.news_feed count] > 0) {self.collectionView.backgroundView = nil;}
+        else {
+            _messageLbl.text = [NSString stringWithFormat:@"Im Umkreis von %.0fkm wurden keine Touren gefunden.\n\nHerunterziehen um zu aktualisieren",data.profileSettings.toursRadius];
+            
+            self.collectionView.backgroundView = _noToursFoundView;
+        }
         
         [self.collectionView reloadData];
         

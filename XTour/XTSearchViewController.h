@@ -27,6 +27,8 @@
 @property (nonatomic,retain) UITextField *searchField;
 @property (nonatomic,retain) NSMutableArray *news_feed;
 @property (nonatomic) NSInteger clickedButton;
-@property (nonatomic,retain) UILabel *emptyLabel;
+@property (nonatomic,retain) UIView *noConnectionView;
+@property (nonatomic,retain) UIView *noToursFoundView;
+@property (nonatomic,retain) UITextView *messageLbl;
 
 @end

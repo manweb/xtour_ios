@@ -21,7 +21,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     float width = screenBound.size.width;
-    //float height = screenBound.size.height;
+    float height = screenBound.size.height;
     
     UITabBarController *tabBarController = [UITabBarController new];
     CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
@@ -307,6 +307,26 @@ static NSString * const reuseIdentifier = @"Cell";
     
     _appendData.frame = CGRectMake(width/2-15, 0, 30, 30);
     
+    UILabel *emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height/2-20, width, 40)];
+    
+    emptyLabel.backgroundColor = [UIColor clearColor];
+    emptyLabel.textColor = [UIColor colorWithRed:150.0f/255.0f green:150.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    emptyLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
+    emptyLabel.textAlignment = NSTextAlignmentCenter;
+    emptyLabel.text = @"Keine Internetverbindung";
+    
+    _noConnectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    
+    UIImageView *noConnectionImage = [[UIImageView alloc] initWithFrame:CGRectMake((width-100)/2, height/2+20, 100, 40)];
+    
+    [noConnectionImage setImage:[UIImage imageNamed:@"NoConnection@3x.png"]];
+    
+    [_noConnectionView addSubview:emptyLabel];
+    [_noConnectionView addSubview:noConnectionImage];
+    
+    [emptyLabel release];
+    [noConnectionImage release];
+    
     ServerHandler = [[XTServerRequestHandler alloc] init];
     
     self.collectionView.alwaysBounceVertical = YES;
@@ -517,13 +537,14 @@ static NSString * const reuseIdentifier = @"Cell";
     
     NSURLSessionTask *sessionTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSData *responseData, NSURLResponse *URLResponse, NSError *error) {
         if (error) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ooops" message: @"Da ist etwas schief gelaufen. Stelle sicher, dass du Verbindung zum Internet hast." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-            [alert show];
+            self.collectionView.backgroundView = _noConnectionView;
             
             [refreshControl endRefreshing];
             
             return;
         }
+        
+        self.collectionView.backgroundView = nil;
         
         self.news_feed = [ServerHandler GetNewsFeedString:(NSData*)responseData];
         

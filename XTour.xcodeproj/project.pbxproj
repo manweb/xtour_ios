@@ -44,6 +44,7 @@
 		640BBEB61887B22F0029327F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB51887B22F0029327F /* QuartzCore.framework */; };
 		640BBEB81887B2370029327F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640BBEB71887B2370029327F /* SystemConfiguration.framework */; };
 		640BBEBF1887BBDB0029327F /* XTDataSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 640BBEBE1887BBDB0029327F /* XTDataSingleton.m */; };
+		640BD1B31C98E51D0056A1AA /* NoConnection@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640BD1B21C98E51D0056A1AA /* NoConnection@3x.png */; };
 		640E71AC1AF3FD3D009EEA34 /* XTHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 640BBE7F1887B1A30029327F /* XTHomeViewController.m */; };
 		640ECB271B1006F1004E9816 /* rating-star-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 640ECB211B1006F1004E9816 /* rating-star-off.png */; };
 		640ECB281B1006F1004E9816 /* rating-star-off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640ECB221B1006F1004E9816 /* rating-star-off@2x.png */; };
@@ -275,6 +276,7 @@
 		640BBEB71887B2370029327F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		640BBEBD1887BBDB0029327F /* XTDataSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDataSingleton.h; sourceTree = "<group>"; };
 		640BBEBE1887BBDB0029327F /* XTDataSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDataSingleton.m; sourceTree = "<group>"; };
+		640BD1B21C98E51D0056A1AA /* NoConnection@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NoConnection@3x.png"; sourceTree = "<group>"; };
 		640ECB211B1006F1004E9816 /* rating-star-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating-star-off.png"; sourceTree = "<group>"; };
 		640ECB221B1006F1004E9816 /* rating-star-off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating-star-off@2x.png"; sourceTree = "<group>"; };
 		640ECB231B1006F1004E9816 /* rating-star-off@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating-star-off@3x.png"; sourceTree = "<group>"; };
@@ -804,6 +806,7 @@
 				645ADA401C52FA84005A1CAB /* picture_icon@3x.png */,
 				6422CC831C60484B00C6ED21 /* notification_arrow_down@3x.png */,
 				6422CC851C60487400C6ED21 /* notification_arrow_up@3x.png */,
+				640BD1B21C98E51D0056A1AA /* NoConnection@3x.png */,
 				640ECB211B1006F1004E9816 /* rating-star-off.png */,
 				640ECB221B1006F1004E9816 /* rating-star-off@2x.png */,
 				640ECB231B1006F1004E9816 /* rating-star-off@3x.png */,
@@ -1050,6 +1053,7 @@
 				64CD04FD1B49F1DB004DD801 /* warning_icon@2x.png in Resources */,
 				646C41A01B33D2E9001C6BFB /* add_warning_icon.png in Resources */,
 				6431C4EE1A2EF566007A827F /* GPS_medium.png in Resources */,
+				640BD1B31C98E51D0056A1AA /* NoConnection@3x.png in Resources */,
 				641FD4501BEE89F0002DD407 /* close_icon.png in Resources */,
 				6422CC861C60487400C6ED21 /* notification_arrow_up@3x.png in Resources */,
 				64E3EB9F18B0200500514CFE /* xtour_header.png in Resources */,
