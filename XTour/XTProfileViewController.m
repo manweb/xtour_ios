@@ -280,8 +280,10 @@
     
     _toursLabel.text = [NSString stringWithFormat:@"%li",(long)_userStatistics.monthlyNumberOfTours];
     _timeLabel.text = [self GetFormattedTimeString:_userStatistics.monthlyTime];
-    _distanceLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.monthlyDistance];
-    _altitudeLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.monthlyAltitude/1000.0];
+    if (_userStatistics.monthlyDistance >= 100) {_distanceLabel.text = [NSString stringWithFormat:@"%.0f km",_userStatistics.monthlyDistance];}
+    else {_distanceLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.monthlyDistance];}
+    if (_userStatistics.monthlyAltitude/1000.0 >= 100) {_altitudeLabel.text = [NSString stringWithFormat:@"%.0f km",_userStatistics.monthlyAltitude/1000.0];}
+    else {_altitudeLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.monthlyAltitude/1000.0];}
 }
 
 - (void)ShowSeasonalStatistics:(id)sender
@@ -296,8 +298,10 @@
     
     _toursLabel.text = [NSString stringWithFormat:@"%li",(long)_userStatistics.seasonalNumberOfTours];
     _timeLabel.text = [self GetFormattedTimeString:_userStatistics.seasonalTime];
-    _distanceLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.seasonalDistance];
-    _altitudeLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.seasonalAltitude/1000.0];
+    if (_userStatistics.seasonalDistance >= 100) {_distanceLabel.text = [NSString stringWithFormat:@"%.0f km",_userStatistics.seasonalDistance];}
+    else {_distanceLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.seasonalDistance];}
+    if (_userStatistics.seasonalAltitude/1000.0 >= 100) {_altitudeLabel.text = [NSString stringWithFormat:@"%.0f km",_userStatistics.seasonalAltitude/1000.0];}
+    else {_altitudeLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.seasonalAltitude/1000.0];}
 }
 
 - (void)ShowTotalStatistics:(id)sender
@@ -312,8 +316,10 @@
     
     _toursLabel.text = [NSString stringWithFormat:@"%li",(long)_userStatistics.totalNumberOfTours];
     _timeLabel.text = [self GetFormattedTimeString:_userStatistics.totalTime];
-    _distanceLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.totalDistance];
-    _altitudeLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.totalAltitude/1000.0];
+    if (_userStatistics.totalDistance >= 100) {_distanceLabel.text = [NSString stringWithFormat:@"%.0f km",_userStatistics.totalDistance];}
+    else { _distanceLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.totalDistance];}
+    if (_userStatistics.totalAltitude/1000.0 >= 100) {_altitudeLabel.text = [NSString stringWithFormat:@"%.0f km",_userStatistics.totalAltitude/1000.0];}
+    else {_altitudeLabel.text = [NSString stringWithFormat:@"%.1f km",_userStatistics.totalAltitude/1000.0];}
 }
 
 - (void)MoveTabTo:(float)position

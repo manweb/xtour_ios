@@ -243,24 +243,26 @@
 
 - (void) AddCurrentPathToSegments
 {
-    GMSMutablePath *path = [[GMSMutablePath alloc] init];
-    GMSPolyline *polyline = [[GMSPolyline alloc] init];
-    
-    if (_runStatus == 1 || _runStatus == 2) {polyline.strokeColor = [UIColor blueColor];}
-    else {polyline.strokeColor = [UIColor redColor];}
-    polyline.strokeWidth = 5.0f;
-    
-    for (NSInteger i = _lastRunIndex; i < [_locationData count]; i++) {
-        CLLocation *currentCoordinate = [_locationData objectAtIndex:i];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        GMSMutablePath *path = [[GMSMutablePath alloc] init];
+        GMSPolyline *polyline = [[GMSPolyline alloc] init];
         
-        [path addCoordinate:currentCoordinate.coordinate];
-    }
-    
-    [_pathSegmentsPath addObject:path];
-    
-    [polyline setPath:[_pathSegmentsPath lastObject]];
-    
-    [_pathSegments addObject:polyline];
+        if (_runStatus == 1 || _runStatus == 2) {polyline.strokeColor = [UIColor blueColor];}
+        else {polyline.strokeColor = [UIColor redColor];}
+        polyline.strokeWidth = 5.0f;
+        
+        for (NSInteger i = _lastRunIndex; i < [_locationData count]; i++) {
+            CLLocation *currentCoordinate = [_locationData objectAtIndex:i];
+            
+            [path addCoordinate:currentCoordinate.coordinate];
+        }
+        
+        [_pathSegmentsPath addObject:path];
+        
+        [polyline setPath:[_pathSegmentsPath lastObject]];
+        
+        [_pathSegments addObject:polyline];
+    });
 }
 
 - (double) CalculateHaversineForPoint:(CLLocation *)p1 andPoint:(CLLocation *)p2
@@ -485,7 +487,7 @@
     
     [xml SaveXML:FileName];
     
-    [self AddCurrentPathToSegments];
+    if (![category isEqualToString:@"sum"]) {[self AddCurrentPathToSegments];}
 }
 
 - (void) WriteRecoveryFile

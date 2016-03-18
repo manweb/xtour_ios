@@ -23,6 +23,8 @@
 
 - (void) LoadData
 {
+    if (!data.loggedIn) {return;}
+    
     float width = self.view.frame.size.width;
     float height = self.view.frame.size.height;
     
@@ -110,6 +112,8 @@
         float max = [self GetMax:yearlyStatistics];
         
         int nDivisions = ceil(max/5)+1;
+        
+        if (nDivisions == 1) {nDivisions = 2;}
         
         float yAxisLength = (height-marginTop-marginBottom)/(nDivisions-1);
         

@@ -769,7 +769,7 @@
             commentView.layer.borderWidth = boxBorderWidth;
             commentView.layer.borderColor = boxBorderColor.CGColor;
             
-            UILabel *commentTitle = [[UILabel alloc] initWithFrame:CGRectMake(40, 5, 200, 20)];
+            UILabel *commentTitle = [[UILabel alloc] initWithFrame:CGRectMake(40, 5, boxWidth-40, 20)];
             
             commentTitle.textColor = [UIColor colorWithRed:180.0f/255.0f green:180.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
             commentTitle.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
